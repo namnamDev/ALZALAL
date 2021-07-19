@@ -3,6 +3,9 @@
     <div id="nav">
       <h1>hello world</h1>     
     </div>
+    <button class="btn btn-primary">
+      버튼
+    </button>
   </div>
 </template>
 
