@@ -7,11 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter
 public class Problem_Site_List {
 	
 	@Id
-	String problem_site_name;
+	private String problem_site_name;
 	
 	@OneToMany(mappedBy = "problem_site_list")
 	private List<Problem_Site_Like> member=new ArrayList<>();
