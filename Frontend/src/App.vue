@@ -1,48 +1,25 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">6 To 4</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>              
-          </ul>
-          <ul class="navbar-nav me-4">
-            <li class="nav-item dropdown">
-              <a class="nav-link " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                User1
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">정보수정</a></li>
-                <li><a class="dropdown-item" href="#">프로필페이지</a></li>
-              </ul>
-            </li>
-          </ul>
-          <a href="" class="me-3">로그아웃</a>
-        </div>
-      </div>
-    </nav>
-    <div>
-      <SideMenuBar/>
-    </div>
+    <TopMenuBar />
+    <SideMenuBar />
+    <SearchBar />
     <router-view />
   </div>
-  
 </template>
 
 <script>
-import SideMenuBar from '@/components/SideMenuBar/SideMenuBar.vue'
+import SideMenuBar from "@/components/navBar/SideMenuBar.vue";
+import TopMenuBar from "@/components/navBar/TopNavBar.vue";
+import SearchBar from "@/components/search/SearchBar.vue";
+
 export default {
-  name: 'App',
+  name: "App",
   components: {
     SideMenuBar,
-  }
-}
+    TopMenuBar,
+    SearchBar,
+  },
+};
 </script>
 
 <style scoped>
@@ -52,14 +29,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  position: fixed;
   width: 100%;
+  position: relative;
 }
-
-.navbar{
-  background-color:rgba(161,212,226,1)
-}
-
-
 
 </style>

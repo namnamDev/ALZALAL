@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /*--- LAYOUT ---*/
 .contents {
   max-width: 1020px;
