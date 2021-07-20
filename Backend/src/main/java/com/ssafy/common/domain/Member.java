@@ -46,4 +46,8 @@ public class Member {
 	//선호하는 문제 사이트
 	@OneToMany(mappedBy = "member")
 	private List<Problem_Site_Like> problem_site_list=new ArrayList<>(); 
+	
+	//선호하는 알고리즘
+	@OneToMany(mappedBy = "member")
+	private List<Algorithm_Like> algorithm_Likes = new ArrayList<>();
 }
