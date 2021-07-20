@@ -5,6 +5,7 @@ import Login from '@/views/account/login.vue'
 import Signup from '@/views/account/signup.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
+import ProfilePage from '@/views/profile/ProfilePage.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [
     path: '/passwordConfirm',
     name: 'passwordConfirm',
     component: PasswordConfirm
+  },
+  {
+    path: '/profilePage',
+    name: 'profilePage',
+    component: ProfilePage
   },
   {
     path: '*',
