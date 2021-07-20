@@ -22,6 +22,7 @@ public class Problem_Site_Like {
 	private Problem_Site_List problem_site_list;
 	
 	@Id
+	@ManyToOne
 	@JoinColumn(name="member_no")
 	private Member member;
 }
