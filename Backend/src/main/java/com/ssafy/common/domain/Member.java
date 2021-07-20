@@ -1,14 +1,15 @@
 package com.ssafy.common.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -41,4 +42,8 @@ public class Member {
 	@ColumnDefault(value = "'M00'")
 	@Enumerated(EnumType.STRING)
 	private MemberWay member_way;
+	
+	//선호하는 문제 사이트
+	@OneToMany(mappedBy = "member")
+	private List<Problem_Site_Like> problem_site_list=new ArrayList<>(); 
 }
