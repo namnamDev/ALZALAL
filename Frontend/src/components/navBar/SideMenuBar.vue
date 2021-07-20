@@ -1,5 +1,8 @@
 <template>
   <div class="sideMenu">
+    <div class="menuIconDiv" @click="ClickMenuButton">
+      <i class="fas fa-bars menuIcon"></i>
+    </div>
     <div id="leftMenu">
       <span>6 To 4</span>
       <ul>
@@ -9,18 +12,14 @@
         <li>글작성</li>
       </ul>
     </div>
-    <div class="menuIconDiv" @click="ClickMenuButton">
-      <i class="fas fa-bars menuIcon"></i>
-    </div>
-    
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Main',
   components: {
-    
   },
 
   data() {
@@ -44,9 +43,7 @@ export default {
       }
       else {
         leftMenu.style.display = 'none'
-      }
-      
-      
+      }     
     }
   }
 
@@ -54,53 +51,48 @@ export default {
 </script>
 
 <style scoped>
-#a{
-  height:2000px;
-  width: 2000px;
-  border: 1px solid black;
-  z-index: -2;
-  position: absolute;
-}
 .sideMenu{
-  position: relative;
-  z-index:-1;
+  position: fixed;
+  top: 60px;
 }
 
 .menuIconDiv{
-  border: 1px solid black;
+  border-right: 1px solid black;
   height: 100vh;
   width: 50px;
   position: fixed;
-  cursor: pointer;
+  cursor: pointer;  
+  /* z-index:2; */
 }
 
 .menuIcon{
-  margin-top: 70px;
-  margin-left: 15px;
+  margin-top: 20px;
   font-size: 25px;
 }
 
 #leftMenu{
-  border: 1px solid black;
+  border-right: 1px solid black;
   height: 100vh;
-  width: 300px;  
-  position: fixed;
+  width: 250px;  
+  left: 50px;
+  position: relative;
 }
   #leftMenu > ul{
-    position: absolute;
-    float: right;
-    left: 60px;
-    top: 200px;
+    position: absolute;    
+    left: 10px;
+    top: 160px;
     list-style: none;
+    float: left;
+    text-align: left;
   }
   #leftMenu > ul > li {
     margin-top: 20px;
     font-size: 20px;
   }
   #leftMenu > span{
-    position: absolute;
-    left: 110px;
-    top: 100px;
+    position:absolute;   
+    left: 50px;
+    top: 70px;
     font-size: 40px;
   }
 
