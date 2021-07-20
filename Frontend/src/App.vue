@@ -6,6 +6,7 @@
     <button class="btn btn-primary">
       버튼
     </button>
+    <router-view></router-view>
   </div>
 </template>
 
