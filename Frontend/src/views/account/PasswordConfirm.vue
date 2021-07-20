@@ -40,7 +40,8 @@ export default {
 <style scoped>
 /*--- LAYOUT ---*/
 .contents {
-  max-width: 1020px;
+  position: absolute;
+  top:180px;
   margin: 0 auto;
   padding: 0 5px;
   width: 100%;  

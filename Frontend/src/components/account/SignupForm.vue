@@ -3,30 +3,35 @@
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label for="MEMBER_EMAIL" align="left">E-mail </label>
-					<input id="MEMBER_EMAIL" type="text" v-model="MEMBER_EMAIL" />
+					<label for="member_email" align="left">E-mail </label>
+					<input id="member_email" type="text" v-model="member_email" />
                     <p class="validation-text">
-						<span class="warning" v-if="!isEmailValid && !MEMBER_EMAIL">
+						<span class="warning" v-if="!isEmailValid && !member_email">
 							Please enter an email address
 						</span>
 					</p>
 				</div>
 				<div>
-					<label for="password" align="left">비밀번호 </label>
-					<input id="password" type="MEMBER_PASSWORD" v-model="MEMBER_PASSWORD" />
+					<label for="member_password" align="left">비밀번호 </label>
+					<input id="member_password" type="password" v-model="member_password" />
 				</div>
                 <div>
 					<label for="passwordConfirm" align="left">비밀번호 확인 </label>
-					<input id="passwordConfirm" type="MEMBER_PASSWORD" v-model="passwordConfirm" />
+					<input id="passwordConfirm" type="password" v-model="passwordConfirm" />
+          <p class="validation-text">
+          <span class='warning' v-if="!isPasswordValid">
+            Please check the password
+          </span>
+          </p>
 				</div>
 				<div>
-					<label for="MEMBER_NAME" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
-					<input id="MEMBER_NAME" type="text" v-model="MEMBER_NAME" />
+					<label for="member_name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
+					<input id="member_name" type="text" v-model="member_name" />
                     
 				</div>
                 <div class='checkbox' align="left">
                     <details>
-					<summary for="likeLanguage">선호 언어 <i class="fas fa-chevron-down"></i></summary>
+					<summary for="algorithm_like">선호 언어 <i class="fas fa-chevron-down"></i></summary>
 					<ul>
                     <li>Java<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
                     <li>Python<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
@@ -36,7 +41,7 @@
 				</div>
                 <div class='checkbox' align="left">
                     <details>
-					<summary for="likeAlgorithm">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
+					<summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
                         <ul>
                             <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
                             <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
@@ -46,7 +51,7 @@
 				</div>
                 
 				<button
-                 :disabled="!isEmailValid || !MEMBER_PASSWORD || !passwordConfirm || !MEMBER_NAME  || !MEMBER_EMAIL"
+                 :disabled="!isEmailValid || !member_password || !passwordConfirm || !member_name  || !member_email"
 					type="submit"
 					class="btn"
                  >회원 가입</button>
@@ -58,21 +63,25 @@
 
 <script>
 import { validateEmail } from '@/utils/validation.js';
+import { validatePassword } from '@/utils/passwordConfirm.js'
 export default{
 	data() {
 		return {
-            MEMBER_EMAIL : '',
-			MEMBER_NAME : '',
-			MEMBER_PASSWORD: '',
-            passwordConfirm: '',
+      member_email : '',
+			member_name : '',
+			member_password: '',
+      passwordConfirm: '',
 			//log Message
 			
 		};
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.MEMBER_EMAIL);
+			return validateEmail(this.member_email);
 		},
+    isPasswordValid(){
+      return validatePassword(this.member_password, this.passwordConfirm);
+    }
 	},
 }
 </script>
@@ -80,7 +89,8 @@ export default{
 <style scoped>
 /*--- LAYOUT ---*/
 .contents {
-  max-width: 1020px;
+  position: absolute;
+  top: 90px;
   margin: 0 auto;
   padding: 0 5px;
   width: 100%;  

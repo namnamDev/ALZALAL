@@ -3,20 +3,20 @@
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label align="left" for="MEMBER_EMAIL">E-mail</label>
-					<input id="MEMBER_EMAIL" type="text" v-model="MEMBER_EMAIL" />
+					<label align="left" for="member_email">E-mail</label>
+					<input id="member_email" type="text" v-model="member_email" />
 					<p class="validation-text">
-						<span class="warning" v-if="!isEmailValid || !MEMBER_EMAIL">
+						<span class="warning" v-if="!isEmailValid || !member_email">
 							Please enter an email address
 						</span>
 					</p>
 				</div>
 				<div>
-					<label align="left" for="MEMBER_PASSWORD">Password</label>
-					<input id="MEMBER_PASSWORD" type="MEMBER_PASSWORD" v-model="MEMBER_PASSWORD" />
+					<label align="left" for="member_password">Password</label>
+					<input id="member_password" type="password" v-model="member_password" />
 				</div>
 				<button
-                :disabled="!isEmailValid && MEMBER_PASSWORD"
+                :disabled="!isEmailValid && member_password"
 					type="submit"
 					class="btn"
                 >
@@ -43,13 +43,13 @@ import { validateEmail } from '@/utils/validation.js';
 export default {
     data() {
 		return {
-      MEMBER_EMAIL : '',
-			MEMBER_PASSWORD: '',
+      member_email : '',
+			member_password: '',
 		};
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.MEMBER_EMAIL);
+			return validateEmail(this.member_email);
 		},
 	},
 	
@@ -59,10 +59,11 @@ export default {
 <style scoped>
 /*--- LAYOUT ---*/
 .contents {
-  max-width: 1020px;
+  position: absolute;
   margin: 0 auto;
   padding: 0 5px;
   width: 100%;  
+  top:90px;
 }
 .form-wrapper {
   background: white;
