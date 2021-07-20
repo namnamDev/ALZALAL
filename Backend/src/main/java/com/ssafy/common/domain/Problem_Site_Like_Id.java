@@ -9,6 +9,7 @@ public class Problem_Site_Like_Id implements Serializable{
 	private Problem_Site_List problem_site_list;
 	private Member member;
 	
+	public Problem_Site_Like_Id() {}
 	
 	public Problem_Site_Like_Id(Problem_Site_List problem_site_list, Member member) {
 		this.problem_site_list = problem_site_list;
@@ -44,4 +45,6 @@ public class Problem_Site_Like_Id implements Serializable{
 		result = prime * result + ((problem_site_list == null) ? 0 : problem_site_list.hashCode());
 		return result;
 	}
+
+
 }
