@@ -1,17 +1,10 @@
 package com.ssafy.common.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.ssafy.common.domain.Member;
 
-import com.ssafy.common.repository.MemberRepository;
+public interface MemberService {
 
-@Service
-public class MemberService {
-
-	@Autowired
-	private MemberRepository mr;
-	
-	
-	
+//	회원가입
+	long signup(Member member);
 	
 }
