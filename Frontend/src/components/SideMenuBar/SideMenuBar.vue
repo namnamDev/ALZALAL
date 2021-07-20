@@ -1,8 +1,5 @@
 <template>
   <div class="sideMenu">
-    <div id="a">
-
-    </div>
     <div id="leftMenu">
       <span>6 To 4</span>
       <ul>
