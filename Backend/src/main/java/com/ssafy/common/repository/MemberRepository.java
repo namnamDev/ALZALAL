@@ -24,7 +24,7 @@ public class MemberRepository {
 	public Member findOne(Long id) {
 		return em.find(Member.class, id);
 	}
-
+			
 	public List<Member> findAll() {
 		return em.createQuery("Select m from Member m", Member.class).getResultList();
 	}
@@ -41,9 +41,10 @@ public class MemberRepository {
 	}
 
 	public Member findByEmail(String email) {
+		System.out.println("email"+email);
 		Member member = null;
 		try {
-			em.createQuery("select m from Member m where m.member_email = :email", Member.class)
+			member=em.createQuery("select m from Member m where m.member_email = :email", Member.class)
 					.setParameter("email", email).getSingleResult();
 
 		} catch (NoResultException e) {
