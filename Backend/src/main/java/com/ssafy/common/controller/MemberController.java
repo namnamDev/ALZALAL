@@ -14,7 +14,7 @@ import com.ssafy.common.service.MemberService;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/member")
 public class MemberController {
 
 	@Autowired
