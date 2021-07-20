@@ -17,7 +17,7 @@ public class Problem_Site_List {
 	@Id
 	private String problem_site_name;
 	
+	//Problem_Site_Like 도메인과 관계
 	@OneToMany(mappedBy = "problem_site_list")
 	private List<Problem_Site_Like> member=new ArrayList<>();
-	
 }

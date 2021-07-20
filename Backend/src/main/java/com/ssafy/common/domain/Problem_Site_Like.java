@@ -16,11 +16,13 @@ import lombok.Setter;
 @IdClass(Problem_Site_Like_Id.class)
 public class Problem_Site_Like {
 
+	//Problem_Site_List 도메인과 관계 
 	@Id
 	@ManyToOne
 	@JoinColumn(name="problem_site_name")
 	private Problem_Site_List problem_site_list;
 	
+	//Member 도메인과 관계
 	@Id
 	@ManyToOne
 	@JoinColumn(name="member_no")

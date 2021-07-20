@@ -14,14 +14,15 @@ import lombok.Setter;
 @IdClass(Algorithm_Like_Id.class)
 public class Algorithm_Like {
 
+	//Algorithm 도메인과 관계
 	@Id
 	@ManyToOne
 	@JoinColumn(name="algorithm_name")
 	private Algorithm algorithm;
 	
+	//Member 도메인과 관계
 	@Id
 	@ManyToOne
 	@JoinColumn(name="member_no")
-	private Member member;
-	
+	private Member member;	
 }
