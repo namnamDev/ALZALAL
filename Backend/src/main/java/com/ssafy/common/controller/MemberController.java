@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.domain.Member;
-import com.ssafy.common.service.MemberServiceImpl;
+import com.ssafy.common.service.MemberService;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
@@ -18,7 +18,7 @@ import com.ssafy.common.service.MemberServiceImpl;
 public class MemberController {
 
 	@Autowired
-	private MemberServiceImpl ms;
+	private MemberService ms;
 	
 	
 	@PostMapping("/signup")

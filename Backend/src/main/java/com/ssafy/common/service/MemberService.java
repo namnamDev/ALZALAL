@@ -4,7 +4,7 @@ import com.ssafy.common.domain.Member;
 
 public interface MemberService {
 
-//	È¸¿ø°¡ÀÔ
+//	íšŒì›ê°€ì…
 	long signup(Member member);
 	
 }
