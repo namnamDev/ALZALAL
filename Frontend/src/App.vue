@@ -1,34 +1,65 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <h1>hello world</h1>     
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">6 To 4</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>              
+          </ul>
+          <ul class="navbar-nav me-4">
+            <li class="nav-item dropdown">
+              <a class="nav-link " href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                User1
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">정보수정</a></li>
+                <li><a class="dropdown-item" href="#">프로필페이지</a></li>
+              </ul>
+            </li>
+          </ul>
+          <a href="" class="me-3">로그아웃</a>
+        </div>
+      </div>
+    </nav>
+    <div>
+      <SideMenuBar/>
     </div>
-    <button class="btn btn-primary">
-      버튼
-    </button>
-    <router-view></router-view>
+    <router-view />
   </div>
+  
 </template>
 
-<style>
+<script>
+import SideMenuBar from '@/components/SideMenuBar/SideMenuBar.vue'
+export default {
+  name: 'App',
+  components: {
+    SideMenuBar,
+  }
+}
+</script>
+
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  position: fixed;
+  width: 100%;
 }
 
-#nav {
-  padding: 30px;
+.navbar{
+  background-color:rgba(161,212,226,1)
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+
 </style>
