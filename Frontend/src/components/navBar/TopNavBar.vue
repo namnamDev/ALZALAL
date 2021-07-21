@@ -2,17 +2,9 @@
   <div id="nav">
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">6 To 4</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-4">
+        <a class="navbar-brand col-8" href="/">6 To 4</a>
+        <div class="collapse navbar-collapse col-4" id="navbarSupportedContent">
+          <ul class="navbar-nav">
             <li class="nav-item dropdown">
               <a
                 class="nav-link"
@@ -30,7 +22,7 @@
               </ul>
             </li>
           </ul>
-          <a href="" class="me-3">로그아웃</a>
+          <a href="" class="">로그아웃</a>
         </div>
       </div>
     </nav>
