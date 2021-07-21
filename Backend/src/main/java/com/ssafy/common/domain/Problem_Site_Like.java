@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@IdClass(Problem_Site_Like_Id.class)
+@IdClass(Problem_Site_LikePK.class)
 public class Problem_Site_Like {
 
 	//Problem_Site_List 도메인과 관계 
