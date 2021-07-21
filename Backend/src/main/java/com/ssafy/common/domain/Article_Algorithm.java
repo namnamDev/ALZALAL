@@ -18,13 +18,13 @@ public class Article_Algorithm {
   // private long Article_Algorithm_No;
   @Id
   @ManyToOne
-  @JoinColumn(name = "Algorithm_name")
+  @JoinColumn(name = "algorithm_name")
   private Algorithm algorithm_name;
   
   @Id
   @ManyToOne
-  @JoinColumn(name = "Article_No")
-  private Article article_No;
+  @JoinColumn(name = "article_no")
+  private Article article_no;
   // private ArrayList<Article> articles;
   // int a = 1
   // int b = 2
