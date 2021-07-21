@@ -1,9 +1,11 @@
-package com.ssafy.common.domain;
+package com.ssafy.common.domain.article;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.ssafy.common.domain.Algorithm;
 
 import lombok.Getter;
 import lombok.Setter;

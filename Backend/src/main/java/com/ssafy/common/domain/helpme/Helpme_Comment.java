@@ -1,6 +1,5 @@
-package com.ssafy.common.domain;
-
-import java.sql.Time;
+package com.ssafy.common.domain.helpme;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,28 +8,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.ssafy.common.domain.Member;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Article_Comment {
+public class Helpme_Comment {
   @Id
   @GeneratedValue
-  @Column(name = "ARTICLE_COMMENT_NO")
-  private long article_comment_no;
+  @Column(name = "HELPME_RECOMMENT_NO")
+  private long no;
+
+  @ManyToOne
+  @JoinColumn(name = "HELPME_NO")
+  private Helpme helpmeNo;
 
   @ManyToOne
   @JoinColumn(name="MEMBER_NO")
   private Member member;
 
-  @ManyToOne
-  @JoinColumn(name="ARTICLE_NO")
-  private Article article;
 
-  @Column(length = 500,name = "ARTICLE_COMMENT_CONTENT")
+  @Column(length = 500 ,name="HELPME_COMMENT_CONTENT")
   private String content;
 
-  @Column(name="ARTICLE_COMMENT_DATE")
-  private Time date;
+  @Column(name="HELPME_COMMENT_DATE")
+  private Timestamp date;
 }

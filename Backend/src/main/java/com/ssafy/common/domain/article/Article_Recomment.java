@@ -1,4 +1,4 @@
-package com.ssafy.common.domain;
+package com.ssafy.common.domain.article;
 
 import java.security.Timestamp;
 
@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.ssafy.common.domain.Member;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +22,19 @@ public class Article_Recomment {
   @Id
   @GeneratedValue
   @Column(name = "ARTICLE_RECOMMENT_NO")
-  private long article_no;
+  private long recomment_no;
 
   @ManyToOne
   @JoinColumn(name="ARTICLE_COMMENT_NO")
   private Article_Comment recomment;
   
-  @Column(length = 500)
+  @Column(length = 500,name="ARTICLE_CONTENT")
   private String content;
 
   @Column(name = "ARTICLE_RECOMMENT_DATE")
   private Timestamp timestamp;
+
+  @ManyToOne
+  @JoinColumn(name = "member_no")
+  private Member member_no;
 }
