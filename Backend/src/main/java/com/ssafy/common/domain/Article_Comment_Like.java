@@ -1,7 +1,8 @@
 package com.ssafy.common.domain;
+
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -10,15 +11,16 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-@IdClass(Article_AlgorithmPK.class)
-public class Article_Algorithm {
+@IdClass(Article_Comment_LikePK.class)
+public class Article_Comment_Like {
   @Id
   @ManyToOne
-  @JoinColumn(name = "algorithm_name")
-  private Algorithm algorithm_name;
+  @JoinColumn(name = "ARTICLE_COMMENT_NO")
+  private Article_Comment comment;
+
+  @Id
+  @ManyToOne
+  @JoinColumn(name = "MEMBER_NO")
+  private Member member;
   
-  @Id
-  @ManyToOne
-  @JoinColumn(name = "article_no")
-  private Article article_no;
 }

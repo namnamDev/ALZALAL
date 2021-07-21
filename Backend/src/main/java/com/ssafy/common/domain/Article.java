@@ -19,7 +19,15 @@ import lombok.Setter;
 public class Article {
   @Id
   @GeneratedValue
-  private long Article_No;
+  @Column(name="article_no")
+  private long article_no;
+  
+  
+  @ManyToOne
+  @JoinColumn(name = "member_no")
+  private Member member_no2; // referenceName은 디폴트로 할당
+  // 헌국뇌피셜 할당 자체를 Memeber로 뒀으니 자동으로 pk를 찾아서 정해주는게 아닐까??
+  /// name은 어떤이름으로할것인지 정하는것
 
   @Column(length = 500)
   private String Article_Content;
@@ -27,18 +35,10 @@ public class Article {
   @Column
   private java.sql.Timestamp Article_Date;
 
-  // @ManyToOne
-  // @JoinColumn(name="Problem_Site")
-  // private Problem_Site Problem_Sites;
-
-  // @ManyToOne
-  // @JoinColumn(name="Problem_Site")
-  // private Problem_Site Problem_No;
-
   @ManyToOne
   @JoinColumns({
-                @JoinColumn(name="Problem_No",referencedColumnName = "Problem_No"),
-                @JoinColumn(name="Problem_Site_Name",referencedColumnName = "Problem_Site_Name")
+                @JoinColumn(name="Problem_No"),
+                @JoinColumn(name="Problem_Site_Name")
   })
   private Problem_Site problem_site;
 
