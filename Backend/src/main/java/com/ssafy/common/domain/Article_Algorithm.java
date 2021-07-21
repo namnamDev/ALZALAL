@@ -19,12 +19,12 @@ public class Article_Algorithm {
   @Id
   @ManyToOne
   @JoinColumn(name = "Algorithm_name")
-  private Algorithm Algorithm_name;
+  private Algorithm algorithm_name;
   
   @Id
   @ManyToOne
   @JoinColumn(name = "Article_No")
-  private Article Article_No;
+  private Article article_No;
   // private ArrayList<Article> articles;
   // int a = 1
   // int b = 2

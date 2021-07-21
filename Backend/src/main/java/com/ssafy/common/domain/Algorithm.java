@@ -12,5 +12,5 @@ import lombok.Setter;
 public class Algorithm {
   @Id
   @Column(length = 30)
-  private String Algorithm_name;
+  private String algorithm_name;
 }

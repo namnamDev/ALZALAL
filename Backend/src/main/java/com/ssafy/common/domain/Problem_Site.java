@@ -13,12 +13,12 @@ import lombok.Setter;
 public class Problem_Site {
   @Id
   @Column(length = 30)
-  private String Problem_Site_Name;
+  private String problem_site_name;
 
   @Id
   @Column
-  private int Problem_No;
+  private int problem_no;
 
   @Column(length = 500)
-  private String Problem_Site_Link;
+  private String problem_site_link;
 }

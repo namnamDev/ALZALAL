@@ -40,9 +40,9 @@ public class Article {
                 @JoinColumn(name="Problem_No",referencedColumnName = "Problem_No"),
                 @JoinColumn(name="Problem_Site_Name",referencedColumnName = "Problem_Site_Name")
   })
-  private Problem_Site problem_Site;
+  private Problem_Site problem_site;
 
   @Column(length = 4)
 	@Enumerated(EnumType.STRING)
-  private Article_Class Article_Class;
+  private Article_Class article_class;
 }
