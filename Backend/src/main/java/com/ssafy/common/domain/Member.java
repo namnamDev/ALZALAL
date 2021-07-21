@@ -1,14 +1,16 @@
 package com.ssafy.common.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -41,4 +43,26 @@ public class Member {
 	@ColumnDefault(value = "'M00'")
 	@Enumerated(EnumType.STRING)
 	private MemberWay member_way;
+	
+	//선호하는 문제 사이트
+	@OneToMany(mappedBy = "member_no", cascade = CascadeType.ALL)
+	private List<Problem_Site_Like> problem_site_list=new ArrayList<>(); 
+	
+	//선호하는 언어
+	@OneToMany(mappedBy = "member_no", cascade = CascadeType.ALL)
+	private List<Use_Language_Like> use_language_like = new ArrayList<>();
+	
+	//생성 메서드
+	public void createMember(List<Problem_Site_Like> problem_site_like, List<Use_Language_Like> use_language_like) {
+		//선호하는 문제사이트 집어넣음
+		for(Problem_Site_Like pslike : problem_site_like) {
+			this.problem_site_list.add(pslike);
+		}
+		
+		//선호하는 언어 집어넣음
+		for(Use_Language_Like ullike : use_language_like) {
+				this.use_language_like.add(ullike);
+		}
+		
+	}
 }
