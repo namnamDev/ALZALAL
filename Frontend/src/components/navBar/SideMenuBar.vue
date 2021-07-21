@@ -1,16 +1,27 @@
 <template>
-  <div class="sideMenu">
-    <div class="menuIconDiv" @click="ClickMenuButton">
-      <i class="fas fa-bars menuIcon"></i>
-    </div>
-    <div id="leftMenu">
-      <span>6 To 4</span>
+  <div id="side-menu-bar">    
+    <div id="menu">
+      <p>LOGO</p>
       <ul>
         <li>타임라인</li>
         <li>Q&A</li>
         <li>토론게시판</li>
         <li>글작성</li>
+        <li class="search">검색하기</li>
       </ul>
+    </div>
+    <div id="menu-1" v-if="width < 576">
+      <p>LOGO</p>
+      <ul>
+        <li>타임라인</li>
+        <li>Q&A</li>
+        <li>토론게시판</li>
+        <li>글작성</li>
+        <li class="search">검색하기</li>
+      </ul>
+    </div>        
+    <div class="icon" @click="ClickMenuButton">
+      <i class="fas fa-bars menuIcon"></i>
     </div>
   </div>
 </template>
@@ -18,26 +29,37 @@
 <script>
 
 export default {
-  name: 'Main',
+  name: 'SideMenuBar',
   components: {
   },
 
   data() {
     return {
-      display: 'none',
+      width: 0,
     }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize',this.handleResize)
+  },
+
+  watch: {
+
   },
 
   computed: {
-    sideMenuBar () {
-      return {
-      }
-    },    
+ 
   },
 
   methods: {
+    handleResize(){
+      this.width = window.innerWidth
+    },
+
     ClickMenuButton: function() {
-      let leftMenu = document.getElementById('leftMenu')
+      let leftMenu = document.getElementById('menu-1')
       if (leftMenu.style.display == 'none') {
         leftMenu.style.display = 'block'
       }
@@ -45,55 +67,96 @@ export default {
         leftMenu.style.display = 'none'
       }     
     }
+  },
+  
+  created: function () {
   }
 
 }
 </script>
 
-<style scoped>
-.sideMenu{
-  position: fixed;
-  top: 60px;
-}
 
-.menuIconDiv{
-  border-right: 1px solid black;
+<style>
+#side-menu-bar{
+  position:fixed;
+  background-color:rgba(224,245,249,1);
   height: 100vh;
-  width: 50px;
-  position: fixed;
-  cursor: pointer;  
-  /* z-index:2; */
+  width: 20%;
+  z-index:2;
 }
 
-.menuIcon{
-  margin-top: 20px;
-  font-size: 25px;
+
+#menu-1{
+  position: absolute;
+  width: 250px;
+  height: 100%;
+  background-color:rgba(224,245,249,1);
+  display:none;
+}
+#menu-1 > p {
+  position: absolute;
+  left: 40%;
+  top: 100px;
+}
+#menu-1 > ul {
+  position: absolute;
+  text-align: left;
+  top: calc(100px + 10%);
+}
+#menu-1 > ul li{
+  list-style: none;
+  margin-top:15px;
 }
 
-#leftMenu{
-  border-right: 1px solid black;
-  height: 100vh;
-  width: 250px;  
-  left: 50px;
-  position: relative;
+#menu{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100px;
 }
-  #leftMenu > ul{
-    position: absolute;    
-    left: 10px;
-    top: 160px;
-    list-style: none;
-    float: left;
-    text-align: left;
-  }
-  #leftMenu > ul > li {
-    margin-top: 20px;
-    font-size: 20px;
-  }
-  #leftMenu > span{
-    position:absolute;   
-    left: 50px;
-    top: 70px;
-    font-size: 40px;
-  }
+#menu > p {
+  position: absolute;
+  left: 40%;
+}
+#menu > ul {
+  position: absolute;
+  text-align: left;
+  top: 10%;
+}
+#menu > ul li{
+  list-style: none;
+  margin-top:15px;
+}
 
+.icon{
+  position: absolute;
+  left: 15px;
+  top: 20px;
+  font-size: 30px;
+  display:none;
+  cursor: pointer;
+}
+
+.search{
+  display: none;
+}
+
+@media (max-width: 992px){
+  .search{
+    display: block;
+  }
+}
+
+@media (max-width:576px) {
+  #menu{
+    display:none;
+  }
+  .icon{
+    display:block;
+  }
+  #side-menu-bar {
+    width: 60px;
+    background-color: rgba(0,0,0,0);
+  }
+}
 </style>
