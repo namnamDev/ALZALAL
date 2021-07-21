@@ -4,7 +4,7 @@
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label for="member_email" align="left">E-mail </label>
-					<input id="member_email" type="text" v-model="member_email" placeholder="로그인한 이메일이 들어갈 자리"/>
+					<input id="member_email" type="text" v-model="member_email" placeholder="여기에 이메일 입력되있음" />
                     <p class="validation-text">
 						<span class="warning" v-if="!isEmailValid && !member_email">
 							Please enter an email address
@@ -54,7 +54,7 @@
                  :disabled="!isEmailValid || !member_password || !passwordConfirm || !member_name  || !member_email"
 					type="submit"
 					class="btn"
-                 >수정하기</button>
+                 >회원 가입</button>
 			</form>
 			
 		</div>

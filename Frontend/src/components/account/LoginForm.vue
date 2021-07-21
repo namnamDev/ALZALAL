@@ -1,6 +1,7 @@
 <template>
   <div class="contents">
-		<div class="form-wrapper form-wrapper-sm">
+    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
+		<div class="form-wrapper form-wrapper-sm box col-lg-6 col-md-10 col-sm-9 col-10">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label align="left" for="member_email">E-mail</label>
@@ -27,9 +28,9 @@
                 <button class="btn btn-user">회원가입</button></span>
                 </div>
                 <div class='snsLogin'>
-                <button class="btn kakao"><img src="@/assets/kakaologin.png" alt="kakao login" style=""></button>
-                <button class="btn naver"><img src="@/assets/naverlogin.png" alt="naver login" style=""></button>
-                <button class="btn google"><img src="@/assets/google.png" alt="google login" style=""></button>
+                <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
+                <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
+                <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
         </div>
 			</form>
 		
@@ -101,7 +102,7 @@ export default {
 .form textarea {
   font-family: inherit;
   font-size: 100%;
-  width: 100%;
+  width: 80%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;
@@ -121,5 +122,9 @@ export default {
 }
 .btn-user{
     opacity: 0.8;
+}
+.btn-sns {
+  display: block;
+  margin-left: 0 auto;
 }
 </style>
