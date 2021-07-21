@@ -6,6 +6,7 @@ import Signup from '@/views/account/signup.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
+import UserModify from '@/views/account/modify.vue'
 import Feed from '@/views/feed/Feed.vue'
 
 Vue.use(VueRouter)
@@ -36,6 +37,11 @@ const routes = [
     path: '/profilePage',
     name: 'profilePage',
     component: ProfilePage
+  },
+  {
+    path: '/usermodify',
+    name: 'usermodify',
+    component: UserModify
   },
   {
     path: '*',
