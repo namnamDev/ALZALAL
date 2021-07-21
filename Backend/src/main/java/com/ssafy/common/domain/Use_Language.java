@@ -20,7 +20,7 @@ public class Use_Language {
 	String use_language ;
 	
 	//Use_Language_Like 도메인과 관계
-	@OneToMany(mappedBy = "Use_Language")
+	@OneToMany(mappedBy = "use_language")
 	List<Use_Language_Like> member =new ArrayList<>();
 	
 }
