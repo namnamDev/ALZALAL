@@ -44,10 +44,10 @@ public class Member {
 	private MemberWay member_way;
 	
 	//선호하는 문제 사이트
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member_no")
 	private List<Problem_Site_Like> problem_site_list=new ArrayList<>(); 
 	
 	//선호하는 언어
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member_no")
 	private List<Use_Language_Like> use_language_like = new ArrayList<>();
 }
