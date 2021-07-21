@@ -20,12 +20,12 @@ public class Problem_Site_Like {
 	@Id
 	@ManyToOne
 	@JoinColumn(name="problem_site_name")
-	private Problem_Site_List problem_site_list;
+	private Problem_Site_List problem_site_name;
 	
 	//Member 도메인과 관계
 	@Id
 	@ManyToOne
 	@JoinColumn(name="member_no")
-	private Member member;
+	private Member member_no;
 }
 

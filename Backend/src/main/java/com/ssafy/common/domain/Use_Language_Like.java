@@ -22,6 +22,6 @@ public class Use_Language_Like {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "member_no")
-	private Member member;	
+	private Member member_no;	
 	
 }
