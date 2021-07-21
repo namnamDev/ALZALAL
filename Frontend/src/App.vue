@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <TopMenuBar />
     <SideMenuBar />
     <SearchBar />
+    <TopMenuBar />
     <router-view />
   </div>
 </template>
@@ -31,6 +31,8 @@ export default {
   color: #2c3e50;
   width: 100%;
   position: relative;
+  display: flex;  
 }
+
 
 </style>

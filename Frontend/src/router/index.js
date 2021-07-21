@@ -7,11 +7,17 @@ import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
+import Feed from '@/views/feed/Feed.vue'
 
 Vue.use(VueRouter)
 
 
 const routes = [
+  {
+    path: '/feed',
+    name: 'feed',
+    component: Feed
+  },
   {
     path: '/login',
     name: 'login',
