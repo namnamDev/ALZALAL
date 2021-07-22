@@ -16,7 +16,7 @@ public class Problem_Follow {
   @Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOW_MEMBER_NO")
-	private Member member_no;
+	private Member member;
 
   @Id
 	@ManyToOne
@@ -24,5 +24,5 @@ public class Problem_Follow {
                 @JoinColumn(name="FOLLOWING_PROBLEM_NO"),
                 @JoinColumn(name="FOLLOWING_PROBLEM_SITE_NAME")
   })
-	private Problem_Site problem_site;
+	private Problem_Site followingProblemSiteName;
 }

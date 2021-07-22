@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class Problem_FollowPK implements Serializable{
-  private long member_no;
-  private Problem_Site problem_site;
+  private long member;
+  private Problem_Site followingProblemSiteName;
   // private long problem_no;
   // private String problem_site_name;
 }

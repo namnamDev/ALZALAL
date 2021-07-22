@@ -17,7 +17,7 @@ public class Algorithm_Follow {
   @Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOWING_ALGORITHM_NO")
-	private Member follow_no;
+	private Member followingArgorithmNo;
 
 	@Id
 	@ManyToOne

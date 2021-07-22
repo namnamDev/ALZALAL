@@ -19,7 +19,7 @@ public class Helpme_Comment {
   @Id
   @GeneratedValue
   @Column(name = "HELPME_RECOMMENT_NO")
-  private long no;
+  private long helpmeRecoomentNo;
 
   @ManyToOne
   @JoinColumn(name = "HELPME_NO")
@@ -31,8 +31,8 @@ public class Helpme_Comment {
 
 
   @Column(length = 500 ,name="HELPME_COMMENT_CONTENT")
-  private String content;
+  private String helpmeCommentContent;
 
   @Column(name="HELPME_COMMENT_DATE")
-  private Timestamp date;
+  private Timestamp helpmeCommentDate;
 }

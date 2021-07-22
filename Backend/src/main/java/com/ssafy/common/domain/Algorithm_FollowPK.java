@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Algorithm_FollowPK implements Serializable{
-  private long follow_no;
+  private long followingArgorithmNo;
   private long member_no;
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Helpme_LikePK implements Serializable {
-  private long helpme;
+  private long helpmeNo;
   private long member; 
 }

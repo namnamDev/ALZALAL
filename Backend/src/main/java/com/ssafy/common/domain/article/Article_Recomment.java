@@ -22,19 +22,19 @@ public class Article_Recomment {
   @Id
   @GeneratedValue
   @Column(name = "ARTICLE_RECOMMENT_NO")
-  private long recomment_no;
+  private long articleRecommentNo;
 
   @ManyToOne
   @JoinColumn(name="ARTICLE_COMMENT_NO")
-  private Article_Comment recomment;
+  private Article_Comment articleCommentNo;
   
   @Column(length = 500,name="ARTICLE_CONTENT")
-  private String content;
+  private String articleContent;
 
   @Column(name = "ARTICLE_RECOMMENT_DATE")
-  private Timestamp timestamp;
+  private Timestamp articleRecommentDate;
 
   @ManyToOne
   @JoinColumn(name = "member_no")
-  private Member member_no;
+  private Member member;
 }

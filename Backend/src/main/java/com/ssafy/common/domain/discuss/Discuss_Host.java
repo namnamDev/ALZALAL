@@ -14,8 +14,8 @@ public class Discuss_Host {
   @Id
   @GeneratedValue
   @Column(name="DISCUSS_COMP_HOST_NO")
-  private long no;
+  private long discussCompHostNo;
 
   @Column(length=30,name="DISCUSS_COMP_HOST_NAME")
-  private String name;
+  private String discussCompHostName;
 }

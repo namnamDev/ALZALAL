@@ -21,23 +21,23 @@ public class Notification {
   @Id
   @GeneratedValue
   @Column(name="NOTIFICATION_NO")
-  private long no;
+  private long notificationNo;
 
   @ManyToOne
   @JoinColumn(name = "NOTIFICATION_SENDER")
-  private Member sender;
+  private Member notificationSender;
 
   @ManyToOne
   @JoinColumn(name = "NOTIFICATION_RECIEVER")
-  private Member reciever;
+  private Member notificationReciever;
 
   @Column(name="NOTIFICATION_READ_STATUS")
-  private boolean status;
+  private boolean notificationReadStatus;
 
-  @Column(length =3,name= "NOTIFICATION_TABLE_CLASS")
+  @Column(length =3,name= "NOTIFICATION_CLASS")
   @Enumerated(EnumType.STRING)
-  private Notification_Class nClass;
+  private Notification_Class notificationClass;
 
   @Column(name = "NOTIFICATION_DATE")
-  private Timestamp date;
+  private Timestamp notificationDate;
 }

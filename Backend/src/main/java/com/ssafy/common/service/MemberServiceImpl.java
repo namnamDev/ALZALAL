@@ -45,8 +45,8 @@ public class MemberServiceImpl implements MemberService {
 				throw new IllegalStateException("존재하지 않는 문제 사이트 입니다");
 			}
 			Problem_Site_Like tmp= new Problem_Site_Like();
-			tmp.setProblem_site_name(pslist);
-			tmp.setMember_no(member);
+			tmp.setProblemSiteName(pslist);
+			tmp.setMember(member);
 			
 			pslikeList.add(tmp);
 		}
