@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class Problem_Site_LikePK implements Serializable{
-	private String problem_site_name;
+	private String problemSiteName;
 	private long member_no;
-	
-	public Problem_Site_LikePK(String problem_site_name, long member_no) {
-		this.problem_site_name = problem_site_name;
+	//@Data안쓰면 손으로 써야하는 코드임.
+	public Problem_Site_LikePK(String problemSiteName, long member_no) {
+		this.problemSiteName = problemSiteName;
 		this.member_no = member_no;
 	}
 	
@@ -27,10 +27,10 @@ public class Problem_Site_LikePK implements Serializable{
 		Problem_Site_LikePK other = (Problem_Site_LikePK) obj;
 		if (member_no != other.member_no)
 			return false;
-		if (problem_site_name == null) {
-			if (other.problem_site_name != null)
+		if (problemSiteName == null) {
+			if (other.problemSiteName != null)
 				return false;
-		} else if (!problem_site_name.equals(other.problem_site_name))
+		} else if (!problemSiteName.equals(other.problemSiteName))
 			return false;
 		return true;
 	}
@@ -39,7 +39,7 @@ public class Problem_Site_LikePK implements Serializable{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (member_no ^ (member_no >>> 32));
-		result = prime * result + ((problem_site_name == null) ? 0 : problem_site_name.hashCode());
+		result = prime * result + ((problemSiteName == null) ? 0 : problemSiteName.hashCode());
 		return result;
 	}
 }

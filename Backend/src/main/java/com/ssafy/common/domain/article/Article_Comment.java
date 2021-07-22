@@ -20,7 +20,7 @@ public class Article_Comment {
   @Id
   @GeneratedValue
   @Column(name = "ARTICLE_COMMENT_NO")
-  private long article_comment_no;
+  private long articleCommentNo;
 
   @ManyToOne
   @JoinColumn(name="MEMBER_NO")
@@ -28,11 +28,11 @@ public class Article_Comment {
 
   @ManyToOne
   @JoinColumn(name="ARTICLE_NO")
-  private Article article;
+  private Article articleNo;
 
   @Column(length = 500,name = "ARTICLE_COMMENT_CONTENT")
-  private String content;
+  private String articleContent;
 
   @Column(name="ARTICLE_COMMENT_DATE")
-  private Timestamp date;
+  private Timestamp articleCommentDate;
 }

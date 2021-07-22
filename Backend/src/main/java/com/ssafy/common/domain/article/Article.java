@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 import com.ssafy.common.domain.Member;
 import com.ssafy.common.domain.Problem_Site;
+import com.ssafy.common.domain.Use_Language;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,29 +25,33 @@ public class Article {
   @Id
   @GeneratedValue
   @Column(name="article_no")
-  private long article_no;
+  private long articleNo;
   
   
   @ManyToOne
   @JoinColumn(name = "member_no")
-  private Member member_no; // referenceName은 디폴트로 할당
+  private Member member; // referenceName은 디폴트로 할당
   // 헌국뇌피셜 할당 자체를 Memeber로 뒀으니 자동으로 pk를 찾아서 정해주는게 아닐까??
   /// name은 어떤이름으로할것인지 정하는것
 
   @Column(length = 500)
-  private String Article_Content;
+  private String articleContent;
 
   @Column
-  private java.sql.Timestamp Article_Date;
+  private java.sql.Timestamp articleDate;
 
   @ManyToOne
   @JoinColumns({
                 @JoinColumn(name="Problem_No"),
                 @JoinColumn(name="Problem_Site_Name")
   })
-  private Problem_Site problem_site;
+  private Problem_Site problemSite;
 
-  @Column(length = 4)
+  @ManyToOne
+  @JoinColumn(name="USE_LANGUAGE")
+  private Use_Language useLanguage;
+
+  @Column(length = 4,name="ARTICLE_CLASS")
 	@Enumerated(EnumType.STRING)
-  private Article_Class article_class;
+  private Article_Class articleClass;
 }

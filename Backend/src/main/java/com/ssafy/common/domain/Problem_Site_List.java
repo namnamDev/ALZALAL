@@ -1,5 +1,6 @@
 package com.ssafy.common.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -11,6 +12,7 @@ import lombok.Setter;
 public class Problem_Site_List {
 	
 	@Id
+	@Column(name="PROBLEM_SITE_NAME")
 	private String problem_site_name;
 	
 	

@@ -18,7 +18,7 @@ public class Disscuss_Comment_Like {
   @Id
   @ManyToOne
   @JoinColumn(name="DISCUSS_COMMENT_NO")
-  private Discuss_Comment comment;
+  private Discuss_Comment disscussCommentNo;
   @Id
   @ManyToOne
   @JoinColumn(name = "MEMBER_NO")

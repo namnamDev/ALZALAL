@@ -16,8 +16,8 @@ import lombok.Setter;
 public class Helpme_Recomment_Like {
   @Id
   @ManyToOne
-  @JoinColumn(name="HELPME_COMMENT_NO")
-  private Helpme_Recomment recomment;
+  @JoinColumn(name="HELPME_RECOMMENT_NO")
+  private Helpme_Recomment helpmeRecommentNo;
   
   @Id
   @ManyToOne

@@ -19,7 +19,7 @@ public class Article_Recomment_Like {
   @Id
   @ManyToOne
   @JoinColumn(name="ARTICLE_RECOMMENT_NO")
-  private Article_Recomment recomment;
+  private Article_Recomment articleRecommentNo;
 
   @Id
   @ManyToOne

@@ -11,6 +11,6 @@ import lombok.Setter;
 @Getter @Setter
 public class Algorithm {
   @Id
-  @Column(length = 30)
-  private String algorithm_name;
+  @Column(length = 30,name="ALGORITHM_NAME")
+  private String algorithmName;
 }

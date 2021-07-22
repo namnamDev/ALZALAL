@@ -17,7 +17,7 @@ public class Helpme_Comment_Like {
   @Id
   @ManyToOne
   @JoinColumn(name="HELPME_COMMENT_NO")
-  private Helpme_Comment comment;
+  private Helpme_Comment helpmeCommentNo;
 
   @Id
   @ManyToOne

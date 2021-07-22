@@ -9,23 +9,17 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 @Entity
 @Getter @Setter
-@IdClass(Problem_Site_LikePK.class)
-public class Problem_Site_Like {
+@IdClass(Member_FollowPK.class)
+public class Member_Follow {
+  @Id
+	@ManyToOne
+	@JoinColumn(name="FOLLOW_MEMBER_NO")
+	private Member follow_no;
 
-	//Problem_Site_List 도메인과 관계 
 	@Id
 	@ManyToOne
-	@JoinColumn(name="problem_site_name")
-	private Problem_Site_List problemSiteName;
-	
-	//Member 도메인과 관계
-	@Id
-	@ManyToOne
-	@JoinColumn(name="member_no")
+	@JoinColumn(name="FOLLOWING_MEMBER_NO")
 	private Member member_no;
 }
-
