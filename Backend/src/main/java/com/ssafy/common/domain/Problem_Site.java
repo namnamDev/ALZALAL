@@ -12,13 +12,13 @@ import lombok.Setter;
 @IdClass(Problem_SitePK.class)
 public class Problem_Site {
   @Id
-  @Column(length = 30) //헌국 문제싸이트 리스트 테이블 받으면 연관관계 설정 
+  @Column(length = 30,name = "PROBLEM_SITE_NAME") //헌국 문제싸이트 리스트 테이블 받으면 연관관계 설정 
   private String problem_site_name;
 
   @Id
-  @Column
-  private int problem_no;
+  @Column(name="PROBLEM_NO")
+  private long problem_no;
 
-  @Column(length = 500)
+  @Column(length = 500,name="PROBLEM_SITE_LINK")
   private String problem_site_link;
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 public class Problem_Site_LikePK implements Serializable{
 	private String problem_site_name;
 	private long member_no;
-	
+	//@Data안쓰면 손으로 써야하는 코드임.
 	public Problem_Site_LikePK(String problem_site_name, long member_no) {
 		this.problem_site_name = problem_site_name;
 		this.member_no = member_no;
