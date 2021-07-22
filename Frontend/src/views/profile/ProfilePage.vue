@@ -1,5 +1,15 @@
 <template>
-  <div class="container feed">
+<div>
+    <TopProfile></TopProfile>
+    <DownProfile></DownProfile>
+     <DownProfile></DownProfile>
+      <DownProfile></DownProfile>
+       <DownProfile></DownProfile>
+        <DownProfile></DownProfile>
+         <DownProfile></DownProfile>
+          <DownProfile></DownProfile>
+</div>
+  <!-- <div class="container feed">
     <div class="row">
       <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
       <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
@@ -37,22 +47,29 @@
 			</div>
 
 		</div>
-		<!-- End of profile section -->
+		
         <div>
             게시글,댓글
         </div>
     </div>
-  </div>
+    
+  </div> -->
 </template>
 
 <script>
+import TopProfile from '@/components/profile/topProfile.vue'
+import DownProfile from '@/components/profile/downProfile.vue'
 export default {
+ components: {
+     TopProfile,
+     DownProfile
+ }
 
 }
 </script>
 
 <style scoped>
-.feed{
+/* .feed{
   margin-top: 13vw;
 }
 .profile box{
@@ -136,6 +153,6 @@ export default {
 .profile-stat-count,
 .profile-edit-btn {
     font-weight: 600;
-}
+} */
 
 </style>
