@@ -2,12 +2,7 @@
 <div>
     <TopProfile></TopProfile>
     <DownProfile></DownProfile>
-     <DownProfile></DownProfile>
-      <DownProfile></DownProfile>
-       <DownProfile></DownProfile>
-        <DownProfile></DownProfile>
-         <DownProfile></DownProfile>
-          <DownProfile></DownProfile>
+ 
 </div>
   <!-- <div class="container feed">
     <div class="row">
