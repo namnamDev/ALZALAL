@@ -9,6 +9,7 @@ import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
 import Feed from '@/views/feed/Feed.vue'
 import followPage from '@/views/profile/followPage.vue'
+import TargetProfilePage from '@/views/profile/targetProfilePage'
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/profilePage',
     name: 'profilePage',
     component: ProfilePage
+  },
+  {
+    path: '/targetProfilePage',
+    name: 'targetProfilePage',
+    component: TargetProfilePage
   },
   {
     path: '/profilePage/followPage',
