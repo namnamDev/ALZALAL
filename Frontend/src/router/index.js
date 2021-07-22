@@ -8,6 +8,7 @@ import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
 import Feed from '@/views/feed/Feed.vue'
+import followPage from '@/views/profile/followPage.vue'
 
 Vue.use(VueRouter)
 
@@ -37,6 +38,11 @@ const routes = [
     path: '/profilePage',
     name: 'profilePage',
     component: ProfilePage
+  },
+  {
+    path: '/profilePage/followPage',
+    name : 'followPage',
+    component: followPage
   },
   {
     path: '/usermodify',
