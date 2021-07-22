@@ -22,15 +22,11 @@ public class MemberController {
 	
 	
 	@PostMapping("/signup")
-	public Map<String,String> signup(String[] problem_site_list2, String[] use_language_like2,  Member member) {
-//		//선호 문제사이트 member에 넣어줌
-//		for(String s: problem_site_list)
-//			member.getProblem_site_list().add(new Problem_Site_Like());
-//		//선호 언어 member에 넣어줌
+	public Map<String,String> signup(String[] problem_site, String[] use_language,  Member member) {
 		
 		Map<String,String> ret=new HashMap<>();
 		try {			
-			ms.signup(member,problem_site_list2, use_language_like2);
+			ms.signup(member,problem_site, use_language);
 		}catch(IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
