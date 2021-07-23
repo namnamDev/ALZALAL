@@ -1,4 +1,4 @@
-package com.ssafy.common.domain;
+package com.ssafy.common.domain.member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
+import com.ssafy.common.domain.Use_Language_Like;
+import com.ssafy.common.domain.problem.Problem_Site_Like;
 
 import lombok.Getter;
 import lombok.Setter;

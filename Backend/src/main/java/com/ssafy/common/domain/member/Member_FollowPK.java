@@ -1,4 +1,4 @@
-package com.ssafy.common.domain;
+package com.ssafy.common.domain.member;
 
 import java.io.Serializable;
 

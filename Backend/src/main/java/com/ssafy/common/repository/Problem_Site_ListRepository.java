@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import com.ssafy.common.domain.Problem_Site_List;
+import com.ssafy.common.domain.problem.Problem_Site_List;
 
 @Repository
 public class Problem_Site_ListRepository {

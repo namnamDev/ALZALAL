@@ -11,12 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.common.domain.Member;
-import com.ssafy.common.domain.Problem_Site_Like;
-import com.ssafy.common.domain.Problem_Site_List;
-import com.ssafy.common.domain.RefreshToken;
 import com.ssafy.common.domain.Use_Language;
 import com.ssafy.common.domain.Use_Language_Like;
+import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.member.RefreshToken;
+import com.ssafy.common.domain.problem.Problem_Site_Like;
+import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;

@@ -2,7 +2,7 @@ package com.ssafy.common.service;
 
 import java.util.List;
 
-import com.ssafy.common.domain.Member;
+import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.TokenDto;
 
 public interface MemberService {

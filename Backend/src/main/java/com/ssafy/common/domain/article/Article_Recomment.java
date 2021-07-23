@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.ssafy.common.domain.Member;
+import com.ssafy.common.domain.member.Member;
 
 import lombok.Getter;
 import lombok.Setter;

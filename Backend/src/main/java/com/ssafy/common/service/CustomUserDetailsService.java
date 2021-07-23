@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.common.domain.Member;
+import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;

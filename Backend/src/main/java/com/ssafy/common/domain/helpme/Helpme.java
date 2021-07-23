@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
-import com.ssafy.common.domain.Member;
-import com.ssafy.common.domain.Problem_Site;
+import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.problem.Problem_Site;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

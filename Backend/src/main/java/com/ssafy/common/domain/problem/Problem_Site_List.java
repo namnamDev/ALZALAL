@@ -1,4 +1,4 @@
-package com.ssafy.common.domain;
+package com.ssafy.common.domain.problem;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.common.domain.Member;
+import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.service.MemberService;
 
