@@ -6,12 +6,12 @@ import lombok.Data;
 
 @Data
 public class Problem_Site_LikePK implements Serializable{
-	private String problem_site_name;
-	private long member_no;
+	private String problemSiteName;
+	private Long memberNo;
 	
 	public Problem_Site_LikePK(String problem_site_name, long member_no) {
-		this.problem_site_name = problem_site_name;
-		this.member_no = member_no;
+		this.problemSiteName = problem_site_name;
+		this.memberNo = member_no;
 	}
 	
 	public Problem_Site_LikePK() {}
@@ -25,12 +25,12 @@ public class Problem_Site_LikePK implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Problem_Site_LikePK other = (Problem_Site_LikePK) obj;
-		if (member_no != other.member_no)
+		if (memberNo != other.memberNo)
 			return false;
-		if (problem_site_name == null) {
-			if (other.problem_site_name != null)
+		if (problemSiteName == null) {
+			if (other.problemSiteName != null)
 				return false;
-		} else if (!problem_site_name.equals(other.problem_site_name))
+		} else if (!problemSiteName.equals(other.problemSiteName))
 			return false;
 		return true;
 	}
@@ -38,8 +38,8 @@ public class Problem_Site_LikePK implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (member_no ^ (member_no >>> 32));
-		result = prime * result + ((problem_site_name == null) ? 0 : problem_site_name.hashCode());
+		result = prime * result + (int) (memberNo ^ (memberNo >>> 32));
+		result = prime * result + ((problemSiteName == null) ? 0 : problemSiteName.hashCode());
 		return result;
 	}
 }
