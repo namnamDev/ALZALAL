@@ -56,7 +56,7 @@
 					class="btn"
                  >회원 가입</button>
 			</form>
-			
+			<p class="log">{{ logMessage }}</p>
 		</div>
 	</div>
 </template>
@@ -83,6 +83,24 @@ export default{
       return validatePassword(this.member_password, this.passwordConfirm);
     }
 	},
+  methods: {
+    // async submitForm() {
+    //   console.log('폼 제출');
+    //   const userData = {
+    //     member_email: this.member_email,
+    //     member_password: this.member_password,
+    //     member_name: this.member_name,
+    //   };
+    //   const {data} =await registerMember(userData);
+    //   console.log(data.member_name);
+    //   this.logMessage = `${data.member_name}님 가입완료 되었습니다.`
+    // },
+    // initForm(){
+    //   this.member_email = '';
+    //   this.member_name = '';
+    //   this.member_password = '';
+    // }
+  }
 }
 </script>
 

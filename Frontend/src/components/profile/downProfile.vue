@@ -4,7 +4,7 @@
   <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
    <div class="feed-item box col-lg-6 col-md-10 col-sm-9 col-10">
     <div>
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-pills nav-justified">
         <li class="nav-item">
           <a class="nav-link active" @click="clickBoard">게시글</a>
         </li>

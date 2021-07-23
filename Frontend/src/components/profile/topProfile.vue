@@ -3,29 +3,27 @@
     <div class="row">
       <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
       <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
-
+            
 			  <div class="profile-image">
 
-				  <img src="@/assets/logo.png" alt="">
-
+				  <img class="profileImg" src="@/assets/logo.png" alt="">
+                  <div class="modifyProfile"><button class="btn btn-modify">프로필이미지 수정</button></div>
 			  </div>
 
 			  <div class="profile-user-settings">
 
-				  <h1 class="profile-user-name">janedoe_</h1>
-
+				  <h1 class="profile-user-name">UserName</h1>
+                  <span>
 				  <button class="btn profile-edit-btn">Edit Profile</button>
-
-				  <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
-
+                  </span>
 			  </div>
 
 			  <div class="profile-stats">
 
 				  <ul>
-					  <li><span class="profile-stat-count">164</span> 게시글</li>
-					  <li><span class="profile-stat-count">188</span> 팔로워</li>
-					  <li><span class="profile-stat-count">206</span> 팔로잉</li>
+					  <li>게시글<span class="profile-stat-count">164</span> </li>
+					  <li>팔로워<span class="profile-stat-count">188</span> </li>
+					  <li>팔로잉<span class="profile-stat-count">206</span> </li>
 				  </ul>
 
 			  </div>
@@ -33,7 +31,7 @@
 			  <div class="profile-bio">
 
 				  <p>총 n개의 게시글에 답변했습니다.</p>
-
+                  <p>한줄소개<button class="btn btn-intro">수정</button></p>
 			  </div>
 
 		  </div>
@@ -66,7 +64,7 @@ export default {
 .profile-image {
     float: left;
     width: calc(33.333% - 1rem);
-    display: flex;
+    
     justify-content: center;
     align-items: center;
     margin-right: 3rem;
@@ -74,6 +72,14 @@ export default {
 
 .profile-image img {
     border-radius: 50%;
+}
+.btn-modify{
+    font-size: .3rem;
+    line-height: 1.3;
+    border: 0.1rem solid #dbdbdb;
+    border-radius: 0.3rem;
+    padding: 0 2.4rem;
+    margin-left: 2rem;
 }
 
 .profile-user-settings,
@@ -94,7 +100,7 @@ export default {
 }
 
 .profile-edit-btn {
-    font-size: 1.4rem;
+    font-size: 1.0rem;
     line-height: 1.8;
     border: 0.1rem solid #dbdbdb;
     border-radius: 0.3rem;
@@ -112,10 +118,10 @@ export default {
 }
 
 .profile-stats li {
-    display: inline-block;
-    font-size: 1.6rem;
+    display: flex;
+    font-size: 1.4rem;
     line-height: 1.5;
-    margin-right: 4rem;
+    margin-right: 1rem;
     cursor: pointer;
 }
 
