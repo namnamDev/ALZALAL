@@ -94,7 +94,6 @@ public class MemberServiceImpl implements MemberService {
 		
 		//비밀번호 암호화
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		System.out.println("-------------------------"+member.getPassword());
 		
 		mr.save(member);
 
@@ -117,8 +116,11 @@ public class MemberServiceImpl implements MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 //        SecurityContextHolder.getContext().setAuthentication(authentication);//Authentication객체를 SecurityContext에 저장
 
+        // memberName 가져와서 토큰만들때 집어넣음
+        String memberName=mr.findByEmail(member.getEmail()).get().getName();
+        
         //Authentication를 이용해 jwt토큰 생성
-        TokenDto jwt = tokenProvider.generateTokenDto(authentication);
+        TokenDto jwt = tokenProvider.generateTokenDto(authentication, memberName);
         //-------- 토큰 생성완료
         
         //RefreshToken 저장
@@ -139,7 +141,7 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
         }
 
-        // 2. Access Token 에서 Member ID(email) 가져오기
+        // 2. Access Token 에서 Member ID(memberNo) 가져오기
         Authentication authentication = tokenProvider.getAuthentication(tokenDto.getAccessToken());
 
         // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
@@ -150,9 +152,16 @@ public class MemberServiceImpl implements MemberService {
         if (!refreshToken.getRefreshToken().equals(tokenDto.getRefreshToken())) {
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
-
+        
+        // memberName 가져와서 토큰만들때 집어넣음
+        String memberName="";    
+    	Long memberId=Long.parseLong(authentication.getName());
+    	if(memberId!=null) {
+    		memberName=mr.findById(memberId).get().getName();
+    	}
+        
         // 5. 새로운 토큰 생성
-        TokenDto retTokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenDto retTokenDto = tokenProvider.generateTokenDto(authentication,memberName);
 
         // 6. 저장소 정보 업데이트
         RefreshToken newRefreshToken = refreshToken.updateValue(retTokenDto.getRefreshToken());

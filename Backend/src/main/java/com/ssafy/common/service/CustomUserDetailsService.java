@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
+    @Transactional//여기서 username은 UsernamePasswordAuthenticationToken 에서의 username임 우리 서비스에서는 email임
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findByEmail(username)
                 .map(this::createUserDetails)
@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
 
         return new User(
-                String.valueOf(member.getNo()),
+                String.valueOf(member.getNo()),// 여기서 username을 member의 pk로 지정
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)
         );
