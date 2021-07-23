@@ -17,11 +17,11 @@ public class Use_Language_Like {
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "use_language")
-	private Use_Language use_language;
+	private Use_Language useLanguage;
 	
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "member_no")
-	private Member member_no;	
+	private Member memberNo;	
 	
 }

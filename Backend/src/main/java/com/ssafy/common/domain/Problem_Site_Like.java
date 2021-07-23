@@ -26,6 +26,6 @@ public class Problem_Site_Like {
 	@Id
 	@ManyToOne
 	@JoinColumn(name="member_no")
-	private Member member_no;
+	private Member memberNo;
 }
 

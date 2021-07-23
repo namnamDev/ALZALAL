@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Use_Language_LikePK implements Serializable{
-	private long member_no;
-	private String use_language;	
+	private Long memberNo;
+	private String useLanguage;	
 }
