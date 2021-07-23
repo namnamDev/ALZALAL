@@ -18,7 +18,7 @@ public class Article_Comment_Like {
   @Id
   @ManyToOne
   @JoinColumn(name = "ARTICLE_COMMENT_NO")
-  private Article_Comment comment;
+  private Article_Comment articleComment;
 
   @Id
   @ManyToOne

@@ -16,7 +16,7 @@ public class Disscuss_Recomment_Like {
   @Id
   @ManyToOne
   @JoinColumn(name="DISCUSS_RECOMMENT_NO")
-  private Discuss_Recomment recomment;
+  private Discuss_Recomment discussRecommentNo;
 
   @Id
   @ManyToOne

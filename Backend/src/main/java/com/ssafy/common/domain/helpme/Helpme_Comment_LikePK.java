@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 @Data
 public class Helpme_Comment_LikePK implements Serializable{
-  private long comment;
+  private long helpmeCommentNo;
   private long member;
 
 }

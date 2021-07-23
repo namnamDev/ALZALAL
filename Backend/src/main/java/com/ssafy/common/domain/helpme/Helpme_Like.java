@@ -23,5 +23,5 @@ public class Helpme_Like {
   @Id
   @ManyToOne
   @JoinColumn(name="HELPME_NO")
-  private Helpme helpme;
+  private Helpme helpmeNo;
 }

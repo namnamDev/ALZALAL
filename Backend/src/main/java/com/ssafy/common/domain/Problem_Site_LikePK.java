@@ -12,6 +12,7 @@ public class Problem_Site_LikePK implements Serializable{
 	public Problem_Site_LikePK(String problem_site_name, long member_no) {
 		this.problemSiteName = problem_site_name;
 		this.memberNo = member_no;
+
 	}
 	
 	public Problem_Site_LikePK() {}
@@ -38,7 +39,9 @@ public class Problem_Site_LikePK implements Serializable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+
 		result = prime * result + (int) (memberNo ^ (memberNo >>> 32));
+
 		result = prime * result + ((problemSiteName == null) ? 0 : problemSiteName.hashCode());
 		return result;
 	}

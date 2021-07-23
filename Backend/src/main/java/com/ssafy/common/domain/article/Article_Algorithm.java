@@ -17,10 +17,10 @@ public class Article_Algorithm {
   @Id
   @ManyToOne
   @JoinColumn(name = "algorithm_name")
-  private Algorithm algorithm_name;
+  private Algorithm algorithmName;
   
   @Id
   @ManyToOne
   @JoinColumn(name = "article_no")
-  private Article article_no;
+  private Article articleNo;
 }
