@@ -4,8 +4,8 @@
         <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
         <div class="box col-lg-6 col-md-10 col-sm-9 col-10 ">
           <nav class="nav nav-pills flex-column flex-sm-row">
-            <a class="flex-sm-fill text-sm-center nav-link" @click="clickFollowingList">Following</a>
-            <a class="flex-sm-fill text-sm-center nav-link" @click="clickFollowerList">Follower</a>
+            <a class="flex-sm-fill text-sm-center nav-link" id="clickFollowing" @click="clickFollowingList">Following</a>
+            <a class="flex-sm-fill text-sm-center nav-link" id="clickFollower" @click="clickFollowerList">Follower</a>
           </nav>
           <!-- 내가 팔로우중인사람 -->
           <div class=followList v-show="isFollowingList">
@@ -45,12 +45,14 @@
             <div class=followerList v-show="isFollowerList">
             <div class="follow">
               <div class="userImg col-2">
-                <img src="" alt="이미지">
+                <img class="profileImg" src="@/assets/profileImg.png" alt="이미지">
               </div>
-              <div class="userName col-10">
-                UserName22
-                <span class="btn">
-                  <button>팔로우</button>
+              <div class="user col-10">
+                <span class="userName">
+                UserName
+                </span>
+                <span class="followBtn">
+                  <button class="btn">팔로우</button>
                 </span>
               </div>
             </div>
@@ -73,6 +75,7 @@ export default {
     clickFollowingList: function(){
       this.isFollowingList = true
       this.isFollowerList = false
+      
     },
     clickFollowerList: function(){
       this.isFollowingList = false
@@ -87,22 +90,25 @@ export default {
   margin-top: 13vw;
 }
 .box {
-  border: 1px solid black;
+  
   height: 300px;
 }
 .userImg {
-    
+    margin-top: 20px;
     width: 75px;
     height: 75px; 
     border-radius: 70%;
     overflow: hidden;
     display: flex;
 }
-profileImg{
+.profileImg{
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+}
+.follow {
+  display: flex;
 }
 .nav {
   cursor:pointer;
@@ -112,9 +118,10 @@ profileImg{
   font-weight: 700;
 }
 .user{
-  display: inline;
+  display: inline-block;
   font-size: 1rem;
   font-weight: 700;
+  
 }
 .userName{
   margin-right: 30px;
@@ -127,5 +134,11 @@ profileImg{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .1rem;
+}
+#clickFollowing:hover {
+  background-color:#a1d4e2;
+}
+#clickFollower:hover{
+  background-color: #a1d4e2;
 }
 </style>

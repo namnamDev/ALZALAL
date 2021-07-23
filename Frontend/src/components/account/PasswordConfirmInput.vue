@@ -4,16 +4,16 @@
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label align="left" for="password">비밀번호 확인</label>
-					<input id="password" type="password" v-model="password" />
+					<label align="left" for="member_password">비밀번호 확인</label>
+					<input id="member_password" type="password" v-model="member_password" />
                     <p class="validation-text">
-						<span class="warning" v-if="!password">
+						<span class="warning" v-if="!member_password">
 							비밀번호를 입력해주세요
 						</span>
 					</p>
 				</div>
 				<button
-                :disabled="!password"
+                :disabled="!member_password"
 					type="submit"
 					class="btn"
                 >
@@ -31,7 +31,7 @@
 export default {
   data() {
 		return {
-           password: '',
+           member_password: '',
 		};
 	},
 }

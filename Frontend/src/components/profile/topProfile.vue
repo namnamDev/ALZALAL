@@ -50,6 +50,7 @@ export default {
 <style scoped>
 .feed{
   margin-top: 13vw;
+   margin-left: 50px;
 }
 .profile box{
   border: 1px solid black;
@@ -64,14 +65,18 @@ export default {
 .profile-image {
     float: left;
     width: calc(33.333% - 1rem);
-    
+    height: auto;
     justify-content: center;
     align-items: center;
     margin-right: 3rem;
+    
 }
 
-.profile-image img {
-    border-radius: 50%;
+.profileImg {
+    width: 160px;
+    height: 160px;
+    border-radius: 75%;
+    
 }
 .btn-modify{
     font-size: .3rem;
@@ -95,12 +100,12 @@ export default {
 
 .profile-user-name {
     display: inline-block;
-    font-size: 3.2rem;
+    font-size: 4vw;
     font-weight: 300;
 }
 
 .profile-edit-btn {
-    font-size: 1.0rem;
+    font-size: 1.5vw;
     line-height: 1.8;
     border: 0.1rem solid #dbdbdb;
     border-radius: 0.3rem;
@@ -119,7 +124,7 @@ export default {
 
 .profile-stats li {
     display: flex;
-    font-size: 1.4rem;
+    font-size: 2vw;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;

@@ -5,14 +5,14 @@
    <div class="feed-item box col-lg-6 col-md-10 col-sm-9 col-10">
     <div>
       <ul class="nav nav-pills nav-justified">
-        <li class="nav-item">
-          <a class="nav-link active" @click="clickBoard">게시글</a>
+        <li class="nav-item nav-isBoard">
+          <a class="nav-link" id="clickBoard" @click="clickBoard">게시글</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" @click="clickRequest">받은 요청</a>
+        <li class="nav-item nav-isRequest">
+          <a class="nav-link" id="clickRequest" @click="clickRequest">받은 요청</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" @click="clickSend">보낸 요청</a>
+        <li class="nav-item nav-isSend">
+          <a class="nav-link" id="clickSend" @click="clickSend">보낸 요청</a>
         </li>
       </ul>
     </div>
@@ -205,6 +205,7 @@ export default {
       this.isBoard = true
       this.isRequest = false
       this.isSend = false
+      
     },
     clickRequest: function() {
       this.isBoard = false
@@ -226,6 +227,7 @@ export default {
 }
 .feed{
   margin-top: 2vw;
+  margin-left: 50px;
 }
 .feed-card {
     box-sizing: content-box;
@@ -289,4 +291,14 @@ export default {
   border:1px solid grey;
   border-radius: 3px;
 }
+#clickBoard:hover {
+  background-color:#a1d4e2;
+}
+#clickRequest:hover{
+  background-color: #a1d4e2;
+}
+#clickSend:hover{
+  background-color: #a1d4e2;
+}
+
 </style>
