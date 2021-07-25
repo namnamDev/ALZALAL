@@ -73,18 +73,21 @@ export default {
 }
 
 .profileImg {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     border-radius: 75%;
     
 }
 .btn-modify{
-    font-size: .3rem;
+    width: 100%;
+    height: 100%;
+    font-size: .8vw;
     line-height: 1.3;
     border: 0.1rem solid #dbdbdb;
     border-radius: 0.3rem;
     padding: 0 2.4rem;
-    margin-left: 2rem;
+    margin-left: 10px;
+    font-weight: 700;
 }
 
 .profile-user-settings,
@@ -105,7 +108,7 @@ export default {
 }
 
 .profile-edit-btn {
-    font-size: 1.5vw;
+    font-size: 1.2vw;
     line-height: 1.8;
     border: 0.1rem solid #dbdbdb;
     border-radius: 0.3rem;
@@ -123,8 +126,8 @@ export default {
 }
 
 .profile-stats li {
-    display: flex;
-    font-size: 2vw;
+    display: inline-block;
+    font-size: 1.5vw;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;
