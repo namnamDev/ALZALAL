@@ -22,7 +22,7 @@
 
 				  <ul>
 					  <li>게시글<span class="profile-stat-count">164</span> </li>
-					  <li>팔로워<span class="profile-stat-count">188</span> </li>
+					  <li>팔로워<span href="/profilePage/followPage" class="profile-stat-count">188</span> </li>
 					  <li>팔로잉<span class="profile-stat-count">206</span> </li>
 				  </ul>
 

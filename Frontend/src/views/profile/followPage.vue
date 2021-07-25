@@ -10,16 +10,16 @@
           <!-- 내가 팔로우중인사람 -->
           <div class=followList v-show="isFollowingList">
             <div class="follow">
-              <div class="userImg col-2">
+              <div class="userImg1 col-5">
                 <img class="profileImg" src="@/assets/profileImg.png" alt="이미지">
               </div>
-              <div class="user col-10">
-                <span class="userName">
+              <div class="user col-7">
+                <div class="userName">
                 UserName
-                </span>
-                <span class="followBtn">
+                </div>
+                <div class="followBtn">
                   <button class="btn">팔로우</button>
-                </span>
+                </div>
               </div>
             </div>
           </div>
@@ -93,13 +93,24 @@ export default {
   
   height: 300px;
 }
-.userImg {
-    margin-top: 20px;
+.userImg1 {
+    
     width: 75px;
     height: 75px; 
     border-radius: 70%;
     overflow: hidden;
     display: flex;
+    margin: 20px 0px 0px auto;
+}
+/* 두개 비교할려고 냅둠 */
+.userImg {
+    
+    width: 75px;
+    height: 75px; 
+    border-radius: 70%;
+    overflow: hidden;
+    display: flex;
+    margin: 20px 0px 0px auto;
 }
 .profileImg{
     width: 100%;
@@ -118,7 +129,7 @@ export default {
   font-weight: 700;
 }
 .user{
-  display: inline-block;
+  margin-top: 20px;
   font-size: 1rem;
   font-weight: 700;
   
@@ -129,6 +140,9 @@ export default {
 .followBtn {
   border-radius: 10%;
   border: solid 0.5px skyblue;
+  ;
+  width: 30%;
+  margin: 0px auto;
 }
 .btn{
   padding: 0.5rem 1.5rem;
