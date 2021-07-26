@@ -23,14 +23,14 @@
                 >
 					Login
 				</button>
-                 <div>
-                <span><button class="btn btn-user">비밀번호찾기</button>
+        <div>
+          <span><button class="btn btn-user">비밀번호찾기</button>
                 <button class="btn btn-user">회원가입</button></span>
-                </div>
-                <div class='snsLogin'>
-                <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
-                <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
-                <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
+        </div>
+        <div class='snsLogin'>
+          <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
+          <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
+          <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
         </div>
 			</form>
 		
@@ -54,15 +54,27 @@ export default {
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.email);
+			return validateEmail(this.form.email);
 		},
 	},
   methods: {
     submitForm: function(){
+      console.log(this.form)
       axios({
-        method: 'get',
+        method: 'post',
         url: `${SERVER_URL}/member/login`,
         data: this.form
+      })
+      .then(res =>{
+        console.log(res.data.token);
+  
+        localStorage.setItem('jwt', res.data.token.accessToken);
+        this.$store.dispatch("login",this.form.email)
+
+        this.$router.push({name: 'feed'})
+      })
+      .catch(err =>{
+        console.log(err)
       })
     }
   }

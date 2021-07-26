@@ -99,7 +99,7 @@ export default{
     }
 	},
   created: function() {
-    console.log(SERVER_URL)
+   // console.log(SERVER_URL)
   },
   methods: {
         submitForm: function () {

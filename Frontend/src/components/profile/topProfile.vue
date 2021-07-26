@@ -42,8 +42,19 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
+const token = localStorage.getItem('jwt')
+let userpk = '';
+let username = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+  username = decoded.name
+}
 export default {
-
+    created: function() {
+        console.log(userpk, username)
+    }
 }
 </script>
 
