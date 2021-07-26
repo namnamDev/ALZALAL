@@ -1,5 +1,6 @@
 package com.ssafy.common.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.service.MemberService;
 
@@ -25,16 +28,15 @@ public class MemberController {
 	private MemberService ms;
 
 	@PostMapping("/signup")
-	public Map<String, String> signup(@RequestBody Map<String,Object> req) {
+	public Map<String, String> signup(@RequestBody Map<String, Object> req) {
 
-		
-		Member member=new Member();
-		member.setEmail((String)req.get("email"));
-		member.setPassword((String)req.get("password"));
-		member.setName((String)req.get("name"));
-		List<String> problem_site = (List<String>)(req.get("problem_site")); 
-		List<String> use_language = (List<String>)(req.get("use_language")); 
-		
+		Member member = new Member();
+		member.setEmail((String) req.get("email"));
+		member.setPassword((String) req.get("password"));
+		member.setName((String) req.get("name"));
+		List<String> problem_site = (List<String>) (req.get("problem_site"));
+		List<String> use_language = (List<String>) (req.get("use_language"));
+
 		Map<String, String> ret = new HashMap<>();
 		try {
 			ms.signup(member, problem_site, use_language);
@@ -54,7 +56,7 @@ public class MemberController {
 		Map<String, Object> ret = new HashMap<>();
 		TokenDto token;
 		try {
-			token=ms.login(member);
+			token = ms.login(member);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -63,24 +65,114 @@ public class MemberController {
 
 		ret.put("success", "True");
 		ret.put("msg", "로그인 성공");
-		ret.put("token",token);
+		ret.put("token", token);
 
 		return ret;
 	}
 
-	@PostMapping("/refresh") //accessToken, refreshToken 두개 파라미터로 넘어와야함
-	public Map<String, TokenDto> refresh(@RequestBody TokenDto tokenRequestDto) {
-		Map<String, TokenDto> ret = new HashMap<>();
-		ret.put("token", ms.refresh(tokenRequestDto));
+	@PostMapping("/refresh") // accessToken, refreshToken 두개 파라미터로 넘어와야함
+	public Map<String, Object> refresh(@RequestBody TokenDto tokenRequestDto) {
+		Map<String, Object> ret = new HashMap<>();
+
+		try {
+			ret.put("success", "True");
+			ret.put("token", ms.refresh(tokenRequestDto));
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+
+		}
+
 		return ret;
 	}
-	
-	@GetMapping("/modify/{email}")
-	public Map<String, Object> getMemberInfo(){
+
+	// 비밀번호 확인
+	@PostMapping("/checkpw")
+	public Map<String, String> checkPassword(@RequestBody Map<String, String> req) {
+		Map<String, String> ret = new HashMap<>();
+		String password = req.get("password");
+
+		try {
+			ms.checkPassword(password);
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		ret.put("success", "True");
 		
-		System.out.println("asdf");
+		return ret;
+	}
+
+	// 회원 정보 가져오기
+	@GetMapping("/modify")
+	public Map<String, Object> getMemberInfo() {
+		Map<String, Object> ret = new HashMap<>();
+
+		Member member = null;
+
+		try {
+			member = ms.getMyInfo();
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
 		
-		return null;
+		Map<String, Object> mem = new HashMap<>();
+		mem.put("no", member.getNo());
+		mem.put("email", member.getEmail());
+		mem.put("name", member.getName());
+
+		// 선호하는 사이트 리스트 가져옴
+		List<String> problemSiteList = new ArrayList<String>();
+		for (Problem_Site_Like tmp : member.getProblemSiteList()) {
+			problemSiteList.add(tmp.getProblemSiteName().getProblemSiteName());
+		}
+		mem.put("problemSiteList", problemSiteList);
+
+		// 선호하는 언어 리스트 가져옴
+		List<String> useLanguageLike = new ArrayList<String>();
+		for (Use_Language_Like tmp : member.getUseLanguageLike()) {
+			useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
+		}
+		mem.put("useLanguageLike", useLanguageLike);
+
+		ret.put("success", "True");
+		ret.put("member", mem);
+		
+		return ret;
+	}
+
+	// 회원 정보 수정
+	@PostMapping("/modify")
+	public Map<String, Object> setMemberInfo(@RequestBody Map<String, Object> req) {
+		Map<String, Object> ret = new HashMap<>();
+
+		Member member = new Member();
+		
+		if(req.containsKey("password"))
+			member.setPassword((String)req.get("password"));
+		else
+			member.setPassword("");
+				
+		member.setName((String) req.get("name"));
+		List<String> problem_site = (List<String>) (req.get("problem_site"));
+		List<String> use_language = (List<String>) (req.get("use_language"));
+		
+		TokenDto token;
+		try {
+			token=ms.setMemberInfo(member, problem_site, use_language);
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		
+		ret.put("success", "True");
+		ret.put("token", token);
+		
+		return ret;
 	}
 
 }

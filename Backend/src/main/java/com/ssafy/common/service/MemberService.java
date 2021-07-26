@@ -16,9 +16,15 @@ public interface MemberService {
 	//리프레시 토큰 요청
     TokenDto refresh(TokenDto tokenDto);
     
-    //email을 통한 유저정보 가져오기
-    public Member getMemberInfo(String email);
+//    //email을 통한 유저정보 가져오기
+//    Member getMemberInfo(String email);
     
     //현재 로그인한 유저의 유저정보 가져오기
-    public Member getMyInfo();
+    Member getMyInfo();
+    
+    //현재 로그인한 유저의 비밀번호 확인
+    void checkPassword(String password);
+    
+    //회원정보 수정
+    TokenDto setMemberInfo(Member member, List<String> problem_site_list, List<String> use_language_like);
 }
