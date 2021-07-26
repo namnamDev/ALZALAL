@@ -100,12 +100,31 @@ public class MemberController {
 		return ret;
 	}
 	
-	@GetMapping("/modify/{email}")
+	//회원 정보 가져오기
+	@GetMapping("/modify")
 	public Map<String, Object> getMemberInfo(){
+		Map<String, Object> ret = new HashMap<>();
 		
-		System.out.println("asdf");
+		Member member=null;
 		
-		return null;
+		try {
+			member = ms.getMyInfo();
+			Map<String, Object> mem=new HashMap<>();
+			mem.put("no", member.getNo());
+			mem.put("email", member.getEmail());
+			mem.put("name", member.getName());
+			mem.put("problemSiteList", member.getProblemSiteList());
+			mem.put("useLanguageLike", member.getUseLanguageLike());
+			
+			ret.put("success", "True");
+			ret.put("member", mem);
+		}catch(IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());			
+		}
+		
+		
+		return ret;
 	}
 
 }

@@ -16,8 +16,8 @@ public interface MemberService {
 	//리프레시 토큰 요청
     TokenDto refresh(TokenDto tokenDto);
     
-    //email을 통한 유저정보 가져오기
-    Member getMemberInfo(String email);
+//    //email을 통한 유저정보 가져오기
+//    Member getMemberInfo(String email);
     
     //현재 로그인한 유저의 유저정보 가져오기
     Member getMyInfo();
