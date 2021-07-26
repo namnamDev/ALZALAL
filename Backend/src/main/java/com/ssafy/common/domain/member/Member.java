@@ -64,12 +64,10 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private Member_Authority authority;
 
-//	@Builder
-//	public Member(String email, String password, Member_Authority authority) {
-//		this.member_email = email;
-//		this.member_password = password;
-//		this.member_authority = authority;
-//	}
+	
+	//한줄소개
+	@Column(name="member_introduce")
+	private String introduce;
 
 	// 생성 메서드
 	public void createMember(List<Problem_Site_Like> problem_site_like, List<Use_Language_Like> use_language_like) {
