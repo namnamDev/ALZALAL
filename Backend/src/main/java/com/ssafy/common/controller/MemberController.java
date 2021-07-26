@@ -69,9 +69,34 @@ public class MemberController {
 	}
 
 	@PostMapping("/refresh") //accessToken, refreshToken 두개 파라미터로 넘어와야함
-	public Map<String, TokenDto> refresh(@RequestBody TokenDto tokenRequestDto) {
-		Map<String, TokenDto> ret = new HashMap<>();
-		ret.put("token", ms.refresh(tokenRequestDto));
+	public Map<String, Object> refresh(@RequestBody TokenDto tokenRequestDto) {
+		Map<String, Object> ret = new HashMap<>();
+		
+		try {
+			ret.put("success", "True");
+			ret.put("token", ms.refresh(tokenRequestDto));
+		}catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+		
+		}
+		
+		return ret;
+	}
+	
+	//비밀번호 확인
+	@PostMapping("/checkpw")
+	public Map<String, String> checkPassword(@RequestBody Map<String, String> req) {
+		Map<String, String> ret = new HashMap<>();
+		String password = req.get("password");
+
+		try {
+			ms.checkPassword(password);				
+			ret.put("success","True");
+		}catch(IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg",e.getMessage());
+		}		
 		return ret;
 	}
 	

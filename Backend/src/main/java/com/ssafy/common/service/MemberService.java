@@ -17,8 +17,11 @@ public interface MemberService {
     TokenDto refresh(TokenDto tokenDto);
     
     //email을 통한 유저정보 가져오기
-    public Member getMemberInfo(String email);
+    Member getMemberInfo(String email);
     
     //현재 로그인한 유저의 유저정보 가져오기
-    public Member getMyInfo();
+    Member getMyInfo();
+    
+    //현재 로그인한 유저의 비밀번호 확인
+    void checkPassword(String password);
 }
