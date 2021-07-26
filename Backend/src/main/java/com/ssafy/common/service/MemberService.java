@@ -24,4 +24,7 @@ public interface MemberService {
     
     //현재 로그인한 유저의 비밀번호 확인
     void checkPassword(String password);
+    
+    //회원정보 수정
+    TokenDto setMemberInfo(Member member, List<String> problem_site_list, List<String> use_language_like);
 }

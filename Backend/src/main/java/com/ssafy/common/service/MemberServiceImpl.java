@@ -21,9 +21,11 @@ import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.MemberRepository;
+import com.ssafy.common.repository.Problem_Site_LikeRepository;
 import com.ssafy.common.repository.Problem_Site_ListRepository;
 import com.ssafy.common.repository.RefreshTokenRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
+import com.ssafy.common.repository.Use_Language_LikeRepository;
 
 @Service
 @Transactional
@@ -43,6 +45,10 @@ public class MemberServiceImpl implements MemberService {
 	private AuthenticationManagerBuilder authenticationManagerBuilder;
 	@Autowired
 	private RefreshTokenRepository rr;
+	@Autowired
+	private Problem_Site_LikeRepository plr;
+	@Autowired
+	private Use_Language_LikeRepository ulr;
 
 	@Override
 	public long signup(Member member, List<String> problem_site_list, List<String> use_language_like) {
@@ -201,4 +207,106 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
+	// 회원정보 수정
+	@Override
+	public TokenDto setMemberInfo(Member inpmem, List<String> problem_site_list, List<String> use_language_like) {
+		Member member = mr.findByNo(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+
+		// 패스워드 입력했으면 변경
+		if (inpmem.getPassword().length() != 0)
+			member.setPassword(passwordEncoder.encode(inpmem.getPassword()));
+
+		// Name 중복체크후 변경
+		if (!inpmem.getName().equals(member.getName())) {
+			if (mr.findByName(inpmem.getName()).isPresent()) {
+				throw new IllegalStateException("이미 존재하는 이름입니다");
+			}
+			member.setName(inpmem.getName());
+		}
+		
+		
+		//기존 선호하는 문제사이트 삭제
+		for(Problem_Site_Like tmp:member.getProblemSiteList()) {
+			plr.delete(tmp);
+		}
+		member.getProblemSiteList().clear();
+		mr.flush();
+		
+		//선호하는 문제 사이트 추가
+		List<Problem_Site_Like> pslikeList = new ArrayList<>();
+		if (problem_site_list != null) {
+			for (String s : problem_site_list) {
+				Problem_Site_List pslist = pr.findOne(s);
+				// 선택된 문제 사이트가 존재하지 않는 경우
+				if (pslist == null) {
+					throw new IllegalStateException("존재하지 않는 문제 사이트 입니다");
+				}
+				Problem_Site_Like tmp = new Problem_Site_Like();
+				tmp.setProblemSiteName(pslist);
+				tmp.setMemberNo(member);
+
+				pslikeList.add(tmp);
+			}
+		}
+		
+		//기존 선호하는 언어 삭제
+		for(Use_Language_Like tmp:member.getUseLanguageLike()) {
+			ulr.delete(tmp);
+		}
+		member.getUseLanguageLike().clear();
+		mr.flush();
+		
+		// 선호하는 언어 추가
+		List<Use_Language_Like> ullikeList = new ArrayList<>();
+		if (use_language_like != null) {
+			for (String s : use_language_like) {
+				Use_Language ul = ur.findOne(s);
+				// 선택된 언어가 존재하지 않는 경우
+				if (ul == null) {
+					throw new IllegalStateException("존재하지 않는 언어 입니다");
+				}
+				Use_Language_Like tmp = new Use_Language_Like();
+				tmp.setUseLanguage(ul);
+				tmp.setMemberNo(member);
+
+				ullikeList.add(tmp);
+			}
+		}
+
+		// 선호하는 사이트, 언어 추가
+		member.createMember(pslikeList, ullikeList);
+		
+	
+		// -----------------------------------------회원정보 변경 완료
+
+		// 회원정보중 비밀번호가 변경 됬을 경우에만 새로운 토큰 발급
+		// -----------------------------------------새로운 토큰 발급 시작
+		TokenDto jwt=null;
+		if (inpmem.getPassword().length() != 0) {
+			// 회원정보 변경후 토큰 갱신
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					member.getEmail(), inpmem.getPassword());
+
+			// Authentication객체 생성
+			Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+			// memberName 가져와서 토큰만들때 집어넣음
+			String memberName = member.getName();
+
+			// Authentication를 이용해 jwt토큰 생성
+			jwt = tokenProvider.generateTokenDto(authentication, memberName);
+			// -------- 토큰 생성완료
+
+			// 기존 RefreshToken삭제해줘야하나?
+
+			// RefreshToken 저장
+			RefreshToken refreshToken = RefreshToken.builder().key(authentication.getName())
+					.value(jwt.getRefreshToken()).build();
+
+			rr.save(refreshToken);
+		}
+
+		return jwt;
+	}
 }

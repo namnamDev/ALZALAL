@@ -94,11 +94,13 @@ public class MemberController {
 
 		try {
 			ms.checkPassword(password);
-			ret.put("success", "True");
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
+			return ret;
 		}
+		ret.put("success", "True");
+		
 		return ret;
 	}
 
@@ -111,34 +113,66 @@ public class MemberController {
 
 		try {
 			member = ms.getMyInfo();
-			Map<String, Object> mem = new HashMap<>();
-			mem.put("no", member.getNo());
-			mem.put("email", member.getEmail());
-			mem.put("name", member.getName());
-
-			// 선호하는 사이트 리스트 가져옴
-			List<String> problemSiteList = new ArrayList<String>();
-			for (Problem_Site_Like tmp : member.getProblemSiteList()) {
-				problemSiteList.add(tmp.getProblemSiteName().getProblemSiteName());
-			}
-			mem.put("problemSiteList", problemSiteList);
-
-			// 선호하는 언어 리스트 가져옴
-			List<String> useLanguageLike = new ArrayList<String>();
-			for (Use_Language_Like tmp : member.getUseLanguageLike()) {
-				useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
-			}
-			mem.put("useLanguageLike", useLanguageLike);
-
-			ret.put("success", "True");
-			ret.put("member", mem);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
+			return ret;
 		}
+		
+		Map<String, Object> mem = new HashMap<>();
+		mem.put("no", member.getNo());
+		mem.put("email", member.getEmail());
+		mem.put("name", member.getName());
+
+		// 선호하는 사이트 리스트 가져옴
+		List<String> problemSiteList = new ArrayList<String>();
+		for (Problem_Site_Like tmp : member.getProblemSiteList()) {
+			problemSiteList.add(tmp.getProblemSiteName().getProblemSiteName());
+		}
+		mem.put("problemSiteList", problemSiteList);
+
+		// 선호하는 언어 리스트 가져옴
+		List<String> useLanguageLike = new ArrayList<String>();
+		for (Use_Language_Like tmp : member.getUseLanguageLike()) {
+			useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
+		}
+		mem.put("useLanguageLike", useLanguageLike);
+
+		ret.put("success", "True");
+		ret.put("member", mem);
+		
 		return ret;
 	}
 
+	// 회원 정보 수정
+	@PostMapping("/modify")
+	public Map<String, Object> setMemberInfo(@RequestBody Map<String, Object> req) {
+		Map<String, Object> ret = new HashMap<>();
 
+		Member member = new Member();
+		
+		if(req.containsKey("password"))
+			member.setPassword((String)req.get("password"));
+		else
+			member.setPassword("");
+				
+		member.setName((String) req.get("name"));
+		List<String> problem_site = (List<String>) (req.get("problem_site"));
+		List<String> use_language = (List<String>) (req.get("use_language"));
+		
+		TokenDto token;
+		try {
+			token=ms.setMemberInfo(member, problem_site, use_language);
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		
+		ret.put("success", "True");
+		ret.put("token", token);
+		
+		return ret;
+	}
 
 }
