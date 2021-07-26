@@ -148,6 +148,7 @@ export default {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .1rem;
+  font-size: 1vw;
 }
 #clickFollowing:hover {
   background-color:#a1d4e2;

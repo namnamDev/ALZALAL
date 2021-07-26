@@ -4,20 +4,20 @@
 		<div class="form-wrapper form-wrapper-sm box col-lg-6 col-md-10 col-sm-9 col-10">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label align="left" for="member_email">E-mail</label>
-					<input id="member_email" type="text" v-model="member_email" />
+					<label align="left" for="email">E-mail</label>
+					<input id="email" type="text" v-model="form.email" />
 					<p class="validation-text">
-						<span class="warning" v-if="!isEmailValid || !member_email">
+						<span class="warning" v-if="!isEmailValid || !form.email">
 							Please enter an email address
 						</span>
 					</p>
 				</div>
 				<div>
-					<label align="left" for="member_password">Password</label>
-					<input id="member_password" type="password" v-model="member_password" />
+					<label align="left" for="password">Password</label>
+					<input id="password" type="password" v-model="form.password" />
 				</div>
 				<button
-                :disabled="!isEmailValid && member_password"
+                :disabled="!isEmailValid && form.password"
 					type="submit"
 					class="btn"
                 >
@@ -41,18 +41,31 @@
 
 <script>
 import { validateEmail } from '@/utils/validation.js';
+import axios from 'axios';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     data() {
 		return {
-      member_email : '',
-			member_password: '',
-		};
+      form: {
+        email : '',
+			  password: '',
+		  }
+    };
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.member_email);
+			return validateEmail(this.email);
 		},
 	},
+  methods: {
+    submitForm: function(){
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/member/login`,
+        data: this.form
+      })
+    }
+  }
 	
 };
 </script>

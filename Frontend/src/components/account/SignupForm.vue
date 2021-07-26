@@ -3,17 +3,17 @@
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label for="member_email" align="left">E-mail </label>
-					<input id="member_email" type="text" v-model="member_email" />
+					<label for="email" align="left">E-mail </label>
+					<input id="email" type="text" v-model="form.email" />
                     <p class="validation-text">
-						<span class="warning" v-if="!isEmailValid && !member_email">
+						<span class="warning" v-if="!isEmailValid && !form.email">
 							Please enter an email address
 						</span>
 					</p>
 				</div>
 				<div>
-					<label for="member_password" align="left">비밀번호 </label>
-					<input id="member_password" type="password" v-model="member_password" />
+					<label for="password" align="left">비밀번호 </label>
+					<input id="password" type="password" v-model="form.password" />
 				</div>
                 <div>
 					<label for="passwordConfirm" align="left">비밀번호 확인 </label>
@@ -25,82 +25,103 @@
           </p>
 				</div>
 				<div>
-					<label for="member_name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
-					<input id="member_name" type="text" v-model="member_name" />
+					<label for="name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
+					<input id="name" type="text" v-model="form.name" />
                     
 				</div>
                 <div class='checkbox' align="left">
                     <details>
-					<summary for="algorithm_like">선호 언어 <i class="fas fa-chevron-down"></i></summary>
+					<summary for="use_language">선호 언어 <i class="fas fa-chevron-down"></i></summary>
 					<ul>
-                    <li>Java<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                    <li>Python<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                    <li>C<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
+                    <li>Java<input class="checkbox-check" type="checkbox" value="Java" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>Python<input class="checkbox-check" type="checkbox" value="Python" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>C<input class="checkbox-check" type="checkbox" value="C" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>C++<input class="checkbox-check" type="checkbox" value="C++" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>JavaScript<input class="checkbox-check" type="checkbox" value="JavaScript" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>Ruby<input class="checkbox-check" type="checkbox" value="Ruby" id="flexCheckDefault" v-model="form.use_language"></li>
+                    <li>Go<input class="checkbox-check" type="checkbox" value="Go" id="flexCheckDefault" v-model="form.use_language"></li>
                     </ul>
                     </details>
 				</div>
                 <div class='checkbox' align="left">
                     <details>
-					<summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
+					<summary for="problem_site">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
                         <ul>
-                            <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
+                            <li>백준<input class="checkbox-check" type="checkbox" value="boj" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="jungol" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="programmers" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>SWEA<input class="checkbox-check" type="checkbox" value="swea" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>알고스팟<input class="checkbox-check" type="checkbox" value="algospot" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>코드포스<input class="checkbox-check" type="checkbox" value="codeforce" id="flexCheckDefault" v-model="form.problem_site"></li>
+                            <li>엣코더<input class="checkbox-check" type="checkbox" value="atcoder" id="flexCheckDefault" v-model="form.problem_site"></li>
                         </ul>
                     </details>
 				</div>
                 
 				<button
-                 :disabled="!isEmailValid || !member_password || !passwordConfirm || !member_name  || !member_email"
+          
 					type="submit"
 					class="btn"
                  >회원 가입</button>
 			</form>
-			<p class="log">{{ logMessage }}</p>
+			<!-- <p class="log">{{ logMessage }}</p> -->
 		</div>
 	</div>
+  <!-- :disabled="!isEmailValid || member_password || !passwordConfirm || !member_name  || !member_email" -->
 </template>
 
 <script>
 import { validateEmail } from '@/utils/validation.js';
 import { validatePassword } from '@/utils/passwordConfirm.js'
+import axios from 'axios';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default{
 	data() {
 		return {
-      member_email : '',
-			member_name : '',
-			member_password: '',
-      passwordConfirm: '',
+      form: {
+      email : '',
+			name : '',
+			password: '',
+      
+      use_language: [],
+      problem_site: [],
 			//log Message
-			
+			},
+      passwordConfirm: '',
 		};
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.member_email);
+			return validateEmail(this.form.email);
 		},
     isPasswordValid(){
-      return validatePassword(this.member_password, this.passwordConfirm);
+      return validatePassword(this.form.password, this.passwordConfirm);
     }
 	},
+  created: function() {
+    console.log(SERVER_URL)
+  },
   methods: {
-    // async submitForm() {
-    //   console.log('폼 제출');
-    //   const userData = {
-    //     member_email: this.member_email,
-    //     member_password: this.member_password,
-    //     member_name: this.member_name,
-    //   };
-    //   const {data} =await registerMember(userData);
-    //   console.log(data.member_name);
-    //   this.logMessage = `${data.member_name}님 가입완료 되었습니다.`
-    // },
-    // initForm(){
-    //   this.member_email = '';
-    //   this.member_name = '';
-    //   this.member_password = '';
-    // }
+        submitForm: function () {
+          console.log(this.form)
+          axios({
+            method: 'post',
+            url: `${SERVER_URL}/member/signup`,
+            data: this.form
+
+          })
+          .then(res => {
+            console.log(res);
+            this.$router.push({ name: 'login' })
+        
+          })
+          .catch(err => {
+            alert(err)
+            console.log(err)
+          })
+        }
   }
+  
 }
 </script>
 
@@ -186,6 +207,10 @@ summary {
   display: block; /* works in firefox */
   list-style: none; /* works in firefox */
 }
-/* didn't work in any browser */
+li {
+  display: inline;
+  
+  margin-right: 10px;
+}
 
 </style>
