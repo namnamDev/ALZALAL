@@ -96,6 +96,10 @@ export default{
 		};
 	},
   created: function() {
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    }
     axios ({
       method: 'get',
       url: `${SERVER_URL}/member/modify`,

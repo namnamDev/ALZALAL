@@ -99,7 +99,10 @@ export default{
     }
 	},
   created: function() {
-   // console.log(SERVER_URL)
+    const token = localStorage.getItem('jwt')
+    if(token){
+      this.$router.push({name:'login'})
+    }
   },
   methods: {
         submitForm: function () {

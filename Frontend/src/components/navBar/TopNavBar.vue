@@ -4,7 +4,10 @@
       <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
     </div>
     <div class="user">
-      <ul class="navbar-nav me-4">
+      
+
+      <!-- 로그인 했을 때 -->
+      <ul class="navbar-nav me-4" v-if="userName">
         <li class="nav-item dropdown">
           <a
             class="nav-link"
@@ -14,22 +17,51 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            User1
+            {{userName}}님 환영합니다
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/passwordConfirm">정보수정</a></li>
             <li><a class="dropdown-item" href="/profilePage">프로필페이지</a></li>
-            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+            <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
           </ul>
         </li>
+      </ul>
+
+<!-- 로그인 안했을 때 -->
+      <ul class="navbar-nav me-4" v-else>
+        <li class="nav-item dropdown">
+          <a class="" href="/login">Log in </a>
+        </li>
+        <li><a class="" href="/signup">Sign Up</a></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-export default {
+import jwt_decode from 'jwt-decode'
+const token = localStorage.getItem('jwt')
+let username = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  //userpk = decoded.sub
+  username = decoded.name
+}
+//let userpk = '';
 
+export default {
+    methods: {
+    logout: function(){
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("refresh");
+      this.$router.push({name: 'login'})
+    }
+  },
+  computed: {
+    userName: function(){
+      return username
+    }
+  }
 }
 </script>
 
@@ -59,6 +91,9 @@ export default {
   font-size:2vw;
   position: absolute;
   right: 7%;
+}
+.dropdown-item {
+  cursor: pointer;
 }
 
 </style>
