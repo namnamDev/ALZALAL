@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -146,7 +147,7 @@ public class MemberController {
 	}
 
 	// 회원 정보 수정
-	@PostMapping("/modify")
+	@PutMapping("/modify")
 	public Map<String, Object> setMemberInfo(@RequestBody Map<String, Object> req) {
 		Map<String, Object> ret = new HashMap<>();
 
@@ -173,6 +174,22 @@ public class MemberController {
 		ret.put("success", "True");
 		ret.put("token", token);
 		
+		return ret;
+	}
+	
+	//회원 탈퇴
+	@DeleteMapping("/modify")
+	public Map<String, Object> deleteMember(){
+		Map<String, Object> ret = new HashMap<>();
+
+		try {
+			memberService.deleteMember();			
+		}catch(IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		ret.put("success", "True");
 		return ret;
 	}
 

@@ -27,4 +27,7 @@ public interface MemberService {
     
     //회원정보 수정
     TokenDto setMemberInfo(Member member, List<String> problem_site_list, List<String> use_language_like);
+    
+    //회원탈퇴
+    void deleteMember();
 }

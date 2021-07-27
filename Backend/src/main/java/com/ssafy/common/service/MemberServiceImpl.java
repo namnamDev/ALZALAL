@@ -309,4 +309,13 @@ public class MemberServiceImpl implements MemberService {
 
 		return jwt;
 	}
+	
+	@Override
+	public void deleteMember() {
+		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		memberRepository.delete(member);
+		
+		return;
+	}
 }
