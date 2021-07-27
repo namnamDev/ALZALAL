@@ -25,7 +25,7 @@
           </p>
 				</div>
 				<div>
-					<label for="name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
+					<label for="name" align="left">닉네임</label>
 					<input id="name" type="text" v-model="form.name" />
           <p class="validation-text">
             <span class='warning' v-if="!form.name">
@@ -182,7 +182,7 @@ export default{
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 1px;
+  border-radius: 3%;
   padding: 15px 15px;
 }
 .form-wrapper.form-wrapper-sm {

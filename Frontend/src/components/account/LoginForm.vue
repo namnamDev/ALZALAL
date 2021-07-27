@@ -77,11 +77,13 @@ export default {
       .then(res =>{
         console.log(res.data.token);                    
         localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
+        localStorage.setItem('refresh', res.data.token.refreshToken);
         //this.$store.dispatch("login",this.form.email)
         this.$router.push({name: 'feed'})
       })
       .catch(err =>{  // 실패하면 error
         console.log(err)
+        alert("ID 또는 비밀번호가 틀렸습니다.")
       })
     }
   }

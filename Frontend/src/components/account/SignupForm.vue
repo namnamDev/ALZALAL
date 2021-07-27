@@ -138,7 +138,7 @@ export default{
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 1px;
+  border-radius: 3%;
   padding: 15px 15px;
 }
 .form-wrapper.form-wrapper-sm {

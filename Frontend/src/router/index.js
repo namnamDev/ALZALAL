@@ -10,7 +10,7 @@ import UserModify from '@/views/account/modify.vue'
 import Feed from '@/views/feed/Feed.vue'
 import followPage from '@/views/profile/followPage.vue'
 import TargetProfilePage from '@/views/profile/targetProfilePage'
-//import store from '../store'
+import debateList from '@/views/debate/debateList.vue'
 
 Vue.use(VueRouter)
 
@@ -55,6 +55,11 @@ const routes = [
     path: '/usermodify',
     name: 'usermodify',
     component: UserModify,
+  },
+  {
+    path: '/debate',
+    name: 'debate',
+    component: debateList
   },
   {
     path: '*',

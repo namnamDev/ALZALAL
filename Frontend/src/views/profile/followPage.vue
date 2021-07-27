@@ -11,7 +11,7 @@
           <div class=followList v-show="isFollowingList">
             <div class="follow">
               <div class="userImg1 col-5">
-                <img class="profileImg" src="@/assets/profileImg.png" alt="이미지">
+                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
               </div>
               <div class="user col-7">
                 <div class="userName">
@@ -26,7 +26,7 @@
           <div class=followList v-show="isFollowingList">
             <div class="follow">
               <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/profileImg.png" alt="이미지">
+                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
               </div>
               <div class="user col-10">
                 <span class="userName">
@@ -45,7 +45,7 @@
             <div class=followerList v-show="isFollowerList">
             <div class="follow">
               <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/profileImg.png" alt="이미지">
+                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
               </div>
               <div class="user col-10">
                 <span class="userName">

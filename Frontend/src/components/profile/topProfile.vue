@@ -5,7 +5,7 @@
       <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
-				  <img class="profileImg" src="@/assets/logo.png" alt="">
+				  <img class="profileImg" src="@/assets/images/logo.png" alt="">
                   <div class="modifyProfile"><button class="btn btn-modify">프로필이미지 수정</button></div>
 			  </div>
 
@@ -90,8 +90,8 @@ export default {
 }
 
 .profileImg {
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     border-radius: 75%;
     
 }
