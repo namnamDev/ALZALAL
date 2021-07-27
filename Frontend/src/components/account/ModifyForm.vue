@@ -4,7 +4,7 @@
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label for="member_email" align="left">E-mail </label>
-					<input id="member_email" type="text" v-model="member_email" />
+					<input id="member_email" type="text" v-model="member_email" placeholder="로그인한 이메일이 들어갈 자리"/>
                     <p class="validation-text">
 						<span class="warning" v-if="!isEmailValid && !member_email">
 							Please enter an email address
@@ -43,9 +43,9 @@
                     <details>
 					<summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
                         <ul>
-                            <!-- <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
+                            <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
                             <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li> -->
+                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
                         </ul>
                     </details>
 				</div>
@@ -54,7 +54,7 @@
                  :disabled="!isEmailValid || !member_password || !passwordConfirm || !member_name  || !member_email"
 					type="submit"
 					class="btn"
-                 >회원 가입</button>
+                 >수정하기</button>
 			</form>
 			
 		</div>
