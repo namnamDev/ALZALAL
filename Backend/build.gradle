@@ -37,7 +37,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	//querydsl 추가
-	implementation 'com.querydsl:querydsl-jpa'
+	//implementation 'com.querydsl:querydsl-jpa'
 	//
 	//4
 	implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
@@ -59,6 +59,9 @@ test {
 	useJUnitPlatform()
 }
 //4
+clean {
+    delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
+}
 // //querydsl 추가 시작
 // def querydslDir = "$buildDir/generated/querydsl"
 

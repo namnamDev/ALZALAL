@@ -13,33 +13,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
+//@Transactional
 public class ArticleServiceImpl implements ArticleService{
   @Autowired
   private ArticleRepositorySupport ars;
 
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass) {
-    System.out.println("2*****getArticle****");
-
+	//게시글 다건조회.. 추후 페이징처리 예정
     Map<String, Object> getArticleList = new HashMap<String,Object>();
-    if (articleClass.equals("main")){}
-    else if(articleClass.equals("article")){
-      System.out.println("3*****getArticle****");
-      System.out.println(ars);
-      try {
-        // System.out.println("4*****getArticle****"+ars.findAll());
+    if (articleClass.equals("main")){
+    	
+    }else if(articleClass.equals("article")){
+    	//게시글 전체 조회 결과
         List<Article> articleList = ars.findAll();
-        System.out.println("6*****getArticle****");
-        System.out.println("articleList : "+articleList);
         getArticleList.put("article", articleList);
-      } catch (NullPointerException ifnulls) {
-        getArticleList.put("msg", "게시글이 존재하지 않습니다.");
-      }catch(Exception e){
-
-      }
+        if (articleList.size()==0) {//게시글이 존재하지 않을 시.
+        	getArticleList.put("msg", "게시글이 존재하지 않습니다.");
+        }
     }
-    else if(articleClass.equals("discussion")){}
+    else if(articleClass.equals("discussion")){
+    	
+    }
     return getArticleList;
   }
   // @Autowired

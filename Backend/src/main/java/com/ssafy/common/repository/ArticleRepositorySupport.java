@@ -26,7 +26,9 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
       // QArticle article = QArticle.article;
       System.out.println("sdsd");
       List<Article> aa  = queryFactory.selectFrom(article).fetch();
-      System.out.println("sdsd"+aa);
+//      List<Article> aa  = queryFactory.select(article).fetch();
+      System.out.println("sdsd"+aa.toString());
+      System.out.println("6*****getArticle****");
       return aa;
     }
   }
