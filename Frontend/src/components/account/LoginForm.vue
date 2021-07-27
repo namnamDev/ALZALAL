@@ -77,7 +77,7 @@ export default {
       .then(res =>{
         console.log(res.data.token);                    
         localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
-        this.$store.dispatch("login",this.form.email)
+        //this.$store.dispatch("login",this.form.email)
         this.$router.push({name: 'feed'})
       })
       .catch(err =>{  // 실패하면 error

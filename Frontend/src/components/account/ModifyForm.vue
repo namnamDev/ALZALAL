@@ -35,29 +35,29 @@
 				</div>
         <div class='checkbox' align="left">
             <details>
-              <summary for="algorithm_like">선호 언어 <i class="fas fa-chevron-down"></i></summary>
+              <summary for="use_language">선호 언어 <i class="fas fa-chevron-down"></i></summary>
                 <ul>
                   <li>Java<input class="checkbox-check" type="checkbox" value="Java" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>Python<input class="checkbox-check" type="checkbox" value="Python" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>C<input class="checkbox-check" type="checkbox" value="C" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>C++<input class="checkbox-check" type="checkbox" value="C++" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>JavaScript<input class="checkbox-check" type="checkbox" value="JavaScript" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>Ruby<input class="checkbox-check" type="checkbox" value="Ruby" id="flexCheckDefault" v-model="form.use_language"></li>
-                  <li>Go<input class="checkbox-check" type="checkbox" value="Go" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>Python<input class="checkbox-check" type="checkbox" value="Python" id="Python" v-model="form.use_language"></li>
+                  <li>C<input class="checkbox-check" type="checkbox" value="C" id="C" v-model="form.use_language"></li>
+                  <li>C++<input class="checkbox-check" type="checkbox" value="C++" id="C++" v-model="form.use_language"></li>
+                  <li>JavaScript<input class="checkbox-check" type="checkbox" value="JavaScript" id="JavaScript" v-model="form.use_language"></li>
+                  <li>Ruby<input class="checkbox-check" type="checkbox" value="Ruby" id="Ruby" v-model="form.use_language"></li>
+                  <li>Go<input class="checkbox-check" type="checkbox" value="Go" id="Go" v-model="form.use_language"></li>
                 </ul>
             </details>
 				</div>
         <div class='checkbox' align="left">
           <details>
-					  <summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
+					  <summary for="problem_site">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
               <ul>
-                  <li>백준<input class="checkbox-check" type="checkbox" value="boj" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="jungol" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>프로그래머스<input class="checkbox-check" type="checkbox" value="programmers" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>SWEA<input class="checkbox-check" type="checkbox" value="swea" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>알고스팟<input class="checkbox-check" type="checkbox" value="algospot" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>코드포스<input class="checkbox-check" type="checkbox" value="codeforce" id="flexCheckDefault" v-model="form.problem_site"></li>
-                  <li>엣코더<input class="checkbox-check" type="checkbox" value="atcoder" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>백준<input class="checkbox-check" type="checkbox" value="boj" id="boj" v-model="form.problem_site"></li>
+                  <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="jungol" id="jungol" v-model="form.problem_site"></li>
+                  <li>프로그래머스<input class="checkbox-check" type="checkbox" value="programmers" id="programmers" v-model="form.problem_site"></li>
+                  <li>SWEA<input class="checkbox-check" type="checkbox" value="swea" id="swea" v-model="form.problem_site"></li>
+                  <li>알고스팟<input class="checkbox-check" type="checkbox" value="algospot" id="algospot" v-model="form.problem_site"></li>
+                  <li>코드포스<input class="checkbox-check" type="checkbox" value="codeforce" id="codeforce" v-model="form.problem_site"></li>
+                  <li>엣코더<input class="checkbox-check" type="checkbox" value="atcoder" id="atcoder" v-model="form.problem_site"></li>
               </ul>
             </details>
 				</div>
@@ -96,8 +96,25 @@ export default{
 		};
 	},
   created: function() {
-    this.email = this.$store.getters.getEmail;
-    console.log(this.$store.getters.getEmail)
+    axios ({
+      method: 'get',
+      url: `${SERVER_URL}/member/modify`,
+      headers: this.getToken,
+    })
+    .then(res => {
+      console.log(res)
+      this.email = res.data.member.email
+      this.form.name = res.data.member.name
+      console.log(res.data.member.problemSiteList)
+      console.log(res.data.member.useLanguageLike)
+      this.form.use_language = res.data.member.useLanguageLike
+      this.form.problem_site = res.data.member.problemSiteList
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    // this.email = this.$store.getters.getEmail;
+    // console.log(this.$store.getters.getEmail);
   },
 	computed: {
     isPasswordValid(){

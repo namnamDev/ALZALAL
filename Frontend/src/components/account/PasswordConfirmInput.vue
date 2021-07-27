@@ -59,7 +59,7 @@ export default {
             data: {
               "password" : this.password
               },
-            headers: this.getToken
+            headers: this.getToken,
           })
           .then(res => {
             console.log(res);
