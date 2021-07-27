@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ import com.ssafy.common.service.MemberService;
 public class MemberController {
 
 	@Autowired
-	private MemberService ms;
+	private MemberService memberService;
 
 	@PostMapping("/signup")
 	public Map<String, String> signup(@RequestBody Map<String, Object> req) {
@@ -39,7 +40,7 @@ public class MemberController {
 
 		Map<String, String> ret = new HashMap<>();
 		try {
-			ms.signup(member, problem_site, use_language);
+			memberService.signup(member, problem_site, use_language);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -56,7 +57,7 @@ public class MemberController {
 		Map<String, Object> ret = new HashMap<>();
 		TokenDto token;
 		try {
-			token = ms.login(member);
+			token = memberService.login(member);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -76,7 +77,7 @@ public class MemberController {
 
 		try {
 			ret.put("success", "True");
-			ret.put("token", ms.refresh(tokenRequestDto));
+			ret.put("token", memberService.refresh(tokenRequestDto));
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -93,7 +94,7 @@ public class MemberController {
 		String password = req.get("password");
 
 		try {
-			ms.checkPassword(password);
+			memberService.checkPassword(password);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -112,7 +113,7 @@ public class MemberController {
 		Member member = null;
 
 		try {
-			member = ms.getMyInfo();
+			member = memberService.getMyInfo();
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
@@ -162,7 +163,7 @@ public class MemberController {
 		
 		TokenDto token;
 		try {
-			token=ms.setMemberInfo(member, problem_site, use_language);
+			token=memberService.setMemberInfo(member, problem_site, use_language);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
 			ret.put("msg", e.getMessage());
