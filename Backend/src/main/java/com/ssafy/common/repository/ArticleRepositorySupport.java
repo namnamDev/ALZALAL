@@ -22,13 +22,7 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
     }
 
     public List<Article>findAll(){
-      System.out.println("5*****getArticle****");
-      // QArticle article = QArticle.article;
-      System.out.println("sdsd");
       List<Article> aa  = queryFactory.selectFrom(article).fetch();
-//      List<Article> aa  = queryFactory.select(article).fetch();
-      System.out.println("sdsd"+aa.toString());
-      System.out.println("6*****getArticle****");
       return aa;
     }
   }
