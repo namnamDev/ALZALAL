@@ -6,9 +6,11 @@ import Signup from '@/views/account/signup.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
+import UserModify from '@/views/account/modify.vue'
+import followPage from '@/views/profile/followPage.vue'
+import TargetProfilePage from '@/views/profile/targetProfilePage'
+import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
-import Markdown4 from '@/views/createArticle/markdown4.vue'
-import Viewer from '@/views/createArticle/viewer.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
 
@@ -40,27 +42,37 @@ const routes = [
   {
     path: '/passwordConfirm',
     name: 'passwordConfirm',
-    component: PasswordConfirm
+    component: PasswordConfirm,
   },
   {
     path: '/profilePage',
     name: 'profilePage',
-    component: ProfilePage
+    component: ProfilePage,
+  },
+  {
+    path: '/targetProfilePage',
+    name: 'targetProfilePage',
+    component: TargetProfilePage
+  },
+  {
+    path: '/profilePage/followPage',
+    name : 'followPage',
+    component: followPage
+  },
+  {
+    path: '/usermodify',
+    name: 'usermodify',
+    component: UserModify,
+  },
+  {
+    path: '/debate',
+    name: 'debate',
+    component: debateList
   },
   {
     path: '/createArticle',
     name: 'createArticle',
     component: CreateArticle
-  },
-  {
-    path: '/markdown4',
-    name: 'Markdown4',
-    component: Markdown4
-  },
-  {
-    path: '/viewer',
-    name: 'Viewer',
-    component: Viewer
   },
   {
     path: '*',

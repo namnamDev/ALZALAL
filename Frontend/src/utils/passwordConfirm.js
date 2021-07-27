@@ -1,5 +1,5 @@
-function validatePassword(member_password,passwordConfirm){
-if (member_password != passwordConfirm) {
+function validatePassword(password,passwordConfirm){
+if (password != passwordConfirm) {
     return false;
 }else{
     return true;

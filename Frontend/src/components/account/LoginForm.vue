@@ -1,35 +1,37 @@
 <template>
   <div class="contents">
-		<div class="form-wrapper form-wrapper-sm">
+    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
+		<div class="form-wrapper form-wrapper-sm box col-lg-6 col-md-10 col-sm-9 col-10">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label align="left" for="member_email">E-mail</label>
-					<input id="member_email" type="text" v-model="member_email" />
+					<label align="left" for="email">E-mail</label>
+					<input id="email" type="text" v-model="form.email" />
 					<p class="validation-text">
-						<span class="warning" v-if="!isEmailValid || !member_email">
+						<span class="warning" v-if="!isEmailValid || !form.email">
 							Please enter an email address
 						</span>
 					</p>
 				</div>
 				<div>
-					<label align="left" for="member_password">Password</label>
-					<input id="member_password" type="password" v-model="member_password" />
+					<label align="left" for="password">Password</label>
+					<input id="password" type="password" v-model="form.password" />
 				</div>
 				<button
-                :disabled="!isEmailValid && member_password"
+                :disabled="!isEmailValid && form.password"
 					type="submit"
 					class="btn"
                 >
 					Login
 				</button>
-                 <div>
-                <span><button class="btn btn-user">비밀번호찾기</button>
-                <button class="btn btn-user">회원가입</button></span>
-                </div>
-                <div class='snsLogin'>
-                <!-- <button class="btn kakao"><img src="@/assets/kakaologin.png" alt="kakao login" style=""></button>
-                <button class="btn naver"><img src="@/assets/naverlogin.png" alt="naver login" style=""></button>
-                <button class="btn google"><img src="@/assets/google.png" alt="google login" style=""></button> -->
+        <div>
+          <span><button class="btn btn-user">비밀번호찾기</button>
+                <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
+          </span>      
+        </div>
+        <div class='snsLogin'>
+          <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
+          <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
+          <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
         </div>
 			</form>
 		
@@ -40,18 +42,51 @@
 
 <script>
 import { validateEmail } from '@/utils/validation.js';
+import axios from 'axios';
+//import jwt_decode from 'jwt-decode'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     data() {
 		return {
-      member_email : '',
-			member_password: '',
-		};
+      form: {
+        email : '',
+			  password: '',
+		  }
+    };
 	},
 	computed: {
 		isEmailValid() {
-			return validateEmail(this.member_email);
+			return validateEmail(this.form.email);
 		},
 	},
+  created: function() {
+    const token = localStorage.getItem('jwt')
+    if(token){
+      this.$router.push({name:'feed'})
+    }
+  },
+  methods: {
+    submitForm: function(){
+      console.log(this.form)
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/member/login`,
+        data: this.form
+      })   // back 에 로그인 요청
+      .then(res =>{
+        console.log(res.data.token);                    
+        localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
+        localStorage.setItem('refresh', res.data.token.refreshToken);
+        //this.$store.dispatch("login",this.form.email)
+        this.$router.push({name: 'feed'})
+      })
+      .catch(err =>{  // 실패하면 error
+        console.log(err)
+        alert("ID 또는 비밀번호가 틀렸습니다.")
+      })
+    }
+  }
 	
 };
 </script>
@@ -101,7 +136,7 @@ export default {
 .form textarea {
   font-family: inherit;
   font-size: 100%;
-  width: 100%;
+  width: 80%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;
@@ -121,5 +156,9 @@ export default {
 }
 .btn-user{
     opacity: 0.8;
+}
+.btn-sns {
+  display: block;
+  margin-left: 0 auto;
 }
 </style>
