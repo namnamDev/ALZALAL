@@ -7,7 +7,7 @@
       
 
       <!-- 로그인 했을 때 -->
-      <ul class="navbar-nav me-4" v-if="userName">
+      <ul class="navbar-nav me-4" v-if="isLogin">
         <li class="nav-item dropdown">
           <a
             class="nav-link"
@@ -28,7 +28,7 @@
       </ul>
 
 <!-- 로그인 안했을 때 -->
-      <ul class="navbar-nav me-4" v-else>
+      <ul class="navbar-nav me-4" v-if="!isLogin">
         <li class="nav-item dropdown">
           <a class="" href="/login">Log in </a>
         </li>
@@ -50,17 +50,24 @@ if (token) {
 //let userpk = '';
 
 export default {
-    methods: {
+  methods: {
     logout: function(){
+      this.$store.dispatch('logout')
       localStorage.removeItem("jwt");
       localStorage.removeItem("refresh");
+      localStorage.removeItem("vuex")
       this.$router.push({name: 'login'})
     }
   },
   computed: {
+    isLogin(){
+      console.log(this.$store.getters.isLogin)
+      return this.$store.getters.isLogin
+    },
     userName: function(){
       return username
-    }
+    },
+
   }
 }
 </script>
