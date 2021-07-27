@@ -29,9 +29,10 @@
 			  </div>
 
 			  <div class="profile-bio">
-
-				  <p>총 n개의 게시글에 답변했습니다.</p>
-                  <p>한줄소개<button class="btn btn-intro">수정</button></p>
+                  <p align="left" class="downInfo">선호 언어: JAVA</p>
+                  <p align="left" class="downInfo">선호 문제사이트 : 백준</p>
+				  <p align="left" class="downInfo">총 n개의 게시글에 답변했습니다.</p>
+                  <p align="left">한줄소개<button class="btn btn-intro">수정</button></p>
 			  </div>
 
 		  </div>
@@ -159,10 +160,15 @@ export default {
     line-height: 1.5;
     margin-top: 2.3rem;
 }
-
+.downInfo {
+    font-size: 1.0rem;
+    font-weight: 600;
+    line-height: 1.0;
+}
 .profile-real-name,
 .profile-stat-count,
 .profile-edit-btn {
     font-weight: 600;
 } 
+
 </style>
