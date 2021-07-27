@@ -175,5 +175,21 @@ public class MemberController {
 		
 		return ret;
 	}
+	
+	//회원 탈퇴
+	@DeleteMapping("/modify")
+	public Map<String, Object> deleteMember(){
+		Map<String, Object> ret = new HashMap<>();
+
+		try {
+			memberService.deleteMember();			
+		}catch(IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		ret.put("success", "True");
+		return ret;
+	}
 
 }
