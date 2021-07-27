@@ -4,7 +4,7 @@
       <span>
           <div>
               <div class="profileImageDiv">
-                  <!-- <img class='profileImage' src="@/assets/logo.png" alt="사진"> -->
+                  <img class='profileImage' src="@/assets/images/logo.png" alt="사진">
               </div>
           </div>
           <div>
@@ -33,17 +33,17 @@
 </template>
 
 <script>
-import topProfile from '@/components/profile/topProfile.vue'
-import downProfile from '@/components/profile/downProfile.vue'
+// import topProfile from '@/components/profile/topProfile.vue'
+// import downProfile from '@/components/profile/downProfile.vue'
 export default {
     components: {
-        topProfile,
-        downProfile
+        // topProfile,
+        // downProfile
     },
 }
 </script>
 
-<style>
+<style scoped>
 body {
     text-align: center;
 }

@@ -215,6 +215,7 @@ export default {
   width: 800px;
   transform: translateX(-11px);
   margin-top:100px;
+  text-align: left;
 }
 
 .algo-input-div{

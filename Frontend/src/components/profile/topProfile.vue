@@ -3,7 +3,7 @@
 		    <div class="profile">
 
 			    <div class="profile-image">
-				    <img src="@/assets/logo.png" alt="">
+				    <img src="@/assets/images/logo.png" alt="">
 			    </div>
 
 			    <div class="profile-user-settings">
