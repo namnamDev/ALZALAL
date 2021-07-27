@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import static com.ssafy.common.domain.article.QArticle.*;
+// import 
 
 
 

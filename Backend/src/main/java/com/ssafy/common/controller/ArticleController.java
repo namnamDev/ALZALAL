@@ -19,7 +19,7 @@ public class ArticleController {
   @GetMapping("/{articleClass}")
   public Map<String,Object>getArticle(@PathVariable(name="articleClass") String articleClass){
     System.out.println("1*****getArticle****"+articleClass);
-    as = new ArticleServiceImpl();
+    // as = new ArticleServiceImpl();
     return as.sltMultiArticle(articleClass);
   }
   // 전체조회목록작성
