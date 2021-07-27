@@ -43,9 +43,9 @@
                     <details>
 					<summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
                         <ul>
-                            <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
+                            <!-- <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
                             <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
+                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li> -->
                         </ul>
                     </details>
 				</div>

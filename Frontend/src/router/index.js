@@ -6,17 +6,26 @@ import Signup from '@/views/account/signup.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
-import UserModify from '@/views/account/modify.vue'
-import Feed from '@/views/feed/Feed.vue'
+import CreateArticle from '@/views/createArticle/CreateArticle.vue'
+import Markdown4 from '@/views/createArticle/markdown4.vue'
+import Viewer from '@/views/createArticle/viewer.vue'
+import Timeline from '@/views/article/Timeline.vue'
+import QnA from '@/views/article/QnA.vue'
+
 
 Vue.use(VueRouter)
 
 
 const routes = [
   {
-    path: '/feed',
-    name: 'feed',
-    component: Feed
+    path: '/timeline',
+    name: 'timeline',
+    component: Timeline
+  },
+  {
+    path: '/QnA',
+    name: 'qna',
+    component: QnA
   },
   {
     path: '/login',
@@ -39,9 +48,19 @@ const routes = [
     component: ProfilePage
   },
   {
-    path: '/usermodify',
-    name: 'usermodify',
-    component: UserModify
+    path: '/createArticle',
+    name: 'createArticle',
+    component: CreateArticle
+  },
+  {
+    path: '/markdown4',
+    name: 'Markdown4',
+    component: Markdown4
+  },
+  {
+    path: '/viewer',
+    name: 'Viewer',
+    component: Viewer
   },
   {
     path: '*',

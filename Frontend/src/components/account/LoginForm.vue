@@ -27,9 +27,9 @@
                 <button class="btn btn-user">회원가입</button></span>
                 </div>
                 <div class='snsLogin'>
-                <button class="btn kakao"><img src="@/assets/kakaologin.png" alt="kakao login" style=""></button>
+                <!-- <button class="btn kakao"><img src="@/assets/kakaologin.png" alt="kakao login" style=""></button>
                 <button class="btn naver"><img src="@/assets/naverlogin.png" alt="naver login" style=""></button>
-                <button class="btn google"><img src="@/assets/google.png" alt="google login" style=""></button>
+                <button class="btn google"><img src="@/assets/google.png" alt="google login" style=""></button> -->
         </div>
 			</form>
 		
