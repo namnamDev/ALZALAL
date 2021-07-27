@@ -310,6 +310,7 @@ public class MemberServiceImpl implements MemberService {
 		return jwt;
 	}
 	
+	//회원탈퇴
 	@Override
 	public void deleteMember() {
 		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
