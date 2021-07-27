@@ -30,7 +30,7 @@ import lombok.ToString;
 public class Member {
 	// 회원넘버
 	@Id
-	@Column(name="")
+	@Column(name="member_no")
 	@GeneratedValue
 	private Long no;
 
@@ -60,14 +60,22 @@ public class Member {
 	@OneToMany(mappedBy = "memberNo", cascade = CascadeType.ALL)
 	private List<Use_Language_Like> useLanguageLike = new ArrayList<>();
 
+	@Column(name="member_authority")
 	@ColumnDefault(value = "'ROLE_USER'")
 	@Enumerated(EnumType.STRING)
 	private Member_Authority authority;
 
 	
 	//한줄소개
-	@Column(name="member_introduce")
+	@Column(name="member_introduce", length = 70)
 	private String introduce;
+	
+	//프로필 이미지
+	@Column(name="member_profileImg")
+	private String profileImg;
+	
+	
+	
 
 	// 생성 메서드
 	public void createMember(List<Problem_Site_Like> problem_site_like, List<Use_Language_Like> use_language_like) {
