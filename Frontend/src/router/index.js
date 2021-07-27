@@ -7,19 +7,27 @@ import PageNotFound from '@/views/PageNotFound.vue'
 import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
-import Feed from '@/views/feed/Feed.vue'
 import followPage from '@/views/profile/followPage.vue'
 import TargetProfilePage from '@/views/profile/targetProfilePage'
 import debateList from '@/views/debate/debateList.vue'
+import CreateArticle from '@/views/createArticle/CreateArticle.vue'
+import Timeline from '@/views/article/Timeline.vue'
+import QnA from '@/views/article/QnA.vue'
+
 
 Vue.use(VueRouter)
 
 
 const routes = [
   {
-    path: '/feed',
-    name: 'feed',
-    component: Feed
+    path: '/timeline',
+    name: 'timeline',
+    component: Timeline
+  },
+  {
+    path: '/QnA',
+    name: 'qna',
+    component: QnA
   },
   {
     path: '/login',
@@ -60,6 +68,11 @@ const routes = [
     path: '/debate',
     name: 'debate',
     component: debateList
+  },
+  {
+    path: '/createArticle',
+    name: 'createArticle',
+    component: CreateArticle
   },
   {
     path: '*',
