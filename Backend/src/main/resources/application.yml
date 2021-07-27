@@ -12,6 +12,10 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+  servlet:
+    multipart:
+      maxFileSize: 5MB
+      maxRequestSize: 5MB
 
 jwt:
   header: Authorization
@@ -23,3 +27,10 @@ jwt:
         
 logging.level:
   org.hibernate.SQL: debug
+  
+file:
+  upload:
+    location: /CommonProfileImg
+    
+
+  
