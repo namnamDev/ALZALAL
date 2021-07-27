@@ -3,58 +3,75 @@
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label for="member_email" align="left">E-mail </label>
-					<input id="member_email" type="text" v-model="member_email" placeholder="여기에 이메일 입력되있음" />
-                    <p class="validation-text">
-						<span class="warning" v-if="!isEmailValid && !member_email">
+					<label for="email" align="left">E-mail </label>
+					<input id="email" type="text" v-model="email" disabled />
+          <!-- <p class="validation-text">
+						<span class="warning" v-if="!email">
 							Please enter an email address
 						</span>
-					</p>
+					</p> -->
 				</div>
 				<div>
-					<label for="member_password" align="left">비밀번호 </label>
-					<input id="member_password" type="password" v-model="member_password" />
+					<label for="password" align="left">비밀번호 </label>
+					<input id="password" type="password" v-model="form.password" />
 				</div>
                 <div>
 					<label for="passwordConfirm" align="left">비밀번호 확인 </label>
 					<input id="passwordConfirm" type="password" v-model="passwordConfirm" />
           <p class="validation-text">
-          <span class='warning' v-if="!isPasswordValid">
-            Please check the password
-          </span>
+            <span class='warning' v-if="!isPasswordValid">
+              Please check the password
+            </span>
           </p>
 				</div>
 				<div>
-					<label for="member_name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
-					<input id="member_name" type="text" v-model="member_name" />
-                    
+					<label for="name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
+					<input id="name" type="text" v-model="form.name" />
+          <p class="validation-text">
+            <span class='warning' v-if="!form.name">
+              Write your name.
+            </span>
+          </p>          
 				</div>
-                <div class='checkbox' align="left">
-                    <details>
-					<summary for="algorithm_like">선호 언어 <i class="fas fa-chevron-down"></i></summary>
-					<ul>
-                    <li>Java<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                    <li>Python<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                    <li>C<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                    </ul>
-                    </details>
+        <div class='checkbox' align="left">
+            <details>
+              <summary for="algorithm_like">선호 언어 <i class="fas fa-chevron-down"></i></summary>
+                <ul>
+                  <li>Java<input class="checkbox-check" type="checkbox" value="Java" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>Python<input class="checkbox-check" type="checkbox" value="Python" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>C<input class="checkbox-check" type="checkbox" value="C" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>C++<input class="checkbox-check" type="checkbox" value="C++" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>JavaScript<input class="checkbox-check" type="checkbox" value="JavaScript" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>Ruby<input class="checkbox-check" type="checkbox" value="Ruby" id="flexCheckDefault" v-model="form.use_language"></li>
+                  <li>Go<input class="checkbox-check" type="checkbox" value="Go" id="flexCheckDefault" v-model="form.use_language"></li>
+                </ul>
+            </details>
 				</div>
-                <div class='checkbox' align="left">
-                    <details>
-					<summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
-                        <ul>
-                            <li>백준<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                            <li>프로그래머스<input class="checkbox-check" type="checkbox" value="" id="flexCheckDefault"></li>
-                        </ul>
-                    </details>
+        <div class='checkbox' align="left">
+          <details>
+					  <summary for="problem_site_like">선호 알고리즘사이트 <i class="fas fa-chevron-down"></i> </summary>
+              <ul>
+                  <li>백준<input class="checkbox-check" type="checkbox" value="boj" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>정보올림피아드<input class="checkbox-check" type="checkbox" value="jungol" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>프로그래머스<input class="checkbox-check" type="checkbox" value="programmers" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>SWEA<input class="checkbox-check" type="checkbox" value="swea" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>알고스팟<input class="checkbox-check" type="checkbox" value="algospot" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>코드포스<input class="checkbox-check" type="checkbox" value="codeforce" id="flexCheckDefault" v-model="form.problem_site"></li>
+                  <li>엣코더<input class="checkbox-check" type="checkbox" value="atcoder" id="flexCheckDefault" v-model="form.problem_site"></li>
+              </ul>
+            </details>
 				</div>
                 
 				<button
-                 :disabled="!isEmailValid || !member_password || !passwordConfirm || !member_name  || !member_email"
+          :disabled="!form.password || !passwordConfirm || !form.name"
 					type="submit"
-					class="btn"
-                 >회원 가입</button>
+					class="btn">
+            수정
+        </button>
+        <button @click="deleteUser" class="btn">
+            회원삭제
+        </button>
+        <router-link to="/profilePage"><button class="btn">취소</button></router-link>
 			</form>
 			
 		</div>
@@ -62,27 +79,76 @@
 </template>
 
 <script>
-import { validateEmail } from '@/utils/validation.js';
 import { validatePassword } from '@/utils/passwordConfirm.js'
+import axios from 'axios';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default{
 	data() {
 		return {
-      member_email : '',
-			member_name : '',
-			member_password: '',
+      email : '',
+      form:{    
+        name : '',
+        password: '',
+        use_language: [],
+        problem_site: [],
+			},
       passwordConfirm: '',
-			//log Message
-			
 		};
 	},
+  created: function() {
+    this.email = this.$store.getters.getEmail;
+    console.log(this.$store.getters.getEmail)
+  },
 	computed: {
-		isEmailValid() {
-			return validateEmail(this.member_email);
-		},
     isPasswordValid(){
-      return validatePassword(this.member_password, this.passwordConfirm);
+      return validatePassword(this.form.password, this.passwordConfirm);
+    },
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
     }
 	},
+  methods: {
+    submitForm: function () {
+      console.log(this.form)
+      console.log(this.getToken)
+      axios({
+        method: 'put',
+        url: `${SERVER_URL}/member/modify`,
+        data: this.form,
+        headers: this.getToken
+      })
+      .then(res => {
+        console.log(res);
+        this.$router.push({ name: 'login' })
+      })
+      .catch(err => {
+        alert(err)
+        console.log(err)
+      })
+    },
+    deleteUser: function(){
+      axios({
+        method: 'delete',
+        url: `${SERVER_URL}/member/modify`,
+        headers: this.getToken
+      })
+      .then(res => {
+        console.log(res);
+        localStorage.removeItem("jwt")
+        localStorage.removeItem("vuex")
+        this.$router.push({ name: 'login' })
+      })
+      .catch(err => {
+        alert(err)
+        console.log(err)
+      })
+    }
+  }
+
 }
 </script>
 

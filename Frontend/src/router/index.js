@@ -10,6 +10,7 @@ import UserModify from '@/views/account/modify.vue'
 import Feed from '@/views/feed/Feed.vue'
 import followPage from '@/views/profile/followPage.vue'
 import TargetProfilePage from '@/views/profile/targetProfilePage'
+//import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -33,12 +34,12 @@ const routes = [
   {
     path: '/passwordConfirm',
     name: 'passwordConfirm',
-    component: PasswordConfirm
+    component: PasswordConfirm,
   },
   {
     path: '/profilePage',
     name: 'profilePage',
-    component: ProfilePage
+    component: ProfilePage,
   },
   {
     path: '/targetProfilePage',
@@ -53,7 +54,7 @@ const routes = [
   {
     path: '/usermodify',
     name: 'usermodify',
-    component: UserModify
+    component: UserModify,
   },
   {
     path: '*',

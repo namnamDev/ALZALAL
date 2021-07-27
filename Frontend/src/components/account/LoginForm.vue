@@ -25,7 +25,8 @@
 				</button>
         <div>
           <span><button class="btn btn-user">비밀번호찾기</button>
-                <button class="btn btn-user">회원가입</button></span>
+                <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
+          </span>      
         </div>
         <div class='snsLogin'>
           <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
@@ -42,6 +43,8 @@
 <script>
 import { validateEmail } from '@/utils/validation.js';
 import axios from 'axios';
+//import jwt_decode from 'jwt-decode'
+
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     data() {
@@ -57,6 +60,12 @@ export default {
 			return validateEmail(this.form.email);
 		},
 	},
+  created: function() {
+    const token = localStorage.getItem('jwt')
+    if(token){
+      this.$router.push({name:'feed'})
+    }
+  },
   methods: {
     submitForm: function(){
       console.log(this.form)
@@ -64,16 +73,14 @@ export default {
         method: 'post',
         url: `${SERVER_URL}/member/login`,
         data: this.form
-      })
+      })   // back 에 로그인 요청
       .then(res =>{
-        console.log(res.data.token);
-  
-        localStorage.setItem('jwt', res.data.token.accessToken);
+        console.log(res.data.token);                    
+        localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
         this.$store.dispatch("login",this.form.email)
-
         this.$router.push({name: 'feed'})
       })
-      .catch(err =>{
+      .catch(err =>{  // 실패하면 error
         console.log(err)
       })
     }

@@ -3,23 +3,23 @@
     <div class="row">
       <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
       <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
-            
+                <!-- 프로필이미지 -->
 			  <div class="profile-image">
-
 				  <img class="profileImg" src="@/assets/logo.png" alt="">
                   <div class="modifyProfile"><button class="btn btn-modify">프로필이미지 수정</button></div>
 			  </div>
 
+                <!-- 프로필 이름, 수정버튼 -->
 			  <div class="profile-user-settings">
-
-				  <h1 class="profile-user-name">UserName</h1>
+				  <h1 class="profile-user-name">{{userName}}</h1>
                   <span>
-				  <button class="btn profile-edit-btn">Edit Profile</button>
+				  <router-link to="/passwordConfirm"><button class="btn profile-edit-btn">Edit Profile</button>
+                  </router-link>  
                   </span>
 			  </div>
 
+                    <!-- 게시글 팔로워 팔로잉 -->
 			  <div class="profile-stats">
-
 				  <ul>
 					  <li>게시글<span class="profile-stat-count">164</span> </li>
 					  <li>팔로워<span href="/profilePage/followPage" class="profile-stat-count">188</span> </li>
@@ -54,6 +54,11 @@ if (token) {
 export default {
     created: function() {
         console.log(userpk, username)
+    },
+    computed: {
+        userName: function(){
+            return username
+        }
     }
 }
 </script>
