@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="logo">
-      LOGO
+  <div class="top">
+    <div class="logo" onclick="window.scrollTo(0,0)">
+      <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
     </div>
     <div class="user">
       <ul class="navbar-nav me-4">
@@ -38,24 +38,27 @@ export default {
 .box{
   background-color: bisque;
 }
-.top-nav-bar{
-  position: fixed;
-  top: 0;
+.top{
+  position:fixed;
+  background-color: white;
+  z-index:1;
+  width: 100%;
+  height:70px;
+  /* border: 1px solid black; */
 }
 
-
 .logo{
-  border: 10px solid blanchedalmond;
-  font-size:4vw;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  z-index:2;  
+  cursor: pointer;
 }
 .user{
   border: 10px solid blanchedalmond;
   font-size:2vw;
   position: absolute;
-  right: 10%;
+  right: 7%;
 }
 
 </style>

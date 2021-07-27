@@ -4,7 +4,7 @@
       <span>
           <div>
               <div class="profileImageDiv">
-                  <img class='profileImage' src="@/assets/logo.png" alt="사진">
+                  <!-- <img class='profileImage' src="@/assets/logo.png" alt="사진"> -->
               </div>
           </div>
           <div>

@@ -1,22 +1,22 @@
 <template>
   <div id="side-menu-bar">    
     <div id="menu">
-      <p>LOGO</p>
+      <p @click="clickLogo">LOGO</p>
       <ul>
-        <li>타임라인</li>
-        <li>Q&A</li>
+        <li @click="clickLogo">타임라인</li>
+        <li @click="clickQnA">Q&A</li>
         <li>토론게시판</li>
-        <li>글작성</li>
+        <li @click="clickCreate">글작성</li>
         <li class="search">검색하기</li>
       </ul>
     </div>
     <div id="menu-1" v-if="width < 576">
       <p>LOGO</p>
       <ul>
-        <li>타임라인</li>
+        <li @click="clickLogo">타임라인</li>
         <li>Q&A</li>
         <li>토론게시판</li>
-        <li>글작성</li>
+        <li @click="clickCreate">글작성</li>
         <li class="search">검색하기</li>
       </ul>
     </div>        
@@ -57,15 +57,24 @@ export default {
     handleResize(){
       this.width = window.innerWidth
     },
-
     ClickMenuButton: function() {
       let leftMenu = document.getElementById('menu-1')
+      console.log(leftMenu)
       if (leftMenu.style.display == 'none') {
         leftMenu.style.display = 'block'
       }
       else {
         leftMenu.style.display = 'none'
       }     
+    },
+    clickLogo: function() {
+      this.$router.push({'name':'timeline'})
+    },
+    clickCreate: function() {
+      this.$router.push({'name':'createArticle'})      
+    },
+    clickQnA: function() {
+      this.$router.push({'name':'qna'})      
     }
   },
   
@@ -107,7 +116,12 @@ export default {
   list-style: none;
   margin-top:15px;
 }
-
+#menu-1 > ul li:hover{
+  transform: scale(1.1);
+}
+p{
+  cursor: pointer;
+}
 #menu{
   position: absolute;
   width: 100%;
@@ -122,10 +136,16 @@ export default {
   position: absolute;
   text-align: left;
   top: 10%;
+  width: 100%;
 }
 #menu > ul li{
   list-style: none;
   margin-top:15px;
+  cursor: pointer;
+  width: 100%;
+}
+#menu > ul li:hover{
+  transform: scale(1.1);
 }
 
 .icon{
