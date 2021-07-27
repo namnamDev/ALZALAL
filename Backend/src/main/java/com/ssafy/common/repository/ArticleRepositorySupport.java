@@ -1,7 +1,7 @@
 package com.ssafy.common.repository;
 import java.util.List;
 
-
+import com.querydsl.core.dml.InsertClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
@@ -47,8 +47,11 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
     	return comments;
     }
     //게시글 Insert 추가적인 gradle import를 요구해서 패스
-//    public Article insertArticle(Member member, Article article){
+//    public Article insertArticle(Member member, Article myinsert){
+//    	Article article = new Article(myinsert);
 //    	QArticle qArticle = QArticle.article;
+//    	SQLInsertClause insert = insert(qArticle)
+//    	InsertClause insertArticle.setEntityManager(entityManager);(article,myinsert).execute();
 //    	new SQLInsertClause()
 //    	private SQLqueryFactory sqlQueryFactory;
 //    	Article sltOne = queryFactory.
@@ -60,17 +63,14 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
     	return deletedArticle;
     			
     }
+
+	public long updateArticle(long articlePk, String content) {
+		long updatedArticle = queryFactory.update(article).
+				where(article.articleNo.eq(articlePk)).set
+				(article.articleContent, content).
+				execute();
+						
+		return updatedArticle;
+	}
 }
 
-  // @PersistenceContext
-  // private EntityManager em;
-
-  // public List<Article> SltMul(String articleClass,int page){
-  //   Article findAll()
-  //   // List<Article> articleList = new ArrayList<Article>();
-  //   // CriteriaBuilder cb = em.getCriteriaBuilder();
-  //   // CriteriaQuery<Article> query = cb.createQuery(Article.class);
-  //   // Root<Article> a =query.from(Article.class);
-  //   // CriteriaQuery<Article> articles = query.select(a); 
-  // }
-  
