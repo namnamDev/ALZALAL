@@ -1,6 +1,7 @@
 package com.ssafy.common.repository;
 import java.util.List;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.core.dml.InsertClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
@@ -35,6 +36,12 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
     	Article sltOne = queryFactory.selectFrom(article)
     			.where(article.articleNo.eq(pk))
     			.fetchOne();
+//    	Article sltOne = queryFactory.select(
+//    			new
+//    			).from(article)
+//    			.where(article.articleNo.eq(pk))
+//    			.fetchOne();
+    	
     	
     	return sltOne;
     }

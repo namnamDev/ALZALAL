@@ -29,11 +29,8 @@ public class ArticleController {
   public Map<String,Object>deleteArticle(
 		  @PathVariable(name="articleClass")String articleClass,
 		  @PathVariable(name="pk") long articlePk
-//		  ,long memberPk//유저jwt에서 pk추출
 		  ){
-	  //테스트용 memberPk=1
-	  long memberPk = 1;
-	  return as.deleteArticle(articleClass,articlePk,memberPk);
+	  return as.deleteArticle(articleClass,articlePk);
   }
   @PutMapping("/{articleClass}/{pk}")
   public Map<String,Object>updateArticle(
@@ -42,7 +39,6 @@ public class ArticleController {
 		  ,@RequestBody Map<String,Object> req
 		  ){
 	  //변경된 회원을 임시로 담아줌 
-	  long memberPk = 1;
-	  return as.updateArticle(articleClass,articlePk,memberPk,req);
+	  return as.updateArticle(articleClass,articlePk,req);
   }
 }
