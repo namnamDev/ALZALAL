@@ -30,7 +30,7 @@ logging.level:
   
 file:
   upload:
-    location: /CommonProfileImg
+    location: /home/ubuntu/CommonProfileImg
     
 
   
