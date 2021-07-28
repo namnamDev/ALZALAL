@@ -85,7 +85,7 @@ public class ProfileController {
 
 	//프로필 이미지 가져오기
 	@GetMapping(value = "/img/{memberNo}")
-	public ResponseEntity<?> downloadFile(@PathVariable String memberNo, HttpServletRequest request) {
+	public ResponseEntity<?> getProfileImg(@PathVariable String memberNo, HttpServletRequest request) {
 		Resource resource=null;
 		
 		String fileName=memberService.getProfileImgUri(Long.parseLong(memberNo));
