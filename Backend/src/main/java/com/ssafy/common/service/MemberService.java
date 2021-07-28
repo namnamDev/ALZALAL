@@ -30,4 +30,7 @@ public interface MemberService {
     
     //회원탈퇴
     void deleteMember();
+    
+  //memberNo를 통한 프로필이미지 이름 출력
+    String getProfileImgUri(Long memberNo);
 }

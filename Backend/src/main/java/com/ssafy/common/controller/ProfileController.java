@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ssafy.common.service.FileService;
+import com.ssafy.common.service.MemberService;
 import com.ssafy.common.service.ProfileService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,35 +38,10 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 
-	// 프로필 이미지 설정
-	@PostMapping("/img")
-	public Map<String, Object> setProfileImg(MultipartFile profileImg) {
-		Map<String, Object> ret = new HashMap<>();
-
-		String downloadURI = "";
-
-		if (!profileImg.isEmpty()) {
-			// 이미지 파일 먼저 업로드 한 뒤
-			String filename = fileService.saveFile(profileImg);
-
-			System.out.println("filename   " + filename);
-
-			downloadURI = ServletUriComponentsBuilder.fromCurrentContextPath().path("profile/img/").path(filename)
-					.toUriString();
-		}
-
-		try {
-			// 한줄 소개와 저장된 이미지 파일 경로를 디비에 저장
-			profileService.setProfileImg(downloadURI);
-		} catch (IllegalStateException e) {
-			ret.put("success", "False");
-			ret.put("msg", e.getMessage());
-			return ret;
-		}
-		ret.put("success", "True");
-		return ret;
-	}
-
+	@Autowired
+	private MemberService memberService;
+	
+	
 	// 프로필 한줄소개 설정
 	@PostMapping("/introduce")
 	public Map<String, Object> setProfileIntroduce(@RequestBody Map<String, Object> req) {
@@ -74,7 +49,7 @@ public class ProfileController {
 		String introduce = (String) req.get("introduce");
 
 		try {
-			// 한줄 소개와 저장된 이미지 파일 경로를 디비에 저장
+			// 한줄 소개 디비에 저장
 			profileService.setProfileIntoduce(introduce);
 		} catch (IllegalStateException e) {
 			ret.put("success", "False");
@@ -84,13 +59,39 @@ public class ProfileController {
 		ret.put("success", "True");
 		return ret;
 	}
+	
+	
+	// 프로필 이미지 설정
+	@PostMapping("/img")
+	public Map<String, Object> setProfileImg(MultipartFile profileImg) {
+		Map<String, Object> ret = new HashMap<>();
+		String filename="";
+		if (!profileImg.isEmpty()) {
+			// 이미지 파일 업로드
+			try {
+				filename = fileService.saveFile(profileImg);
+			}catch (IllegalStateException e) {
+				ret.put("success", "False");
+				ret.put("msg", e.getMessage());
+				
+			}
+		}
+		//이미지 파일 이름 member테이븗에 저장
+		profileService.setProfileImg(filename);
+		
+		ret.put("success", "True");
+		return ret;
+	}
 
 	//프로필 이미지 가져오기
-	@GetMapping(value = "/img/{fileName:.+}")
-	public ResponseEntity<?> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+	@GetMapping(value = "/img/{memberNo}")
+	public ResponseEntity<?> downloadFile(@PathVariable String memberNo, HttpServletRequest request) {
 		Resource resource=null;
+		
+		String fileName=memberService.getProfileImgUri(Long.parseLong(memberNo));
+	
 		try {
-		resource = fileService.loadFile(fileName);
+			resource = fileService.loadFile(fileName);
 		}catch (FileNotFoundException e) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}

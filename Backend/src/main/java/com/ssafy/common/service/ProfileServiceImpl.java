@@ -16,7 +16,7 @@ public class ProfileServiceImpl implements ProfileService {
 	private MemberRepository memberRepository;
 
 	
-	//프로필 이미지 수정
+	//프로필 이미지 설정
 	@Override
 	public void setProfileImg(String profileImgUri) {
 		Member member=memberRepository.findById(SecurityUtil.getCurrentMemberId())
@@ -27,7 +27,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	
-	//프로필 한줄소개 수정
+	//프로필 한줄소개 설정
 	@Override
 	public void setProfileIntoduce(String introduce) {
 		Member member=memberRepository.findById(SecurityUtil.getCurrentMemberId())
