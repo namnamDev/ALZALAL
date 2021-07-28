@@ -3,12 +3,15 @@
     <div class="contents">
 	    <div class="form-wrapper form-wrapper-sm">
             <form @submit.prevent="uploadImage">
-                <input type="file" ref="image" name="image" id="image" />
+                <input type="file" @change="onFileChange" ref="image" name="image" id="image" class="btn-file"/>
+                  <div id="preview">
+                    <img v-if="url" :src="url" />
+                  </div>
                 <button type="submit" class="btn">서버전송</button>
             </form>
 	    </div>
         <div class="profile-image">
-        <img class="profileImg" src="http://i5d205.p.ssafy.io:8080/profile/img/2" alt="">
+            <img class="popupImageItem" :src="uploadImageFile">
         </div>
     </div>
   </div>
@@ -29,7 +32,8 @@ export default {
   data() {
 		return {
             images: '',
-           
+           imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+           url:null,
 		};
 	},
   created: function() {
@@ -66,9 +70,12 @@ export default {
       })
       .catch( err => console.log(err))
     },
-    clickInputTag: function() {
-      this.$refs['image'].click()
+    onFileChange(e) {
+        const file = e.target.files[0];
+        this.url = URL.createObjectURL(file);
     }
+
+    
   }
 
   
