@@ -6,7 +6,11 @@
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
 				  <img class="profileImg" src="@/assets/images/logo.png" alt="">
-                  <div class="modifyProfile"><button class="btn btn-modify">프로필이미지 수정</button></div>
+                  <div class="modifyProfile">
+                      <router-link to="/profilePage/uploadImg">
+                        <button class="btn btn-modify">프로필이미지 수정</button>
+                      </router-link>
+                  </div>
 			  </div>
 
                 <!-- 프로필 이름, 수정버튼 -->

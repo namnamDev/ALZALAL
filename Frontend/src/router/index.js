@@ -14,6 +14,7 @@ import CreateArticle from '@/views/createArticle/CreateArticle.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
 import introduce from '@/views/profile/introduce.vue'
+import uploadImg from '@/views/profile/uploadImg.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,11 @@ const routes = [
     path: '/profilePage/introduce',
     name: 'introduce',
     component: introduce
+  },
+  {
+    path: '/profilePage/uploadImg',
+    name: 'uploadImg',
+    component: uploadImg
   },
   {
     path: '/usermodify',

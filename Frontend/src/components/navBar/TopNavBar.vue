@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     isLogin(){
-      console.log(this.$store.getters.isLogin)
+      //console.log(this.$store.getters.isLogin)
       return this.$store.getters.isLogin
     },
     userName: function(){
