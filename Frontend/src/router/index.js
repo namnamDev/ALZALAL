@@ -15,6 +15,7 @@ import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
 import introduce from '@/views/profile/introduce.vue'
 import uploadImg from '@/views/profile/uploadImg.vue'
+import createDebate from '@/views/debate/createDebate.vue'
 
 Vue.use(VueRouter)
 
@@ -79,6 +80,11 @@ const routes = [
     path: '/debate',
     name: 'debate',
     component: debateList
+  },
+  {
+    path: '/debate/createDebate',
+    name: 'createDebate',
+    component: createDebate
   },
   {
     path: '/createArticle',
