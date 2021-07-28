@@ -1,6 +1,7 @@
 package com.ssafy.common.jwt.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -54,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/member/refresh").permitAll()
 				.antMatchers("/articlelist/*").permitAll()
 				.antMatchers("/article/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/profile/img/*").permitAll()//프로필 이미지 가져오는 API
+				.antMatchers(HttpMethod.GET,"/profile/*").permitAll()//프로필 페이지 내용 가져오는 API			
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요
 
