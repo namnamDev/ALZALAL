@@ -1,6 +1,9 @@
 package com.ssafy.common.domain.article;
 
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.ssafy.common.domain.Use_Language;
 import com.ssafy.common.domain.member.Member;
@@ -34,12 +40,16 @@ public class Article {
   private Member member; // referenceName은 디폴트로 할당
   // 헌국뇌피셜 할당 자체를 Memeber로 뒀으니 자동으로 pk를 찾아서 정해주는게 아닐까??
   /// name은 어떤이름으로할것인지 정하는것
-
-  @Column(length = 500)
+  @Column(name="ARTICLE_TITLE",length = 200)
+  private String articleTitle;
+  
+  @Column(name="ARTICLE_CONTENT",length = 500)
   private String articleContent;
 
-  @Column
-  private java.sql.Timestamp articleDate;
+  @Column(name="ARTICLE_DATE",updatable = false,
+		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @CreationTimestamp
+  private LocalDateTime articleDate;
 
   @ManyToOne
   @JoinColumns({
