@@ -64,6 +64,8 @@ public class ArticleServiceImpl implements ArticleService{
 	  	if(articleClass.equals("article")){
 	    	Article article = ars.sltOne(pk);
 	    	res.put("articleDetail",article);
+	    	long countLike = ars.likeArticle(article);
+	    	res.put("like", countLike);
 	    	List<Article_Comment>comments = ars.articleComments(article);
 	    	String msg = "";
 	    	if (comments.size() == 0) {
@@ -140,11 +142,11 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 public Map<String, Object> insertArticle(String articleClass,Map<String, Object> req){
 	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
-	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
-			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+//			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	//임시멤버 등록
-//	long memberNo = 1;
-//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+	long memberNo = 1;
+	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	System.out.println(req.get("category"));
 	if (articleClass.equals("article")){
 		String category = (String) req.get("category");
@@ -169,12 +171,12 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 			insertArticle.setUseLanguage(useLanguage);
 			Article inserted = ArticleRepo.save(insertArticle);
 			res.put("article", inserted);
+			res.put("like",0);
 			msg = "등록된 댓글이 없습니다.";
 		}
 
 	}else if(articleClass.equals("discussion")){
 	}
-//	insertArticle.setProblemSite();
 	return res;
 			
 }
