@@ -1,7 +1,9 @@
 package com.ssafy.common.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -200,11 +202,30 @@ public class MemberServiceImpl implements MemberService {
 	// 현재 SecurityContext 에 있는 유저 정보 가져오기
 	@Override
 	@Transactional(readOnly = true)
-	public Member getMyInfo() {
+	public Map<String, Object> getMyInfo() {
 		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 
-		return member;
+		Map<String, Object> mem = new HashMap<>();
+		mem.put("no", member.getNo());
+		mem.put("email", member.getEmail());
+		mem.put("name", member.getName());
+
+		// 선호하는 사이트 리스트 가져옴
+		List<String> problemSiteList = new ArrayList<String>();
+		for (Problem_Site_Like tmp : member.getProblemSiteList()) {
+			problemSiteList.add(tmp.getProblemSiteName().getProblemSiteName());
+		}
+		mem.put("problemSiteList", problemSiteList);
+
+		// 선호하는 언어 리스트 가져옴
+		List<String> useLanguageLike = new ArrayList<String>();
+		for (Use_Language_Like tmp : member.getUseLanguageLike()) {
+			useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
+		}
+		mem.put("useLanguageLike", useLanguageLike);
+		
+		return mem;
 	}
 
 	// 회원정보 수정

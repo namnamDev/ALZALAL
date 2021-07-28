@@ -1,6 +1,7 @@
 package com.ssafy.common.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.TokenDto;
@@ -20,7 +21,7 @@ public interface MemberService {
 //    Member getMemberInfo(String email);
     
     //현재 로그인한 유저의 유저정보 가져오기
-    Member getMyInfo();
+    Map<String, Object> getMyInfo();
     
     //현재 로그인한 유저의 비밀번호 확인
     void checkPassword(String password);
