@@ -18,4 +18,6 @@ public interface ArticleRepositoryCustom {
 
 	long updateArticle(long articlePk, String content);
 
+	//작성자를 통한 게시글 갯수 조회
+	long countByMember(Long memberNo);
 }

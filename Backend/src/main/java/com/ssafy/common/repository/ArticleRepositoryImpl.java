@@ -83,6 +83,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 		return updatedArticle;
 	}
 	
+	//작성자를 통한 게시글 갯수 조회
+	@Override
 	public long countByMember(Long memberNo) {
 		long articleCount = queryFactory.selectFrom(article).
 				where(article.member.no.eq(memberNo)).

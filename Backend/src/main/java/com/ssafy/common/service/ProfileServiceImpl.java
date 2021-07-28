@@ -14,7 +14,7 @@ import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.ArticleRepositorySupport;
+import com.ssafy.common.repository.ArticleRepositoryImpl;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.MemberRepository;
 import com.ssafy.common.repository.Member_FollowRepository;
@@ -30,7 +30,7 @@ public class ProfileServiceImpl implements ProfileService {
 	private Member_FollowRepository member_FollowRepository;
 
 	@Autowired
-	private ArticleRepositorySupport articleRepositorySupport;
+	private ArticleRepositoryImpl articleRepositoryImpl;
 
 	@Autowired
 	private HelpmeRepository helpmeRepository;
@@ -82,7 +82,7 @@ public class ProfileServiceImpl implements ProfileService {
 		long follower = member_FollowRepository.countByMemberNo(member);
 
 		// 작성게시글 갯수
-		long articleCount = articleRepositorySupport.countByMember(member.getNo());
+		long articleCount = articleRepositoryImpl.countByMember(member.getNo());
 
 		// helpme 전체갯수
 		long helpmeCount = helpmeRepository.countByHelpmeReceptorNo(member);
