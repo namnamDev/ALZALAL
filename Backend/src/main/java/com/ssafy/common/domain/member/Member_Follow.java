@@ -13,13 +13,15 @@ import lombok.Setter;
 @Getter @Setter
 @IdClass(Member_FollowPK.class)
 public class Member_Follow {
-  @Id
+	//팔로우 하는사람
+	@Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOW_MEMBER_NO")
-	private Member follow_no;
+	private Member followNo;
 
+	//팔로우 당하는 사람
 	@Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOWING_MEMBER_NO")
-	private Member member_no;
+	private Member memberNo;
 }

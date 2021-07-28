@@ -72,5 +72,12 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport{
 						
 		return updatedArticle;
 	}
+	
+	public long countByMember(Long memberNo) {
+		long articleCount = queryFactory.selectFrom(article).
+				where(article.member.no.eq(memberNo)).
+				fetchCount();
+		return articleCount;
+	}
 }
 

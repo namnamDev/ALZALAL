@@ -1,39 +1,108 @@
 package com.ssafy.common.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.common.domain.Use_Language_Like;
+import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.ArticleRepositorySupport;
+import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.MemberRepository;
+import com.ssafy.common.repository.Member_FollowRepository;
 
 @Service
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
-	
+
 	@Autowired
 	private MemberRepository memberRepository;
 
-	
-	//프로필 이미지 설정
+	@Autowired
+	private Member_FollowRepository member_FollowRepository;
+
+	@Autowired
+	private ArticleRepositorySupport articleRepositorySupport;
+
+	@Autowired
+	private HelpmeRepository helpmeRepository;
+
+	// 프로필 이미지 설정
 	@Override
 	public void setProfileImg(String profileImgUri) {
-		Member member=memberRepository.findById(SecurityUtil.getCurrentMemberId())
-				.orElseThrow(()->new IllegalStateException("로그인 유저정보가 없습니다"));
-	
+		Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+
 		member.setProfileImg(profileImgUri);
-		return ;
+		return;
 	}
 
-	
-	//프로필 한줄소개 설정
+	// 프로필 한줄소개 설정
 	@Override
 	public void setProfileIntoduce(String introduce) {
-		Member member=memberRepository.findById(SecurityUtil.getCurrentMemberId())
-				.orElseThrow(()->new IllegalStateException("로그인 유저정보가 없습니다"));
-		
+		Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+
 		member.setIntroduce(introduce);
-		return ;
+		return;
+	}
+
+	// 프로필 내용 가져오기
+	// - 번호, 닉네임, 선호하는 언어, 선호하는 알고리즘사이트, 한줄소개, 팔로우 명수(사람만), 팔로잉 명수, 작성게시글 갯수, helpme전체갯수,
+	// helpme 응답갯수
+	@Transactional(readOnly = true)
+	public Map<String, Object> getProfileContent(Long memberNo) {
+		// 닉네임, 한줄소개 가져옴
+		Member member = memberRepository.findById(memberNo)
+				.orElseThrow(() -> new IllegalStateException("유저를 찾을 수 없습니다"));
+
+		// 선호하는 사이트 리스트 가져옴
+		List<String> problemSiteList = new ArrayList<String>();
+		for (Problem_Site_Like tmp : member.getProblemSiteList()) {
+			problemSiteList.add(tmp.getProblemSiteName().getProblemSiteName());
+		}
+
+		// 선호하는 언어 리스트 가져옴
+		List<String> useLanguageLike = new ArrayList<String>();
+		for (Use_Language_Like tmp : member.getUseLanguageLike()) {
+			useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
+		}
+		
+		// 팔로잉 명수 가져옴
+		long following = member_FollowRepository.countByFollowNo(member);
+		// 팔로워 명수 가져옴
+		long follower = member_FollowRepository.countByMemberNo(member);
+
+		// 작성게시글 갯수
+		long articleCount = articleRepositorySupport.countByMember(member.getNo());
+
+		// helpme 전체갯수
+		long helpmeCount = helpmeRepository.countByHelpmeReceptorNo(member);
+
+		// helpme 응답완료 갯수
+		long helpmeSuccessCount = helpmeRepository.countByHelpmeReceptorNoAndHelpmeStatus(member,Helpme_Class.H03);
+
+		Map<String, Object> ret=new HashMap();
+		ret.put("no",member.getNo());
+		ret.put("name", member.getName());
+		ret.put("language", member.getUseLanguageLike());
+		ret.put("problemsite", problemSiteList);
+		ret.put("introduce", useLanguageLike);
+		
+		ret.put("following", following);
+		ret.put("follower", follower);
+		ret.put("articleCount", articleCount);
+		ret.put("helpmeCount", helpmeCount);
+		ret.put("helpmeSuccessCount", helpmeSuccessCount);
+		
+		return ret;
 	}
 }

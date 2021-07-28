@@ -40,8 +40,7 @@ public class ProfileController {
 
 	@Autowired
 	private MemberService memberService;
-	
-	
+
 	// 프로필 한줄소개 설정
 	@PostMapping("/introduce")
 	public Map<String, Object> setProfileIntroduce(@RequestBody Map<String, Object> req) {
@@ -59,43 +58,48 @@ public class ProfileController {
 		ret.put("success", "True");
 		return ret;
 	}
-	
-	
+
 	// 프로필 이미지 설정
 	@PostMapping("/img")
 	public Map<String, Object> setProfileImg(MultipartFile profileImg) {
 		Map<String, Object> ret = new HashMap<>();
-		String filename="";
+		String filename = "";
 		if (!profileImg.isEmpty()) {
 			// 이미지 파일 업로드
 			try {
 				filename = fileService.saveFile(profileImg);
-			}catch (IllegalStateException e) {
+			} catch (IllegalStateException e) {
 				ret.put("success", "False");
 				ret.put("msg", e.getMessage());
-				
+				return ret;
 			}
 		}
-		//이미지 파일 이름 member테이븗에 저장
-		profileService.setProfileImg(filename);
-		
+		try {
+			// 이미지 파일 이름 member테이븗에 저장
+			profileService.setProfileImg(filename);
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+
 		ret.put("success", "True");
 		return ret;
 	}
 
-	//프로필 이미지 가져오기
+	// 프로필 이미지 가져오기
 	@GetMapping(value = "/img/{memberNo}")
 	public ResponseEntity<?> getProfileImg(@PathVariable String memberNo, HttpServletRequest request) {
-		Resource resource=null;
-		
-		String fileName=memberService.getProfileImgUri(Long.parseLong(memberNo));
-	
+		Resource resource = null;
+
+		String fileName = memberService.getProfileImgUri(Long.parseLong(memberNo));
+
 		try {
 			resource = fileService.loadFile(fileName);
-		}catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
-		
+
 		String contentType = null;
 		try {
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
@@ -110,6 +114,21 @@ public class ProfileController {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
 				.body(resource);
+	}
+
+	// 프로필 내용 가져오기
+	@GetMapping("/{memberNo}")
+	public Map<String, Object> getProfileContent(@PathVariable Long memberNo) {
+		Map<String, Object> ret = new HashMap<>();
+		
+		try {
+			ret = profileService.getProfileContent(memberNo);
+		} catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		return ret;
 	}
 
 }
