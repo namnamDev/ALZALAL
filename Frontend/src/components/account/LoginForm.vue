@@ -63,7 +63,7 @@ export default {
   created: function() {
     const token = localStorage.getItem('jwt')
     if(token){
-      this.$router.push({name:'feed'})
+      this.$router.push({name:'timeline'})
     }
   },
   methods: {

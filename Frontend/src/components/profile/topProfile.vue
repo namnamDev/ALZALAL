@@ -25,19 +25,18 @@
 					  <li>팔로워<span href="/profilePage/followPage" class="profile-stat-count">188</span> </li>
 					  <li>팔로잉<span class="profile-stat-count">206</span> </li>
 				  </ul>
-
 			  </div>
 
 			  <div class="profile-bio">
                   <p align="left" class="downInfo">선호 언어: JAVA</p>
                   <p align="left" class="downInfo">선호 문제사이트 : 백준</p>
 				  <p align="left" class="downInfo">총 n개의 게시글에 답변했습니다.</p>
-                  <p align="left">한줄소개<button class="btn btn-intro">수정</button></p>
+                  <p align="left">한줄소개<router-link to="/profilePage/introduce"><button class="btn btn-intro">수정</button></router-link></p>
+
 			  </div>
 
 		  </div>
 		<!-- End of profile section -->
-    
     </div>
   </div>
 </template>

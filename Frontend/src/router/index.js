@@ -13,7 +13,7 @@ import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
-
+import introduce from '@/views/profile/introduce.vue'
 
 Vue.use(VueRouter)
 
@@ -58,6 +58,11 @@ const routes = [
     path: '/profilePage/followPage',
     name : 'followPage',
     component: followPage
+  },
+  {
+    path: '/profilePage/introduce',
+    name: 'introduce',
+    component: introduce
   },
   {
     path: '/usermodify',

@@ -99,8 +99,17 @@ export default {
   position: absolute;
   right: 7%;
 }
+.nav-link{
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.0;
+    color: black;
+}
 .dropdown-item {
   cursor: pointer;
+      font-size: 1.0rem;
+    font-weight: 600;
+    line-height: 1.0;
 }
 
 </style>
