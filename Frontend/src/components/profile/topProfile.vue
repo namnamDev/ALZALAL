@@ -5,7 +5,7 @@
       <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
-				  <img class="profileImg" src="@/assets/images/logo.png" alt="">
+				  <img class="profileImg" :src="imgsrc" alt="">
                   <div class="modifyProfile">
                       <router-link to="/profilePage/uploadImg">
                         <button class="btn btn-modify">프로필이미지 수정</button>
@@ -47,6 +47,7 @@
 
 <script>
 import jwt_decode from 'jwt-decode'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const token = localStorage.getItem('jwt')
 let userpk = '';
 let username = '';
@@ -56,12 +57,21 @@ if (token) {
   username = decoded.name
 }
 export default {
+    data(){
+        return{
+           imgsrc: `${SERVER_URL}/profile/img/${userpk}`
+        }
+    },
     created: function() {
+        
         console.log(userpk, username)
     },
     computed: {
         userName: function(){
             return username
+        },
+        userPk: function(){
+            return userpk
         }
     }
 }

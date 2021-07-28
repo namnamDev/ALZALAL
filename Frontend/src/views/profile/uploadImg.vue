@@ -7,8 +7,8 @@
                 <button type="submit" class="btn">서버전송</button>
             </form>
 	    </div>
-        <div>
-        <img src="http://i5d205.p.ssafy.io:8080/profile/img/2" alt="">
+        <div class="profile-image">
+        <img class="profileImg" src="http://i5d205.p.ssafy.io:8080/profile/img/2" alt="">
         </div>
     </div>
   </div>
@@ -28,7 +28,8 @@ if (token) {
 export default {
   data() {
 		return {
-      images: '',
+            images: '',
+           
 		};
 	},
   created: function() {
@@ -141,5 +142,21 @@ export default {
 .btn-user{
     opacity: 0.8;
 }
+/* .profile-image {
+    float: left;
+    width: calc(33.333% - 1rem);
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3rem;
+    
+}
+
+.profileImg {
+    width: 150px;
+    height: 150px;
+    border-radius: 75%;
+    
+} */
 
 </style>
