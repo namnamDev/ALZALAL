@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +36,16 @@ public class ArticleController {
   @PutMapping("/{articleClass}/{pk}")
   public Map<String,Object>updateArticle(
 		  @PathVariable(name="articleClass")String articleClass,
-		  @PathVariable(name="pk") long articlePk
-		  ,@RequestBody Map<String,Object> req
+		  @PathVariable(name="pk") long articlePk,
+		  @RequestBody Map<String,Object> req
 		  ){
-	  //변경된 회원을 임시로 담아줌 
 	  return as.updateArticle(articleClass,articlePk,req);
+  }
+  @PostMapping("/{articleClass}")
+  public Map<String,Object>insertArticle(
+		  @PathVariable(name="articleClass")String articleClass,
+		  @RequestBody Map<String,Object> req
+		  ){
+	  return as.insertArticle(articleClass, req);
   }
 }

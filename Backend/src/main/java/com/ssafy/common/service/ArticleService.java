@@ -8,4 +8,5 @@ public interface ArticleService {
   public Map<String, Object> sltOneArticle(String articleClass, long pk);
   public Map<String, Object> deleteArticle(String articleClass, long pk);
   public Map<String, Object> updateArticle(String articleClass, long articlePk, Map<String, Object> req);
+  public Map<String, Object> insertArticle(String articleClass, Map<String, Object> req);
 }
