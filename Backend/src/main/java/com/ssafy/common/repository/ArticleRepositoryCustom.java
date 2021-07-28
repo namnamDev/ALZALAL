@@ -20,4 +20,6 @@ public interface ArticleRepositoryCustom {
 
 	//작성자를 통한 게시글 갯수 조회
 	long countByMember(Long memberNo);
+
+	long likeArticle(Article article);
 }

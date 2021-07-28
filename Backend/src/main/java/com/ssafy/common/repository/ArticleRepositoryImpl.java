@@ -1,8 +1,7 @@
 package com.ssafy.common.repository;
 import java.util.List;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.dml.InsertClause;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
@@ -11,12 +10,9 @@ import com.ssafy.common.domain.member.Member;
 
 import lombok.RequiredArgsConstructor;
 
-import com.querydsl.jpa.sql.JPASQLQuery;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import static com.ssafy.common.domain.article.QArticle.*;
+import static com.ssafy.common.domain.article.QArticle_Like.*;
 import static com.ssafy.common.domain.article.QArticle_Comment.*;
 
 
@@ -60,7 +56,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	@Override
     public Article insertArticle(Member member, Article myinsert){
 
-    	QArticle qArticle = QArticle.article;
+//    	QArticle qArticle = QArticle.article;
     	
 
 		return null;
@@ -81,6 +77,14 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 				execute();
 						
 		return updatedArticle;
+	}
+	
+	@Override
+	public long likeArticle(Article article){
+		long likeCounting = queryFactory.selectFrom(article_Like).
+				where(article_Like.articleNo.eq(article)).
+				fetchCount();
+		return likeCounting;
 	}
 	
 	//작성자를 통한 게시글 갯수 조회
