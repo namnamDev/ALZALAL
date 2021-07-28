@@ -2,6 +2,7 @@ package com.ssafy.common.domain.helpme;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
@@ -49,6 +52,8 @@ public class Helpme {
   @Enumerated(EnumType.STRING)
   private Helpme_Class helpmeStatus;
 
-  @Column(name = "HELPME_DATE")
-  private Timestamp helpmeDate;
+  @Column(name = "HELPME_DATE",updatable = false,
+		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @CreationTimestamp
+  private LocalDateTime helpmeDate;
 }

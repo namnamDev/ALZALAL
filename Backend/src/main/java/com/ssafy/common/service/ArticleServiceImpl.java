@@ -140,17 +140,16 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 public Map<String, Object> insertArticle(String articleClass,Map<String, Object> req){
 	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
-//	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
-//			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	//임시멤버 등록
-	long memberNo = 1;
-	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	long memberNo = 1;
+//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	System.out.println(req.get("category"));
 	if (articleClass.equals("article")){
 		String category = (String) req.get("category");
 		String language = (String) req.get("language");
 		String problemSite = (String) req.get("pSite");
-//		String problemNo1 = (String) req.get("pNum");//integer가 long이 안됨
 		long problemNo = Long.valueOf((String) req.get("pNum"));
 		//문제사이트 조회
 		Problem_Site problem =problemSiteRepo.sltOneProblem(problemSite, problemNo);
@@ -164,6 +163,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 			Article insertArticle = new Article();
 			insertArticle.setArticleClass(Article_Class.valueOf(category));
 			insertArticle.setArticleContent((String) req.get("content"));
+			insertArticle.setArticleTitle((String)req.get("title"));
 			insertArticle.setMember(member);
 			insertArticle.setProblemSite(problem);
 			insertArticle.setUseLanguage(useLanguage);
