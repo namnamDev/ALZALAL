@@ -22,4 +22,6 @@ public interface ArticleRepositoryCustom {
 	long countByMember(Long memberNo);
 
 	long likeArticle(Article article);
+
+	Article sltOne(Long pk);
 }
