@@ -6,14 +6,14 @@ import lombok.Data;
 
 @Data
 public class Member_FollowPK implements Serializable {
-	private Long followNo;
 	private Long memberNo;
+	private Long followNo;
 
-	public Member_FollowPK(Long followNo, Long memberNo) {
-		this.followNo = followNo;
+	public Member_FollowPK(Long memberNo, Long followNo) {
+		super();
 		this.memberNo = memberNo;
+		this.followNo = followNo;
 	}
 
 	public Member_FollowPK() {}
-
 }
