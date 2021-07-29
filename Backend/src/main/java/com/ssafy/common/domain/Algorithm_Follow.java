@@ -16,14 +16,16 @@ import lombok.Setter;
 @Getter @Setter
 @IdClass(Algorithm_FollowPK.class)
 public class Algorithm_Follow {
-  @Id
-	@ManyToOne
-	@JoinColumn(name="FOLLOWING_ALGORITHM_NO")
-	private Member followingArgorithmNo;
 
 	@Id
 	@ManyToOne
+	@JoinColumn(name="FOLLOWING_ALGORITHM_NO")
+	private Algorithm followingArgorithmNo;
+
+	//팔로우 하는사람
+	@Id
+	@ManyToOne
 	@JoinColumn(name="FOLLOW_MEMBER_NO")
-	private Member member_no;
+	private Member memberNo;
 
 }
