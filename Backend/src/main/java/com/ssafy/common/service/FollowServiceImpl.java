@@ -141,8 +141,6 @@ public class FollowServiceImpl implements FollowService{
 			throw new IllegalStateException("존재하지 않는 사이트 입니다");
 		}
 		
-		System.out.println("---------------------------------  "+ problem_Site_List);
-		System.out.println("---------------------------------  "+ problem_Site_List.getProblemSiteName());
 		Problem_Site followingProblem = null;
 		
 		Problem_SitePK problem_SitePK = new Problem_SitePK(problemSite,problemNo);
@@ -150,37 +148,29 @@ public class FollowServiceImpl implements FollowService{
 		followingProblem= problem_Site_Repository.findById(problem_SitePK).orElse(null);
 		
 		if(followingProblem==null) {
-			System.out.println("문제 없어서 삽입함 ");
 			followingProblem=new Problem_Site();
 			followingProblem.setProblemSiteName(problem_Site_List);
 			followingProblem.setProblemNo(problemNo);
-			problem_Site_Repository.save(followingProblem);
-			problem_Site_Repository.flush();		
+			problem_Site_Repository.save(followingProblem);	
+//			problem_Site_Repository.flush();
 		}
 	
-		System.out.println("aaaa "+followingProblem);
-
 		
 		Problem_FollowPK problem_FollowPK=new Problem_FollowPK(followerMember.getNo(),problem_SitePK);
-		System.out.println("zzzzzzzzzzzzzzzzz0");
 		//이미 팔로우 중인지 확인
 		if(problem_FollowRepository.findById(problem_FollowPK).isPresent()) {
-			System.out.println("zzzzzzzzzzzzzzzzz00");
 			problem_FollowRepository.deleteById(problem_FollowPK);
 			ret.put("success","True");
 			ret.put("msg","팔로우 취소 완료");
 			return ret;
 		}
-		System.out.println("zzzzzzzzzzzzzzzzz1");
 		
 		Problem_Follow problem_Follow=new Problem_Follow();
 		
 		//팔로우 하는사람 설정
 		problem_Follow.setMember(followerMember);
-		System.out.println("zzzzzzzzzzzzzzzzz2");
 		//팔로우 당하는알고리즘 설정
 		problem_Follow.setFollowingProblemSiteName(followingProblem);
-		System.out.println("zzzzzzzzzzzzzzzzz");
 		problem_FollowRepository.save(problem_Follow);
 		
 		ret.put("success","True");
