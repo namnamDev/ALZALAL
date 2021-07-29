@@ -6,18 +6,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.querydsl.core.Tuple;
 import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.member.Member_Follow;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.ArticleRepositoryImpl;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.MemberRepository;
 import com.ssafy.common.repository.Member_FollowRepository;
+import com.ssafy.common.repository.Member_FollowRepositoryCustom;
 
 @Service
 @Transactional
@@ -27,7 +31,11 @@ public class ProfileServiceImpl implements ProfileService {
 	private MemberRepository memberRepository;
 
 	@Autowired
-	private Member_FollowRepository member_FollowRepository;
+	private Member_FollowRepository memberFollowRepository;
+	
+	@Autowired
+	private Member_FollowRepositoryCustom member_FollowRepositoryCustom;
+	
 
 	@Autowired
 	private ArticleRepositoryImpl articleRepositoryImpl;
@@ -59,6 +67,7 @@ public class ProfileServiceImpl implements ProfileService {
 	// - 번호, 닉네임, 선호하는 언어, 선호하는 알고리즘사이트, 한줄소개, 팔로우 명수(사람만), 팔로잉 명수, 작성게시글 갯수, helpme전체갯수,
 	// helpme 응답갯수
 	@Transactional(readOnly = true)
+	@Override
 	public Map<String, Object> getProfileContent(Long memberNo) {
 		// 닉네임, 한줄소개 가져옴
 		Member member = memberRepository.findById(memberNo)
@@ -77,9 +86,9 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 		
 		// 팔로잉 명수 가져옴
-		long following = member_FollowRepository.countByFollowNo(member);
+//		long following = member_FollowRepository.countByFollowNo(member);
 		// 팔로워 명수 가져옴
-		long follower = member_FollowRepository.countByMemberNo(member);
+//		long follower = member_FollowRepository.countByMemberNo(member);
 
 		// 작성게시글 갯수
 		long articleCount = articleRepositoryImpl.countByMember(member.getNo());
@@ -97,12 +106,53 @@ public class ProfileServiceImpl implements ProfileService {
 		ret.put("problemsite", problemSiteList);
 		ret.put("introduce", member.getIntroduce());
 		
-		ret.put("following", following);
-		ret.put("follower", follower);
+//		ret.put("following", following);
+//		ret.put("follower", follower);
 		ret.put("articleCount", articleCount);
 		ret.put("helpmeCount", helpmeCount);
 		ret.put("helpmeSuccessCount", helpmeSuccessCount);
 		
 		return ret;
 	}
+	
+	// 팔로워 리스트 가져오기
+	@Transactional(readOnly = true)
+	@Override
+	public List<Map<String, Object> > getFollowers(Long memberNo,int page) {
+		
+		System.out.println("page "+page);
+		List<Tuple> members= member_FollowRepositoryCustom.getFollowers(memberNo,PageRequest.of(page, 20));//, PageRequest.of(page,20)
+		
+		List<Map<String, Object> > followerList = new ArrayList<>();
+		
+		for(Tuple mem: members) {
+			Map<String,Object> tmp =new HashMap<>();
+			tmp.put("no",mem.get(0,Long.class));
+			tmp.put("name",mem.get(1,String.class));
+			followerList.add(tmp);
+		}
+	
+		return followerList;
+	}
+	
+	// 사람 팔로잉 리스트 가져오기
+	@Transactional(readOnly = true)
+	@Override
+	public List<Map<String, Object> > getMemberFollowings(Long memberNo,int page) {
+		
+		System.out.println("page "+page);
+		List<Tuple> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,PageRequest.of(page, 20));//, PageRequest.of(page,20)
+		
+		List<Map<String, Object> > followerList = new ArrayList<>();
+		
+		for(Tuple mem: members) {
+			Map<String,Object> tmp =new HashMap<>();
+			tmp.put("no",mem.get(0,Long.class));
+			tmp.put("name",mem.get(1,String.class));
+			followerList.add(tmp);
+		}
+	
+		return followerList;
+	}
+	
 }

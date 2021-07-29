@@ -3,6 +3,7 @@ package com.ssafy.common.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -120,7 +122,7 @@ public class ProfileController {
 	@GetMapping("/{memberNo}")
 	public Map<String, Object> getProfileContent(@PathVariable Long memberNo) {
 		Map<String, Object> ret = new HashMap<>();
-		
+
 		try {
 			ret = profileService.getProfileContent(memberNo);
 		} catch (IllegalStateException e) {
@@ -129,6 +131,24 @@ public class ProfileController {
 			return ret;
 		}
 		return ret;
+	}
+
+	// 팔로워리스트 가져오기
+	@GetMapping("/{memberNo}/memfollowings")
+	public List<Map<String, Object>> getFollowers(@PathVariable Long memberNo,
+			@RequestParam(defaultValue = "0") int page) {
+		Map<String, Object> ret = new HashMap<>();
+
+		return profileService.getFollowers(memberNo, page);
+	}
+
+	// 사람 팔로잉리스트 가져오기
+	@GetMapping("/{memberNo}/followers")
+	public List<Map<String, Object>> getMemberFollowings(@PathVariable Long memberNo,
+			@RequestParam(defaultValue = "0") int page) {
+		Map<String, Object> ret = new HashMap<>();
+
+		return profileService.getFollowers(memberNo, page);
 	}
 
 }
