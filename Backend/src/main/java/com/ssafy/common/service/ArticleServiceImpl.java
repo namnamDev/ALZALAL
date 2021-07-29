@@ -181,10 +181,8 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertProblemSite.setProblemNo(problemNo);
 					insertProblemSite.setProblemSiteName(problemSite);
 					insertProblemSite.setProblemSiteLink("");
-					System.out.println("asdasdasd"+insertProblemSite.getProblemSiteName().getClass());
-					System.out.println("asdasdasd"+insertProblemSite.getProblemNo());
-					problemSiteRepo.save(insertProblemSite);
-					System.out.println("bbbbbbbbb"+problem);
+					problem =problemSiteRepo.save(insertProblemSite);
+					problemSiteRepo.flush();
 				}
 				
 				if(useLanguage == null){

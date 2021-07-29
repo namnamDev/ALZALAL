@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Data
 public class Problem_SitePK implements Serializable{
-  private Problem_Site_List problemSiteName;
+  private String problemSiteName;
   private long problemNo;
 }
