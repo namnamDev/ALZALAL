@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberFollwe_RepositoryImpl implements Member_FollowRepositoryCustom {
+public class Member_FollweRepositoryImpl implements Member_FollowRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	// memberNo를 팔로우 한 사람들(팔로워)
