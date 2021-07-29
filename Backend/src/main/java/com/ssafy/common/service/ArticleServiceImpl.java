@@ -1,11 +1,11 @@
 package com.ssafy.common.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
+
 
 import com.ssafy.common.domain.Algorithm;
 import com.ssafy.common.domain.Use_Language;
@@ -13,16 +13,16 @@ import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Algorithm;
 import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.article.Article_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.ArticleRepository;
-import com.ssafy.common.repository.ArticleRepositoryImpl;
+import com.ssafy.common.repository.Article_LikeRepository;
 import com.ssafy.common.repository.MemberRepository;
 import com.ssafy.common.repository.Problem_Site_ListRepository;
 import com.ssafy.common.repository.Problem_Site_Repository;
-import com.ssafy.common.repository.Problem_Site_RepositoryImpl;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.AlgorithmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,10 @@ public class ArticleServiceImpl implements ArticleService{
   private Use_LanguageRepository useLanguageRepo;
   @Autowired
   private AlgorithmRepository AlgoRepo;
-  
   @Autowired
   private Problem_Site_ListRepository problemSiteListRepo;
+  @Autowired
+  private Article_LikeRepository ArticleLikeRepo;
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass) {
 	//게시글 다건조회.. 추후 페이징처리 예정
@@ -153,12 +154,11 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 public Map<String, Object> insertArticle(String articleClass,Map<String, Object> req){
 	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
-//	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
-//			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	//임시멤버 등록
-	long memberNo = 1;
-	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-	System.out.println(req.get("category"));
+//	long memberNo = 1;
+//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	if (articleClass.equals("article")){
 		String category = (String) req.get("category");
 		String language = (String) req.get("language");
@@ -198,6 +198,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertArticle.setProblemSite(problem);
 					insertArticle.setUseLanguage(useLanguage);
 					Article inserted = ArticleRepo.save(insertArticle);
+//					Article inserted = ArticleRepo.sa
 					res.put("article", inserted);
 					res.put("like",0);
 					msg = "등록된 댓글이 없습니다.";
@@ -223,5 +224,38 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 	return res;
 			
 }
-  
+@Override
+public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<String, Object> req) {
+	//로그인한 유저 존재하는지 조회
+	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	long memberNo = 1;
+//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	String msg = "";
+	Map<String,Object>res = new HashMap<String,Object>();
+	if (articleClass.equals("article")){
+		//게시글 존재하는지 조회
+		Article article = ArticleRepo.sltOne(articlePk);
+		//좋아요 누른적 있는지 조회
+		Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
+		//눌려져있으면 delete. 안눌러져 있으면 insert
+		if(arli == null) {
+			Article_Like insertLike = new Article_Like();
+			insertLike.setArticleNo(article);
+			insertLike.setMember(member);
+			ArticleLikeRepo.save(insertLike);
+			res.put("mylike", true);
+		}else {
+			ArticleLikeRepo.deleteLike(member,article);
+			res.put("mylike", false);
+		}
+		long likeCount = ArticleRepo.likeArticle(article);
+		res.put("likeCount", likeCount);
+		res.put("articleNo", article.getArticleNo());
+	}else if(articleClass.equals("discussion")){
+		
+	}
+	return res;
+}
+
 }
