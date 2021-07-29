@@ -20,8 +20,8 @@
             {{userName}}님 환영합니다
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/passwordConfirm">정보수정</a></li>
-            <li><a class="dropdown-item" href="/profilePage">프로필페이지</a></li>
+            <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
+            <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
             <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
           </ul>
         </li>
@@ -30,9 +30,9 @@
 <!-- 로그인 안했을 때 -->
       <ul class="navbar-nav me-4" v-if="!isLogin">
         <li class="nav-item dropdown">
-          <a class="" href="/login">Log in </a>
+          <a class="" @click="login">Log in </a>
         </li>
-        <li><a class="" href="/signup">Sign Up</a></li>
+        <li><a class="" @click="signup">Sign Up</a></li>
       </ul>
     </div>
   </div>
@@ -57,7 +57,19 @@ export default {
       localStorage.removeItem("refresh");
       localStorage.removeItem("vuex")
       this.$router.push({name: 'login'})
-    }
+    },
+    modifyUser: function() {
+      this.$router.push({'name':'passwordConfirm'})
+    },
+    goProfile: function() {
+      this.$router.push({'name':'profilePage'})
+    },
+    login: function() {
+      this.$router.push({'name':'login'})
+    },
+    signup: function() {
+      this.$router.push({'name':'login'})
+    },
   },
   computed: {
     isLogin(){
@@ -100,7 +112,7 @@ export default {
   right: 7%;
 }
 .nav-link{
-    font-size: 1.4rem;
+    font-size: 2vw;
     font-weight: 600;
     line-height: 1.0;
     color: black;

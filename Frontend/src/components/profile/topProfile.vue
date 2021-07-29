@@ -2,42 +2,47 @@
   <div class="container feed">
     <div class="row">
       <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="profile box col-lg-6 col-md-10 col-sm-9 col-10 ">
+      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-10 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
 				  <img class="profileImg" :src="imgsrc" alt="">
                   <div class="modifyProfile">
-                      <router-link to="/profilePage/uploadImg">
-                        <button class="btn btn-modify">프로필이미지 수정</button>
-                      </router-link>
+                      <button class="btn clickImg" @click="clickImg">
+                        <button class="btn btn-modify">Select Image</button>
+                      </button>
                   </div>
 			  </div>
 
                 <!-- 프로필 이름, 수정버튼 -->
 			  <div class="profile-user-settings">
-				  <h1 class="profile-user-name">{{userName}}</h1>
+				  <h1 class="profile-user-name">{{name}}</h1>
                   <span>
-				  <router-link to="/passwordConfirm"><button class="btn profile-edit-btn">Edit Profile</button>
-                  </router-link>  
+				    <button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
                   </span>
 			  </div>
-
                     <!-- 게시글 팔로워 팔로잉 -->
 			  <div class="profile-stats">
 				  <ul>
-					  <li>게시글<span class="profile-stat-count">164</span> </li>
-					  <li>팔로워<span href="/profilePage/followPage" class="profile-stat-count">188</span> </li>
-					  <li>팔로잉<span class="profile-stat-count">206</span> </li>
+					  <li><span class="profile-stat-count">{{articleCount}}</span> 게시글</li>
+					  <li><span href="/profilePage/followPage" class="profile-stat-count">{{follower}}</span> 팔로워</li>
+					  <li><span href="/profilePage/followPage" class="profile-stat-count">{{following}}</span> 팔로잉</li>
 				  </ul>
 			  </div>
 
 			  <div class="profile-bio">
-                  <p align="left" class="downInfo">선호 언어: JAVA</p>
-                  <p align="left" class="downInfo">선호 문제사이트 : 백준</p>
-				  <p align="left" class="downInfo">총 n개의 게시글에 답변했습니다.</p>
-                  <p align="left">한줄소개<router-link to="/profilePage/introduce"><button class="btn btn-intro">수정</button></router-link></p>
-
+                  <p align="left" class="downInfo">Main :
+                      <span v-for="item,index in language" :key="index">{{item}}</span>
+                  </p>
+                  <p align="left" class="downInfo">Site : 
+                      <span v-for="item,index in problemsite" :key="index">{{item}}</span>
+                  </p>
+				  <p align="left" class="downInfo1">총 {{helpmeSuccessCount}}개의 게시글에 답변했습니다.</p>
 			  </div>
+              <div class="introduceline">
+                  <p class="introtext" align="left">{{introduce}}
+                      <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                  </p>
+              </div>
 
 		  </div>
 		<!-- End of profile section -->
@@ -47,46 +52,97 @@
 
 <script>
 import jwt_decode from 'jwt-decode'
+import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 const token = localStorage.getItem('jwt')
 let userpk = '';
-let username = '';
 if (token) {
   const decoded = jwt_decode(token)
   userpk = decoded.sub
-  username = decoded.name
 }
 export default {
     data(){
         return{
-           imgsrc: `${SERVER_URL}/profile/img/${userpk}`
+           imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+           no: '',
+           follower: '',
+           language: [],
+           problemsite: [],
+           helpmeSuccessCount: '',
+           following: '',
+           name: '',
+           articleCount:'',
+           helpmeCount:'',
+           introduce: '',
+
         }
     },
     created: function() {
-        
-        console.log(userpk, username)
+        console.log(userpk)
+        axios({
+            method: 'get',
+            url: `${SERVER_URL}/profile/${userpk}`,
+
+        })
+        .then(res =>{
+            console.log(res)         
+            this.no = res.data.no
+            this.follower = res.data.follower
+            this.following = res.data.following
+            this.language = res.data.language
+            this.problemsite = res.data.problemsite
+            this.helpmeSuccessCount = res.data.helpmeSuccessCount
+            this.helpmeCount = res.data.helpmeCount
+            this.name = res.data.name
+            this.articleCount = res.data.articleCount
+            this.introduce = res.data.introduce
+            console.log(this.language)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+       
+    },
+    methods: {
+        clickIntro: function() {
+            this.$router.push({'name':'introduce'})
+        },
+        clickImg: function() {
+            this.$router.push({'name':'uploadImg'})
+        },
+        clickSetting: function() {
+            this.$router.push({'name':'passwordConfirm'})
+        },
     },
     computed: {
-        userName: function(){
-            return username
-        },
         userPk: function(){
             return userpk
-        }
+        },
+        // outputLanguage: function(language){
+        //      var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        //     //특수문자 검증
+        //     if(reg.test(language)){
+        //         //특수문자 제거후 리턴
+        //         return language.replace(reg, "");    
+        //     } else {
+        //         //특수문자가 없으므로 본래 문자 리턴
+        //         return language;
+        //     }  
+        // }
     }
 }
 </script>
 
 <style scoped>
 .feed{
-  margin-top: 13vw;
+  margin-top: 15vw;
    margin-left: 50px;
 }
-.profile box{
-  border: 1px solid black;
+.profile box5{
   height: 300px;
   padding: 5rem 0;
 }
+
 .profile::after {
     content: "";
     display: block;
@@ -103,21 +159,27 @@ export default {
 }
 
 .profileImg {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: 75%;
     
 }
 .btn-modify{
-    width: 100%;
+    width: 120%;
     height: 100%;
-    font-size: .8vw;
+    font-size: 1vw;
     line-height: 1.3;
-    border: 0.1rem solid #dbdbdb;
     border-radius: 0.3rem;
     padding: 0 2.4rem;
-    margin-left: 10px;
     font-weight: 700;
+    margin-top:30px
+}
+i {
+    font-size: 1.9vw;
+    line-height: 1;
+    border-radius: 0.3rem;
+    padding: 0 2.4rem;
+    margin-left: 2rem;
 }
 
 .profile-user-settings,
@@ -125,6 +187,7 @@ export default {
 .profile-bio {
     float: left;
     width: calc(66.666% - 2rem);
+    vertical-align: 10px;
 }
 
 .profile-user-settings {
@@ -134,17 +197,10 @@ export default {
 .profile-user-name {
     display: inline-block;
     font-size: 4vw;
-    font-weight: 300;
+    font-weight: 600;
 }
 
-.profile-edit-btn {
-    font-size: 1.2vw;
-    line-height: 1.8;
-    border: 0.1rem solid #dbdbdb;
-    border-radius: 0.3rem;
-    padding: 0 2.4rem;
-    margin-left: 2rem;
-}
+
 
 .profile-settings-btn {
     font-size: 2rem;
@@ -152,12 +208,12 @@ export default {
 }
 
 .profile-stats {
-    margin-top: 2.3rem;
+    margin-top: 1rem;
 }
 
 .profile-stats li {
     display: inline-block;
-    font-size: 1.5vw;
+    font-size: 1.6vw;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;
@@ -168,14 +224,19 @@ export default {
 }
 
 .profile-bio {
-    font-size: 1.2rem;
+    font-size: 1vw;
     font-weight: 400;
     line-height: 1.5;
-    margin-top: 2.3rem;
+    margin-top: 1rem;
 }
 .downInfo {
-    font-size: 1.0rem;
+    font-size: 2.5vw;
     font-weight: 600;
+    line-height: 1.0;
+}
+.downInfo1 {
+    font-size: 1.7vw;
+    font-weight: 500;
     line-height: 1.0;
 }
 .profile-real-name,
@@ -183,5 +244,33 @@ export default {
 .profile-edit-btn {
     font-weight: 600;
 } 
+.profile-user-settings{
+    align-items: center;
+}
+.introduceline{
+    font-size: 2vw;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-top: 1rem;
+}
+.btn-intro{
+    font-weight: 600;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    font-size: 2vw;
+}
+.introtext{
+    font-size: 2.5vw;
+    font-weight: 400;
+}
+
+.clickIntro{
+    width: 1%;
+    margin-left: -10%;
+}
+.clickSetting {
+    width: 1%;
+    margin-left: -15%;
+}
+
 
 </style>

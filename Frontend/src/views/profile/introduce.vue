@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <div class="contents">
+
+    <div class="contents">
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
@@ -16,7 +16,6 @@
 		</div>
        
 	</div>
-  </div>
 </template>
 
 <script>

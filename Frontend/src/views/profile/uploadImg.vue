@@ -4,15 +4,13 @@
 	    <div class="form-wrapper form-wrapper-sm">
             <form @submit.prevent="uploadImage">
                 <input type="file" @change="onFileChange" ref="image" name="image" id="image" class="btn-file"/>
-                  <div id="preview">
-                    <img v-if="url" :src="url" />
+                  <div id="preview" class="profile-image">
+                    <img class="profileImg" v-if="url" :src="url" />
                   </div>
-                <button type="submit" class="btn">서버전송</button>
+                
             </form>
+            <button type="submit" class="btn btn-submit">프로필이미지로 지정하기</button>
 	    </div>
-        <div class="profile-image">
-            <img class="popupImageItem" :src="uploadImageFile">
-        </div>
     </div>
   </div>
 </template>
@@ -67,6 +65,7 @@ export default {
           headers: this.getToken
       }).then( (res) => {
         console.log("img",res)
+        this.$router.push({ name: 'profilePage' })
       })
       .catch( err => console.log(err))
     },
@@ -97,6 +96,7 @@ export default {
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   padding: 15px 15px;
+  height: 300px;
 }
 .form-wrapper.form-wrapper-sm {
   max-width: 500px;
@@ -149,8 +149,8 @@ export default {
 .btn-user{
     opacity: 0.8;
 }
-/* .profile-image {
-    float: left;
+.profile-image {
+    
     width: calc(33.333% - 1rem);
     height: auto;
     justify-content: center;
@@ -160,10 +160,12 @@ export default {
 }
 
 .profileImg {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: 75%;
     
-} */
-
+}
+.btn-submit{
+  display: inline;
+}
 </style>

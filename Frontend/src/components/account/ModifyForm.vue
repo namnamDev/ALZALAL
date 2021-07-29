@@ -68,10 +68,10 @@
 					class="btn">
             수정
         </button>
+        <router-link to="/profilePage"><button class="btn">취소</button></router-link>
         <button @click="deleteUser" class="btn">
             회원삭제
         </button>
-        <router-link to="/profilePage"><button class="btn">취소</button></router-link>
 			</form>
 			
 		</div>
