@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class Problem_FollowRepositoryImpl implements Problem_FollowRepositoryCustom{
 	private final JPAQueryFactory jpaQueryFactory;
 	
-	// memberNo가 팔로잉 한 알고리즘(알고리즘 팔로잉)
+	// memberNo가 팔로잉 한 문제(문제 팔로잉)
 	@Override
 	public List<Tuple> getProblemFollowings(Long memberNo,Pageable page){
 		QProblem_Follow pf=QProblem_Follow.problem_Follow;
