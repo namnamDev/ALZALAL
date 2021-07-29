@@ -8,4 +8,6 @@ public interface FollowService {
 	Map<String,Object> memberFollow(Long memberNo);
 	//알고리즘 팔로우, 팔로우취소
 	Map<String,Object> algorithmFollow(String algorithm);
+	//문제 팔로우, 팔로우취소
+	Map<String,Object> problemFollow(String problemSite, int problemNo);
 }
