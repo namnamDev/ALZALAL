@@ -5,7 +5,6 @@ import java.util.List;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
-import com.ssafy.common.domain.article.QArticle;
 import com.ssafy.common.domain.member.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -30,16 +29,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
       return aa;
     }
     //게시글 단건조회
+  	@Override
     public Article sltOne(Long pk){
     	Article sltOne = queryFactory.selectFrom(article)
     			.where(article.articleNo.eq(pk))
     			.fetchOne();
-//    	Article sltOne = queryFactory.select(
-//    			new
-//    			).from(article)
-//    			.where(article.articleNo.eq(pk))
-//    			.fetchOne();
-    	
     	
     	return sltOne;
     }
@@ -56,11 +50,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	@Override
     public Article insertArticle(Member member, Article myinsert){
 
-//    	QArticle qArticle = QArticle.article;
-    	
-
 		return null;
     }
+	
 	@Override
     public long articleDelete(Long articlePk) {
     	long deletedArticle = queryFactory.delete(article).
@@ -81,8 +73,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	
 	@Override
 	public long likeArticle(Article article){
+//		long test =article.getArticleNo();//pk받아옴
 		long likeCounting = queryFactory.selectFrom(article_Like).
 				where(article_Like.articleNo.eq(article)).
+//				where(article_Like.articleNo.articleNo.eq(test)).
+				//article_like의pk인 article객체의 pk인 articleNo와 test와 비교
 				fetchCount();
 		return likeCounting;
 	}
@@ -95,5 +90,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 				fetchCount();
 		return articleCount;
 	}
+	
+//	@Override
+//	pubic Argorithm sltOneAlgo()
 }
 

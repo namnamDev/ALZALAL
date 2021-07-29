@@ -1,23 +1,11 @@
 package com.ssafy.common.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.problem.Problem_Site;
+import com.ssafy.common.domain.problem.Problem_SitePK;
 
-import lombok.RequiredArgsConstructor;
 
-import static com.ssafy.common.domain.problem.QProblem_Site.*;
+public interface Problem_Site_Repository extends JpaRepository<Problem_Site,Problem_SitePK>,Problem_Site_RepositoryCustom{
 
-@RequiredArgsConstructor
-@Repository
-public class Problem_Site_Repository {
-	private final JPAQueryFactory queryFactory;
-	public Problem_Site sltOneProblem(String siteName,long No) {
-		
-		return queryFactory.selectFrom(problem_Site).
-				where(problem_Site.problemSiteName.eq(siteName)).
-				where(problem_Site.problemNo.eq(No)).
-				fetchOne();
-	}
 }
