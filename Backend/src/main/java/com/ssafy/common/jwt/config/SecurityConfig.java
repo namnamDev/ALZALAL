@@ -56,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/articlelist/*").permitAll()
 				.antMatchers("/article/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/profile/img/*").permitAll()//프로필 이미지 가져오는 API
-				.antMatchers(HttpMethod.GET,"/profile/*").permitAll()//프로필 페이지 내용 가져오는 API			
+				.antMatchers(HttpMethod.GET,"/profile/*").permitAll()//프로필 페이지 내용 가져오는 API
+//				.antMatchers("/like/**").permitAll()//**로컬포스트맨테스트용**
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요
 
