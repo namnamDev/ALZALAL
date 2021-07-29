@@ -93,9 +93,9 @@ public class ProfileServiceImpl implements ProfileService {
 		Map<String, Object> ret=new HashMap();
 		ret.put("no",member.getNo());
 		ret.put("name", member.getName());
-		ret.put("language", member.getUseLanguageLike());
+		ret.put("language", useLanguageLike);
 		ret.put("problemsite", problemSiteList);
-		ret.put("introduce", useLanguageLike);
+		ret.put("introduce", member.getIntroduce());
 		
 		ret.put("following", following);
 		ret.put("follower", follower);
