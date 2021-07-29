@@ -159,5 +159,14 @@ public class ProfileController {
 
 		return profileService.getAlgorithmFollowings(memberNo, page);
 	}
+	
+	// 문제 팔로잉리스트 가져오기
+	@GetMapping("/{memberNo}/problemfollowings")
+	public List<Map<String, Object>> getProblemFollowings(@PathVariable Long memberNo,
+			@RequestParam(defaultValue = "0") int page) {
+		Map<String, Object> ret = new HashMap<>();
+
+		return profileService.getProblemFollowings(memberNo, page);
+	}
 
 }

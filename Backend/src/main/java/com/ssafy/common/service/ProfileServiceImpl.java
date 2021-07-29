@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
-import com.ssafy.common.domain.Algorithm_Follow;
 import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
-import com.ssafy.common.domain.member.Member_Follow;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Algorithm_FolloweRepositoryCustom;
@@ -24,6 +22,7 @@ import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.MemberRepository;
 import com.ssafy.common.repository.Member_FollowRepository;
 import com.ssafy.common.repository.Member_FollowRepositoryCustom;
+import com.ssafy.common.repository.Problem_FollowRepositoryCustom;
 
 @Service
 @Transactional
@@ -41,7 +40,8 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private Algorithm_FolloweRepositoryCustom algorithm_FolloweRepositoryCustom;
 	
-	
+	@Autowired
+	private Problem_FollowRepositoryCustom followRepositoryCustom;
 
 	@Autowired
 	private ArticleRepositoryImpl articleRepositoryImpl;
@@ -146,7 +146,6 @@ public class ProfileServiceImpl implements ProfileService {
 	public List<Map<String, Object> > getMemberFollowings(Long memberNo,int page) {
 		
 		List<Tuple> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,PageRequest.of(page, 20));
-		
 		List<Map<String, Object> > followingList = new ArrayList<>();
 		
 		for(Tuple mem: members) {
@@ -168,5 +167,23 @@ public class ProfileServiceImpl implements ProfileService {
 		
 	
 		return algorithm;
+	}
+	
+	// 문제 팔로잉 리스트 가져오기
+	@Transactional(readOnly = true)
+	@Override
+	public List<Map<String, Object>> getProblemFollowings(Long memberNo,int page) {
+		
+		List<Tuple> problem = followRepositoryCustom.getProblemFollowings(memberNo, PageRequest.of(page, 20));		
+		List<Map<String, Object>> followingList = new ArrayList<>();
+		
+		for(Tuple prob: problem) {
+			Map<String,Object> tmp =new HashMap<>();
+			tmp.put("site",prob.get(0,String.class));
+			tmp.put("no",prob.get(1,Long.class));
+			followingList.add(tmp);
+		}
+	
+		return followingList;
 	}
 }

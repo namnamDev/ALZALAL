@@ -5,24 +5,25 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.common.domain.QAlgorithm_Follow;
+import com.ssafy.common.domain.problem.QProblem_Follow;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Repository
-public class Algorithm_FolloweRepositoryImpl implements Algorithm_FolloweRepositoryCustom {
+public class Problem_FollowRepositoryImpl implements Problem_FollowRepositoryCustom{
 	private final JPAQueryFactory jpaQueryFactory;
 	
 	// memberNo가 팔로잉 한 알고리즘(알고리즘 팔로잉)
 	@Override
-	public List<String> getAlgorithmFollowings(Long memberNo,Pageable page){
-		QAlgorithm_Follow af=QAlgorithm_Follow.algorithm_Follow;
+	public List<Tuple> getProblemFollowings(Long memberNo,Pageable page){
+		QProblem_Follow pf=QProblem_Follow.problem_Follow;
 		
-		List<String> result = jpaQueryFactory.select(af.followingArgorithmNo.algorithmName)
-				.from(af)
-				.where(af.memberNo.no.eq(memberNo))
+		List<Tuple> result = jpaQueryFactory.select(pf.followingProblemSiteName.problemSiteName, pf.followingProblemSiteName.problemNo)
+				.from(pf)
+				.where(pf.member.no.eq(memberNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();

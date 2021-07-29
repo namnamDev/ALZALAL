@@ -23,4 +23,7 @@ public interface ProfileService {
 	
 	// 알고리즘 팔로잉 리스트 가져오기
 	List<String> getAlgorithmFollowings(Long memberNo,int page);
+	
+	// 문제 팔로잉 리스트 가져오기
+	public List<Map<String, Object>> getProblemFollowings(Long memberNo,int page);
 }
