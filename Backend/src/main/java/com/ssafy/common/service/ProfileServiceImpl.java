@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.Tuple;
+import com.ssafy.common.domain.Algorithm_Follow;
 import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.member.Member_Follow;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.Algorithm_FolloweRepositoryCustom;
 import com.ssafy.common.repository.ArticleRepositoryImpl;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.MemberRepository;
@@ -35,6 +37,10 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private Member_FollowRepositoryCustom member_FollowRepositoryCustom;
+	
+	@Autowired
+	private Algorithm_FolloweRepositoryCustom algorithm_FolloweRepositoryCustom;
+	
 	
 
 	@Autowired
@@ -120,8 +126,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<Map<String, Object> > getFollowers(Long memberNo,int page) {
 		
-		System.out.println("page "+page);
-		List<Tuple> members= member_FollowRepositoryCustom.getFollowers(memberNo,PageRequest.of(page, 20));//, PageRequest.of(page,20)
+		List<Tuple> members= member_FollowRepositoryCustom.getFollowers(memberNo,PageRequest.of(page, 20));
 		
 		List<Map<String, Object> > followerList = new ArrayList<>();
 		
@@ -140,19 +145,28 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<Map<String, Object> > getMemberFollowings(Long memberNo,int page) {
 		
-		System.out.println("page "+page);
-		List<Tuple> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,PageRequest.of(page, 20));//, PageRequest.of(page,20)
+		List<Tuple> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,PageRequest.of(page, 20));
 		
-		List<Map<String, Object> > followerList = new ArrayList<>();
+		List<Map<String, Object> > followingList = new ArrayList<>();
 		
 		for(Tuple mem: members) {
 			Map<String,Object> tmp =new HashMap<>();
 			tmp.put("no",mem.get(0,Long.class));
 			tmp.put("name",mem.get(1,String.class));
-			followerList.add(tmp);
+			followingList.add(tmp);
 		}
 	
-		return followerList;
+		return followingList;
 	}
 	
+	// 알고리즘 팔로잉 리스트 가져오기
+	@Transactional(readOnly = true)
+	@Override
+	public List<String> getAlgorithmFollowings(Long memberNo,int page) {
+		
+		List<String> algorithm= algorithm_FolloweRepositoryCustom.getAlgorithmFollowings(memberNo,PageRequest.of(page, 20));
+		
+	
+		return algorithm;
+	}
 }

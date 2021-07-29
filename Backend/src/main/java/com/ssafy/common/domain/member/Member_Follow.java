@@ -17,11 +17,11 @@ public class Member_Follow {
 	@Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOW_MEMBER_NO")
-	private Member followNo;
+	private Member memberNo;
 
 	//팔로우 당하는 사람
 	@Id
 	@ManyToOne
 	@JoinColumn(name="FOLLOWING_MEMBER_NO")
-	private Member memberNo;
+	private Member followNo;
 }

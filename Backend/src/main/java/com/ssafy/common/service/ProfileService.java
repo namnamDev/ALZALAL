@@ -3,6 +3,8 @@ package com.ssafy.common.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
 public interface ProfileService {
 	// 프로필 이미지 설정
 	void setProfileImg(String profileImgUri);
@@ -18,4 +20,7 @@ public interface ProfileService {
 	
 	// 사람 팔로잉 리스트 가져오기
 	List<Map<String, Object> > getMemberFollowings(Long memberNo,int page);
+	
+	// 알고리즘 팔로잉 리스트 가져오기
+	List<String> getAlgorithmFollowings(Long memberNo,int page);
 }

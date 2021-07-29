@@ -134,8 +134,8 @@ public class ProfileController {
 	}
 
 	// 팔로워리스트 가져오기
-	@GetMapping("/{memberNo}/memfollowings")
-	public List<Map<String, Object>> getFollowers(@PathVariable Long memberNo,
+	@GetMapping("/{memberNo}/followers")
+	public List<Map<String, Object>> getMemberFollowings(@PathVariable Long memberNo,
 			@RequestParam(defaultValue = "0") int page) {
 		Map<String, Object> ret = new HashMap<>();
 
@@ -143,12 +143,21 @@ public class ProfileController {
 	}
 
 	// 사람 팔로잉리스트 가져오기
-	@GetMapping("/{memberNo}/followers")
-	public List<Map<String, Object>> getMemberFollowings(@PathVariable Long memberNo,
+	@GetMapping("/{memberNo}/memfollowings")
+	public List<Map<String, Object>> getFollowers(@PathVariable Long memberNo,
 			@RequestParam(defaultValue = "0") int page) {
 		Map<String, Object> ret = new HashMap<>();
 
-		return profileService.getFollowers(memberNo, page);
+		return profileService.getMemberFollowings(memberNo, page);
+	}
+
+	// 알고리즘 팔로잉리스트 가져오기
+	@GetMapping("/{memberNo}/algofollowings")
+	public List<String> getMaemberFollowings(@PathVariable Long memberNo,
+			@RequestParam(defaultValue = "0") int page) {
+		Map<String, Object> ret = new HashMap<>();
+
+		return profileService.getAlgorithmFollowings(memberNo, page);
 	}
 
 }

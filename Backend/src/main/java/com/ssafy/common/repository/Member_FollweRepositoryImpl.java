@@ -21,9 +21,9 @@ public class Member_FollweRepositoryImpl implements Member_FollowRepositoryCusto
 	public List<Tuple> getFollowers(Long memberNo, Pageable page) {
 		QMember_Follow mf = QMember_Follow.member_Follow;
 
-		List<Tuple> result = queryFactory.select(mf.followNo.no, mf.followNo.name)
+		List<Tuple> result = queryFactory.select(mf.memberNo.no, mf.memberNo.name)
 				.from(mf)
-				.where(mf.memberNo.no.eq(memberNo))
+				.where(mf.followNo.no.eq(memberNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
@@ -36,9 +36,9 @@ public class Member_FollweRepositoryImpl implements Member_FollowRepositoryCusto
 	public List<Tuple> getMemberFollowings(Long memberNo, Pageable page) {
 		QMember_Follow mf = QMember_Follow.member_Follow;
 
-		List<Tuple> result = queryFactory.select(mf.memberNo.no, mf.memberNo.name)
+		List<Tuple> result = queryFactory.select(mf.followNo.no, mf.followNo.name)
 				.from(mf)
-				.where(mf.followNo.no.eq(memberNo))	
+				.where(mf.memberNo.no.eq(memberNo))	
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
