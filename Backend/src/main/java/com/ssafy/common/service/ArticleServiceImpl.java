@@ -6,19 +6,25 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+
+import com.ssafy.common.domain.Algorithm;
 import com.ssafy.common.domain.Use_Language;
 import com.ssafy.common.domain.article.Article;
+import com.ssafy.common.domain.article.Article_Algorithm;
 import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.article.Article_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
+import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.ArticleRepository;
-import com.ssafy.common.repository.ArticleRepositoryImpl;
+import com.ssafy.common.repository.Article_LikeRepository;
 import com.ssafy.common.repository.MemberRepository;
+import com.ssafy.common.repository.Problem_Site_ListRepository;
 import com.ssafy.common.repository.Problem_Site_Repository;
 import com.ssafy.common.repository.Use_LanguageRepository;
-
+import com.ssafy.common.repository.AlgorithmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +32,9 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class ArticleServiceImpl implements ArticleService{
   @Autowired
-  private ArticleRepositoryImpl ars;
-  @Autowired
-  private ArticleRepository ArticleRepo;
+  private  ArticleRepository ArticleRepo;
+//  @Autowired
+//  private ArticleRepository ArticleRepo;
   
   @Autowired
   private MemberRepository memberRepository;
@@ -36,7 +42,12 @@ public class ArticleServiceImpl implements ArticleService{
   private Problem_Site_Repository problemSiteRepo;
   @Autowired
   private Use_LanguageRepository useLanguageRepo;
-  
+  @Autowired
+  private AlgorithmRepository AlgoRepo;
+  @Autowired
+  private Problem_Site_ListRepository problemSiteListRepo;
+  @Autowired
+  private Article_LikeRepository ArticleLikeRepo;
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass) {
 	//게시글 다건조회.. 추후 페이징처리 예정
@@ -45,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService{
     	
     }else if(articleClass.equals("article")){
     	//게시글 전체 조회 결과
-        List<Article> articleList = ars.findAll();
+        List<Article> articleList = ArticleRepo.findAll();
         res.put("article", articleList);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
         	res.put("msg", "게시글이 존재하지 않습니다.");
@@ -62,11 +73,12 @@ public class ArticleServiceImpl implements ArticleService{
 	  //게시글 단건조회 및 댓글 조회
 	  Map<String,Object>res = new HashMap<String,Object>();
 	  	if(articleClass.equals("article")){
-	    	Article article = ars.sltOne(pk);
+	    	Article article = ArticleRepo.sltOne(pk);
+//	    	ArticleRepo.
 	    	res.put("articleDetail",article);
-	    	long countLike = ars.likeArticle(article);
+	    	long countLike = ArticleRepo.likeArticle(article);
 	    	res.put("like", countLike);
-	    	List<Article_Comment>comments = ars.articleComments(article);
+	    	List<Article_Comment>comments = ArticleRepo.articleComments(article);
 	    	String msg = "";
 	    	if (comments.size() == 0) {
 	    		msg = "등록된 댓글이 없습니다.";
@@ -88,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService{
 	  	if(articleClass.equals("article")){
 	  		
 	  		//삭제 전 단건조회
-	    	Article article = ars.sltOne(articlePk);
+	    	Article article = ArticleRepo.sltOne(articlePk);
 	    	if (article == null) {
 	    		msg = "존재하지 않는 게시글입니다.";
 	    	}else {
@@ -96,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService{
 	    		if(member != article.getMember()){
 	    		msg ="자신의 글만 삭제할 수 있습니다.";
 	    		}else{
-		    		long deletedArticle = ars.articleDelete(articlePk);
+		    		long deletedArticle = ArticleRepo.articleDelete(articlePk);
 		    		res.put("deletedArtcle", deletedArticle);
 		    		msg = "성공적으로 삭제되었습니다.";
 	    		}
@@ -118,7 +130,7 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	if(articleClass.equals("article")){
 		//수정 전 단건 조회
-		Article article = ars.sltOne(articlePk);
+		Article article = ArticleRepo.sltOne(articlePk);
 		if (article == null) {
     		msg = "존재하지 않는 게시글입니다.";
     	}else {
@@ -126,7 +138,7 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 	    		msg ="자신의 글만 삭제할 수 있습니다.";
 	    		}else{
 	        		String content = (String) req.get("content");
-	        		long updatedArticle = ars.updateArticle(articlePk,content);
+	        		long updatedArticle = ArticleRepo.updateArticle(articlePk,content);
 	        		res.put("updatedArtcle", updatedArticle);
 	        		msg = "성공적으로 수정되었습니다.";
 	    		}
@@ -142,43 +154,108 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 public Map<String, Object> insertArticle(String articleClass,Map<String, Object> req){
 	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
-//	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
-//			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	//임시멤버 등록
-	long memberNo = 1;
-	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-	System.out.println(req.get("category"));
+//	long memberNo = 1;
+//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	if (articleClass.equals("article")){
 		String category = (String) req.get("category");
 		String language = (String) req.get("language");
-		String problemSite = (String) req.get("pSite");
-		long problemNo = Long.valueOf((String) req.get("pNum"));
-		//문제사이트 조회
-		Problem_Site problem =problemSiteRepo.sltOneProblem(problemSite, problemNo);
-		Use_Language useLanguage= useLanguageRepo.findOne(language);
-		if (problem == null) {
-			msg ="문제가 존재하지 않습니다.";
-		}else if(useLanguage == null){
-			//사용언어 조회
-			msg = "해당 언어가 존재하지 않습니다.";
-		}else{
-			Article insertArticle = new Article();
-			insertArticle.setArticleClass(Article_Class.valueOf(category));
-			insertArticle.setArticleContent((String) req.get("content"));
-			insertArticle.setArticleTitle((String)req.get("title"));
-			insertArticle.setMember(member);
-			insertArticle.setProblemSite(problem);
-			insertArticle.setUseLanguage(useLanguage);
-			Article inserted = ArticleRepo.save(insertArticle);
-			res.put("article", inserted);
-			res.put("like",0);
-			msg = "등록된 댓글이 없습니다.";
+		String problemSiteNM = (String) req.get("pSite");
+		String problemNoCheck =  (String) req.get("pNum");
+		if (problemNoCheck.equals("")){
+			msg = "문제넘버를 입력해주세요";
+//			throw new IllegalStateException(msg);
+		}else {
+			Problem_Site_List problemSite = problemSiteListRepo.findOne(problemSiteNM);
+			if (problemSite == null){
+				msg = "존재하지 않는 문제 사이트입니다.";
+			}else {
+				long problemNo = Long.valueOf(problemNoCheck);
+				
+				Problem_Site problem =problemSiteRepo.sltOneProblem(problemSite, problemNo);
+				Use_Language useLanguage= useLanguageRepo.findOne(language);
+				if (problem == null) {
+					Problem_Site insertProblemSite = new Problem_Site();
+					insertProblemSite.setProblemNo(problemNo);
+					insertProblemSite.setProblemSiteName(problemSite);
+					insertProblemSite.setProblemSiteLink("");
+					System.out.println("asdasdasd"+insertProblemSite.getProblemSiteName().getClass());
+					System.out.println("asdasdasd"+insertProblemSite.getProblemNo());
+					problemSiteRepo.save(insertProblemSite);
+					System.out.println("bbbbbbbbb"+problem);
+				}
+				
+				if(useLanguage == null){
+					msg = "해당 언어가 존재하지 않습니다.";
+				}else{
+					Article insertArticle = new Article();
+					insertArticle.setArticleClass(Article_Class.valueOf(category));
+					insertArticle.setArticleContent((String) req.get("content"));
+					insertArticle.setArticleTitle((String)req.get("title"));
+					insertArticle.setMember(member);
+					insertArticle.setProblemSite(problem);
+					insertArticle.setUseLanguage(useLanguage);
+					Article inserted = ArticleRepo.save(insertArticle);
+//					Article inserted = ArticleRepo.sa
+					res.put("article", inserted);
+					res.put("like",0);
+					msg = "등록된 댓글이 없습니다.";
+					if (category.equals("A01")){
+						Article_Algorithm artiAlgo = new Article_Algorithm();
+						List<String> usedAlgo = (List<String>) req.get("algo");
+						for (String algo : usedAlgo) {
+							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
+							if (sltOneAlgo != null){
+								artiAlgo.setAlgorithmName(sltOneAlgo);
+								artiAlgo.setArticleNo(inserted);
+							}else {
+								msg = "알고리즘이 존재하지 않습니다.";
+							}
+						}
+					}
+				}
+			}	
 		}
-
 	}else if(articleClass.equals("discussion")){
 	}
+	res.put("msg", msg);
 	return res;
 			
 }
-  
+@Override
+public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<String, Object> req) {
+	//로그인한 유저 존재하는지 조회
+	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	long memberNo = 1;
+//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	String msg = "";
+	Map<String,Object>res = new HashMap<String,Object>();
+	if (articleClass.equals("article")){
+		//게시글 존재하는지 조회
+		Article article = ArticleRepo.sltOne(articlePk);
+		//좋아요 누른적 있는지 조회
+		Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
+		//눌려져있으면 delete. 안눌러져 있으면 insert
+		if(arli == null) {
+			Article_Like insertLike = new Article_Like();
+			insertLike.setArticleNo(article);
+			insertLike.setMember(member);
+			ArticleLikeRepo.save(insertLike);
+			res.put("mylike", true);
+		}else {
+			ArticleLikeRepo.deleteLike(member,article);
+			res.put("mylike", false);
+		}
+		long likeCount = ArticleRepo.likeArticle(article);
+		res.put("likeCount", likeCount);
+		res.put("articleNo", article.getArticleNo());
+	}else if(articleClass.equals("discussion")){
+		
+	}
+	return res;
+}
+
 }
