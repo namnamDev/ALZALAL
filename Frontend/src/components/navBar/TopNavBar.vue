@@ -17,7 +17,8 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {{userName}}님 환영합니다
+            {{userEmail}},
+            
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
@@ -79,6 +80,9 @@ export default {
     userName: function(){
       return username
     },
+    userEmail(){
+      return this.$store.getters.getEmail
+    }
 
   }
 }

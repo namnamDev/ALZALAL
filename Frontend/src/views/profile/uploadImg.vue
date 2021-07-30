@@ -4,8 +4,11 @@
 	    <div class="form-wrapper form-wrapper-sm">
             <form @submit.prevent="uploadImage">
                 <input type="file" @change="onFileChange" ref="image" name="image" id="image" class="btn-file"/>
-                  <div id="preview" class="profile-image">
-                    <img class="profileImg" v-if="url" :src="url" />
+                  <div id="preview" class="profile-image" v-if="url">
+                    <img class="profileImg"  :src="url"/>
+                  </div>
+                  <div id="preview" class="profile-image" v-if="!url">
+                    <img class="profileImg"  alt="any img"/>
                   </div>
                 
             </form>
@@ -67,7 +70,9 @@ export default {
         console.log("img",res)
         this.$router.push({ name: 'profilePage' })
       })
-      .catch( err => console.log(err))
+      .catch( err => 
+        console.log(err),
+      )
     },
     onFileChange(e) {
         const file = e.target.files[0];

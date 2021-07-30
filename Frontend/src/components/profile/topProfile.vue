@@ -1,14 +1,15 @@
 <template>
   <div class="container feed">
     <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-10 ">
+      <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
+      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-9 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
-				  <img class="profileImg" :src="imgsrc" alt="">
+				  <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+                  <img class="profileImg" v-if="!imgsrc" src="@/assets/images/profileImg.png" alt="">
                   <div class="modifyProfile">
                       <button class="btn clickImg" @click="clickImg">
-                        <button class="btn btn-modify">Select Image</button>
+                          Select Image
                       </button>
                   </div>
 			  </div>
@@ -36,7 +37,7 @@
                   <p align="left" class="downInfo">Site : 
                       <span v-for="item,index in problemsite" :key="index">{{item}}</span>
                   </p>
-				  <p align="left" class="downInfo1">총 {{helpmeSuccessCount}}개의 게시글에 답변했습니다.</p>
+				  <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
 			  </div>
               <div class="introduceline">
                   <p class="introtext" align="left">{{introduce}}
@@ -99,7 +100,7 @@ export default {
             console.log(this.language)
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
         })
        
     },
@@ -191,6 +192,7 @@ i {
 }
 
 .profile-user-settings {
+
     margin-top: 1.1rem;
 }
 
@@ -198,6 +200,7 @@ i {
     display: inline-block;
     font-size: 4vw;
     font-weight: 600;
+    margin-left: 5vw;
 }
 
 
