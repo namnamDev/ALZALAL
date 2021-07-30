@@ -6,6 +6,12 @@
     <div class="user">
       <ul class="navbar-nav me-4">
         <li class="nav-item dropdown">
+          <div v-if="isLogin">
+            로그인했다
+          </div>
+          <div v-else>
+            로그인 안했다.
+          </div>
           <a
             class="nav-link"
             href="#"
@@ -19,7 +25,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/passwordConfirm">정보수정</a></li>
             <li><a class="dropdown-item" href="/profilePage">프로필페이지</a></li>
-            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+            <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
           </ul>
         </li>
       </ul>
@@ -29,7 +35,22 @@
 
 <script>
 export default {
-
+  data() {
+    return{
+    }
+  },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin
+    }
+  },
+  methods: {
+    logout: function() {  
+      this.$store.dispatch('logout')
+      localStorage.removeItem('jwt')
+      this.$router.push({name : 'timeline'})
+    }
+  }
 }
 </script>
 
@@ -41,7 +62,7 @@ export default {
 .top{
   position:fixed;
   background-color: white;
-  z-index:1;
+  z-index:4;
   width: 100%;
   height:70px;
   /* border: 1px solid black; */

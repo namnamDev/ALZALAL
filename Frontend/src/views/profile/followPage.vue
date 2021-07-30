@@ -90,7 +90,6 @@ export default {
   margin-top: 13vw;
 }
 .box {
-  
   height: 300px;
 }
 .userImg1 {
