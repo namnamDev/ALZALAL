@@ -1,18 +1,29 @@
 package com.ssafy.common.repository.article;
+import static com.ssafy.common.domain.article.QArticle.article;
+import static com.ssafy.common.domain.article.QArticle_Comment.article_Comment;
+import static com.ssafy.common.domain.article.QArticle_Like.article_Like;
+
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.article.QArticle;
+import com.ssafy.common.domain.article.QArticle_Comment;
+import com.ssafy.common.domain.article.QArticle_Like;
 import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.MemberDTO;
+import com.ssafy.common.dto.ProblemSiteDTO;
 
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.stereotype.Repository;
-import static com.ssafy.common.domain.article.QArticle.*;
-import static com.ssafy.common.domain.article.QArticle_Like.*;
-import static com.ssafy.common.domain.article.QArticle_Comment.*;
 
 
 
@@ -93,5 +104,49 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	
 //	@Override
 //	pubic Argorithm sltOneAlgo()
+	
+	
+	  
+	// memberNo를 통해 해당 member를 작성자로 가지는 모든 게시글, 좋아요 수 조회, memberNo유저의 좋아요 여부, 댓글 갯수
+	@Override
+	public Optional<List<ArticleDTO>> getListByMemberNO(Long memberNo,Long nowLoginMemberNo,Pageable page){
+		QArticle qa=QArticle.article;
+		QArticle_Like qal= QArticle_Like.article_Like;
+		QArticle_Comment qac=QArticle_Comment.article_Comment;
+		
+		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
+							, qa.articleNo
+							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
+							,qa.articleTitle,qa.articleContent,qa.articleDate
+							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
+							,qa.useLanguage.useLanguage, qa.articleClass
+							, ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
+			                "likeCount")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
+			                "likeState")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qac.count())
+			                        .from(qac)
+			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+			                "commentCount")									
+							))
+			.from(qa)
+			.where(qa.member.no.eq(memberNo))
+			.offset(page.getOffset())
+			.limit(page.getPageSize())
+			.fetch();
+	
+		
+		return Optional.of(result) ;
+	}
+	
+	//게시글 다건조회
+
 }
 
