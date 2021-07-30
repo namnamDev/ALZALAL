@@ -6,7 +6,7 @@
     <div class="user">      
 
       <!-- 로그인 했을 때 -->
-      <ul class="navbar-nav me-4" v-if="isLogin">
+      <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
         <li class="nav-item dropdown" @click="click">
           <a
             class="nav-link"
@@ -16,7 +16,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {{userEmail}},
+            {{userEmail}}
             
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -28,12 +28,16 @@
       </ul>
 
 <!-- 로그인 안했을 때 -->
-      <ul class="navbar-nav me-4" v-if="!isLogin">
+      <div class="login-signup mt-4" v-if="!isLogin">
+        <span @click="login">Log in /</span>
+        <span @click="signup"> Sign Up</span>
+      </div>
+      <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
         <li class="nav-item dropdown">
           <a class="" @click="login">Log in </a>
         </li>
         <li><a class="" @click="signup">Sign Up</a></li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>
@@ -68,7 +72,7 @@ export default {
       this.$router.push({'name':'login'})
     },
     signup: function() {
-      this.$router.push({'name':'login'})
+      this.$router.push({'name':'signup'})
     },
     click: function() {
       console.log('click')
@@ -112,13 +116,15 @@ export default {
   cursor: pointer;
 }
 .user{
-  border: 10px solid blanchedalmond;
-  font-size:2vw;
+  /* border: 10px solid blanchedalmond; */
+  font-size:20px;
   position: absolute;
   right: 7%;
+  top: 20px;
 }
+
 .nav-link{
-    font-size: 2vw;
+    font-size: 25px;
     font-weight: 600;
     line-height: 1.0;
     color: black;
@@ -128,6 +134,19 @@ export default {
       font-size: 1.0rem;
     font-weight: 600;
     line-height: 1.0;
+}
+.login-signup{
+  /* margin-top: */
+  cursor: pointer;
+}
+.login-signup span:hover{
+  /* transform: scale(1.2); */
+  font-size: 25px;
+}
+@media (max-width: 576px){
+  .user{
+    right: 0;    
+  }
 }
 
 </style>
