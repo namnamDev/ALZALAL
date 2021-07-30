@@ -1,7 +1,7 @@
 <template>
   <div class="container feed">
     <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
+      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
       <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-9 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
@@ -37,8 +37,11 @@
                   <p align="left" class="downInfo">Site : 
                       <span v-for="item,index in problemsite" :key="index">{{item}}</span>
                   </p>
-				  <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
+				 
 			  </div>
+              <div>
+                   <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
+              </div>
               <div class="introduceline">
                   <p class="introtext" align="left">{{introduce}}
                       <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
@@ -238,8 +241,8 @@ i {
     line-height: 1.0;
 }
 .downInfo1 {
-    font-size: 1.7vw;
-    font-weight: 500;
+    font-size: 1.6vw;
+    font-weight: 600;
     line-height: 1.0;
 }
 .profile-real-name,

@@ -10,9 +10,9 @@
                   <div id="preview" class="profile-image" v-if="!url">
                     <img class="profileImg"  alt="any img"/>
                   </div>
-                
+                <button type="submit" class="btn btn-submit">프로필이미지로 지정하기</button>
             </form>
-            <button type="submit" class="btn btn-submit">프로필이미지로 지정하기</button>
+            
 	    </div>
     </div>
   </div>

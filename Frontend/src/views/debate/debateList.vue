@@ -1,7 +1,7 @@
 <template>
   <div class="container feed">
     <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-3 col-1"></div>
+      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
       <div class="debate col-lg-7 col-md-10 col-sm-9 col-10 ">
         <div class="debate-request" align="right">
           <button class="btn btn-request">토론방 요청하기</button>
@@ -69,7 +69,7 @@ export default {
   line-height: 2;
 }
 .btn{
-  width:30%
+  width:100%
 }
 .btn-request {
   float: left;

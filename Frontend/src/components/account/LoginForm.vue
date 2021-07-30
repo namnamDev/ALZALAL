@@ -84,7 +84,9 @@ export default {
         }
         this.$store.dispatch("login",payload)
         //this.$store.dispatch("login",this.form.email)
+        this.$router.go()
         this.$router.push({name: 'timeline'})
+
         
       })
       .catch(err =>{  // 실패하면 error

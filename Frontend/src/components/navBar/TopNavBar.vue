@@ -9,12 +9,6 @@
       <!-- 로그인 했을 때 -->
       <ul class="navbar-nav me-4" v-if="isLogin">
         <li class="nav-item dropdown">
-          <div v-if="isLogin">
-            로그인했다
-          </div>
-          <div v-else>
-            로그인 안했다.
-          </div>
           <a
             class="nav-link"
             href="#"
