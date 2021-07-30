@@ -28,8 +28,8 @@
                         <div class="profile-stats">
                             <ul>
                                 <li><span class="profile-stat-count">{{articleCount}}</span> 게시글</li>
-                                <li><span href="/profilePage/followPage" class="profile-stat-count">{{follower}}</span> 팔로워</li>
-                                <li><span href="/profilePage/followPage" class="profile-stat-count">{{following}}</span> 팔로잉</li>
+                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
+                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -122,6 +122,12 @@ export default {
         },
         clickSetting: function() {
             this.$router.push({'name':'passwordConfirm'})
+        },
+        clickFollow: function() {
+            this.$router.push({'name':'followPage'})
+        },
+        clickFollower: function() {
+            this.$router.push({'name':'followPage'})
         },
     },
     computed: {

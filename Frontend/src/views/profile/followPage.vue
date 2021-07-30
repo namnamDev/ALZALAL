@@ -5,10 +5,10 @@
       <div class="col-lg-6 col-md-10 col-sm-9 col-10 ">
         <div class="row">
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followList')">follow</button>
+            <button class="btn" @click="changeComponent('followerList')">follower</button>
           </div>
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followerList')"> follower</button>
+            <button class="btn" @click="changeComponent('followList')"> follow</button>
           </div>
         </div>
         <div class="tab-item">
@@ -121,7 +121,7 @@ export default {
     followerList
   },
   data() {
-      return { comp: 'followList' }
+      return { comp: 'followerList' }
   },
   methods: {
       changeComponent: function(componentName) {

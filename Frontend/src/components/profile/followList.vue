@@ -1,161 +1,60 @@
 <template>
   <div>
-    <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="col-lg-6 col-md-10 col-sm-9 col-10 "> -->
-                <!-- 내가 팔로우중인사람 -->
-          <!-- <div class=followList v-show="isFollowingList"> -->
-            <div class="follow">
-              <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-              </div>
-              <div class="user col-10">
-                <span class="userName">
-                UserName
-                </span>
-                <span class="followBtn">
-                  <button class="btn">팔로우</button>
-                </span>
-              </div>
-            </div>
-          <!-- </div>
-          <div class=followList v-show="isFollowingList"> -->
-            <div class="follow">
-              <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-              </div>
-              <div class="user col-10">
-                <span class="userName">
-                UserName
-                </span>
-                <span class="followBtn">
-                  <button class="btn">팔로우</button>
-                </span>
-              </div>
-            </div>
-          <!-- </div> -->
-
-            <!-- 내가 팔로우중인사람 끝 -->
-    <!-- </div> -->
+    <div class="row">
+      <div class="col-4 col-lg-4">
+        <button class="btn" @click="changeComponent('userfollow')">userfollow</button>
+      </div>
+      <div class="col-4 col-lg-4">
+        <button class="btn" @click="changeComponent('problemfollow')">problemfollow</button>
+      </div>
+      <div class="col-4 col-lg-4">
+        <button class="btn" @click="changeComponent('algofollow')">algofollow</button>
+      </div>
+    </div>
+    <div class="tab-item">
+      <keep-alive>
+        <component v-bind:is="comp"></component> 
+      </keep-alive>
+    </div>
   </div>
 </template>
 
 <script>
-import jwt_decode from "jwt-decode";
-import axios from 'axios';
-const token = localStorage.getItem("jwt");
-let userpk = "";
-if (token) {
-  const decoded = jwt_decode(token);
-  userpk = decoded.sub;
-  
-}
-let page =0;
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import algofollow from '@/components/profile/follow/algoFollow.vue'
+import problemfollow from '@/components/profile/follow/problemFollow.vue'
+import userfollow from '@/components/profile/follow/userFollow.vue'
 export default {
-  created: function(){
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/profile/${userpk}/followers`,
-        data: page
-      })   // back 에 로그인 요청
-      .then(res =>{
-       console.log(res)
-      })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        
-      })
+  components: {
+    userfollow,
+    algofollow,
+    problemfollow
   },
+  data() {
+      return { comp: 'userfollow' }
+  },
+  methods: {
+      changeComponent: function(componentName) {
+          this.comp = componentName
+          console.log(this.comp)
+      }
+  }
 }
 </script>
 
 <style scoped>
-.container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 120px;
-  }
-}
-.userImg1 {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-/* 두개 비교할려고 냅둠 */
-.userImg {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-.profileImg{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.follow {
-  display: flex;
-}
-.nav {
-  cursor:pointer;
-  margin-bottom: 50px;
-}
-.nav-link{
-  font-weight: 700;
-}
-.user{
+.row{
   margin-top: 30px;
-  font-size: 20px;
-  font-weight: 700;
-  margin-left: 100px;
-  
-}
-.userName{
-  margin-right: 30px;
-}
-.followBtn {
-  border-radius: 10%;
-  border: solid 0.5px skyblue;
-  
-  width: 30%;
-  margin-left: 30px;
-}
-@media (max-width:768px) {
-  .user{
-  margin-top: 30px;
-  font-size: 15px;
-  font-weight: 700;
-  margin-left: 30px;
-  
-}
-  .followBtn {
-    border-radius: 10%;
-    border: solid 0.5px skyblue;
-    margin-left: 0;
-    
-
-  }
+  margin-left: -50px;
 }
 .btn{
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .1rem;
-  font-size: 1vw;
+  width:200px;
+  font-size:15px;
+  font-weight: 550;
 }
-#clickFollowing:hover {
-  background-color:#a1d4e2;
+.tab-item {
+  margin-top: 20px;
 }
-#clickFollower:hover{
-  background-color: #a1d4e2;
+.btn:hover{
+  background-color: antiquewhite;
 }
 </style>
