@@ -1,7 +1,9 @@
 package com.ssafy.common.repository.article;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.ExpressionUtils;
@@ -23,26 +25,36 @@ import com.ssafy.common.domain.member.QMember;
 public class Article_CommentRepositoryImpl implements Article_CommentRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	
-	//게시글 다건조회
+	//댓글 다건조회
 	@Override
-	public List<Article_CommentDTO> artiComments(Article article,Member memberDTO){
+	public Optional<List<Article_CommentDTO>> artiComments(Article article,Long memberNo,Pageable page){
 		QArticle_Comment arCo = QArticle_Comment.article_Comment;
 		QArticle_Comment_Like arCoLi= QArticle_Comment_Like.article_Comment_Like;
-		List<Article_CommentDTO>dtos = queryFactory.
-				select(
-				Projections.fields(
-						Article_CommentDTO.class,
-						arCo.articleCommentNo,
-						arCo.articleNo,
-						Projections.constructor(
-							MemberDTO.class,
-							arCo.member.no,
-							arCo.member.name),
-						arCo.articleContent
-						)).from(arCo).
-				where(arCo.articleNo.eq(article)).
-				fetch();
-		return null;
+		List<Article_CommentDTO>res = queryFactory.select(Projections.fields(Article_CommentDTO.class
+						,arCo.articleCommentNo
+						,arCo.articleNo
+						,Projections.constructor(MemberDTO.class
+								,arCo.member.no
+								,arCo.member.name)
+						,arCo.articleContent
+						,ExpressionUtils.as(
+								JPAExpressions.select(arCo.count())
+								.from(arCoLi)
+								.where(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo))
+						,"likeCount")
+						,ExpressionUtils.as(
+								JPAExpressions.select(arCoLi.count())
+								.from(arCoLi)
+								.where(arCoLi.member.no.eq(memberNo).and(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo)))
+								,"likeState"
+								)
+						))
+				.from(arCo)
+				.where(arCo.articleNo.eq(article))
+				.offset(page.getOffset())
+				.limit(page.getPageSize())
+				.fetch();
+		return Optional.of(res);
 	}
 //게시글의 댓글 조건조회
 	@Override 
@@ -82,18 +94,15 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 								arCo.member.name),
 						arCo.articleContent,
 						ExpressionUtils.as(
-								JPAExpressions.select(
-									arCo.articleCommentNo.count()
-									).from(arCoLi).
-								where(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo))
-								,"likeCount"
-								),
-						ExpressionUtils.as(
-								JPAExpressions.select(
-										arCo.articleCommentNo
-							).from(arCoLi).
-								where(arCoLi.member.eq(member)).exists()
-								,"myLike"
+								JPAExpressions.select(arCo.articleCommentNo.count())
+								.from(arCoLi)
+								.where(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo))
+						,"likeCount")
+						,ExpressionUtils.as(
+								JPAExpressions.select(arCo.articleCommentNo)
+								.from(arCoLi)
+								.where(arCoLi.member.eq(member)).exists()
+								,"likeState"
 								)
 						)).from(arCo)
 							.fetchFirst();

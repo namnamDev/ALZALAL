@@ -35,28 +35,94 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
   	@Override
-    public List<Article>findAll(){
-      List<Article> aa  = queryFactory.selectFrom(article).fetch();
-      return aa;
-    }
+  	public Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo,Pageable page){
+		QArticle qa=QArticle.article;
+		QArticle_Like qal= QArticle_Like.article_Like;
+		QArticle_Comment qac=QArticle_Comment.article_Comment;
+		
+		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
+							, qa.articleNo
+							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
+							,qa.articleTitle,qa.articleContent,qa.articleDate
+							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
+							,qa.useLanguage.useLanguage, qa.articleClass
+							, ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
+			                "likeCount")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
+			                "likeState")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qac.count())
+			                        .from(qac)
+			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+			                "commentCount")									
+							))
+			.from(qa)
+			.offset(page.getOffset())
+			.limit(page.getPageSize())
+			.fetch();
+	
+		
+		return Optional.of(result) ;
+	}
     //게시글 단건조회
   	@Override
-    public Article sltOne(Long pk){
-    	Article sltOne = queryFactory.selectFrom(article)
-    			.where(article.articleNo.eq(pk))
-    			.fetchOne();
+    public ArticleDTO sltOne(Long pk,Long nowLoginMemberNo){
     	
-    	return sltOne;
+    	QArticle qa=QArticle.article;
+		QArticle_Like qal= QArticle_Like.article_Like;
+		QArticle_Comment qac=QArticle_Comment.article_Comment;
+		
+		ArticleDTO result = queryFactory.select(Projections.constructor(ArticleDTO.class
+							, qa.articleNo
+							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
+							,qa.articleTitle,qa.articleContent,qa.articleDate
+							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
+							,qa.useLanguage.useLanguage, qa.articleClass
+							, ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
+			                "likeCount")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qal.count())
+			                        .from(qal)
+			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
+			                "likeState")
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qac.count())
+			                        .from(qac)
+			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+			                "commentCount")									
+							))
+			.from(qa)
+			.where(qa.articleNo.eq(pk))
+			.fetchOne();
+    	
+    	return result;
     }
+  	//return article이 필요할때
+  	@Override
+  	public Article sltOneArticle(Long pk) {
+		Article sltOne = queryFactory.selectFrom(article)
+		.where(article.articleNo.eq(pk))
+		.fetchOne();
+		return sltOne;
+  	}
     //게시글 댓글 조회
     //대댓글 조회 추가예정
-	@Override
-    public List<Article_Comment> articleComments(Article article){
-    	List<Article_Comment> comments = queryFactory.selectFrom(article_Comment).
-    			where(article_Comment.articleNo.eq(article))
-    			.fetch();
-    	return comments;
-    }
+//	@Override
+//    public List<Article_Comment> articleComments(Article article){
+//    	List<Article_Comment> comments = queryFactory.selectFrom(article_Comment).
+//    			where(article_Comment.articleNo.eq(article))
+//    			.fetch();
+//    	return comments;
+//    }
     //게시글 Insert 추가적인 gradle import를 요구해서 패스
 	@Override
     public Article insertArticle(Member member, Article myinsert){
