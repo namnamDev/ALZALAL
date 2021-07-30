@@ -1,4 +1,4 @@
-package com.ssafy.common.repository;
+package com.ssafy.common.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

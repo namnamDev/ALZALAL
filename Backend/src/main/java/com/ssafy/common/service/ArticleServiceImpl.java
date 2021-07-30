@@ -18,13 +18,14 @@ import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.ArticleRepository;
-import com.ssafy.common.repository.Article_LikeRepository;
-import com.ssafy.common.repository.MemberRepository;
-import com.ssafy.common.repository.Problem_Site_ListRepository;
-import com.ssafy.common.repository.Problem_Site_Repository;
 import com.ssafy.common.repository.Use_LanguageRepository;
-import com.ssafy.common.repository.AlgorithmRepository;
+import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
+import com.ssafy.common.repository.article.ArticleRepository;
+import com.ssafy.common.repository.article.Article_LikeRepository;
+import com.ssafy.common.repository.member.MemberRepository;
+import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
+import com.ssafy.common.repository.problem.Problem_Site_Repository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

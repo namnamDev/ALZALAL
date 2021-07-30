@@ -1,4 +1,4 @@
-package com.ssafy.common.repository;
+package com.ssafy.common.repository.Algorithm;
 
 import org.springframework.stereotype.Repository;
 

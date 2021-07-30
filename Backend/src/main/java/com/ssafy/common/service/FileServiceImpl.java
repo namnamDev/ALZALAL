@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.common.FileUploadProperties;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.MemberRepository;
+import com.ssafy.common.repository.member.MemberRepository;
 
 @Service
 @Transactional

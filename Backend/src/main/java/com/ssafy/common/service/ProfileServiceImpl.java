@@ -16,13 +16,13 @@ import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.Algorithm_FolloweRepositoryCustom;
-import com.ssafy.common.repository.ArticleRepositoryImpl;
 import com.ssafy.common.repository.HelpmeRepository;
-import com.ssafy.common.repository.MemberRepository;
-import com.ssafy.common.repository.Member_FollowRepository;
-import com.ssafy.common.repository.Member_FollowRepositoryCustom;
-import com.ssafy.common.repository.Problem_FollowRepositoryCustom;
+import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepositoryCustom;
+import com.ssafy.common.repository.article.ArticleRepositoryImpl;
+import com.ssafy.common.repository.member.MemberRepository;
+import com.ssafy.common.repository.member.Member_FollowRepository;
+import com.ssafy.common.repository.member.Member_FollowRepositoryCustom;
+import com.ssafy.common.repository.problem.Problem_FollowRepositoryCustom;
 
 @Service
 @Transactional

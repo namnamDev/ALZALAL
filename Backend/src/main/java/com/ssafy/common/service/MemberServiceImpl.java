@@ -22,12 +22,12 @@ import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.MemberRepository;
-import com.ssafy.common.repository.Problem_Site_LikeRepository;
-import com.ssafy.common.repository.Problem_Site_ListRepository;
-import com.ssafy.common.repository.RefreshTokenRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Use_Language_LikeRepository;
+import com.ssafy.common.repository.member.MemberRepository;
+import com.ssafy.common.repository.member.RefreshTokenRepository;
+import com.ssafy.common.repository.problem.Problem_Site_LikeRepository;
+import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 
 @Service
 @Transactional

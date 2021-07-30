@@ -1,4 +1,4 @@
-package com.ssafy.common.repository;
+package com.ssafy.common.repository.problem;
 
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;

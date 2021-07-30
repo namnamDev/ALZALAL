@@ -21,13 +21,13 @@ import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_SitePK;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.jwt.util.SecurityUtil;
-import com.ssafy.common.repository.AlgorithmRepository;
-import com.ssafy.common.repository.Algorithm_FolloweRepository;
-import com.ssafy.common.repository.MemberRepository;
-import com.ssafy.common.repository.Member_FollowRepository;
-import com.ssafy.common.repository.Problem_FollowRepository;
-import com.ssafy.common.repository.Problem_Site_ListRepository;
-import com.ssafy.common.repository.Problem_Site_Repository;
+import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
+import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepository;
+import com.ssafy.common.repository.member.MemberRepository;
+import com.ssafy.common.repository.member.Member_FollowRepository;
+import com.ssafy.common.repository.problem.Problem_FollowRepository;
+import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
+import com.ssafy.common.repository.problem.Problem_Site_Repository;
 
 @Service
 @Transactional

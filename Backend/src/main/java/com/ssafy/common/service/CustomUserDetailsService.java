@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.common.domain.member.Member;
-import com.ssafy.common.repository.MemberRepository;
+import com.ssafy.common.repository.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

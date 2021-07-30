@@ -1,4 +1,4 @@
-package com.ssafy.common.repository;
+package com.ssafy.common.repository.article;
 
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Like;
