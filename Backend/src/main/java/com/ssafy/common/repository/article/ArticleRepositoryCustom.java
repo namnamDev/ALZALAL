@@ -12,9 +12,8 @@ import com.ssafy.common.dto.ArticleDTO;
 
 public interface ArticleRepositoryCustom {
 
-	List<Article> findAll();
 
-	List<Article_Comment> articleComments(Article article);
+//	List<Article_Comment> articleComments(Long article);
 
 	Article insertArticle(Member member, Article myinsert);
 
@@ -26,9 +25,13 @@ public interface ArticleRepositoryCustom {
 	long countByMember(Long memberNo);
 
 	long likeArticle(Article article);
-
-	Article sltOne(Long pk);
 	
 	// memberNo를 통해 해당 member를 작성자로 가지는 모든 게시글, 좋아요 수, memberNo유저의 좋아요 여부, 댓글 갯수
 	Optional<List<ArticleDTO>> getListByMemberNO(Long memberNo,Long nowLoginMemberNo,Pageable page);
+
+	ArticleDTO sltOne(Long pk, Long nowLoginMemberNo);
+
+	Article sltOneArticle(Long pk);
+
+	Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo, Pageable page);
 }

@@ -17,17 +17,21 @@ import com.ssafy.common.domain.article.Article_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
+import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
 import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_AlgorithmRepository;
+import com.ssafy.common.repository.article.Article_CommentRepository;
 import com.ssafy.common.repository.article.Article_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 import com.ssafy.common.repository.problem.Problem_Site_Repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,8 +39,8 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService{
   @Autowired
   private  ArticleRepository ArticleRepo;
-//  @Autowired
-//  private ArticleRepository ArticleRepo;
+  @Autowired
+  private Article_CommentRepository articleCommetRepo;
   
   @Autowired
   private MemberRepository memberRepository;
@@ -53,14 +57,23 @@ public class ArticleServiceImpl implements ArticleService{
   @Autowired
   private Article_LikeRepository ArticleLikeRepo;
   @Override
-  public Map<String, Object> sltMultiArticle(String articleClass) {
+  public Map<String, Object> sltMultiArticle(String articleClass,int page) {
+	  
 	//게시글 다건조회.. 추후 페이징처리 예정
+	 
     Map<String, Object> res = new HashMap<String,Object>();
+    Long nowLoginMemberNo=0L;
+	try {
+		//로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+		nowLoginMemberNo=SecurityUtil.getCurrentMemberId();
+	}catch (RuntimeException e) {
+		nowLoginMemberNo=0L;
+	}
     if (articleClass.equals("main")){
     	
     }else if(articleClass.equals("article")){
     	//게시글 전체 조회 결과
-        List<Article> articleList = ArticleRepo.findAll();
+        List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
         res.put("article", articleList);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
         	res.put("msg", "게시글이 존재하지 않습니다.");
@@ -73,16 +86,20 @@ public class ArticleServiceImpl implements ArticleService{
     
   }
   @Override
-  public Map<String, Object>sltOneArticle(String articleClass,long pk){
+  public Map<String, Object>sltOneArticle(String articleClass,long pk,int page){
 	  //게시글 단건조회 및 댓글 조회
+	Long nowLoginMemberNo=0L;
+	try {
+		//로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+		nowLoginMemberNo=SecurityUtil.getCurrentMemberId();
+	}catch (RuntimeException e) {
+		nowLoginMemberNo=0L;
+	}
 	  Map<String,Object>res = new HashMap<String,Object>();
 	  	if(articleClass.equals("article")){
-	    	Article article = ArticleRepo.sltOne(pk);
-//	    	ArticleRepo.
+	    	Article article = ArticleRepo.sltOneArticle(pk);
 	    	res.put("articleDetail",article);
-	    	long countLike = ArticleRepo.likeArticle(article);
-	    	res.put("like", countLike);
-	    	List<Article_Comment>comments = ArticleRepo.articleComments(article);
+	    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(article,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
 	    	String msg = "";
 	    	if (comments.size() == 0) {
 	    		msg = "등록된 댓글이 없습니다.";
@@ -104,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService{
 	  	if(articleClass.equals("article")){
 	  		
 	  		//삭제 전 단건조회
-	    	Article article = ArticleRepo.sltOne(articlePk);
+	    	Article article = ArticleRepo.sltOneArticle(articlePk);
 	    	if (article == null) {
 	    		msg = "존재하지 않는 게시글입니다.";
 	    	}else {
@@ -134,7 +151,7 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 	if(articleClass.equals("article")){
 		//수정 전 단건 조회
-		Article article = ArticleRepo.sltOne(articlePk);
+		Article article = ArticleRepo.sltOneArticle(articlePk);
 		if (article == null) {
     		msg = "존재하지 않는 게시글입니다.";
     	}else {
@@ -199,10 +216,8 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertArticle.setMember(member);
 					insertArticle.setProblemSite(problem);
 					insertArticle.setUseLanguage(useLanguage);
-					Article inserted = ArticleRepo.save(insertArticle);
-//					Article inserted = ArticleRepo.sa
-					
-					res.put("like",0);
+					Article tempInserted = ArticleRepo.save(insertArticle);
+					ArticleRepo.flush();
 					msg = "등록된 댓글이 없습니다.";
 					if (category.equals("A01")){
 						Article_Algorithm artiAlgo = new Article_Algorithm();
@@ -211,14 +226,16 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
 							if (sltOneAlgo != null){
 								artiAlgo.setAlgorithmName(sltOneAlgo);
-								artiAlgo.setArticleNo(inserted);
+								artiAlgo.setArticleNo(tempInserted);
 								Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
 							}else {
 								msg = "알고리즘이 존재하지 않습니다.";
 							}
 						}
 						ArtiAlgoRepo.flush();
+						
 					}
+					ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
 					res.put("article", inserted);
 				}
 			}	
@@ -237,7 +254,7 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	Map<String,Object>res = new HashMap<String,Object>();
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
-		Article article = ArticleRepo.sltOne(articlePk);
+		Article article = ArticleRepo.sltOneArticle(articlePk);
 		//좋아요 누른적 있는지 조회
 		Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
 		//눌려져있으면 delete. 안눌러져 있으면 insert
