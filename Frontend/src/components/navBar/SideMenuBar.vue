@@ -10,8 +10,8 @@
         <li class="search">검색하기</li>
       </ul>
     </div>
-    <div id="menu-1" v-if="width < 576">
-      <p>LOGO</p>
+    <div id="menu-1" style="left:-230px;" v-if="width < 576">
+      <p @click="clickLogo">LOGO</p>
       <ul>
         <li @click="clickLogo">타임라인</li>
         <li>Q&A</li>
@@ -28,11 +28,11 @@
 
 <script>
 
+
 export default {
   name: 'SideMenuBar',
   components: {
   },
-
   data() {
     return {
       width: 0,
@@ -50,7 +50,7 @@ export default {
   },
 
   computed: {
- 
+
   },
 
   methods: {
@@ -58,15 +58,17 @@ export default {
       this.width = window.innerWidth
     },
     ClickMenuButton: function() {
+
       let leftMenu = document.getElementById('menu-1')
-      console.log(leftMenu)
-      if (leftMenu.style.display == 'none') {
-        leftMenu.style.display = 'block'
+
+      if (leftMenu.style.left == 0) {
+        leftMenu.style.left = '-230px'
+        return
       }
-      else {
-        leftMenu.style.display = 'none'
-      }     
+      leftMenu.style.left = 0
+      leftMenu.style.opacity = 0.95
     },
+
     clickLogo: function() {
       this.$router.push({'name':'timeline'})
     },
@@ -94,16 +96,19 @@ export default {
   background-color:rgba(224,245,249,1);
   height: 100vh;
   width: 20%;
-  z-index:2;
+  z-index:5;
 }
-
 
 #menu-1{
   position: absolute;
-  width: 250px;
+  width: 220px;
   height: 100%;
   background-color:rgba(224,245,249,1);
-  display:none;
+  /* display:none; */
+  left: -230px;
+  /* left: 0px; */
+  transition: 1s ease;
+  opacity: 0;
 }
 #menu-1 > p {
   position: absolute;
@@ -118,9 +123,11 @@ export default {
 #menu-1 > ul li{
   list-style: none;
   margin-top:15px;
+  cursor: pointer;
 }
 #menu-1 > ul li:hover{
   transform: scale(1.1);
+  font-weight:bold;
 }
 p{
   cursor: pointer;
@@ -173,7 +180,7 @@ p{
   }
 }
 
-@media (max-width:576px) {
+@media (max-width:577px) {
   #menu{
     display:none;
   }
@@ -181,8 +188,9 @@ p{
     display:block;
   }
   #side-menu-bar {
-    width: 60px;
+    width: 50px;
     background-color: rgba(0,0,0,0);
+    height: 100vh;
   }
 }
 </style>

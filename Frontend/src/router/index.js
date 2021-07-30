@@ -17,11 +17,18 @@ import introduce from '@/views/profile/introduce.vue'
 import uploadImg from '@/views/profile/uploadImg.vue'
 import createDebate from '@/views/debate/createDebate.vue'
 import debateDetail from '@/views/debate/debateDetail.vue'
+import ArticleDetail from '@/components/article/ArticleDetail.vue'
+
 
 Vue.use(VueRouter)
 
 
 const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: Timeline
+  },
   {
     path: '/timeline',
     name: 'timeline',
@@ -59,7 +66,7 @@ const routes = [
   },
   {
     path: '/profilePage/followPage',
-    name : 'followPage',
+    name: 'followPage',
     component: followPage
   },
   {
@@ -98,6 +105,11 @@ const routes = [
     component: CreateArticle
   },
   {
+    path: '/articleDetail',
+    name: 'articleDetail',
+    component: ArticleDetail
+  },
+  {
     path: '*',
     name: 'PageNotFound',
     component: PageNotFound
@@ -109,5 +121,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => {
+    if (err.name !== 'NavigationDuplicated') throw err;
+  });
+};
+
 
 export default router
