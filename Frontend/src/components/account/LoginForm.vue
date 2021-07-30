@@ -84,7 +84,9 @@ export default {
         }
         this.$store.dispatch("login",payload)
         //this.$store.dispatch("login",this.form.email)
-        this.$router.push({name: 'timeline'})
+        
+        location.href = '/timeline'
+        // this.$router.replace({name: 'timeline'})
         
       })
       .catch(err =>{  // 실패하면 error

@@ -1,8 +1,8 @@
 <template>
   <div class="container feed">
     <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-3 col-1"></div>
-      <div class="debate col-lg-7 col-md-10 col-sm-9 col-10 ">
+      <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
+      <div class="debate col-lg-6 col-md-10 col-sm-9 col-12 ">
         <div class="debate-request" align="right">
           <button class="btn btn-request">토론방 요청하기</button>
         </div>
@@ -61,7 +61,11 @@ export default {
 
 <style scoped>
 .feed{
-  margin-top: 13vw;
+  position: absolute;
+  margin-top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left:0;
 }
 .debate {
   height: 300px;
@@ -69,7 +73,7 @@ export default {
   line-height: 2;
 }
 .btn{
-  width:30%
+  width:100%
 }
 .btn-request {
   float: left;
@@ -78,6 +82,12 @@ export default {
   border-radius: .1rem;
 }
 .table-wrap{
-  margin-top: 10%;
+  /* margin-top: 10%; */
+}
+@media (max-width:577px) {
+  .feed{
+    left: 0;
+    transform: translateX(0);
+  }
 }
 </style>
