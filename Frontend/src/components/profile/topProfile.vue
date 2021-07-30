@@ -203,7 +203,7 @@ i {
     font-size: 20px;
     font-weight: 550;
     line-height: 1.5;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 .downInfo {
     font-size: 20px;
@@ -243,5 +243,25 @@ i {
 .clickSetting {
     width: 1%;
     margin-left: -70px;
+}
+.clickImg{
+    font-size: 20px;
+    font-weight: 550;
+}
+@media (max-width:576px) {
+.profile-image {
+    float: left;
+    width: 150px;
+    height: auto;
+    margin-right: 20px;
+    
+}
+
+.profileImg {
+    width: 180px;
+    height: 180px;
+    border-radius: 75%;
+    
+}
 }
 </style>

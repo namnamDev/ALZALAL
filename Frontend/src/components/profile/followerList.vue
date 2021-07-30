@@ -1,42 +1,26 @@
 <template>
-  <div>
-    <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="col-lg-6 col-md-10 col-sm-9 col-10 "> -->
-                <!-- 내가 팔로우중인사람 -->
-          <!-- <div class=followList v-show="isFollowingList"> -->
-            <div class="follow">
-              <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-              </div>
-              <div class="user col-10">
-                <span class="userName">
-                UserName
-                </span>
-                <span class="followBtn">
-                  <button class="btn">팔로우</button>
-                </span>
-              </div>
-            </div>
-          <!-- </div>
-          <div class=followList v-show="isFollowingList"> -->
-            <div class="follow">
-              <div class="userImg col-2">
-                <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-              </div>
-              <div class="user col-10">
-                <span class="userName">
-                UserName
-                </span>
-                <span class="followBtn">
-                  <button class="btn">팔로우</button>
-                </span>
-              </div>
-            </div>
-          <!-- </div> -->
-
-            <!-- 내가 팔로우중인사람 끝 -->
-    <!-- </div> -->
-  </div>
+    <div>
+        <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
+        <div class="col-lg-6 col-md-10 col-sm-9 col-10 "> -->
+              <!-- 나를 팔로우하는사람 시작 -->
+            <!-- <div class=followerList v-show="isFollowerList"> -->
+                <div class="follow">
+                <div class="userImg col-2">
+                    <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
+                </div>
+                <div class="user col-10">
+                    <span class="userName">
+                    UserName
+                    </span>
+                    <span class="followBtn">
+                    <button class="btn">팔로우</button>
+                    </span>
+                </div>
+                </div>
+            <!-- </div> -->
+            <!-- 나를 팔로우하는사람 끝 -->
+        <!-- </div> -->
+    </div>
 </template>
 
 <script>
@@ -52,7 +36,7 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-  created: function(){
+    created: function(){
       axios({
         method: 'get',
         url: `${SERVER_URL}/profile/${userpk}/followers`,
