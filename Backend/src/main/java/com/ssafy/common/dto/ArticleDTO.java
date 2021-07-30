@@ -13,7 +13,7 @@ import lombok.Setter;
 public class ArticleDTO {
 	private Long articleNo;
 
-	private memberDTO member;
+	private MemberDTO member;
 	
 	private String articleTitle;
 	private String articleContent;

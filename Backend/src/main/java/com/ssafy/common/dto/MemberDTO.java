@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class memberDTO {
+public class MemberDTO {
 	private String name;
 	private long no;
 	@QueryProjection
-	public memberDTO(String name, long no) {
+	public MemberDTO(String name, long no) {
 		this.name = name;
 		this.no = no;
 	}

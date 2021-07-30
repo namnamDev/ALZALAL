@@ -21,6 +21,7 @@ import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
 import com.ssafy.common.repository.article.ArticleRepository;
+import com.ssafy.common.repository.article.Article_AlgorithmRepository;
 import com.ssafy.common.repository.article.Article_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
@@ -45,6 +46,8 @@ public class ArticleServiceImpl implements ArticleService{
   private Use_LanguageRepository useLanguageRepo;
   @Autowired
   private AlgorithmRepository AlgoRepo;
+  @Autowired
+  private Article_AlgorithmRepository ArtiAlgoRepo;
   @Autowired
   private Problem_Site_ListRepository problemSiteListRepo;
   @Autowired
@@ -198,7 +201,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertArticle.setUseLanguage(useLanguage);
 					Article inserted = ArticleRepo.save(insertArticle);
 //					Article inserted = ArticleRepo.sa
-					res.put("article", inserted);
+					
 					res.put("like",0);
 					msg = "등록된 댓글이 없습니다.";
 					if (category.equals("A01")){
@@ -209,11 +212,14 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 							if (sltOneAlgo != null){
 								artiAlgo.setAlgorithmName(sltOneAlgo);
 								artiAlgo.setArticleNo(inserted);
+								Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
 							}else {
 								msg = "알고리즘이 존재하지 않습니다.";
 							}
 						}
+						ArtiAlgoRepo.flush();
 					}
+					res.put("article", inserted);
 				}
 			}	
 		}
@@ -228,9 +234,6 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	//로그인한 유저 존재하는지 조회
 	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-//	long memberNo = 1;
-//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-//	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
