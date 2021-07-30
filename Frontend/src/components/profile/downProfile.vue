@@ -300,5 +300,10 @@ export default {
 #clickSend:hover{
   background-color: #a1d4e2;
 }
+@media (max-width:577px) {
+  .feed{
+    margin-left:0;
+  }
+}
 
 </style>
