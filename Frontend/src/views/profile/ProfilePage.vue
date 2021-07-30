@@ -1,10 +1,8 @@
 <template>
-<div>
+  <div class="container">
     <TopProfile></TopProfile>
     <DownProfile></DownProfile>
- 
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -24,3 +22,14 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.container{
+  margin-top: 90px;
+}
+@media (max-width:576px){
+  .container{
+    margin-top: 60px;
+  }
+}
+</style>

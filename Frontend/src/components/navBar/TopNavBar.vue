@@ -29,8 +29,8 @@
 
 <!-- 로그인 안했을 때 -->
       <div class="login-signup mt-4" v-if="!isLogin">
-        <span @click="login">Log in /</span>
-        <span @click="signup"> Sign Up</span>
+        <span @click="login" class="loginBtn">Log in </span>
+        <span @click="signup" class="signupBtn"> Sign Up</span>
       </div>
       <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
         <li class="nav-item dropdown">
@@ -138,14 +138,37 @@ export default {
 .login-signup{
   /* margin-top: */
   cursor: pointer;
+  font-weight: 550;
+}
+.loginBtn{
+    font-size: 25px;
+    margin-right: 10px;
+  }
+.signupBtn{
+    font-size: 25px;
+    margin-right: 10px;
 }
 .login-signup span:hover{
   /* transform: scale(1.2); */
   font-size: 25px;
 }
+
 @media (max-width: 576px){
+    .login-signup{
+    font-weight: 550;
+    font-size: 20px;
+  }
+  .loginBtn{
+    display: block;
+    font-size: 25px;
+    margin-right: 10px;
+  }
+  .signupBtn{
+    font-size: 25px;
+    margin-right: 10px;
+  }
   .user{
-    right: 0;    
+      right: 0;    
   }
 }
 

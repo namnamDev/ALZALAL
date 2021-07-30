@@ -1,6 +1,5 @@
 <template>
-  <div class='feed'>
-  <div class="row">
+  <div class="row my-5">
   <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
    <div class="feed-item box col-lg-6 col-md-10 col-sm-9 col-10">
     <div>
@@ -188,7 +187,6 @@
   <!-- 보낸요청 끝 -->
   </div>
 </div>
-</div>
 </template>
 
 <script>
@@ -225,10 +223,7 @@ export default {
 .nav-link {
   cursor: pointer;
 }
-.feed{
-  margin-top: 2vw;
-  margin-left: 50px;
-}
+
 .feed-card {
     box-sizing: content-box;
     /* box-shadow: 0 0 0 1px #ddd; */
@@ -250,13 +245,13 @@ export default {
     -webkit-box-orient: vertical;
     word-wrap:break-word; 
     line-height: 1.5em;
-    font-size: .929em;
+    font-size: 15px;
     margin: 0 0 8px;
     white-space: normal;
 }
 .date {
   float: right;
-  font-size: .714em;
+  font-size: 10px;
   color:rgba(0, 0, 0, .5);
 }
 .feed-item {

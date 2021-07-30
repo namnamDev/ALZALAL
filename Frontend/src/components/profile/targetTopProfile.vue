@@ -47,72 +47,76 @@ export default {
 </script>
 
 <style scoped>
-.feed{
-  margin-top: 13vw;
+.row {
+    margin-top: 120px;
 }
-.profile box{
-  border: 1px solid black;
-  height: 300px;
-  padding: 5rem 0;
-}
-.profile::after {
-    content: "";
-    display: block;
-    clear: both;
-}
+
 .profile-image {
     float: left;
-    width: calc(33.333% - 1rem);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 160px;
+    height: auto;
     margin-right: 3rem;
+    
 }
 
-.profile-image img {
-    border-radius: 50%;
+.profileImg {
+    width: 160px;
+    height: 160px;
+    border-radius: 75%;
+    
 }
-
-.profile-user-settings,
-.profile-stats,
-.profile-bio {
-    float: left;
-    width: calc(66.666% - 2rem);
+.btn-modify{
+    width: 120%;
+    height: 100%;
+    font-size: 10px;
+    line-height: 1.3;
+    border-radius: 0.3rem;
+    padding: 0 2.4rem;
+    font-weight: 700;
+    margin-top:30px
 }
-
-.profile-user-settings {
-    margin-top: 1.1rem;
-}
-
-.profile-user-name {
-    display: inline-block;
-    font-size: 3.2rem;
-    font-weight: 300;
-}
-
-.profile-edit-btn {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    border: 0.1rem solid #dbdbdb;
+i {
+    font-size: 30px;
+    line-height: 1;
     border-radius: 0.3rem;
     padding: 0 2.4rem;
     margin-left: 2rem;
 }
 
+.profile-user-settings,
+.profile-stats,
+.profile-bio {
+    width: calc(66.666% - 2rem);
+    vertical-align: 10px;
+}
+
+.profile-user-settings {
+
+    margin-top: 1.1rem;
+}
+
+.profile-user-name {
+    font-size: 30px;
+    font-weight: 600;
+    margin-left: 5vw;
+}
+
+
+
 .profile-settings-btn {
-    font-size: 2rem;
+    font-size: 10px;
     margin-left: 1rem;
 }
 
 .profile-stats {
-    margin-top: 2.3rem;
+    margin-top: 1rem;
 }
 
 .profile-stats li {
     display: inline-block;
-    font-size: 1.6rem;
+    font-size: 20px;
     line-height: 1.5;
-    margin-right: 4rem;
+    margin-right: 1rem;
     cursor: pointer;
 }
 
@@ -121,15 +125,51 @@ export default {
 }
 
 .profile-bio {
-    font-size: 1.2rem;
+    font-size: 20px;
     font-weight: 400;
     line-height: 1.5;
-    margin-top: 2.3rem;
+    margin-top: 1rem;
 }
-
+.downInfo {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.0;
+}
+.downInfo1 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.0;
+}
 .profile-real-name,
 .profile-stat-count,
 .profile-edit-btn {
     font-weight: 600;
 } 
+.profile-user-settings{
+    align-items: center;
+}
+.introduceline{
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-top: 1rem;
+}
+.btn-intro{
+    font-weight: 600;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    font-size: 10px;
+}
+.introtext{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.clickIntro{
+    width: 1%;
+    margin-left: -10%;
+}
+.clickSetting {
+    width: 1%;
+    margin-left: -15%;
+}
 </style>
