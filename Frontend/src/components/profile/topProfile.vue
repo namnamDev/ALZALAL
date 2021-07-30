@@ -1,8 +1,8 @@
 <template>
   <div class="container feed">
     <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-9 ">
+      <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
+      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-12 ">
                 <!-- 프로필이미지 -->
 			  <div class="profile-image">
 				  <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
@@ -277,6 +277,10 @@ i {
     width: 1%;
     margin-left: -15%;
 }
-
+@media (max-width:577px) {
+  .feed{
+    margin-left:0;
+  }
+}
 
 </style>

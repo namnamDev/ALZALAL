@@ -20,7 +20,7 @@
         <li class="search">검색하기</li>
       </ul>
     </div>        
-    <div class="icon" @click="ClickMenuButton">
+    <div class="icon ms-3" @click="ClickMenuButton">
       <i class="fas fa-bars menuIcon"></i>
     </div>
   </div>

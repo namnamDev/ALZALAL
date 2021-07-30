@@ -3,12 +3,11 @@
     <div class="logo" onclick="window.scrollTo(0,0)">
       <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
     </div>
-    <div class="user">
-      
+    <div class="user">      
 
       <!-- 로그인 했을 때 -->
       <ul class="navbar-nav me-4" v-if="isLogin">
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" @click="click">
           <a
             class="nav-link"
             href="#"
@@ -71,6 +70,9 @@ export default {
     signup: function() {
       this.$router.push({'name':'login'})
     },
+    click: function() {
+      console.log('click')
+    }
   },
   computed: {
     isLogin(){
