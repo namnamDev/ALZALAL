@@ -5,7 +5,7 @@
       <ul>
         <li @click="clickLogo">타임라인</li>
         <li @click="clickQnA">Q&A</li>
-        <li>토론게시판</li>
+        <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
         <li class="search">검색하기</li>
       </ul>
@@ -15,7 +15,7 @@
       <ul>
         <li @click="clickLogo">타임라인</li>
         <li>Q&A</li>
-        <li>토론게시판</li>
+        <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
         <li class="search">검색하기</li>
       </ul>
@@ -71,6 +71,9 @@ export default {
 
     clickLogo: function() {
       this.$router.push({'name':'timeline'})
+    },
+    clickDebate: function() {
+      this.$router.push({'name':'debate'})
     },
     clickCreate: function() {
       this.$router.push({'name':'createArticle'})      
@@ -150,6 +153,9 @@ p{
   margin-top:15px;
   cursor: pointer;
   width: 100%;
+      font-size: 1.0rem;
+    font-weight: 600;
+    line-height: 1.0;
 }
 #menu > ul li:hover{
   transform: scale(1.1);

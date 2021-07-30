@@ -68,10 +68,10 @@
 					class="btn">
             수정
         </button>
+        <router-link to="/profilePage"><button class="btn">취소</button></router-link>
         <button @click="deleteUser" class="btn">
             회원삭제
         </button>
-        <router-link to="/profilePage"><button class="btn">취소</button></router-link>
 			</form>
 			
 		</div>
@@ -96,6 +96,10 @@ export default{
 		};
 	},
   created: function() {
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    }
     axios ({
       method: 'get',
       url: `${SERVER_URL}/member/modify`,

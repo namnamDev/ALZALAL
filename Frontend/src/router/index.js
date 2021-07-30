@@ -13,6 +13,10 @@ import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
+import introduce from '@/views/profile/introduce.vue'
+import uploadImg from '@/views/profile/uploadImg.vue'
+import createDebate from '@/views/debate/createDebate.vue'
+import debateDetail from '@/views/debate/debateDetail.vue'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
 
 
@@ -66,6 +70,16 @@ const routes = [
     component: followPage
   },
   {
+    path: '/profilePage/introduce',
+    name: 'introduce',
+    component: introduce
+  },
+  {
+    path: '/profilePage/uploadImg',
+    name: 'uploadImg',
+    component: uploadImg
+  },
+  {
     path: '/usermodify',
     name: 'usermodify',
     component: UserModify,
@@ -74,6 +88,16 @@ const routes = [
     path: '/debate',
     name: 'debate',
     component: debateList
+  },
+  {
+    path: '/debate/createDebate',
+    name: 'createDebate',
+    component: createDebate
+  },
+  {
+    path: '/debate/debateDetail',
+    name: 'debateDetail',
+    component: debateDetail
   },
   {
     path: '/createArticle',

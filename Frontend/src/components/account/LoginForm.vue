@@ -1,7 +1,7 @@
 <template>
   <div class="contents">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-		<div class="form-wrapper form-wrapper-sm box col-lg-6 col-md-10 col-sm-9 col-10">
+		<div class="form-wrapper form-wrapper-sm col-lg-6 col-md-10 col-sm-9 col-10">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label align="left" for="email">E-mail</label>
@@ -63,7 +63,7 @@ export default {
   created: function() {
     const token = localStorage.getItem('jwt')
     if(token){
-      this.$router.push({name:'feed'})
+      this.$router.push({name:'timeline'})
     }
   },
   methods: {
@@ -83,7 +83,9 @@ export default {
           isLogin: true
         }
         this.$store.dispatch("login",payload)
-        this.$router.push({name: 'feed'})
+        //this.$store.dispatch("login",this.form.email)
+        this.$router.push({name: 'timeline'})
+        
       })
       .catch(err =>{  // 실패하면 error
         console.log(err)
@@ -125,6 +127,7 @@ export default {
 .form .validation-text {
 	margin-top: -0.5rem;
 	margin-bottom: 0.5rem;
+  margin-right: 3rem;
 	font-size: 1rem;
 	display: flex;
 	flex-direction: row-reverse;
@@ -140,7 +143,7 @@ export default {
 .form textarea {
   font-family: inherit;
   font-size: 100%;
-  width: 80%;
+  width: 90%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;

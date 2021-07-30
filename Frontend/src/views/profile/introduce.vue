@@ -1,17 +1,14 @@
 <template>
-  <div>
-      <div class="contents">
+
+    <div class="contents">
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
-					<label align="left" for="password">비밀번호를 입력해주세요</label>
-					<input id="password" type="password" v-model="password" />
-                    <p class="validation-text">
-
-					</p>
+					<label align="left" for="introduce">한 줄 소개를 입력해주세요</label>
+					<input id="introduce" type="text" v-model="introduce" />
 				</div>
-			    <button :disabled="!password" type="submit" class="btn">
-					  확인
+			    <button :disabled="!introduce" type="submit" class="btn" align="right">
+					                                    확인
 				  </button>
         
 			</form>
@@ -19,7 +16,6 @@
 		</div>
        
 	</div>
-  </div>
 </template>
 
 <script>
@@ -29,7 +25,7 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   data() {
 		return {
-      password: '',
+      introduce: '',
 		};
 	},
   created: function() {
@@ -57,19 +53,18 @@ export default {
     // }
     
     submitForm: function() {
-      console.log(this.password),
-      console.log(this.getToken)
+      // console.log(this.getToken)
       axios({
             method: 'post',
-            url: `${SERVER_URL}/member/checkpw`,
+            url: `${SERVER_URL}/profile/introduce`,
             data: {
-              "password" : this.password
+              "introduce" : this.introduce
               },
             headers: this.getToken,
           })
           .then(res => {
             console.log(res);
-            this.$router.push({ name: 'usermodify' })
+            this.$router.push({ name: 'profilePage' })
         
           })
           .catch(err => {

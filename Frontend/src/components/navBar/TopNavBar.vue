@@ -4,7 +4,10 @@
       <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
     </div>
     <div class="user">
-      <ul class="navbar-nav me-4">
+      
+
+      <!-- 로그인 했을 때 -->
+      <ul class="navbar-nav me-4" v-if="isLogin">
         <li class="nav-item dropdown">
           <div v-if="isLogin">
             로그인했다
@@ -20,36 +23,73 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            User1
+            {{userEmail}},
+            
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/passwordConfirm">정보수정</a></li>
-            <li><a class="dropdown-item" href="/profilePage">프로필페이지</a></li>
-            <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
+            <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
+            <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
+            <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
           </ul>
         </li>
+      </ul>
+
+<!-- 로그인 안했을 때 -->
+      <ul class="navbar-nav me-4" v-if="!isLogin">
+        <li class="nav-item dropdown">
+          <a class="" @click="login">Log in </a>
+        </li>
+        <li><a class="" @click="signup">Sign Up</a></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
+const token = localStorage.getItem('jwt')
+let username = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  //userpk = decoded.sub
+  username = decoded.name
+}
+//let userpk = '';
+
 export default {
-  data() {
-    return{
-    }
+  methods: {
+    logout: function(){
+      this.$store.dispatch('logout')
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("vuex")
+      this.$router.push({name: 'login'})
+    },
+    modifyUser: function() {
+      this.$router.push({'name':'passwordConfirm'})
+    },
+    goProfile: function() {
+      this.$router.push({'name':'profilePage'})
+    },
+    login: function() {
+      this.$router.push({'name':'login'})
+    },
+    signup: function() {
+      this.$router.push({'name':'login'})
+    },
   },
   computed: {
-    isLogin() {
+    isLogin(){
+      //console.log(this.$store.getters.isLogin)
       return this.$store.getters.isLogin
+    },
+    userName: function(){
+      return username
+    },
+    userEmail(){
+      return this.$store.getters.getEmail
     }
-  },
-  methods: {
-    logout: function() {  
-      this.$store.dispatch('logout')
-      localStorage.removeItem('jwt')
-      this.$router.push({name : 'timeline'})
-    }
+
   }
 }
 </script>
@@ -80,6 +120,18 @@ export default {
   font-size:2vw;
   position: absolute;
   right: 7%;
+}
+.nav-link{
+    font-size: 2vw;
+    font-weight: 600;
+    line-height: 1.0;
+    color: black;
+}
+.dropdown-item {
+  cursor: pointer;
+      font-size: 1.0rem;
+    font-weight: 600;
+    line-height: 1.0;
 }
 
 </style>

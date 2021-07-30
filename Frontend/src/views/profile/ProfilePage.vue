@@ -1,8 +1,9 @@
 <template>
-    <div>
-        <TopProfile></TopProfile>
-        <DownProfile></DownProfile>
-    </div>
+<div>
+    <TopProfile></TopProfile>
+    <DownProfile></DownProfile>
+ 
+</div>
 
 </template>
 
@@ -13,7 +14,13 @@ export default {
  components: {
      TopProfile,
      DownProfile
- }
+ },
+   created: function() {
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    }
+  },
 
 }
 </script>
