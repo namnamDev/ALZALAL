@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="clickApp">
     <SideMenuBar />
     <SearchBar />
     <TopMenuBar />
@@ -11,6 +11,7 @@
 import SideMenuBar from "@/components/navBar/SideMenuBar.vue";
 import TopMenuBar from "@/components/navBar/TopNavBar.vue";
 import SearchBar from "@/components/search/SearchBar.vue";
+import $ from 'jquery'
 
 export default {
   name: "App",
@@ -19,6 +20,26 @@ export default {
     TopMenuBar,
     SearchBar,
   },
+  methods: {
+    // side menu 바 다른 곳 클릭시 창 사라짐
+    clickApp: function(event) {
+      var windowWidth = $(window).width();
+      if (windowWidth < 577) {
+        let leftMenu = document.getElementById('menu-1')
+        console.log(leftMenu)
+  
+        if (event.target == event.currentTarget.querySelector('#menu-1') || 
+        event.target == event.currentTarget.querySelector('.menuIcon')){
+          return
+        }
+        else {
+          leftMenu.style.left = '-230px'
+          leftMenu.style.opacity = 0
+        }
+
+      }
+    }
+  }
 };
 </script>
 

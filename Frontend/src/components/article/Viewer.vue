@@ -1,10 +1,7 @@
 <template>
-  <div class="editor">
-    <h1>Editor</h1>
-    <Editor @send-data="getData"/>
-    
-    <div style="margin-top: 600px" v-if="viewerText"  >
-      <h1>Viewer</h1>
+  <div>   
+    <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
+    <div>
       <Viewer         
       :initialValue="viewerText"
       :options="viewerOptions"/>
@@ -13,11 +10,6 @@
 </template>
 
 <script>
-// Toast UI Editor - Editor
-import "@toast-ui/editor/dist/toastui-editor.css"; // Editor's Style
-import "codemirror/lib/codemirror.css";
-import "@toast-ui/editor/dist/i18n/ko-kr";
-
 // Toast UI Editor - viewer
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/vue-editor';
@@ -26,8 +18,6 @@ import { Viewer } from '@toast-ui/vue-editor';
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-
-import Editor from '@/views/createArticle/markdown4.vue'
 
 
 const VIEWER_OPTION = {
@@ -38,19 +28,23 @@ export default {
   name: "TextEditor",
   components: {
     Viewer,
-    Editor,
   },
   data() {
     return {
-      viewerText: '',
-      viewerOptions: VIEWER_OPTION
+      // viewerText: '# hello world',
+      viewerOptions: VIEWER_OPTION,
     };
   },
+  computed: {
+    viewerText: function() {
+      return this.$store.getters.getContent
+    },
+  },
   methods: {
-    getData: function(data) {
-      console.log(data)
-      this.viewerText = data
-    }
+
+  },
+  created() {
+    
   }
 };
 </script>
@@ -62,7 +56,6 @@ export default {
   width: 800px;
   left: 50%;
   transform: translateX(-50%);
-  top: 200px;
-  
+  top: 200px;  
 }
 </style>

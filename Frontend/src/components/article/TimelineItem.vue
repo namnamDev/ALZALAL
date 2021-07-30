@@ -1,5 +1,5 @@
 <template>
-  <div class="row my-5">
+  <div class="row my-5" @click="clickArticle">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
     <div class="box col-lg-6 col-md-10 col-sm-9 col-10">
 
@@ -18,7 +18,7 @@
                 <span>백준</span>
                 <span>1324</span>
                 <span>Python</span>
-                <span>넓이 우선 탐색</span>
+                <span>bfs</span>
               </div>
             </div>
           </div>
@@ -47,7 +47,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    clickArticle: function() {
+      this.$router.push({name : 'articleDetail'})
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -65,6 +71,7 @@ export default {};
 .box:hover{
   box-shadow: 0 20px 20px rgba(161,212,226,0.6);
   transform: scale(1.1);
+  cursor: pointer;
 }
 .box1 {
   /* border: 1px solid black; */
@@ -110,4 +117,13 @@ export default {};
 .hashtag{
   height:20px;
 }
+@media (max-width:767px) {
+  .top{
+    margin-bottom:30px;
+  }
+  .box{
+    height:350px;
+  }
+}
 </style>
+
