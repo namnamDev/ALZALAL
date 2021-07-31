@@ -106,7 +106,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 			.limit(page.getPageSize())
 			.fetch();
 	
-		
+		System.out.println(articleClass);
+		System.out.println(result.size());
 		return Optional.of(result) ;
 	}
   	

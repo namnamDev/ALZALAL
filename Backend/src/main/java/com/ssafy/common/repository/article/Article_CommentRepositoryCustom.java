@@ -21,4 +21,13 @@ public interface Article_CommentRepositoryCustom {
 
 	Optional<List<Article_CommentDTO>> artiComments(Long articleNo, Long memberNo, Pageable page);
 
+
+	Article_Comment sltOneArtiCom(Long commentPK);
+
+
+	long artiComDelete(Long commentPK);
+
+
+	long artiComUpdate(Long commentPK, String content);
+
 }

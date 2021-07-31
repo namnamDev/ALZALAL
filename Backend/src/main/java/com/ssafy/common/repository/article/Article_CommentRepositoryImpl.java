@@ -20,6 +20,7 @@ import com.ssafy.common.domain.article.QArticle_Comment;
 import com.ssafy.common.domain.article.QArticle_Comment_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.member.QMember;
+import com.ssafy.common.domain.article.QArticle_Comment;
 @Repository
 @RequiredArgsConstructor
 public class Article_CommentRepositoryImpl implements Article_CommentRepositoryCustom{
@@ -34,7 +35,7 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 						,arCo.articleCommentNo
 						,arCo.articleNo.articleNo
 						,Projections.constructor(MemberDTO.class,arCo.member.name,arCo.member.no)
-						,arCo.articleContent
+						,arCo.commentContent
 						,ExpressionUtils.as(
 								JPAExpressions.select(arCo.count())
 								.from(arCoLi)
@@ -44,14 +45,18 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 								JPAExpressions.select(arCoLi.count())
 								.from(arCoLi)
 								.where(arCoLi.member.no.eq(memberNo).and(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo)))
-								,"likeState"
-								)
+						,"likeState")
+						,arCo.articleCommentDate
 						))
 				.from(arCo)
 				.where(arCo.articleNo.articleNo.eq(articleNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
+		System.out.println(articleNo);
+		System.out.println(page);
+		System.out.println(res.size());
+		System.out.println(res.get(0).getArticleNo());
 		return Optional.of(res);
 	}
 //게시글의 댓글 조건조회
@@ -69,42 +74,36 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 								MemberDTO.class,
 								arCo.member.no,
 								arCo.member.name),
-						arCo.articleContent
+						arCo.commentContent
 						)).from(arCo)
 							.fetchFirst();
 		System.out.println(dto);
 		return null;
+	}
+	@Override
+	public Article_Comment sltOneArtiCom(Long commentPK){
+		QArticle_Comment arCo = QArticle_Comment.article_Comment;
+		return queryFactory.selectFrom(arCo)
+				.where(arCo.articleCommentNo.eq(commentPK))
+				.fetchFirst();
 	}
 	
-	public Article_CommentDTO arts(Article_Comment ArtiCo,Member member) {
+	@Override
+	public long artiComDelete(Long commentPK){
 		QArticle_Comment arCo = QArticle_Comment.article_Comment;
-		QMember m = QMember.member;
-		QArticle_Comment_Like arCoLi = QArticle_Comment_Like.article_Comment_Like;
-		Article_CommentDTO dto = queryFactory
-				.select(
-				Projections.constructor(
-						Article_CommentDTO.class,
-						arCo.articleCommentNo,
-						arCo.articleNo,
-						Projections.constructor(
-								MemberDTO.class,
-								arCo.member.no,
-								arCo.member.name),
-						arCo.articleContent,
-						ExpressionUtils.as(
-								JPAExpressions.select(arCo.articleCommentNo.count())
-								.from(arCoLi)
-								.where(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo))
-						,"likeCount")
-						,ExpressionUtils.as(
-								JPAExpressions.select(arCo.articleCommentNo)
-								.from(arCoLi)
-								.where(arCoLi.member.eq(member)).exists()
-								,"likeState"
-								)
-						)).from(arCo)
-							.fetchFirst();
-		System.out.println(dto);
-		return null;
+		return queryFactory.delete(arCo)
+				.where(arCo.articleCommentNo.eq(commentPK))
+				.execute();
 	}
+	
+	@Override
+	public long artiComUpdate(Long commentPK,String content){
+		QArticle_Comment arCo = QArticle_Comment.article_Comment;
+		return queryFactory.update(arCo)
+				.where(arCo.articleCommentNo.eq(commentPK))
+				.set(arCo.commentContent, content)
+				.execute();
+	}
+//	@Override
+//	public long articleDelete(Long)
 }
