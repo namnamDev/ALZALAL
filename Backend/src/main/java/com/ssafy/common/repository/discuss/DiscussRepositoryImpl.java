@@ -1,4 +1,4 @@
-package com.ssafy.common.repository.article;
+package com.ssafy.common.repository.discuss;
 import static com.ssafy.common.domain.article.QArticle.article;
 import static com.ssafy.common.domain.article.QArticle_Comment.article_Comment;
 import static com.ssafy.common.domain.article.QArticle_Like.article_Like;
@@ -14,7 +14,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.article.Article;
-import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.article.QArticle;
 import com.ssafy.common.domain.article.QArticle_Comment;
@@ -32,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 //public class ArticleRepositorySupport extends QuerydslRepositorySupport{
-public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
+public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
   	@Override
@@ -71,45 +70,6 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 		
 		return Optional.of(result) ;
 	}
-  	
-	@Override
-  	public Optional<List<ArticleDTO>> sltMultiQnA(Long nowLoginMemberNo,Pageable page, Article_Class articleClass){
-		QArticle qa=QArticle.article;
-		QArticle_Like qal= QArticle_Like.article_Like;
-		QArticle_Comment qac=QArticle_Comment.article_Comment;
-		
-		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
-							, qa.articleNo
-							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
-							,qa.articleTitle,qa.articleContent,qa.articleDate
-							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
-							,qa.useLanguage.useLanguage, qa.articleClass
-							, ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
-			                "likeCount")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
-			                "likeState")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qac.count())
-			                        .from(qac)
-			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
-			                "commentCount")									
-							))
-			.from(qa)
-			.where(qa.articleClass.eq(articleClass))
-			.offset(page.getOffset())
-			.limit(page.getPageSize())
-			.fetch();
-	
-		
-		return Optional.of(result) ;
-	}
-  	
     //게시글 단건조회
   	@Override
     public ArticleDTO sltOne(Long pk,Long nowLoginMemberNo){

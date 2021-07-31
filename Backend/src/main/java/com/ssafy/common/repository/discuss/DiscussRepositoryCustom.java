@@ -1,4 +1,4 @@
-package com.ssafy.common.repository.article;
+package com.ssafy.common.repository.discuss;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,12 +6,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 
 import com.ssafy.common.domain.article.Article;
-import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
 
-public interface ArticleRepositoryCustom {
+public interface DiscussRepositoryCustom {
 
 
 //	List<Article_Comment> articleComments(Long article);
@@ -35,6 +34,4 @@ public interface ArticleRepositoryCustom {
 	Article sltOneArticle(Long pk);
 
 	Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo, Pageable page);
-
-	Optional<List<ArticleDTO>> sltMultiQnA(Long nowLoginMemberNo, Pageable page, Article_Class articleClass);
 }

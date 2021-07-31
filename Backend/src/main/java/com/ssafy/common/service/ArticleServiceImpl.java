@@ -78,6 +78,12 @@ public class ArticleServiceImpl implements ArticleService{
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
         	res.put("msg", "게시글이 존재하지 않습니다.");
         }
+    }else if(articleClass.equals("qna")){
+        List<ArticleDTO> articleList = ArticleRepo.sltMultiQnA(nowLoginMemberNo, PageRequest.of(page, 20), Article_Class.A00).orElse(null);
+        res.put("article", articleList);
+        if (articleList.size()==0) //게시글이 존재하지 않을 시.
+        	res.put("msg", "게시글이 존재하지 않습니다.");
+
     }
     else if(articleClass.equals("discussion")){
     	
@@ -85,6 +91,9 @@ public class ArticleServiceImpl implements ArticleService{
     return res;
     
   }
+  
+  
+  
   @Override
   public Map<String, Object>sltOneArticle(String articleClass,long pk,int page){
 	  //게시글 단건조회 및 댓글 조회
@@ -218,10 +227,10 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertArticle.setUseLanguage(useLanguage);
 					Article tempInserted = ArticleRepo.save(insertArticle);
 					ArticleRepo.flush();
-					msg = "등록된 댓글이 없습니다.";
 					if (category.equals("A01")){
 						Article_Algorithm artiAlgo = new Article_Algorithm();
 						List<String> usedAlgo = (List<String>) req.get("algo");
+						if (usedAlgo !=null) {
 						for (String algo : usedAlgo) {
 							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
 							if (sltOneAlgo != null){
@@ -232,11 +241,14 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 								msg = "알고리즘이 존재하지 않습니다.";
 							}
 						}
+						}
 						ArtiAlgoRepo.flush();
 						
 					}
 					ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
+					List<Article_CommentDTO> comments = articleCommetRepo.artiComments(inserted.getArticleNo(),member.getNo(),PageRequest.of(0, 20)).orElse(null);
 					res.put("article", inserted);
+					res.put("articleComments", comments);
 				}
 			}	
 		}
