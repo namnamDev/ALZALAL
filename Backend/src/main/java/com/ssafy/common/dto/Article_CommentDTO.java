@@ -7,30 +7,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@NoArgsConstructor
 public class Article_CommentDTO {
 	private Long articleCommentNo;
 	private Long articleNo;
-	private MemberDTO memberDTO;
+	private MemberDTO member;
 	private String content;
 	private Long likeCount;
 	private Boolean likeState;
 	
-	@QueryProjection
 	public Article_CommentDTO(
 		Long articleCommentNo,
 		Long articleNo,
-		MemberDTO memberDTO,
+		MemberDTO member,
 		String content,
 		Long likeCount,
-		Boolean likeState
+		Long likeState
 		) {
+		super();
 		this.articleCommentNo = articleCommentNo;
 		this.articleNo = articleNo;
-		this.memberDTO = memberDTO;
+		this.member = member;
 		this.content = content;
-		this.likeCount = likeCount;
-		this.likeState = likeState;
+		this.likeCount = likeCount==null?0:likeCount;
+		this.likeState = likeState>0?true:false;
 	}
 //	private Long likeCount;
 //	private Boolean likeState;

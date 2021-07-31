@@ -16,6 +16,9 @@ public interface Article_CommentRepositoryCustom {
 	Article_CommentDTO articleComment(Article_Comment ArtiCo,Member memberDTO);
 
 
-	Optional<List<Article_CommentDTO>> artiComments(Article article, Long memberNo, Pageable page);
+//	Optional<List<Article_CommentDTO>> artiComments(Article article, Long memberNo, Pageable page);
+
+
+	Optional<List<Article_CommentDTO>> artiComments(Long articleNo, Long memberNo, Pageable page);
 
 }
