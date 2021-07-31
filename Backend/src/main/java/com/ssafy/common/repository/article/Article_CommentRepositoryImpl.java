@@ -27,15 +27,13 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 	
 	//댓글 다건조회
 	@Override
-	public Optional<List<Article_CommentDTO>> artiComments(Article article,Long memberNo,Pageable page){
+	public Optional<List<Article_CommentDTO>> artiComments(Long articleNo,Long memberNo,Pageable page){
 		QArticle_Comment arCo = QArticle_Comment.article_Comment;
 		QArticle_Comment_Like arCoLi= QArticle_Comment_Like.article_Comment_Like;
-		List<Article_CommentDTO>res = queryFactory.select(Projections.fields(Article_CommentDTO.class
+		List<Article_CommentDTO>res = queryFactory.select(Projections.constructor(Article_CommentDTO.class
 						,arCo.articleCommentNo
-						,arCo.articleNo
-						,Projections.constructor(MemberDTO.class
-								,arCo.member.no
-								,arCo.member.name)
+						,arCo.articleNo.articleNo
+						,Projections.constructor(MemberDTO.class,arCo.member.name,arCo.member.no)
 						,arCo.articleContent
 						,ExpressionUtils.as(
 								JPAExpressions.select(arCo.count())
@@ -50,7 +48,7 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 								)
 						))
 				.from(arCo)
-				.where(arCo.articleNo.eq(article))
+				.where(arCo.articleNo.articleNo.eq(articleNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();

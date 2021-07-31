@@ -97,9 +97,9 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	  Map<String,Object>res = new HashMap<String,Object>();
 	  	if(articleClass.equals("article")){
-	    	Article article = ArticleRepo.sltOneArticle(pk);
+	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
 	    	res.put("articleDetail",article);
-	    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(article,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+	    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
 	    	String msg = "";
 	    	if (comments.size() == 0) {
 	    		msg = "등록된 댓글이 없습니다.";
