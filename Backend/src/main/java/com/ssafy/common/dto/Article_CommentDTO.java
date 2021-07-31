@@ -1,9 +1,9 @@
 package com.ssafy.common.dto;
 
 
-import com.querydsl.core.annotations.QueryProjection;
+import java.time.LocalDateTime;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
@@ -14,6 +14,7 @@ public class Article_CommentDTO {
 	private String content;
 	private Long likeCount;
 	private Boolean likeState;
+	private LocalDateTime articleCommentDate;
 	
 	public Article_CommentDTO(
 		Long articleCommentNo,
@@ -21,7 +22,8 @@ public class Article_CommentDTO {
 		MemberDTO member,
 		String content,
 		Long likeCount,
-		Long likeState
+		Long likeState,
+		LocalDateTime articleCommentDate
 		) {
 		super();
 		this.articleCommentNo = articleCommentNo;
@@ -30,6 +32,7 @@ public class Article_CommentDTO {
 		this.content = content;
 		this.likeCount = likeCount==null?0:likeCount;
 		this.likeState = likeState>0?true:false;
+		this.articleCommentDate = articleCommentDate;
 	}
 //	private Long likeCount;
 //	private Boolean likeState;

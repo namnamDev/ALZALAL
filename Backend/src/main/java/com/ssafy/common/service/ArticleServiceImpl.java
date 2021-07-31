@@ -104,21 +104,25 @@ public class ArticleServiceImpl implements ArticleService{
 	}catch (RuntimeException e) {
 		nowLoginMemberNo=0L;
 	}
+	String msg = "";
 	  Map<String,Object>res = new HashMap<String,Object>();
 	  	if(articleClass.equals("article")){
 	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
-	    	res.put("articleDetail",article);
-	    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
-	    	String msg = "";
-	    	if (comments.size() == 0) {
-	    		msg = "등록된 댓글이 없습니다.";
+	    	if (article != null) {
+		    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	if (comments.size() == 0) {
+		    		msg = "등록된 댓글이 없습니다.";
+		    	}
+		    	res.put("articleDetail",article);
+		    	res.put("articleComments", comments);
+	    	}else {
+	    		msg="게시글이 존재하지 않습니다.";
 	    	}
-	    	res.put("msg",msg);
-	    	res.put("articleComments", comments);
 	    }
 	    else if(articleClass.equals("discussion")){
 	    	
 	    }
+	  	res.put("msg",msg);
 	  return res;
   }
   @Override

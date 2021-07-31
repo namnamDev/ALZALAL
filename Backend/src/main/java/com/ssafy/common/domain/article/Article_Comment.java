@@ -1,6 +1,7 @@
 package com.ssafy.common.domain.article;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.ssafy.common.domain.member.Member;
 
@@ -31,8 +34,10 @@ public class Article_Comment {
   private Article articleNo;
 
   @Column(length = 500,name = "ARTICLE_COMMENT_CONTENT")
-  private String articleContent;
+  private String commentContent;
 
-  @Column(name="ARTICLE_COMMENT_DATE")
-  private Timestamp articleCommentDate;
+  @Column(name="ARTICLE_COMMENT_DATE",updatable = false,
+		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @CreationTimestamp
+  private LocalDateTime articleCommentDate;
 }
