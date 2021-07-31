@@ -26,8 +26,6 @@ public class SearchController {
 	public Map<String,List<ArticleDTO>> getArticleListByMemberNo(@PathVariable Long memberNo, @RequestParam(defaultValue = "0") int page) {
 		
 		Map<String, List<ArticleDTO>> ret=new HashMap<>();
-		System.out.println("asdf  "+memberNo);
-		System.out.println("asdf  "+page);
 		
 		List<ArticleDTO> articleList= searchService.getArticleListByMemberNo(memberNo, page);
 		
