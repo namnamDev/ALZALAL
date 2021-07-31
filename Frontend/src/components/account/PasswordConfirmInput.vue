@@ -11,10 +11,11 @@
 
             </p>
           </div>
+          <div class="checkBtn">
             <button :disabled="!password" type="submit" class="btn">
               확인
             </button>
-          
+          </div>
         </form>
 		  </div>
 		</div>
@@ -133,11 +134,14 @@ export default {
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
 }
+.checkBtn{
+  margin-left: 150px;
+}
 .btn {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .25rem;
-  margin-left: 50px;
+  width:30%;
 }
 .btn.disabled {
   opacity: 0.5;

@@ -27,7 +27,7 @@
             </p>
           </div>
           <div>
-            <label for="name" align="left">닉네임 <button class='btn btn-duplicate'>중복검사</button></label>
+            <label for="name" align="left">닉네임</label>
             <input id="name" type="text" v-model="form.name" />
                       
           </div>
@@ -237,5 +237,8 @@ li {
   font-size: 15px;
   font-weight: 550;
 }
-
+.form li input{
+  margin-left: 10px;
+  width:5%;
+}
 </style>

@@ -302,5 +302,8 @@ li {
   font-size: 15px;
   font-weight: 550;
 }
-
+.form li input{
+  margin-left: 10px;
+  width:5%;
+}
 </style>

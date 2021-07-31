@@ -16,8 +16,10 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {{userEmail}}
-            
+            <span class="username">{{userEmail}}</span>
+            <span class="imageSection">
+              <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+            </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
@@ -45,15 +47,23 @@
 <script>
 import jwt_decode from 'jwt-decode'
 const token = localStorage.getItem('jwt')
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 let username = '';
+let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
   //userpk = decoded.sub
   username = decoded.name
+  userpk = decoded.sub
 }
 //let userpk = '';
 
 export default {
+  data(){
+    return{
+      imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+    }
+  },
   methods: {
     logout: function(){
       this.$store.dispatch('logout')
@@ -96,9 +106,6 @@ export default {
 
 <style scoped>
 
-.box{
-  background-color: bisque;
-}
 .top{
   position:fixed;
   background-color: white;
@@ -152,6 +159,9 @@ export default {
   /* transform: scale(1.2); */
   font-size: 25px;
 }
+.username {
+  margin-right: 15px;
+}
 
 @media (max-width: 576px){
     .login-signup{
@@ -170,6 +180,24 @@ export default {
   .user{
       right: 0;    
   }
+  .profileImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 75%;
+  }
+}
+@media (max-width: 768px){
+  .username {
+    display: none;
+  }
+}
+
+.imageSection{
+}
+.profileImg {
+    width: 70px;
+    height: 70px;
+    border-radius: 75%;
 }
 
 </style>
