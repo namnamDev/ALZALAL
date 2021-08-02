@@ -53,10 +53,6 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
-		System.out.println(articleNo);
-		System.out.println(page);
-		System.out.println(res.size());
-		System.out.println(res.get(0).getArticleNo());
 		return Optional.of(res);
 	}
 //게시글의 댓글 조건조회

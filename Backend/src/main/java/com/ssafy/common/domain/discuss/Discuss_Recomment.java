@@ -33,7 +33,7 @@ public class Discuss_Recomment {
   private Member member;
 
   @Column(length = 500,name="DISCUSS_RECOMMENT_CONTENT")
-  private String disscussRecommentContent;
+  private String discussRecommentContent;
 
   @Column(name="DISCUSS_RECOMMENT_DATE")
   private Timestamp discussRecommentDate;

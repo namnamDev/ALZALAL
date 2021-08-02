@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.discuss.Discuss_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.dto.Discuss_CommentDTO;
@@ -23,7 +24,7 @@ public interface Discuss_CommentRepositoryCustom {
 	Optional<List<Discuss_CommentDTO>> artiComments(Long articleNo, Long memberNo, Pageable page);
 
 
-	Article_Comment sltOneArtiCom(Long commentPK);
+	Discuss_Comment sltOneArtiCom(Long commentPK);
 
 
 	long artiComDelete(Long commentPK);

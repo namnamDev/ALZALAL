@@ -1,5 +1,6 @@
 package com.ssafy.common.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.ssafy.common.domain.article.Article_Algorithm;
 import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.article.Article_Like;
+import com.ssafy.common.domain.discuss.Discuss_Host;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
@@ -30,6 +32,7 @@ import com.ssafy.common.repository.article.Article_CommentRepository;
 import com.ssafy.common.repository.article.Article_LikeRepository;
 import com.ssafy.common.repository.discuss.DiscussRepository;
 import com.ssafy.common.repository.discuss.Discuss_CommentRepository;
+import com.ssafy.common.repository.discuss.Discuss_HostRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 import com.ssafy.common.repository.problem.Problem_Site_Repository;
@@ -67,6 +70,8 @@ public class ArticleServiceImpl implements ArticleService{
   private DiscussRepository disRepo;
   @Autowired
   private Discuss_CommentRepository disComRepo;
+  @Autowired
+  private Discuss_HostRepository disHostRepo;
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass,int page) {
 	  
@@ -280,8 +285,17 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 				}
 			}	
 		}
+	//초기 데이터 입력용 (관리자기능)
 	}else if(articleClass.equals("discussion")){
+//		List<String>hosts = new ArrayList<String>();
+		String[]hosts = new String[]{"카카오","라인","프로그래머스","백준"};
+		String[][][]discusses = new String[4][4][5];
 		
+		for (String hostOne: hosts) {
+			Discuss_Host dh = new Discuss_Host();
+			dh.setDiscussCompHostName(hostOne);
+			disHostRepo.save(dh);
+		}
 		
 		
 	}

@@ -17,9 +17,10 @@ import com.ssafy.common.dto.MemberDTO;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.article.QArticle_Comment;
-import com.ssafy.common.domain.discuss.QDisscuss_Comment_Like;
+import com.ssafy.common.domain.discuss.QDiscuss_Comment_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.member.QMember;
+import com.ssafy.common.domain.discuss.Discuss_Comment;
 import com.ssafy.common.domain.discuss.QDiscuss_Comment;
 @Repository
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class Discuss_CommentRepositoryImpl implements Discuss_CommentRepositoryC
 	@Override
 	public Optional<List<Discuss_CommentDTO>> artiComments(Long articleNo,Long memberNo,Pageable page){
 		QDiscuss_Comment arCo = QDiscuss_Comment.discuss_Comment;
-		QDisscuss_Comment_Like arCoLi= QDisscuss_Comment_Like.disscuss_Comment_Like;
+		QDiscuss_Comment_Like arCoLi= QDiscuss_Comment_Like.discuss_Comment_Like;
 		List<Discuss_CommentDTO>res = queryFactory.select(Projections.constructor(Discuss_CommentDTO.class
 						,arCo.discussCommentNo
 						,arCo.discussNo.discussNo
@@ -38,12 +39,12 @@ public class Discuss_CommentRepositoryImpl implements Discuss_CommentRepositoryC
 						,ExpressionUtils.as(
 								JPAExpressions.select(arCoLi.count())
 								.from(arCoLi)
-								.where(arCoLi.disscussCommentNo.discussCommentNo.eq(arCo.discussCommentNo))
+								.where(arCoLi.discussCommentNo.discussCommentNo.eq(arCo.discussCommentNo))
 						,"likeCount")
 						,ExpressionUtils.as(
 								JPAExpressions.select(arCoLi.count())
 								.from(arCoLi)
-								.where(arCoLi.member.no.eq(memberNo).and(arCoLi.disscussCommentNo.discussCommentNo.eq(arCo.discussCommentNo)))
+								.where(arCoLi.member.no.eq(memberNo).and(arCoLi.discussCommentNo.discussCommentNo.eq(arCo.discussCommentNo)))
 						,"likeState")
 						,arCo.discussCommentDate
 						))
@@ -77,29 +78,28 @@ public class Discuss_CommentRepositoryImpl implements Discuss_CommentRepositoryC
 		return null;
 	}
 	@Override
-	public Article_Comment sltOneArtiCom(Long commentPK){
-		QArticle_Comment arCo = QArticle_Comment.article_Comment;
+	public Discuss_Comment sltOneArtiCom(Long commentPK){
+		QDiscuss_Comment arCo = QDiscuss_Comment.discuss_Comment;
 		return queryFactory.selectFrom(arCo)
-				.where(arCo.articleCommentNo.eq(commentPK))
+				.where(arCo.discussCommentNo.eq(commentPK))
 				.fetchFirst();
 	}
 	
 	@Override
 	public long artiComDelete(Long commentPK){
-		QArticle_Comment arCo = QArticle_Comment.article_Comment;
+		QDiscuss_Comment arCo = QDiscuss_Comment.discuss_Comment;
 		return queryFactory.delete(arCo)
-				.where(arCo.articleCommentNo.eq(commentPK))
+				.where(arCo.discussCommentNo.eq(commentPK))
 				.execute();
 	}
 	
 	@Override
 	public long artiComUpdate(Long commentPK,String content){
-		QArticle_Comment arCo = QArticle_Comment.article_Comment;
+		QDiscuss_Comment arCo = QDiscuss_Comment.discuss_Comment;
 		return queryFactory.update(arCo)
-				.where(arCo.articleCommentNo.eq(commentPK))
-				.set(arCo.commentContent, content)
+				.where(arCo.discussCommentNo.eq(commentPK))
+				.set(arCo.discussCommentContent, content)
 				.execute();
 	}
-//	@Override
-//	public long articleDelete(Long)
+
 }
