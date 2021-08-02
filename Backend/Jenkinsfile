@@ -6,6 +6,10 @@ pipeline {
                 script {
                     try {
                         mattermostSend (
+                            color: "#000000", 
+                            message: "*************************************************************************"
+                        )     
+                        mattermostSend (
                             color: "#2A42EE", 
                             message: "Remove STARTED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
                         )                   
