@@ -22,7 +22,7 @@
 <script>
 import algofollow from '@/components/profile/follow/algoFollow.vue'
 import problemfollow from '@/components/profile/follow/problemFollow.vue'
-import userfollow from '@/components/profile/follow/userFollow.vue'
+import userfollow from '@/components/profile/follow/userfollow/userFollow.vue'
 export default {
   components: {
     userfollow,

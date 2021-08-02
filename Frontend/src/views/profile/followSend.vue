@@ -48,6 +48,7 @@ export default {
                 })
                 .catch(err => {
                     console.log(this.form.memberNo)
+                    console.log(this.getToken)
                     console.log(err);
                 })
         }

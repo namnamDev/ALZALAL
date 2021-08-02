@@ -147,7 +147,7 @@ export default{
       })
       .then(res => {
         console.log(res);
-        this.$router.push({ name: 'login' })
+        this.$router.push({ name: 'profilePage' })
       })
       .catch(err => {
         alert(err)

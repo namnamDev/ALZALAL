@@ -1,37 +1,14 @@
 <template>
     <div>
-      <div class="follow">
-      <div class="userImg col-2">
-          <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-      </div>
-      <div class="user col-10">
-          <span class="userName">
-          UserName
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
-      </div>
+
 <!-- 예시 화면 코드 끝 -->
 
-      <div class="follow" v-for="(item, index) in following" :key="index">
-      <div class="userImg col-2">
-          <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="이미지">
-      </div>
-      <div class="user col-10">
-          <span class="userName">
-         {{item.name}}
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
-      </div>
+      <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no"/>
     </div>
 </template>
 
 <script>
+import followListImg from '@/components/profile/follow/userfollow/followListImg.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -44,10 +21,12 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    followListImg
+  },
   data(){
     return {
       following:[],
-      memberNo: ''
     }
   },
   created: function(){
@@ -70,33 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 120px;
-  }
-}
-.userImg1 {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-/* 두개 비교할려고 냅둠 */
-.userImg {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
+
 .profileImg{
     width: 100%;
     height: 100%;

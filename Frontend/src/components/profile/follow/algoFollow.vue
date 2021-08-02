@@ -1,19 +1,20 @@
 <template>
     <div>
-      <div class="follow">
-      <div class="user col-10">
-          <span class="algo">
-          algo
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
+      <div class="follow" v-for="item,index in algo" :key="index">
+        <div class="user col-10">
+            <span class="problem">
+            {{item}}
+            </span>
+            <span class="followBtn">
+              <algoFollowBtn :algo="item"/>
+            </span>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
+import algoFollowBtn from '@/components/profile/follow/algoFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -26,6 +27,9 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    algoFollowBtn
+  },
   data(){
     return {
       algo: [],
@@ -39,13 +43,14 @@ export default {
     })   // back 에 로그인 요청
     .then(res =>{
       console.log(res)
-      this.algo = res.data.algo
+      this.algo = res.data
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
       
     })
   },
+  
 }
 </script>
 

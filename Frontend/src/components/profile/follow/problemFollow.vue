@@ -1,19 +1,23 @@
 <template>
     <div>
-      <div class="follow">
-      <div class="user col-10">
-          <span class="problem">
-          problem
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
+      <div class="follow" v-for="(item,index) in problems" :key="index">
+        <div class="user col-10">
+            <span class="problem">
+            {{item.site}}
+            </span>
+            <span class="problem">
+             문제번호: {{item.no}}
+            </span>
+            <span class="followBtn">
+              <problemFollowBtn :site="item.site" :no="item.no"/>
+            </span>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
+import problemFollowBtn from '@/components/profile/follow/problemFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -26,12 +30,12 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    problemFollowBtn
+  },
   data(){
     return {
-      problem: {
-        no: '',
-        site: '',
-      }
+      problems: []
     }
   },  
   created: function(){
@@ -42,8 +46,7 @@ export default {
     })   // back 에 로그인 요청
     .then(res =>{
       console.log(res)
-      this.form.no = res.data.no
-      this.form.site = res.data.site
+      this.problems = res.data
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
