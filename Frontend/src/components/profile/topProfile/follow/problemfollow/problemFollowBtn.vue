@@ -1,8 +1,7 @@
 <template>
-  <div>
+    <span>
       <button class="btn" @click="clickFollow">팔로우</button>
-      {{site}}
-  </div>
+    </span>
 </template>
 
 <script>
@@ -34,7 +33,7 @@ export default {
                 headers: this.getToken,
             })
             .then(res =>{
-                console.log(res)         
+                console.log(res)
             })
             .catch(err => {
                 console.log(this.site)
@@ -42,11 +41,20 @@ export default {
                 console.log(this.getToken)
                 console.log(err);
             })
-        }
+        },
   },
 }
 </script>
 
 <style>
-
+.btn:focus{
+    border:none;
+    outline: none;
+}
+.btn{
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .1rem;
+  font-size: 15px;
+}
 </style>

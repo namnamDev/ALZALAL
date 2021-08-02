@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
       <div class="userImg col-3">
           <img class="profileImg" :src="imgsrc" alt="이미지">
@@ -63,16 +63,13 @@ export default {
 </script>
 
 <style scoped>
-
-/* 두개 비교할려고 냅둠 */
 .userImg {
-    
-    width: 75px;
-    height: 75px; 
+    width: 70px;
+    height: 70px; 
     border-radius: 70%;
     overflow: hidden;
     display: flex;
-    margin: 20px 0px 0px auto;
+    margin: 20px 0px 0px 0px;
 }
 .profileImg{
     width: 100%;
@@ -80,25 +77,10 @@ export default {
     object-fit: cover;
     display: block;
 }
-.follow {
-  display: flex;
-}
-.nav {
-  cursor:pointer;
-  margin-bottom: 50px;
-}
-.nav-link{
-  font-weight: 700;
-}
-.user{
-  margin-top: 30px;
-  font-size: 20px;
-  font-weight: 700;
-  margin-left: 100px;
-  
-}
+
 .userName{
   margin-right: 30px;
+  font-weight: 550;
 }
 .followBtn {
   border-radius: 10%;
@@ -108,13 +90,7 @@ export default {
   margin-left: 30px;
 }
 @media (max-width:768px) {
-  .user{
-  margin-top: 30px;
-  font-size: 15px;
-  font-weight: 700;
-  margin-left: 30px;
-  
-}
+
   .followBtn {
     border-radius: 10%;
     border: solid 0.5px skyblue;

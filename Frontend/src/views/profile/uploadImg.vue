@@ -15,7 +15,7 @@
             <img class="profileImg" :src="url" />
           </div>
           <div id="preview" class="profile-image" v-if="!url">
-            <img class="profileImg" alt="any img" />
+            <img class="profileImg" alt="프로필이미지를 등록해주세요" />
           </div>
 
           <button type="submit" class="btn btn-submit">

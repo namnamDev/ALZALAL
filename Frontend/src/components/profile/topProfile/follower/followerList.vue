@@ -37,9 +37,7 @@ export default {
       data: page
     })   // back 에 로그인 요청
     .then(res =>{
-      console.log(res)
       this.follower = res.data
-      console.log(this.follower)
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
@@ -53,7 +51,7 @@ export default {
         Authorization: `Bearer ${token}`
       }
       return config
-    }
+    },
 	},
 }
 </script>

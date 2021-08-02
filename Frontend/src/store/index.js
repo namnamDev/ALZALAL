@@ -25,8 +25,7 @@ export default new Vuex.Store({
     },
     CREATE_CONTENT: function(state,content){
       state.content = content
-    }
-
+    },
   },
   actions: {
     // 요청해서 받아온값 mutation으로
@@ -38,8 +37,7 @@ export default new Vuex.Store({
     },
     create_content: function({commit}, content){
       commit("CREATE_CONTENT", content)
-    }
-
+    },
   },
   getters: {
     // state에 있는 정보를 가져오는 역할
@@ -51,7 +49,7 @@ export default new Vuex.Store({
     },
     getContent: function(state){
       return state.content
-    }
+    },
 
   },
   modules: {

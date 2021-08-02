@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <span>
       <button class="btn" @click="clickFollow">팔로우</button>
-      {{algo}}
-  </div>
+  </span>
 </template>
 
 <script>
@@ -44,6 +43,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.btn{
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .1rem;
+  font-size: 15px;
+}
 </style>

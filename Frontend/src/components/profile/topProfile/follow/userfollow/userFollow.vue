@@ -38,8 +38,6 @@ export default {
     .then(res =>{
       console.log(res)
       this.following = res.data
-      console.log(this.following.no)
-      console.log(this.follower)
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
@@ -103,7 +101,7 @@ export default {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .1rem;
-  font-size: 1vw;
+  font-size: 15px;
 }
 #clickFollowing:hover {
   background-color:#a1d4e2;

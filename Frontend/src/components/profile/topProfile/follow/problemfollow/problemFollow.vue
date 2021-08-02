@@ -3,10 +3,10 @@
       <div class="follow" v-for="(item,index) in problems" :key="index">
         <div class="user col-10">
             <span class="problem">
-            {{item.site}}
+            {{item.site}} 
             </span>
             <span class="problem">
-             문제번호: {{item.no}}
+             {{item.no}}번
             </span>
             <span class="followBtn">
               <problemFollowBtn :site="item.site" :no="item.no"/>
@@ -57,58 +57,19 @@ export default {
 </script>
 
 <style scoped>
-.container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 120px;
-  }
-}
-.userImg1 {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-/* 두개 비교할려고 냅둠 */
-.userImg {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-.profileImg{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
 .follow {
   display: flex;
 }
-.nav {
-  cursor:pointer;
-  margin-bottom: 50px;
-}
-.nav-link{
-  font-weight: 700;
-}
 .user{
   margin-top: 30px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   margin-left: 100px;
   
 }
-.userName{
-  margin-right: 30px;
+.problem{
+  font-weight: 550;
+  font-size: 22px;
 }
 .followBtn {
   border-radius: 10%;
@@ -133,12 +94,7 @@ export default {
 
   }
 }
-.btn{
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .1rem;
-  font-size: 1vw;
-}
+
 #clickFollowing:hover {
   background-color:#a1d4e2;
 }
