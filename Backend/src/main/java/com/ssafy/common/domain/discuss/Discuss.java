@@ -31,7 +31,7 @@ public class Discuss {
   private String discussCompName;
 
   @Column(length = 20,name="DISCUSS_COMP_PROBLEM")
-  private String disscussCompProblem;
+  private String discussCompProblem;
 
   @Column(name="DISCUSS_DATE")
   private LocalDateTime discussDate;

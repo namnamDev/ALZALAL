@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.common.domain.article.Article;
+import com.ssafy.common.domain.discuss.Discuss;
+import com.ssafy.common.domain.discuss.Discuss_Comment;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
@@ -16,6 +18,8 @@ import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_CommentRepository;
+import com.ssafy.common.repository.discuss.DiscussRepository;
+import com.ssafy.common.repository.discuss.Discuss_CommentRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 
 @Service
@@ -24,9 +28,13 @@ public class CommentServiceImpl implements CommentService{
 	@Autowired
 	  private MemberRepository memberRepository;
 	@Autowired
-	  private  ArticleRepository ArticleRepo;
+	  private  ArticleRepository articleRepo;
+	@Autowired
+	  private  DiscussRepository discussRepo;
 	@Autowired
 	  private Article_CommentRepository ArtiComRepo;
+	@Autowired
+	  private Discuss_CommentRepository disComRepo;
 	@Override
 	public Map<String, Object> insertArticleComment(String articleClass, long articlePk, Map<String, Object> req) {
 		Map<String, Object> res = new HashMap<String,Object>();
@@ -35,7 +43,7 @@ public class CommentServiceImpl implements CommentService{
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 		String content = (String)req.get("commentContent");
 		if (articleClass.equals("article")) {
-			Article article = ArticleRepo.sltOneArticle(articlePk);
+			Article article = articleRepo.sltOneArticle(articlePk);
 			if (article != null) {
 				Article_Comment comment= new Article_Comment();
 				comment.setCommentContent(content);
@@ -48,7 +56,18 @@ public class CommentServiceImpl implements CommentService{
 			}
 			res.put("msg", msg);
 		}else if(articleClass.equals("discussion")){
-			
+			Discuss article = discussRepo.sltOneArticle(articlePk);
+			if (article != null) {
+				Discuss_Comment comment = new Discuss_Comment();
+				comment.setDiscussCommentContent(content);
+				comment.setMember(member);
+				comment.setDiscussNo(article);
+				disComRepo.save(comment);
+			}else {
+				msg = "토론게시글이 존재하지 않습니다.";
+			}
+			res.put("msg", msg);
+
 		}else if(articleClass.equals("helpme")) {
 		
 		}
@@ -73,7 +92,14 @@ public class CommentServiceImpl implements CommentService{
 				msg = "작성자만 삭제할 수 있습니다.";
 			}
 		}else if (articleClass.equals("discussion")) {
-		
+			Discuss_Comment artiCom = disComRepo.sltOneArtiCom(commentPK);
+			if (artiCom.getMember().getNo() == member.getNo()) {
+				msg="삭제완료";
+				Long deleted = disComRepo.artiComDelete(commentPK);
+				res.put("deleted", deleted);
+			}else {
+				msg = "작성자만 삭제할 수 있습니다.";
+			}
 		}else if (articleClass.equals("helpme")) {
 			
 		}
@@ -99,6 +125,15 @@ public class CommentServiceImpl implements CommentService{
 				msg = "작성자만 수정할 수 있습니다.";
 			}
 		}else if (articleClass.equals("discussion")) {
+			Discuss_Comment artiCom = disComRepo.sltOneArtiCom(commentPK);
+			if (artiCom.getMember().getNo() == member.getNo()) {
+				String content = (String)req.get("commentContent");
+				msg="수정완료";
+				Long updated = disComRepo.artiComUpdate(commentPK, content);
+				res.put("updated", updated);
+			}else {
+				msg = "작성자만 수정할 수 있습니다.";
+			}
 			
 		}else if (articleClass.equals("helpme")) {
 				
