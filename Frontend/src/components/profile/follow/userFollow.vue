@@ -1,25 +1,33 @@
 <template>
     <div>
-        <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-        <div class="col-lg-6 col-md-10 col-sm-9 col-10 "> -->
-              <!-- 나를 팔로우하는사람 시작 -->
-            <!-- <div class=followerList v-show="isFollowerList"> -->
-                <div class="follow">
-                <div class="userImg col-2">
-                    <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-                </div>
-                <div class="user col-10">
-                    <span class="userName">
-                    UserName
-                    </span>
-                    <span class="followBtn">
-                    <button class="btn">팔로우</button>
-                    </span>
-                </div>
-                </div>
-            <!-- </div> -->
-            <!-- 나를 팔로우하는사람 끝 -->
-        <!-- </div> -->
+      <div class="follow">
+      <div class="userImg col-2">
+          <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
+      </div>
+      <div class="user col-10">
+          <span class="userName">
+          UserName
+          </span>
+          <span class="followBtn">
+          <button class="btn">팔로우</button>
+          </span>
+      </div>
+      </div>
+<!-- 예시 화면 코드 끝 -->
+
+      <div class="follow" v-for="(item, index) in following" :key="index">
+      <div class="userImg col-2">
+          <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="이미지">
+      </div>
+      <div class="user col-10">
+          <span class="userName">
+         {{item.name}}
+          </span>
+          <span class="followBtn">
+          <button class="btn">팔로우</button>
+          </span>
+      </div>
+      </div>
     </div>
 </template>
 
@@ -36,19 +44,27 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    created: function(){
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/profile/${userpk}/followers`,
-        data: page
-      })   // back 에 로그인 요청
-      .then(res =>{
-       console.log(res)
-      })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        
-      })
+  data(){
+    return {
+      following:[],
+      memberNo: ''
+    }
+  },
+  created: function(){
+    axios({
+      method: 'get',
+      url: `${SERVER_URL}/profile/${userpk}/memfollowings`,
+      data: page
+    })   // back 에 로그인 요청
+    .then(res =>{
+      console.log(res)
+      this.following = res.data
+      console.log(this.following.no)
+      console.log(this.follower)
+    })
+    .catch(err =>{  // 실패하면 error
+      console.log(err)
+    })
   },
 }
 </script>

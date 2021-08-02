@@ -45,85 +45,20 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  cursor: pointer;
+.row{
+  margin-top: 30px;
+  margin-left: -50px;
 }
-
-.feed-card {
-    box-sizing: content-box;
-    /* box-shadow: 0 0 0 1px #ddd; */
-    color: #000;
-    float: left;
-    border-radius: 5px;
-    overflow: hidden;
-    
+.btn{
+  width:200px;
+  font-size:15px;
+  font-weight: 550;
 }
- .contentsWrap {
-        box-sizing: border-box;
-        padding: 12px;
-        float: left;
- }
- .title {
-    color:#000;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap:break-word; 
-    line-height: 1.5em;
-    font-size: 15px;
-    margin: 0 0 8px;
-    white-space: normal;
+.tab-item {
+  margin-top: 20px;
 }
-.date {
-  float: right;
-  font-size: 10px;
-  color:rgba(0, 0, 0, .5);
-}
-.feed-item {
-    margin-bottom: 30px;
-    border-bottom: 1px solid grey;
-    padding-bottom: 20px;
-}
-.profile-image {
-    float: left;
-}
-.user-info, .content {
-    width: calc(100% - 50px);
-    float: right; 
-}
-.user-name {
-    float: left;
-}
-.user-name button {
-   font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
-.date {
-  float: right;
-}
-.profileImg{
-  width: 100px;
-  height: 100%;
-  box-sizing: border-box;
-  float:left;
-  border:1px solid grey;
-  border-radius: 3px;
-}
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
-}
-@media (max-width:577px) {
-  .feed{
-    margin-left:0;
-  }
+.btn:hover{
+  background-color: antiquewhite;
 }
 
 </style>

@@ -27,7 +27,7 @@
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
-                                <li><span class="profile-stat-count">{{articleCount}}</span> 게시글</li>
+                                <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
                                 <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
                                 <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>

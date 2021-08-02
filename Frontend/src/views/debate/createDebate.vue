@@ -22,7 +22,7 @@
                 </div>
                 <div>
                   <label align="left" for="testNum">문제 번호</label>
-                  <input type="number" v-model="form.questionNumber">
+                  <input type="text" v-model="form.questionNumber">
                 </div>
                 <div>
                   <label align="left" for="date">토론시작일시</label>
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div align="right" class="submit">
-                <button class="btn btn-submit">요청</button>
+                <button class="btn btn-submit" :disabled="!form.agency || !form.conferenceName || !form.questionNumber|| !form.debateDate">요청</button>
                 <button class="btn btn-cancel">취소</button>
             </div>
           </form>
@@ -58,28 +58,33 @@ export default {
 
 <style scoped>
 .feed{
-  margin-top: 13vw;
+  margin-top: 160px;
+  margin-left: 100px;
+}
+@media (max-width:576px) {
+    .feed{
+      margin-left: 0;
+    }
 }
 .debate {
-  margin-top: 5vw;
   height: 300px;
  
 }
 .requestText {
     display: inline-block;
-    font-size: 2.3vw;
-    font-weight: 540;
+    font-size: 25px;
+    font-weight: 550;
     line-height: 10px;
     margin-bottom: 50px;
 }
 p{
-    font-size: 1.3vw;
+    font-size: 20px;
     font-weight: 540;
     margin-bottom: 15px;
 }
 select{
     font-family: inherit;
-  font-size: 100%;
+  font-size: 20px;
   width: 50%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
@@ -94,7 +99,7 @@ label{
 }
 input{
   font-family: inherit;
-  font-size: 100%;
+  font-size: 20px;
   width: 70%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
@@ -104,5 +109,18 @@ input{
 }
 .submit{
   margin-right: 27%;
+}
+.btn {
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .25rem;
+  font-size: 20px;
+}
+.btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-user{
+    opacity: 0.8;
 }
 </style>

@@ -57,8 +57,71 @@
 </template>
 
 <script>
+import jwt_decode from "jwt-decode";
+import axios from 'axios';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const token = localStorage.getItem('jwt')
+let userpk = "";
+if (token) {
+  const decoded = jwt_decode(token);
+  userpk = decoded.sub;
+  console.log(userpk)
+}
+let page =0;
 export default {
+  data(){
+    return{
+      helpmeReceptList: {
+        "helpmeNo": '',
+        "problemSite": {//문제 정보
+          "problemSiteName": '',
+          "problemNo": '',
+          "problemSiteLink": ''
+        },
+        "helpmeSenderNo": {//요청유저
+          "name": '',
+          "no": ''
+        },
+        "helpmeReceptorNo": {//대상유저
+          "name": '',
+          "no": ''
+        },
+        "helpmeContent": '',
+        "helpmeStatus": '',
+        "helpmeDate": '',
+        "likeCount": '',
+        "likeState": '',
+        "commentCount": ''
+      }
+    }
+  },
+  created: function() {
 
+    axios ({
+      method: 'get',
+      url: `${SERVER_URL}/helpme/sendlist`,
+      headers: this.getToken,
+      data: page
+    })
+    .then(res => {
+      console.log(res)
+      console.log(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    // this.email = this.$store.getters.getEmail;
+    // console.log(this.$store.getters.getEmail);
+  },
+	computed: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    }
+	},
 }
 </script>
 

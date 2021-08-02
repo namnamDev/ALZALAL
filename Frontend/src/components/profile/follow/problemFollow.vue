@@ -1,23 +1,15 @@
 <template>
     <div>
-        <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-        <div class="col-lg-6 col-md-10 col-sm-9 col-10 "> -->
-              <!-- 나를 팔로우하는사람 시작 -->
-            <!-- <div class=followerList v-show="isFollowerList"> -->
-                <div class="follow">
-
-                <div class="user col-10">
-                    <span class="problem">
-                    problem
-                    </span>
-                    <span class="followBtn">
-                    <button class="btn">팔로우</button>
-                    </span>
-                </div>
-                </div>
-            <!-- </div> -->
-            <!-- 나를 팔로우하는사람 끝 -->
-        <!-- </div> -->
+      <div class="follow">
+      <div class="user col-10">
+          <span class="problem">
+          problem
+          </span>
+          <span class="followBtn">
+          <button class="btn">팔로우</button>
+          </span>
+      </div>
+      </div>
     </div>
 </template>
 
@@ -34,19 +26,29 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    created: function(){
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/profile/${userpk}/problemfollowings`,
-        data: page
-      })   // back 에 로그인 요청
-      .then(res =>{
-       console.log(res)
-      })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        
-      })
+  data(){
+    return {
+      problem: {
+        no: '',
+        site: '',
+      }
+    }
+  },  
+  created: function(){
+    axios({
+      method: 'get',
+      url: `${SERVER_URL}/profile/${userpk}/problemfollowings`,
+      data: page
+    })   // back 에 로그인 요청
+    .then(res =>{
+      console.log(res)
+      this.form.no = res.data.no
+      this.form.site = res.data.site
+    })
+    .catch(err =>{  // 실패하면 error
+      console.log(err)
+      
+    })
   },
 }
 </script>
