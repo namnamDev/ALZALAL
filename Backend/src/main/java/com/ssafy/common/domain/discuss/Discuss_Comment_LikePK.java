@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import lombok.Data;
 @Data
-public class Disscuss_Comment_LikePK implements Serializable{
+public class Discuss_Comment_LikePK implements Serializable{
   private long disscussCommentNo;
   private long member; 
 }

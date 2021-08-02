@@ -1,7 +1,4 @@
 package com.ssafy.common.repository.discuss;
-import static com.ssafy.common.domain.article.QArticle.article;
-import static com.ssafy.common.domain.article.QArticle_Comment.article_Comment;
-import static com.ssafy.common.domain.article.QArticle_Like.article_Like;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,15 +10,12 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.common.domain.article.Article;
-import com.ssafy.common.domain.article.Article_Comment;
-import com.ssafy.common.domain.article.QArticle;
-import com.ssafy.common.domain.article.QArticle_Comment;
-import com.ssafy.common.domain.article.QArticle_Like;
-import com.ssafy.common.domain.member.Member;
-import com.ssafy.common.dto.ArticleDTO;
-import com.ssafy.common.dto.MemberDTO;
-import com.ssafy.common.dto.ProblemSiteDTO;
+import com.ssafy.common.domain.discuss.Discuss;
+import com.ssafy.common.domain.discuss.Discuss_Host;
+import com.ssafy.common.domain.discuss.QDiscuss;
+import com.ssafy.common.domain.discuss.QDiscuss_Comment;
+import com.ssafy.common.dto.DiscussDTO;
+import com.ssafy.common.dto.Discuss_HostDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,86 +28,83 @@ import lombok.RequiredArgsConstructor;
 public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 
-  	@Override
-  	public Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo,Pageable page){
-		QArticle qa=QArticle.article;
-		QArticle_Like qal= QArticle_Like.article_Like;
-		QArticle_Comment qac=QArticle_Comment.article_Comment;
+	@Override
+  	public Optional<List<DiscussDTO>> sltMulti(Pageable page){
+  		QDiscuss qd=QDiscuss.discuss;
+		QDiscuss_Comment qdc=QDiscuss_Comment.discuss_Comment;
 		
-		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
-							, qa.articleNo
-							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
-							,qa.articleTitle,qa.articleContent,qa.articleDate
-							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
-							,qa.useLanguage.useLanguage, qa.articleClass
-							, ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
-			                "likeCount")
+		List<DiscussDTO> result = queryFactory.select(Projections.constructor(DiscussDTO.class
+							, qd.discussNo
+							,Projections.constructor(Discuss_HostDTO.class, qd.discussCompHostNo.discussCompHostNo,qd.discussCompHostNo.discussCompHostName)
+							,qd.discussCompName,qd.disscussCompProblem,qd.discussDate
 							,ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
-			                "likeState")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qac.count())
-			                        .from(qac)
-			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+			                        JPAExpressions.select(qdc.count())
+			                        .from(qdc)
+			                        .where(qdc.discussNo.discussNo.eq(qd.discussNo)),
 			                "commentCount")									
 							))
-			.from(qa)
+			.from(qd)
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
 			.fetch();
 	
-		
 		return Optional.of(result) ;
 	}
     //게시글 단건조회
   	@Override
-    public ArticleDTO sltOne(Long pk,Long nowLoginMemberNo){
+    public DiscussDTO sltOne(Long pk,Long nowLoginMemberNo){
     	
-    	QArticle qa=QArticle.article;
-		QArticle_Like qal= QArticle_Like.article_Like;
-		QArticle_Comment qac=QArticle_Comment.article_Comment;
+  		QDiscuss qd=QDiscuss.discuss;
+		QDiscuss_Comment qdc=QDiscuss_Comment.discuss_Comment;
 		
-		ArticleDTO result = queryFactory.select(Projections.constructor(ArticleDTO.class
-							, qa.articleNo
-							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
-							,qa.articleTitle,qa.articleContent,qa.articleDate
-							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
-							,qa.useLanguage.useLanguage, qa.articleClass
-							, ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
-			                "likeCount")
+		DiscussDTO result = queryFactory.select(Projections.constructor(DiscussDTO.class
+							,qd.discussNo
+							,qd.discussCompName,qd.disscussCompProblem,qd.discussDate
 							,ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
-			                "likeState")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qac.count())
-			                        .from(qac)
-			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+			                        JPAExpressions.select(qdc.count())
+			                        .from(qdc)
+			                        .where(qdc.discussNo.discussNo.eq(qd.discussNo)),
 			                "commentCount")									
 							))
-			.from(qa)
-			.where(qa.articleNo.eq(pk))
+			.from(qd)
+			.where(qd.discussNo.eq(pk))
 			.fetchOne();
     	
     	return result;
     }
   	//return article이 필요할때
   	@Override
-  	public Article sltOneArticle(Long pk) {
-		Article sltOne = queryFactory.selectFrom(article)
-		.where(article.articleNo.eq(pk))
+  	public Discuss sltOneArticle(Long pk) {
+  		QDiscuss qd=QDiscuss.discuss;
+		Discuss sltOne = queryFactory.selectFrom(qd)
+		.where(qd.discussNo.eq(pk))
 		.fetchOne();
 		return sltOne;
   	}
+  	
+  	@Override
+  	public Optional<List<DiscussDTO>> sltMultiByDisHost(Long HostPK,Pageable page){
+  		QDiscuss qd=QDiscuss.discuss;
+		QDiscuss_Comment qdc=QDiscuss_Comment.discuss_Comment;
+		
+		List<DiscussDTO> result = queryFactory.select(Projections.constructor(DiscussDTO.class
+							, qd.discussNo
+							,Projections.constructor(Discuss_HostDTO.class, qd.discussCompHostNo.discussCompHostNo,qd.discussCompHostNo.discussCompHostName)
+							,qd.discussCompName,qd.disscussCompProblem,qd.discussDate
+							,ExpressionUtils.as(
+			                        JPAExpressions.select(qdc.count())
+			                        .from(qdc)
+			                        .where(qdc.discussNo.discussNo.eq(qd.discussNo)),
+			                "commentCount")									
+							))
+			.from(qd)
+			.where(qd.discussCompHostNo.discussCompHostNo.eq(HostPK))
+			.offset(page.getOffset())
+			.limit(page.getPageSize())
+			.fetch();
+	
+		return Optional.of(result) ;
+	}
     //게시글 댓글 조회
     //대댓글 조회 추가예정
 //	@Override
@@ -123,49 +114,25 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 //    			.fetch();
 //    	return comments;
 //    }
-    //게시글 Insert 추가적인 gradle import를 요구해서 패스
-	@Override
-    public Article insertArticle(Member member, Article myinsert){
-
-		return null;
-    }
 	
 	@Override
     public long articleDelete(Long articlePk) {
-    	long deletedArticle = queryFactory.delete(article).
-    			where(article.articleNo.eq(articlePk)).
+		QDiscuss qd=QDiscuss.discuss;
+    	long deletedArticle = queryFactory.delete(qd).
+    			where(qd.discussNo.eq(articlePk)).
     			execute();
     	return deletedArticle;
     			
     }
 	@Override
 	public long updateArticle(long articlePk, String content) {
-		long updatedArticle = queryFactory.update(article).
-				where(article.articleNo.eq(articlePk)).set
-				(article.articleContent, content).
+		QDiscuss qd=QDiscuss.discuss;
+		long updatedArticle = queryFactory.update(qd).
+				where(qd.discussNo.eq(articlePk)).set
+				(qd.disscussCompProblem, content).
 				execute();
 						
 		return updatedArticle;
-	}
-	
-	@Override
-	public long likeArticle(Article article){
-//		long test =article.getArticleNo();//pk받아옴
-		long likeCounting = queryFactory.selectFrom(article_Like).
-				where(article_Like.articleNo.eq(article)).
-//				where(article_Like.articleNo.articleNo.eq(test)).
-				//article_like의pk인 article객체의 pk인 articleNo와 test와 비교
-				fetchCount();
-		return likeCounting;
-	}
-	
-	//작성자를 통한 게시글 갯수 조회
-	@Override
-	public long countByMember(Long memberNo) {
-		long articleCount = queryFactory.selectFrom(article).
-				where(article.member.no.eq(memberNo)).
-				fetchCount();
-		return articleCount;
 	}
 	
 //	@Override
@@ -174,44 +141,44 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 	
 	  
 	// memberNo를 통해 해당 member를 작성자로 가지는 모든 게시글, 좋아요 수 조회, memberNo유저의 좋아요 여부, 댓글 갯수
-	@Override
-	public Optional<List<ArticleDTO>> getListByMemberNO(Long memberNo,Long nowLoginMemberNo,Pageable page){
-		QArticle qa=QArticle.article;
-		QArticle_Like qal= QArticle_Like.article_Like;
-		QArticle_Comment qac=QArticle_Comment.article_Comment;
-		
-		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
-							, qa.articleNo
-							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
-							,qa.articleTitle,qa.articleContent,qa.articleDate
-							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
-							,qa.useLanguage.useLanguage, qa.articleClass
-							, ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
-			                "likeCount")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qal.count())
-			                        .from(qal)
-			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
-			                "likeState")
-							,ExpressionUtils.as(
-			                        JPAExpressions.select(qac.count())
-			                        .from(qac)
-			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
-			                "commentCount")									
-							))
-			.from(qa)
-			.where(qa.member.no.eq(memberNo))
-			.offset(page.getOffset())
-			.limit(page.getPageSize())
-			.fetch();
-	
-		
-		return Optional.of(result) ;
-	}
-	
+//	@Override
+//	public Optional<List<ArticleDTO>> getListByMemberNO(Long memberNo,Long nowLoginMemberNo,Pageable page){
+//		QArticle qa=QArticle.article;
+//		QArticle_Like qal= QArticle_Like.article_Like;
+//		QArticle_Comment qac=QArticle_Comment.article_Comment;
+//		
+//		List<ArticleDTO> result = queryFactory.select(Projections.constructor(ArticleDTO.class
+//							, qa.articleNo
+//							,Projections.constructor(MemberDTO.class, qa.member.name,qa.member.no)
+//							,qa.articleTitle,qa.articleContent,qa.articleDate
+//							,Projections.constructor(ProblemSiteDTO.class, qa.problemSite)
+//							,qa.useLanguage.useLanguage, qa.articleClass
+//							, ExpressionUtils.as(
+//			                        JPAExpressions.select(qal.count())
+//			                        .from(qal)
+//			                        .where(qal.articleNo.articleNo.eq(qa.articleNo)),
+//			                "likeCount")
+//							,ExpressionUtils.as(
+//			                        JPAExpressions.select(qal.count())
+//			                        .from(qal)
+//			                        .where(qal.articleNo.articleNo.eq(qa.articleNo).and(qal.member.no.eq(nowLoginMemberNo))),
+//			                "likeState")
+//							,ExpressionUtils.as(
+//			                        JPAExpressions.select(qac.count())
+//			                        .from(qac)
+//			                        .where(qac.articleNo.articleNo.eq(qa.articleNo)),
+//			                "commentCount")									
+//							))
+//			.from(qa)
+//			.where(qa.member.no.eq(memberNo))
+//			.offset(page.getOffset())
+//			.limit(page.getPageSize())
+//			.fetch();
+//	
+//		
+//		return Optional.of(result) ;
+//	}
+//	
 	//게시글 다건조회
 
 }
