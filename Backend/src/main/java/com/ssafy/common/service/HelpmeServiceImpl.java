@@ -75,6 +75,10 @@ public class HelpmeServiceImpl implements HelpmeService {
 		// 게시글 작성자 설정
 		helpme.setHelpmeSenderNo(sendMember);
 
+		//본인에게 요청할 경우 못하게 해야함
+		if(helpme.getHelpmeReceptorNo().getNo() == sendMember.getNo()) {
+			throw new IllegalStateException("자신에게 요청 할 수 없습니다");
+		}
 		
 		//입력받은 문제 받아옴
 		Problem_Site problem_Site = helpme.getProblemSite();
