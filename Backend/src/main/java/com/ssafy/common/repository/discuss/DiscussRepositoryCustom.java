@@ -7,31 +7,25 @@ import org.springframework.data.domain.Pageable;
 
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.discuss.Discuss;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.DiscussDTO;
 
 public interface DiscussRepositoryCustom {
 
 
 //	List<Article_Comment> articleComments(Long article);
 
-	Article insertArticle(Member member, Article myinsert);
-
 	long articleDelete(Long articlePk);
 
 	long updateArticle(long articlePk, String content);
-
-	//작성자를 통한 게시글 갯수 조회
-	long countByMember(Long memberNo);
-
-	long likeArticle(Article article);
 	
-	// memberNo를 통해 해당 member를 작성자로 가지는 모든 게시글, 좋아요 수, memberNo유저의 좋아요 여부, 댓글 갯수
-	Optional<List<ArticleDTO>> getListByMemberNO(Long memberNo,Long nowLoginMemberNo,Pageable page);
+	DiscussDTO sltOne(Long pk, Long nowLoginMemberNo);
 
-	ArticleDTO sltOne(Long pk, Long nowLoginMemberNo);
+	Discuss sltOneArticle(Long pk);
 
-	Article sltOneArticle(Long pk);
+	Optional<List<DiscussDTO>> sltMulti(Pageable page);
 
-	Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo, Pageable page);
+	Optional<List<DiscussDTO>> sltMultiByDisHost(Long HostPk, Pageable page);
 }

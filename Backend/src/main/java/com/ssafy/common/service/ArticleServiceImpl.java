@@ -19,6 +19,8 @@ import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.ArticleDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
+import com.ssafy.common.dto.DiscussDTO;
+import com.ssafy.common.dto.Discuss_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
@@ -26,6 +28,8 @@ import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_AlgorithmRepository;
 import com.ssafy.common.repository.article.Article_CommentRepository;
 import com.ssafy.common.repository.article.Article_LikeRepository;
+import com.ssafy.common.repository.discuss.DiscussRepository;
+import com.ssafy.common.repository.discuss.Discuss_CommentRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 import com.ssafy.common.repository.problem.Problem_Site_Repository;
@@ -33,6 +37,8 @@ import com.ssafy.common.repository.problem.Problem_Site_Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @Transactional
@@ -56,6 +62,11 @@ public class ArticleServiceImpl implements ArticleService{
   private Problem_Site_ListRepository problemSiteListRepo;
   @Autowired
   private Article_LikeRepository ArticleLikeRepo;
+  
+  @Autowired
+  private DiscussRepository disRepo;
+  @Autowired
+  private Discuss_CommentRepository disComRepo;
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass,int page) {
 	  
@@ -76,17 +87,20 @@ public class ArticleServiceImpl implements ArticleService{
         List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
         res.put("article", articleList);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
-        	res.put("msg", "게시글이 존재하지 않습니다.");
+        	res.put("msg", "일반 게시글이 존재하지 않습니다.");
         }
     }else if(articleClass.equals("qna")){
         List<ArticleDTO> articleList = ArticleRepo.sltMultiQnA(nowLoginMemberNo, PageRequest.of(page, 20), Article_Class.A00).orElse(null);
         res.put("article", articleList);
         if (articleList.size()==0) //게시글이 존재하지 않을 시.
-        	res.put("msg", "게시글이 존재하지 않습니다.");
+        	res.put("msg", "QnA 게시글이 존재하지 않습니다.");
 
     }
     else if(articleClass.equals("discussion")){
-    	
+    	List<DiscussDTO>discussList = disRepo.sltMulti(PageRequest.of(page, 20)).orElse(null);
+    	res.put("discussion",discussList);
+    	 if (discussList.size()==0) //게시글이 존재하지 않을 시.
+         	res.put("msg", "토론이 존재하지 않습니다.");
     }
     return res;
     
@@ -120,6 +134,16 @@ public class ArticleServiceImpl implements ArticleService{
 	    	}
 	    }
 	    else if(articleClass.equals("discussion")){
+	    	DiscussDTO article = disRepo.sltOne(pk, nowLoginMemberNo);
+	    	if (article != null) {
+	    		List<Discuss_CommentDTO> comments = disComRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	if (comments.size() == 0) {
+		    		msg = "등록된 댓글이 없습니다.";
+		    	}
+	    	}
+	    	else {
+	    		msg="해당 토론이 존재하지 않습니다.";
+	    	}
 	    	
 	    }
 	  	res.put("msg",msg);
@@ -257,6 +281,9 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 			}	
 		}
 	}else if(articleClass.equals("discussion")){
+		
+		
+		
 	}
 	res.put("msg", msg);
 	return res;
@@ -291,6 +318,19 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 		
 	}
 	return res;
+}
+@Override
+public Map<String,Object>sltMultiDiscussByHost(Long HostPK,int page){
+	Map<String,Object>res = new HashMap<String,Object>();
+	String msg = "";
+	List<DiscussDTO> discussList = disRepo.sltMultiByDisHost(HostPK, PageRequest.of(page, 20)).orElse(null);
+	res.put("article", discussList);
+	if (discussList.size() ==0) {
+		msg = "등록된 토론이 없습니다";
+	}
+	res.put("msg", msg);
+	return res;
+	
 }
 
 }

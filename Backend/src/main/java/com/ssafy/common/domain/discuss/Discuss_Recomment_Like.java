@@ -1,6 +1,4 @@
 package com.ssafy.common.domain.discuss;
-
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -13,12 +11,13 @@ import lombok.Getter;
 import lombok.Setter;
 @Entity
 @Getter @Setter
-@IdClass(Disscuss_Comment_LikePK.class)
-public class Disscuss_Comment_Like {
+@IdClass(Discuss_Recomment_LikePK.class)
+public class Discuss_Recomment_Like {
   @Id
   @ManyToOne
-  @JoinColumn(name="DISCUSS_COMMENT_NO")
-  private Discuss_Comment disscussCommentNo;
+  @JoinColumn(name="DISCUSS_RECOMMENT_NO")
+  private Discuss_Recomment discussRecommentNo;
+
   @Id
   @ManyToOne
   @JoinColumn(name = "MEMBER_NO")
