@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,9 +102,45 @@ public class HelpmeContoller {
 		
 		return ret;		
 	}
-
-
 	
+	
+	//게시글 수정
+	@PutMapping("/{helpmeNo}")
+	public Map<String, Object> updateHelpme(@PathVariable Long helpmeNo, @RequestBody Map<String, String> req) {
+		Map<String, Object> ret=new HashMap<>();
+		Helpme helpme =new Helpme();
+		
+		
+		//요청 받은사람 No
+		Member member=new Member();
+		member.setNo(Long.parseLong(req.get("receptMemberNo")));
+		helpme.setHelpmeReceptorNo(member);
+		
+		//요청 문제
+		Problem_Site_List problemSiteName= new Problem_Site_List();
+		problemSiteName.setProblemSiteName(req.get("problemSiteName"));
+		Problem_Site problem_Site=new Problem_Site();
+		problem_Site.setProblemNo(Long.parseLong(req.get("problemNo")));
+		problem_Site.setProblemSiteName(problemSiteName);
+		helpme.setProblemSite(problem_Site);
+		
+		//요청 내용
+		helpme.setHelpmeContent(req.get("content"));
+		
+		Long helpmeNO=null;
+		try {
+			helpmeNO=helpmeSevice.updateHelpme(helpmeNo, helpme);		
+		}catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		
+		ret.put("success","True");
+		ret.put("helpmeNo",helpmeNO);		
+		
+		return ret;
+	}
 	
 	
 	

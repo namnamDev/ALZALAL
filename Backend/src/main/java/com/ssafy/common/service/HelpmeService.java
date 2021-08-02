@@ -13,8 +13,12 @@ public interface HelpmeService {
 	List<HelpmeDTO> getSendHelpmeListByMemberNo(int page);
 	
 	// 게시글 작성
-	public long createHelpme(Helpme helpme);
+	public Long createHelpme(Helpme helpme);
 	
 	//게시글 상세보기
 	public HelpmeDTO getHelpme(Long helpmeNo);
+
+	//게시글 수정  (문제, 요청 받는사람No, 내용 넘어옴)
+	public Long updateHelpme(Long helpmeNo, Helpme helpme);
+	
 }
