@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import followerListImg from '@/components/profile/followerListImg.vue'
+import followerListImg from '@/components/profile/topProfile/follower/followerListImg.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import TopProfile from '@/components/profile/topProfile.vue'
-import DownProfile from '@/components/profile/downProfile.vue'
+import TopProfile from '@/components/profile/topProfile/topProfile.vue'
+import DownProfile from '@/components/profile/downProfile/downProfile.vue'
 export default {
  components: {
      TopProfile,

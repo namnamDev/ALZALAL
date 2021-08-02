@@ -1,7 +1,7 @@
 <template>
   <div>
       <button class="btn" @click="clickFollow">팔로우</button>
-      {{item}}
+      {{algo}}
   </div>
 </template>
 
@@ -10,8 +10,7 @@ import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     props:{
-        site: String,
-        no: Number
+        algo: String
     },
     computed: {
         getToken(){
@@ -20,16 +19,15 @@ export default {
             Authorization: `Bearer ${token}`
         }
         return config
-        }
+        },
 	},
     methods:{
         clickFollow: function(){
             axios({
                 method: 'post',
-                url: `${SERVER_URL}/follow/problem`,
+                url: `${SERVER_URL}/follow/algorithm`,
                 data: {
-                    "problemSite": this.site,
-                    "problemNo": this.no
+                    "algorithm": this.algo,
                 },
                 headers: this.getToken,
             })
@@ -37,8 +35,7 @@ export default {
                 console.log(res)         
             })
             .catch(err => {
-                console.log(this.site)
-                console.log(this.no)
+                console.log(this.algo)
                 console.log(this.getToken)
                 console.log(err);
             })

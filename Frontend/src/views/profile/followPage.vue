@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import followList from '@/components/profile/followList.vue'
-import followerList from '@/components/profile/followerList.vue'
+import followList from '@/components/profile/topProfile/follow/followList.vue'
+import followerList from '@/components/profile/topProfile/follower/followerList.vue'
 export default {
   components: {
     followList,
