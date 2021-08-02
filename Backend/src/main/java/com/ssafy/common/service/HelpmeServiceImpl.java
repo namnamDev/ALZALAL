@@ -1,10 +1,14 @@
 package com.ssafy.common.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.Helpme_Class;
@@ -173,6 +177,32 @@ public class HelpmeServiceImpl implements HelpmeService {
 		preHelpme.setHelpmeContent(helpme.getHelpmeContent());
 		
 		return helpmeNo;
+	}
+	
+	//게시글 삭제
+	@Override
+	public void deleteHelpme(Long helpmeNo) {
+		//게시글 가져옴
+		Helpme helpme=helpmeRepository.findById(helpmeNo)
+				.orElseThrow(()-> new IllegalStateException("존재하지 않는 게시글입니다"));
+		
+		Member member = memberRepository
+				.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		
+		//작성자가 아니면 삭제 불가
+		if(helpme.getHelpmeSenderNo().getNo()!= member.getNo()) {
+			throw new IllegalStateException("게시글은 작성자만 삭제 할 수 있습니다");
+		}
+		
+		//댓글 삭제
+		
+		//좋아요 삭제
+		
+		
+		helpmeRepository.deleteById(helpmeNo);
+		
+		return;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,7 +84,7 @@ public class HelpmeContoller {
 			return ret;
 		}
 		
-		ret.put("helpmeNo", helpmeNO);
+		ret.put("helpme", helpmeNO);
 		ret.put("success", "True");
 		
 		
@@ -98,7 +99,7 @@ public class HelpmeContoller {
 		
 		helpme=helpmeSevice.getHelpme(helpmeNo);
 		
-		ret.put("helpmeNo", helpme);		
+		ret.put("helpme", helpme);		
 		
 		return ret;		
 	}
@@ -137,12 +138,27 @@ public class HelpmeContoller {
 		}
 		
 		ret.put("success","True");
-		ret.put("helpmeNo",helpmeNO);		
+		ret.put("helpme",helpmeNO);		
 		
 		return ret;
 	}
 	
-	
+	//게시글 삭제
+	@DeleteMapping("/{helpmeNo}")
+	public Map<String, Object> deleteHelpme(@PathVariable Long helpmeNo) {
+		Map<String, Object> ret=new HashMap<>();
+		
+		try {
+			helpmeSevice.deleteHelpme(helpmeNo);
+		}catch (IllegalStateException e) {
+			ret.put("success", "False");
+			ret.put("msg", e.getMessage());
+			return ret;
+		}
+		ret.put("success","True");
+		
+		return ret;
+	}
 	
 	
 }
