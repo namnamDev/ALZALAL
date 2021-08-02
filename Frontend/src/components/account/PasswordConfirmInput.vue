@@ -1,25 +1,26 @@
 <template>
-  <div>
-      <div class="contents">
-		<div class="form-wrapper form-wrapper-sm">
-			<form @submit.prevent="submitForm" class="form">
-				<div>
-					<label align="left" for="password">비밀번호를 입력해주세요</label>
-					<input id="password" type="password" v-model="password" />
-                    <p class="validation-text">
+  <div class="row">
+		<div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
+    <div class="col-lg-6 col-md-10 col-sm-9 col-10">
+      <div class="form-wrapper form-wrapper-sm">
+        <form @submit.prevent="submitForm" class="row form">
+          <div>
+            <label align="left" for="password">비밀번호를 입력해주세요</label>
+            <input id="password" type="password" v-model="password" />
+                      <p class="validation-text">
 
-					</p>
-				</div>
-			    <button :disabled="!password" type="submit" class="btn">
-					  확인
-				  </button>
-        
-			</form>
-		
+            </p>
+          </div>
+          <div class="checkBtn">
+            <button :disabled="!password" type="submit" class="btn">
+              확인
+            </button>
+          </div>
+        </form>
+		  </div>
 		</div>
        
 	</div>
-  </div>
 </template>
 
 <script>
@@ -83,13 +84,9 @@ export default {
 
 <style scoped>
 /*--- LAYOUT ---*/
-.contents {
-  position: absolute;
-  top:180px;
-  margin: 0 auto;
-  padding: 0 5px;
-  width: 100%;  
-}
+.row {
+  margin-top: 40px;
+} 
 .form-wrapper {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
@@ -98,8 +95,7 @@ export default {
   padding: 15px 15px;
 }
 .form-wrapper.form-wrapper-sm {
-  max-width: 500px;
-  margin: 40px auto;
+  max-width: 700px;
 }
 .form-wrapper-sm .page-header {
   padding: 0px 0 20px;
@@ -111,7 +107,7 @@ export default {
 .form .validation-text {
 	margin-top: -0.5rem;
 	margin-bottom: 0.5rem;
-	font-size: 1rem;
+	font-size: 20px;
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
@@ -120,26 +116,32 @@ export default {
   width: 100%;
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 90%;
+  font-size: 20px;
+  margin-left: 20px;
 }
 .form input,
 .form textarea {
   font-family: inherit;
-  font-size: 100%;
+  font-size: 20px;
   width: 100%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
+  margin-left: 20px;
 }
 
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
 }
+.checkBtn{
+  margin-left: 150px;
+}
 .btn {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .25rem;
+  width:30%;
 }
 .btn.disabled {
   opacity: 0.5;
@@ -148,5 +150,52 @@ export default {
 .btn-user{
     opacity: 0.8;
 }
-
+@media (min-width: 1440px){
+.form input,
+.form textarea {
+  font-family: inherit;
+  font-size: 20px;
+  width: 120%;
+  border: 1px solid #dae1e7;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+.btn {
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .25rem;
+  margin-left: 300px;
+}
+.form .validation-text {
+	margin-top: -0.5rem;
+	margin-bottom: 0.5rem;
+  margin-right: -4.5rem;
+	font-size: 16px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+}
+}
+@media (max-width:767px) {
+  .form input,
+.form textarea {
+  font-family: inherit;
+  font-size: 20px;
+  width: 60%;
+  border: 1px solid #dae1e7;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+}
+}
+@media (min-width:768px) and (max-width:1440px) {
+  .btn {
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .25rem;
+  margin-left: 200px;
+}
+}
 </style>

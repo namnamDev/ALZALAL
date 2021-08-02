@@ -1,15 +1,7 @@
 <template>
-  <!-- <div>
+  <div class="container">
     <TopProfile></TopProfile>
     <DownProfile></DownProfile>
-  </div> -->
-  <div class="container">
-    <div class="row">
-      <TopProfile></TopProfile>
-    </div>
-    <div class="row">
-      <DownProfile></DownProfile>
-    </div> 
   </div>
 </template>
 
@@ -27,6 +19,18 @@ export default {
       this.$router.push({name:'login'})
     }
   },
-
 }
 </script>
+
+<style scoped>
+.container{
+  margin-top: 90px;
+  margin-left: 50px;
+}
+@media (max-width:576px){
+  .container{
+    margin-top: 60px;
+    margin-left:0
+  }
+}
+</style>

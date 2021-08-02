@@ -1,54 +1,63 @@
 <template>
-  <div class="container feed">
     <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
-      <div class="profile box5 col-lg-6 col-md-10 col-sm-9 col-12 ">
-                <!-- 프로필이미지 -->
-			  <div class="profile-image">
-				  <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
-                  <img class="profileImg" v-if="!imgsrc" src="@/assets/images/profileImg.png" alt="">
-                  <div class="modifyProfile">
-                      <button class="btn clickImg" @click="clickImg">
-                          Select Image
-                      </button>
-                  </div>
-			  </div>
-
-                <!-- 프로필 이름, 수정버튼 -->
-			  <div class="profile-user-settings">
-				  <h1 class="profile-user-name">{{name}}</h1>
-                  <span>
-				    <button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
-                  </span>
-			  </div>
-                    <!-- 게시글 팔로워 팔로잉 -->
-			  <div class="profile-stats">
-				  <ul>
-					  <li><span class="profile-stat-count">{{articleCount}}</span> 게시글</li>
-					  <li><span href="/profilePage/followPage" class="profile-stat-count">{{follower}}</span> 팔로워</li>
-					  <li><span href="/profilePage/followPage" class="profile-stat-count">{{following}}</span> 팔로잉</li>
-				  </ul>
-			  </div>
-
-			  <div class="profile-bio">
-                  <p align="left" class="downInfo">Main :
-                      <span v-for="item,index in language" :key="index">{{item}}</span>
-                  </p>
-                  <p align="left" class="downInfo">Site : 
-                      <span v-for="item,index in problemsite" :key="index">{{item}}</span>
-                  </p>
-				  <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
-			  </div>
-              <div class="introduceline">
-                  <p class="introtext" align="left">{{introduce}}
-                      <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
-                  </p>
-              </div>
-
-		  </div>
+        <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
+        <div class="col-lg-6 col-md-10 col-sm-9 col-6 ">
+            <div class="row-lg-8">
+                    <!-- 프로필이미지 -->
+                <div class="col-lg-3">
+                    <div class="profile-image">
+                        <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+                        <img class="profileImg" v-if="!imgsrc" src="@/assets/images/profileImg.png" alt="">
+                        <div class="modifyProfile">
+                            <button class="btn clickImg" @click="clickImg">
+                                Select Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                    <!-- 프로필 이름, 수정버튼 -->
+                <div class="col-lg-9">
+                    <div class="row-lg-8">
+                        <div class="profile-user-settings row-lg-8">
+                            <h1 class="profile-user-name">{{name}}<button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button></h1>
+                            <!-- <span>
+                                <button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
+                            </span> -->
+                        </div>
+                                <!-- 게시글 팔로워 팔로잉 -->
+                        <div class="profile-stats">
+                            <ul>
+                                <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
+                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
+                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-bio row-lg-4">
+                        <p align="left" class="downInfo">Main :
+                            <span v-for="item,index in language" :key="index">{{item}}</span>
+                        </p>
+                        <p align="left" class="downInfo">Site : 
+                            <span v-for="item,index in problemsite" :key="index">{{item}}</span>
+                        </p>                           
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="row-lg-4">
+                <div>
+                    <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
+                </div>
+                <div class="introduceline">
+                    <p class="introtext" align="left">{{introduce}}
+                        <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                    </p>
+                </div>
+            </div>
+	    </div>
 		<!-- End of profile section -->
     </div>
-  </div>
 </template>
 
 <script>
@@ -114,6 +123,12 @@ export default {
         clickSetting: function() {
             this.$router.push({'name':'passwordConfirm'})
         },
+        clickFollow: function() {
+            this.$router.push({'name':'followPage'})
+        },
+        clickFollower: function() {
+            this.$router.push({'name':'followPage'})
+        },
     },
     computed: {
         userPk: function(){
@@ -135,40 +150,28 @@ export default {
 </script>
 
 <style scoped>
-.feed{
-  margin-top: 15vw;
-   margin-left: 50px;
-}
-.profile box5{
-  height: 300px;
-  padding: 5rem 0;
+.row {
+    margin-top: 120px;
 }
 
-.profile::after {
-    content: "";
-    display: block;
-    clear: both;
-}
 .profile-image {
     float: left;
-    width: calc(33.333% - 1rem);
+    width: 170px;
     height: auto;
-    justify-content: center;
-    align-items: center;
-    margin-right: 3rem;
+    margin-right: 20px;
     
 }
 
 .profileImg {
-    width: 160px;
-    height: 160px;
+    width: 170px;
+    height: 170px;
     border-radius: 75%;
     
 }
 .btn-modify{
     width: 120%;
     height: 100%;
-    font-size: 1vw;
+    font-size: 10px;
     line-height: 1.3;
     border-radius: 0.3rem;
     padding: 0 2.4rem;
@@ -176,70 +179,46 @@ export default {
     margin-top:30px
 }
 i {
-    font-size: 1.9vw;
+    font-size: 30px;
     line-height: 1;
     border-radius: 0.3rem;
     padding: 0 2.4rem;
     margin-left: 2rem;
 }
-
-.profile-user-settings,
-.profile-stats,
-.profile-bio {
-    float: left;
-    width: calc(66.666% - 2rem);
-    vertical-align: 10px;
-}
-
-.profile-user-settings {
-
-    margin-top: 1.1rem;
-}
-
 .profile-user-name {
-    display: inline-block;
-    font-size: 4vw;
+    font-size: 50px;
     font-weight: 600;
     margin-left: 5vw;
 }
-
-
-
 .profile-settings-btn {
-    font-size: 2rem;
-    margin-left: 1rem;
+    font-size: 10px;
 }
 
 .profile-stats {
     margin-top: 1rem;
+    display: inline-block;
 }
-
 .profile-stats li {
     display: inline-block;
-    font-size: 1.6vw;
+    font-size: 20px;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;
 }
-
-.profile-stats li:last-of-type {
-    margin-right: 0;
-}
-
 .profile-bio {
-    font-size: 1vw;
-    font-weight: 400;
+    font-size: 20px;
+    font-weight: 550;
     line-height: 1.5;
-    margin-top: 1rem;
+    margin-top: 20px;
 }
 .downInfo {
-    font-size: 2.5vw;
+    font-size: 20px;
     font-weight: 600;
     line-height: 1.0;
 }
 .downInfo1 {
-    font-size: 1.7vw;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     line-height: 1.0;
 }
 .profile-real-name,
@@ -251,33 +230,44 @@ i {
     align-items: center;
 }
 .introduceline{
-    font-size: 2vw;
-    font-weight: 400;
     line-height: 1.3;
     margin-top: 1rem;
 }
 .btn-intro{
     font-weight: 600;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-    font-size: 2vw;
+    font-size: 10px;
 }
 .introtext{
-    font-size: 2.5vw;
+    font-size: 25px;
     font-weight: 400;
 }
-
 .clickIntro{
     width: 1%;
-    margin-left: -10%;
+    margin-left: -70px;
 }
 .clickSetting {
     width: 1%;
-    margin-left: -15%;
+    margin-left: -70px;
 }
-@media (max-width:577px) {
-  .feed{
-    margin-left:0;
-  }
+.clickImg{
+    font-size: 20px;
+    font-weight: 550;
+}
+@media (max-width:576px) {
+.profile-image {
+    float: left;
+    width: 150px;
+    height: auto;
+    margin-right: 20px;
+    
 }
 
+.profileImg {
+    width: 180px;
+    height: 180px;
+    border-radius: 75%;
+    
+}
+}
 </style>
