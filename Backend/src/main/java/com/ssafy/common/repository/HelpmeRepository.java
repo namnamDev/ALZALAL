@@ -6,7 +6,7 @@ import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
 
-public interface HelpmeRepository extends JpaRepository<Helpme, Long> {
+public interface HelpmeRepository extends JpaRepository<Helpme, Long>,HelpmeRepositoryCustom {
 
 	//memberNo가 요청받은 게시물의 갯수
 	Long countByHelpmeReceptorNo(Member member);

@@ -3,10 +3,7 @@ package com.ssafy.common.dto;
 import java.time.LocalDateTime;
 
 import com.ssafy.common.domain.helpme.Helpme_Class;
-import com.ssafy.common.domain.member.Member;
-import com.ssafy.common.domain.problem.Problem_Site;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
