@@ -2,7 +2,9 @@ package com.ssafy.common.domain.helpme;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -55,4 +58,13 @@ public class Helpme {
 		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   @CreationTimestamp
   private LocalDateTime helpmeDate;
+  
+  @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
+  List<Helpme_Comment> comments;
+  
+  @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
+  List<Helpme_Like> likes;
+  
+  
+  
 }
