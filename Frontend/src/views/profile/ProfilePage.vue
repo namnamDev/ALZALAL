@@ -1,10 +1,16 @@
 <template>
-<div>
+  <!-- <div>
     <TopProfile></TopProfile>
     <DownProfile></DownProfile>
- 
-</div>
-
+  </div> -->
+  <div class="container">
+    <div class="row">
+      <TopProfile></TopProfile>
+    </div>
+    <div class="row">
+      <DownProfile></DownProfile>
+    </div> 
+  </div>
 </template>
 
 <script>

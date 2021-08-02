@@ -46,8 +46,8 @@
           class="col-sm-2 m-size mb-2"
           v-model="pSite"
         >
-          <option value="백준" selected>백준</option>
-          <option value="SWEA">SWEA</option>
+          <option value="boj" selected>백준</option>
+          <option value="swea">SWEA</option>
           >
         </select>
 
@@ -191,7 +191,7 @@ export default {
 
       axios({
         method: 'post',
-        url: `${SERVER_URL}/article/${this.articleClass}`,
+        url: `${SERVER_URL}/article/article`,
         data: data,
         headers: this.getToken(),
       })   
