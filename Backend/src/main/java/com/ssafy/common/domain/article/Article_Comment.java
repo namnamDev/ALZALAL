@@ -3,6 +3,7 @@ package com.ssafy.common.domain.article;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Article_Comment {
   @JoinColumn(name="MEMBER_NO")
   private Member member;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name="ARTICLE_NO")
   private Article articleNo;
 
