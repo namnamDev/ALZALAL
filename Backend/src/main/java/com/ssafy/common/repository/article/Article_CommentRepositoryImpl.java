@@ -37,7 +37,7 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 						,Projections.constructor(MemberDTO.class,arCo.member.name,arCo.member.no)
 						,arCo.commentContent
 						,ExpressionUtils.as(
-								JPAExpressions.select(arCo.count())
+								JPAExpressions.select(arCoLi.count())
 								.from(arCoLi)
 								.where(arCoLi.articleComment.articleCommentNo.eq(arCo.articleCommentNo))
 						,"likeCount")

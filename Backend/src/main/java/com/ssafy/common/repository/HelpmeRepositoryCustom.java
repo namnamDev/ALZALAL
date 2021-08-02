@@ -13,4 +13,7 @@ public interface HelpmeRepositoryCustom {
 
 	// memberNo가 신청한 문제풀이 요청 목록
 	Optional<List<HelpmeDTO>> getSendHelpmeListByMemberNo(Long memberNo, Pageable page);
+	
+	//게시글 상세보기
+	public Optional<HelpmeDTO> getHelpme(Long helpmeNo, Long memberNo);
 }

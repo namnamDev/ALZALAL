@@ -1,11 +1,12 @@
 package com.ssafy.common.domain.helpme;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,8 +18,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 

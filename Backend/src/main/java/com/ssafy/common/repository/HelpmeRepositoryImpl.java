@@ -102,4 +102,38 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 
 		return Optional.of(ret);
 	}
+	
+	//게시글 상세보기
+	@Override
+	public Optional<HelpmeDTO> getHelpme(Long helpmeNo, Long memberNo) {
+		QHelpme h=QHelpme.helpme;
+		QHelpme_Comment hc = QHelpme_Comment.helpme_Comment;
+		QHelpme_Like hl = QHelpme_Like.helpme_Like;
+		
+		HelpmeDTO ret=jpaQueryFactory
+				.select(Projections.constructor(HelpmeDTO.class, h.helpmeNo,
+						Projections.constructor(ProblemSiteDTO.class, h.problemSite),
+						Projections.constructor(MemberDTO.class, h.helpmeSenderNo.name, h.helpmeSenderNo.no),
+						Projections.constructor(MemberDTO.class, h.helpmeReceptorNo.name, h.helpmeReceptorNo.no),
+						h.helpmeContent, h.helpmeStatus, h.helpmeDate,
+						ExpressionUtils.as(JPAExpressions// 좋아요 갯수
+								.select(hl.count()).from(hl)
+								.where(hl.helpmeNo.helpmeNo.eq(h.helpmeNo)),
+								"likeCount"),
+						ExpressionUtils.as(JPAExpressions// memberNo의 좋아요 여부
+								.select(hl.count()).from(hl)
+								.where(hl.helpmeNo.helpmeNo.eq(h.helpmeNo).and(
+										hl.member.no.eq(memberNo))),
+								"likeState"),
+						ExpressionUtils.as(JPAExpressions// 댓글 갯수
+								.select(hc.count()).from(hc)
+								.where(hc.helpmeNo.helpmeNo.eq(h.helpmeNo)),
+								"likeState")))
+						.from(h)
+						.where(h.helpmeNo.eq(helpmeNo))
+						.fetchOne();
+		
+		return Optional.of(ret);
+	}
+	
 }
