@@ -3,7 +3,7 @@
     <div id="menu">
       <p @click="clickLogo">LOGO</p>
       <ul>
-        <li @click="clickLogo">타임라인</li>
+        <li @click="clickLogo">timeline</li>
         <li @click="clickQnA">Q&A</li>
         <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
