@@ -2,6 +2,7 @@ package com.ssafy.common.domain.discuss;
 
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,5 +34,5 @@ public class Discuss {
   private String disscussCompProblem;
 
   @Column(name="DISCUSS_DATE")
-  private Timestamp discussDate;
+  private LocalDateTime discussDate;
 }

@@ -21,5 +21,11 @@ public class ArticleListController {
 		  								   @RequestParam(defaultValue = "0") int page){
     return as.sltMultiArticle(articleClass,page);
   }
-
+  
+  @GetMapping("/discussion/{hostPK}")
+  public Map<String,Object>sltMultiDiscussByHost(@PathVariable(name="hostPK") Long HostPK,
+		  										 @RequestParam(defaultValue = "0") int page
+		  ){
+	  return as.sltMultiDiscussByHost(HostPK, page);
+  }
 }
