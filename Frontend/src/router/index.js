@@ -18,7 +18,6 @@ import uploadImg from '@/views/profile/uploadImg.vue'
 import createDebate from '@/views/debate/createDebate.vue'
 import debateDetail from '@/views/debate/debateDetail.vue'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
-import followSend from '@/views/profile/followSend.vue'
 
 Vue.use(VueRouter)
 
@@ -114,11 +113,6 @@ const routes = [
     name: 'PageNotFound',
     component: PageNotFound
   },
-  {
-    path: '/followSend',
-    name: 'followSend',
-    component: followSend
-  }
 ]
 
 const router = new VueRouter({

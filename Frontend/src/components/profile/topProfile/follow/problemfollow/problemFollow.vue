@@ -1,19 +1,23 @@
 <template>
     <div>
-      <div class="follow">
-      <div class="user col-10">
-          <span class="algo">
-          algo
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
+      <div class="follow" v-for="(item,index) in problems" :key="index">
+        <div class="user col-10">
+            <span class="problem">
+            {{item.site}}
+            </span>
+            <span class="problem">
+             문제번호: {{item.no}}
+            </span>
+            <span class="followBtn">
+              <problemFollowBtn :site="item.site" :no="item.no"/>
+            </span>
+        </div>
       </div>
     </div>
 </template>
 
 <script>
+import problemFollowBtn from '@/components/profile/topProfile/follow/problemfollow/problemFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -26,20 +30,23 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    problemFollowBtn
+  },
   data(){
     return {
-      algo: [],
+      problems: []
     }
-  }, 
+  },  
   created: function(){
     axios({
       method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/algofollowings`,
+      url: `${SERVER_URL}/profile/${userpk}/problemfollowings`,
       data: page
     })   // back 에 로그인 요청
     .then(res =>{
       console.log(res)
-      this.algo = res.data.algo
+      this.problems = res.data
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)

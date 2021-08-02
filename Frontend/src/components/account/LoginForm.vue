@@ -87,7 +87,9 @@ export default {
         
         location.href = '/timeline'
         // this.$router.replace({name: 'timeline'})
-        
+        if(res.data.success=="False"){
+          alert(res.data.msg)
+        }
       })
       .catch(err =>{  // 실패하면 error
         console.log(err)

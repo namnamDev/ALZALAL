@@ -118,11 +118,13 @@ export default{
           })
           .then(res => {
             console.log(res);
+            alert("회원가입이 완료되었습니다")
             this.$router.push({ name: 'login' })
+            
         
           })
           .catch(err => {
-            alert(err)
+            alert("이미 등록된 계정입니다.")
             console.log(err)
           })
         }

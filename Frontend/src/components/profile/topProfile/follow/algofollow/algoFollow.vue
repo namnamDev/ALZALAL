@@ -1,38 +1,20 @@
 <template>
-  <div>
-    <!-- 화면예시 시작 -->
-    <div class="follow">
-    <div class="userImg col-2">
-        <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
+    <div>
+      <div class="follow" v-for="item,index in algo" :key="index">
+        <div class="user col-10">
+            <span class="problem">
+            {{item}}
+            </span>
+            <span class="followBtn">
+              <algoFollowBtn :algo="item"/>
+            </span>
+        </div>
+      </div>
     </div>
-    <div class="user col-10">
-        <span class="userName">
-        UserName
-        </span>
-        <span class="followBtn">
-        <button class="btn">팔로우</button>
-        </span>
-    </div>
-    </div>
-    <!-- 화면예시 끝 -->
-
-    <div class="follow" v-for="(item, index) in follower" :key="index"> 
-    <div class="userImg col-2">
-        <img class="profileImg" src="@/assets/images/profileImg.png" alt="이미지">
-    </div>
-    <div class="user col-10">
-        <span class="userName" v-bind="memberNo">
-        {{item.name}}
-        </span>
-        <span class="followBtn">
-        <button class="btn" @click="clickFollow">팔로우</button>
-        </span>
-    </div>
-    </div>
-  </div>
 </template>
 
 <script>
+import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/algoFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -43,47 +25,32 @@ if (token) {
   
 }
 let page =0;
-
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    algoFollowBtn
+  },
   data(){
     return {
-      follower:[],
-      memberNo: ''
+      algo: [],
     }
-  },
+  }, 
   created: function(){
     axios({
       method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/followers`,
+      url: `${SERVER_URL}/profile/${userpk}/algofollowings`,
       data: page
     })   // back 에 로그인 요청
     .then(res =>{
       console.log(res)
-      this.follower = res.data
-      console.log(this.follower)
+      this.algo = res.data
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
       
     })
   },
-  methods:{
-    clickFollow: function(){
-        axios({
-                method: 'post',
-                url: `${SERVER_URL}/follow/member`,
-                data: this.memberNo,
-            })
-            .then(res =>{
-                console.log(res)         
-            })
-            .catch(err => {
-                console.log(this.memberNo)
-                console.log(err);
-            })
-    }
-  }
+  
 }
 </script>
 

@@ -1,19 +1,14 @@
 <template>
     <div>
-      <div class="follow">
-      <div class="user col-10">
-          <span class="problem">
-          problem
-          </span>
-          <span class="followBtn">
-          <button class="btn">팔로우</button>
-          </span>
-      </div>
-      </div>
+
+<!-- 예시 화면 코드 끝 -->
+
+      <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no"/>
     </div>
 </template>
 
 <script>
+import followListImg from '@/components/profile/topProfile/follow/userfollow/followListImg.vue'
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 const token = localStorage.getItem("jwt");
@@ -26,61 +21,35 @@ if (token) {
 let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
+  components:{
+    followListImg
+  },
   data(){
     return {
-      problem: {
-        no: '',
-        site: '',
-      }
+      following:[],
     }
-  },  
+  },
   created: function(){
     axios({
       method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/problemfollowings`,
+      url: `${SERVER_URL}/profile/${userpk}/memfollowings`,
       data: page
     })   // back 에 로그인 요청
     .then(res =>{
       console.log(res)
-      this.form.no = res.data.no
-      this.form.site = res.data.site
+      this.following = res.data
+      console.log(this.following.no)
+      console.log(this.follower)
     })
     .catch(err =>{  // 실패하면 error
       console.log(err)
-      
     })
   },
 }
 </script>
 
 <style scoped>
-.container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 120px;
-  }
-}
-.userImg1 {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-/* 두개 비교할려고 냅둠 */
-.userImg {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
+
 .profileImg{
     width: 100%;
     height: 100%;
