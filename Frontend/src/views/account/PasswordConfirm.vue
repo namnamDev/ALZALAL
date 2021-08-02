@@ -1,6 +1,6 @@
 <template>
-<div>
-  <PasswordComfirmInput></PasswordComfirmInput>
+  <div class="container">
+    <PasswordComfirmInput></PasswordComfirmInput>
   </div>
 </template>
 
@@ -14,3 +14,13 @@ export default {
 };
 </script>
 
+<style scoped>
+.container{
+  margin-top: 150px;
+}
+@media (max-width:576px){
+  .container{
+    margin-top: 90px;
+  }
+}
+</style>

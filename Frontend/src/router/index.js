@@ -19,7 +19,6 @@ import createDebate from '@/views/debate/createDebate.vue'
 import debateDetail from '@/views/debate/debateDetail.vue'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
 
-
 Vue.use(VueRouter)
 
 
@@ -55,7 +54,7 @@ const routes = [
     component: PasswordConfirm,
   },
   {
-    path: '/profilePage',
+    path: `/profilePage/:userpk`,
     name: 'profilePage',
     component: ProfilePage,
   },
@@ -128,6 +127,7 @@ VueRouter.prototype.push = function push(location) {
     if (err.name !== 'NavigationDuplicated') throw err;
   });
 };
+
 
 
 export default router

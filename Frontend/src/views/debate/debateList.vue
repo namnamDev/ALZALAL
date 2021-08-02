@@ -4,7 +4,7 @@
       <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
       <div class="debate col-lg-6 col-md-10 col-sm-9 col-12 ">
         <div class="debate-request" align="right">
-          <button class="btn btn-request">토론방 요청하기</button>
+          <button class="btn btn-request" @click="clickCreate">토론방 생성하기</button>
         </div>
         <div class="col-md-12">
           <div class="table-wrap">
@@ -55,7 +55,11 @@
 
 <script>
 export default {
-
+  methods: {
+    clickCreate: function() {
+      this.$router.push({'name':'createDebate'})
+    },
+  }
 }
 </script>
 
