@@ -92,9 +92,9 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 		
 		// 팔로잉 명수 가져옴
-//		long following = member_FollowRepository.countByFollowNo(member);
+		long following = memberFollowRepository.countByFollowNo(member);
 		// 팔로워 명수 가져옴
-//		long follower = member_FollowRepository.countByMemberNo(member);
+		long follower = memberFollowRepository.countByMemberNo(member);
 
 		// 작성게시글 갯수
 		long articleCount = articleRepositoryImpl.countByMember(member.getNo());
@@ -112,8 +112,8 @@ public class ProfileServiceImpl implements ProfileService {
 		ret.put("problemsite", problemSiteList);
 		ret.put("introduce", member.getIntroduce());
 		
-//		ret.put("following", following);
-//		ret.put("follower", follower);
+		ret.put("following", following);
+		ret.put("follower", follower);
 		ret.put("articleCount", articleCount);
 		ret.put("helpmeCount", helpmeCount);
 		ret.put("helpmeSuccessCount", helpmeSuccessCount);
