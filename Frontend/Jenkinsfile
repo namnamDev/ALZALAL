@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Docker Remove'){
+            steps{                
+                sh 'docker stop frontend || true' 
+                sh 'docker rm -f frontend || true'
+                sh 'docker rmi frontend || true'
+            }
+        }
+        stage('Docker Build'){
+            steps{
+                mattermostSend (
+                    color: "#2A42EE", 
+                    message: "Build STARTED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                )  
+                sh 'docker build -t frontend ./Frontend/'
+            }
+        }
+        stage('Docker run'){
+            steps{
+                sh 'docker run -d -p 80:80 --name frontend frontend'
+            }
+        }
+    }
+}
