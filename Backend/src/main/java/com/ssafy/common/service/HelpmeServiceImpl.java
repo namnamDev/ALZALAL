@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.Helpme_Class;
@@ -102,4 +104,20 @@ public class HelpmeServiceImpl implements HelpmeService {
 		return ret;
 	}
 
+	//게시글 상세보기
+	@Override
+	public HelpmeDTO getHelpme(Long helpmeNo) {
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		HelpmeDTO ret = helpmeRepository.getHelpme(helpmeNo, nowLoginMemberNo).orElse(null);
+		
+		return ret;
+	}
+	
+	
 }

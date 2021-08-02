@@ -14,4 +14,7 @@ public interface HelpmeService {
 	
 	// 게시글 작성
 	public long createHelpme(Helpme helpme);
+	
+	//게시글 상세보기
+	public HelpmeDTO getHelpme(Long helpmeNo);
 }

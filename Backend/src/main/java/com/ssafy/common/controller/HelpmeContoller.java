@@ -89,5 +89,23 @@ public class HelpmeContoller {
 		return ret;
 	}
 	
+	//게시글 상세보기
+	@GetMapping("/{helpmeNo}")
+	public Map<String, HelpmeDTO> getHelpme(@PathVariable Long helpmeNo) {
+		Map<String, HelpmeDTO> ret=new HashMap<>();
+		HelpmeDTO helpme;
+		
+		helpme=helpmeSevice.getHelpme(helpmeNo);
+		
+		ret.put("helpmeNo", helpme);		
+		
+		return ret;		
+	}
+
+
+	
+	
+	
+	
 	
 }
