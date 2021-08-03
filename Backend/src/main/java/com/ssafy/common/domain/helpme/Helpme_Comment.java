@@ -30,7 +30,7 @@ public class Helpme_Comment {
   private Member member;
 
 
-  @Column(length = 500 ,name="HELPME_COMMENT_CONTENT")
+  @Column(length = 3000 ,name="HELPME_COMMENT_CONTENT")
   private String helpmeCommentContent;
 
   @Column(name="HELPME_COMMENT_DATE")
