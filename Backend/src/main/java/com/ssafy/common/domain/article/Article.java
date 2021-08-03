@@ -2,7 +2,9 @@ package com.ssafy.common.domain.article;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import org.hibernate.annotations.CreationTimestamp;
 import com.ssafy.common.domain.Use_Language;
 import com.ssafy.common.domain.member.Member;
@@ -60,4 +64,17 @@ public class Article {
   @Column(length = 4,name="ARTICLE_CLASS")
 	@Enumerated(EnumType.STRING)
   private Article_Class articleClass;
+  
+  //댓글
+  @OneToMany(mappedBy = "articleNo", cascade = CascadeType.REMOVE)
+  private List<Article_Comment> articleComent;
+  
+  //좋아요
+  @OneToMany(mappedBy = "articleNo", cascade = CascadeType.REMOVE)
+  private List<Article_Like> articleLike;
+  
+  //알고리즘
+  @OneToMany(mappedBy = "articleNo",cascade = CascadeType.REMOVE)
+  private List<Article_Algorithm> articleAlgorithm;
+  
 }
