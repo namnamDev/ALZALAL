@@ -36,7 +36,9 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 		List<DiscussDTO> result = queryFactory.select(Projections.constructor(DiscussDTO.class
 							, qd.discussNo
 							,Projections.constructor(Discuss_HostDTO.class, qd.discussCompHostNo.discussCompHostNo,qd.discussCompHostNo.discussCompHostName)
-							,qd.discussCompName,qd.discussCompProblem,qd.discussDate
+							,qd.discussCompName,
+							qd.discussCompProblem,
+							qd.discussDate
 							,ExpressionUtils.as(
 			                        JPAExpressions.select(qdc.count())
 			                        .from(qdc)
@@ -59,6 +61,7 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 		
 		DiscussDTO result = queryFactory.select(Projections.constructor(DiscussDTO.class
 							,qd.discussNo
+							,Projections.constructor(Discuss_HostDTO.class, qd.discussCompHostNo.discussCompHostNo,qd.discussCompHostNo.discussCompHostName)
 							,qd.discussCompName,qd.discussCompProblem,qd.discussDate
 							,ExpressionUtils.as(
 			                        JPAExpressions.select(qdc.count())
