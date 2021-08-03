@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import javax.transaction.Transactional;
@@ -49,7 +50,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @Transactional
-public class ArticleServiceImpl implements ArticleService{
+public class AdminServiceImpl implements AdminService{
   @Autowired
   private  ArticleRepository ArticleRepo;
   @Autowired
@@ -221,8 +222,7 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 public Map<String, Object> insertArticle(String articleClass,Map<String, Object> req){
 	String msg = "";
 	Map<String,Object>res = new HashMap<String,Object>();
-	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
-			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+//	Member member = memberRepository.findByNo(0);
 	//임시멤버 등록
 //	long memberNo = 1;
 //	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
@@ -259,7 +259,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 					insertArticle.setArticleClass(Article_Class.valueOf(category));
 					insertArticle.setArticleContent((String) req.get("content"));
 					insertArticle.setArticleTitle((String)req.get("title"));
-					insertArticle.setMember(member);
+//					insertArticle.setMember(member);
 					insertArticle.setProblemSite(problem);
 					insertArticle.setUseLanguage(useLanguage);
 					Article tempInserted = ArticleRepo.save(insertArticle);
@@ -282,19 +282,21 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 						ArtiAlgoRepo.flush();
 						
 					}
-					ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
-					List<Article_CommentDTO> comments = articleCommetRepo.artiComments(inserted.getArticleNo(),member.getNo(),PageRequest.of(0, 20)).orElse(null);
-					res.put("article", inserted);
-					res.put("articleComments", comments);
+//					ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
+//					List<Article_CommentDTO> comments = articleCommetRepo.artiComments(inserted.getArticleNo(),member.getNo(),PageRequest.of(0, 20)).orElse(null);
+//					res.put("article", inserted);
+//					res.put("articleComments", comments);
 				}
 			}	
 		}
 	//초기 데이터 입력용 (관리자기능)
 	}else if(articleClass.equals("discussion")){
+		System.out.println("discussion"+"초기데이터 입력 시작");
 		String[]hosts ={"KAKAO", "LINE", "PROGRAMMERS", "BAEKJOON"};
 		String[]year = {"2016","2017","2018","2019","2020","2021"};
 		String[]type = {"INTERN","BLIND RECRUITMENT","TEST","CODE"};
 		String[]date = {"0103","0401","0602","1123","1105"};
+		String time = "09:00:00";
 		String a = "";
 		Random r = new Random();
 		
@@ -309,7 +311,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 			for (String yearOne:year) {
 				for (String typeOne:type) {
 					int dateOne = r.nextInt(5);
-					LocalDateTime d = LocalDateTime.parse(date[dateOne],DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+					LocalDateTime d = LocalDateTime.parse(yearOne+date[dateOne]+" "+ time,DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 					Discuss ds = new Discuss();
 					ds.setDiscussCompHostNo(inserted);
 					ds.setDiscussCompName(hostOne+" "+ yearOne+" "+typeOne);
@@ -318,12 +320,13 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 						ds.setDiscussCompProblem(ii + "번");
 					}
 					Discuss insertedDiscuss = disRepo.save(ds);
-				
+					
+					}
+					
 				}
 				
 			}
-			
-		}
+		msg = "성공적으로 입력하였습니다.";
 		
 		
 	}

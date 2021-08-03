@@ -27,10 +27,10 @@ public class Discuss {
   @JoinColumn(name="DISCUSS_COMP_HOST_NO")
   private Discuss_Host discussCompHostNo;
 
-  @Column(length = 20,name="DSICUSS_COMP_NAME")
+  @Column(length = 200,name="DSICUSS_COMP_NAME")
   private String discussCompName;
 
-  @Column(length = 20,name="DISCUSS_COMP_PROBLEM")
+  @Column(length = 200,name="DISCUSS_COMP_PROBLEM")
   private String discussCompProblem;
 
   @Column(name="DISCUSS_DATE")
