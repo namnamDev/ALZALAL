@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/search/article/*").permitAll()//게시글 검색 관련 API	
 				.antMatchers(HttpMethod.GET,"/helpme/**").permitAll()//프로필 해당유저 작성글 리스트 가져오기 API, helpme게시글 상세보기
 				.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+				.antMatchers(HttpMethod.GET,"/comment/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/algorithmList").permitAll()//알고리즘 리스트 가져오기				
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요

@@ -180,10 +180,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
     			
     }
 	@Override
-	public long updateArticle(long articlePk, String content) {
+	public long updateArticle(long articlePk, Article updateArticle) {
 		long updatedArticle = queryFactory.update(article).
-				where(article.articleNo.eq(articlePk)).set
-				(article.articleContent, content).
+				where(article.articleNo.eq(articlePk))
+				.set(article.articleContent, updateArticle.getArticleContent())
+				.set(article.articleTitle, updateArticle.getArticleTitle()).
 				execute();
 						
 		return updatedArticle;
