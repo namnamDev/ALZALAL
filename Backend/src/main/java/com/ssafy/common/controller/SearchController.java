@@ -95,32 +95,5 @@ public class SearchController {
 		return ret;
 	}
 	
-	// 유저검색
-	@GetMapping("/article/algorithm")
-	public Map<String, Object> getMemberSearch(
-			@RequestParam(value = "language", required = false) String language,
-			@RequestParam(required = false) List<String> and,
-			@RequestParam(required = false) List<String> not,
-			@RequestParam(defaultValue = "") String sort,
-			@RequestParam(defaultValue = "0") int page) {
-		Map<String, Object> ret = new HashMap<>();
-
-		if (and == null || and.get(0).equals(""))
-			and = new ArrayList<String>();
-		if (not == null || not.get(0).equals(""))
-			not = new ArrayList<String>();
-
-		
-		try{
-			ret = searchService.getAlgorithmSearch(language, and,
-				not, page, sort);
-		}catch (IllegalStateException e) {
-			ret.put("success","False");
-			ret.put("msg", e.getMessage());
-		}
-		ret.put("success", "True");
-
-		return ret;
-	}
 	
 }
