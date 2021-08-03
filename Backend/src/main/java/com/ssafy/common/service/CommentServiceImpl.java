@@ -1,11 +1,13 @@
 package com.ssafy.common.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.common.domain.article.Article;
@@ -35,6 +37,30 @@ public class CommentServiceImpl implements CommentService{
 	  private Article_CommentRepository ArtiComRepo;
 	@Autowired
 	  private Discuss_CommentRepository disComRepo;
+	@Override
+	public Map<String, Object> sltMultCommentByArticle(String articleClass,long articlePk,int page){
+		Long nowLoginMemberNo=0L;
+		try {
+			nowLoginMemberNo=SecurityUtil.getCurrentMemberId();
+		}catch (RuntimeException e) {
+			nowLoginMemberNo=0L;
+		}
+		Map<String, Object> res = new HashMap<String,Object>();
+		Article article = articleRepo.sltOneArticle(articlePk);
+		String msg = "";
+		if (article != null) {
+	    	List<Article_CommentDTO> comments = ArtiComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+	    	if (comments.size() == 0) {
+	    		msg = "등록된 댓글이 없습니다.";
+	    	}else {
+	    		res.put("articleComments", comments);
+	    	}
+    	}else {
+    		msg="게시글이 존재하지 않습니다.";
+    	}
+		res.put("msg",msg);
+		return res;
+	}
 	@Override
 	public Map<String, Object> insertArticleComment(String articleClass, long articlePk, Map<String, Object> req) {
 		Map<String, Object> res = new HashMap<String,Object>();
