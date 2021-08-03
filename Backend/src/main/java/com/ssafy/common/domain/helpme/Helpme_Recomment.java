@@ -25,7 +25,7 @@ public class Helpme_Recomment {
   @JoinColumn(name="HELPME_COMMENT_NO")
   private Helpme_Comment helpmeCommentNo;
 
-  @Column(length = 500,name="HELPME_RECOMMENT_CONTENT")
+  @Column(length = 3000,name="HELPME_RECOMMENT_CONTENT")
   private String  helpmeRecommentContent;
 
   @Column(name = "HELPME_RECOMMENT_DATE")

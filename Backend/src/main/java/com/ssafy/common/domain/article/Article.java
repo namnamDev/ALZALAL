@@ -38,7 +38,7 @@ public class Article {
   @Column(name="ARTICLE_TITLE",length = 200)
   private String articleTitle;
   
-  @Column(name="ARTICLE_CONTENT",length = 500)
+  @Column(name="ARTICLE_CONTENT",length = 3000)
   private String articleContent;
 
   @Column(name="ARTICLE_DATE",updatable = false,

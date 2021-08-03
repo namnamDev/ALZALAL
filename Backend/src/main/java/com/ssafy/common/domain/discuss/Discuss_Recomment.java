@@ -32,7 +32,7 @@ public class Discuss_Recomment {
   @JoinColumn(name = "member_no")
   private Member member;
 
-  @Column(length = 500,name="DISCUSS_RECOMMENT_CONTENT")
+  @Column(length = 3000,name="DISCUSS_RECOMMENT_CONTENT")
   private String discussRecommentContent;
 
   @Column(name="DISCUSS_RECOMMENT_DATE")
