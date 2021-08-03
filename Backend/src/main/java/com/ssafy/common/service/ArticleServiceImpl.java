@@ -24,6 +24,7 @@ import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.Article_AlgorithmDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.dto.DiscussDTO;
 import com.ssafy.common.dto.Discuss_CommentDTO;
@@ -132,7 +133,9 @@ public class ArticleServiceImpl implements ArticleService{
 	  	if(articleClass.equals("article")){
 	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
+	    		List<Article_AlgorithmDTO> existAlgos = ArtiAlgoRepo.sltMultiByArticleDTO(article);
 		    	res.put("articleDetail",article);
+		    	res.put("algo",  existAlgos);
 	    	}else {
 	    		msg="게시글이 존재하지 않습니다.";
 	    	}
@@ -140,10 +143,7 @@ public class ArticleServiceImpl implements ArticleService{
 	    else if(articleClass.equals("discussion")){
 	    	DiscussDTO article = disRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
-//	    		List<Discuss_CommentDTO> comments = disComRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
-//		    	if (comments.size() == 0) {
-//		    		msg = "등록된 댓글이 없습니다.";
-//		    	}
+	    		res.put("articleDetail",article);
 	    	}
 	    	else {
 	    		msg="해당 토론이 존재하지 않습니다.";
@@ -201,11 +201,39 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 	    		}else{
 	        		String content = (String) req.get("content");
 	        		String title = (String)req.get("title");
+	        		String category = (String) req.get("category");
 	        		article.setArticleContent(content);
 	        		article.setArticleTitle(title);
+	        		article.setArticleClass(Article_Class.valueOf(category));
 	        		long updatedArticle = ArticleRepo.updateArticle(articlePk,article);
 	        		res.put("updatedArtcle", updatedArticle);
 	        		msg = "성공적으로 수정되었습니다.";
+	        		if (category.equals("A01")){
+						Article_Algorithm artiAlgo = new Article_Algorithm();
+						List<String> usedAlgo = (List<String>) req.get("algo");
+						List<Article_Algorithm> existAlgos = ArtiAlgoRepo.sltMultiByArticle(article);
+						if (existAlgos != null) {
+						for (Article_Algorithm existAlgo: existAlgos) {
+							ArtiAlgoRepo.delete(existAlgo);
+							}
+						}
+						if (usedAlgo !=null) {
+							for (String algo : usedAlgo) {
+								Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
+								if (sltOneAlgo != null){
+									artiAlgo.setAlgorithmName(sltOneAlgo);
+									artiAlgo.setArticleNo(article);
+									Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
+									res.put("updated", insertedArtiAlgo.getArticleNo().getArticleNo());
+								}else {
+									msg = "알고리즘이 존재하지 않습니다.";
+								}
+							}
+						}
+						ArtiAlgoRepo.flush();
+						
+					}
+	        		
 	    		}
     	}
 
@@ -221,9 +249,7 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 	Map<String,Object>res = new HashMap<String,Object>();
 	Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 			.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-	//임시멤버 등록
-//	long memberNo = 1;
-//	Member member = memberRepository.findByNo(memberNo).orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+
 	if (articleClass.equals("article")){
 		String category = (String) req.get("category");
 		String language = (String) req.get("language");
@@ -287,43 +313,6 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 				}
 			}	
 		}
-	//초기 데이터 입력용 (관리자기능)
-	}else if(articleClass.equals("discussion")){
-		String[]hosts ={"KAKAO", "LINE", "PROGRAMMERS", "BAEKJOON"};
-		String[]year = {"2016","2017","2018","2019","2020","2021"};
-		String[]type = {"INTERN","BLIND RECRUITMENT","TEST","CODE"};
-		String[]date = {"0103","0401","0602","1123","1105"};
-		String a = "";
-		Random r = new Random();
-		
-		for (int i =0; i<hosts.length;i++) {
-			Long g = (long) i;
-			String hostOne = hosts[i];
-			Discuss_Host dh = new Discuss_Host();
-			dh.setDiscussCompHostName(hostOne);
-			dh.setDiscussCompHostNo(0L);
-			Discuss_Host inserted = disHostRepo.save(dh);
-			a = hostOne;
-			for (String yearOne:year) {
-				for (String typeOne:type) {
-					int dateOne = r.nextInt(5);
-					LocalDateTime d = LocalDateTime.parse(date[dateOne],DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-					Discuss ds = new Discuss();
-					ds.setDiscussCompHostNo(inserted);
-					ds.setDiscussCompName(hostOne+" "+ yearOne+" "+typeOne);
-					ds.setDiscussDate(d);
-					for (int ii = 1; ii < 6; ii ++) {
-						ds.setDiscussCompProblem(ii + "번");
-					}
-					Discuss insertedDiscuss = disRepo.save(ds);
-				
-				}
-				
-			}
-			
-		}
-		
-		
 	}
 	res.put("msg", msg);
 	return res;
