@@ -14,6 +14,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.common.domain.Algorithm;
 import com.ssafy.common.domain.article.Article;
@@ -284,23 +285,24 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 				.limit(page.getPageSize())
 				.orderBy(sort.equals("like")?qa.articleLike.size().asc():qa.articleDate.asc())
 				.fetch();
+			
 		
-		
-		return Optional.of(result);
+		return Optional.of(result);		
 	}
 	
 	private BooleanBuilder algorithmCondition(List<String> and,List<String> not,QArticle_Algorithm qaa, QArticle qa) {
 		 BooleanBuilder builder = new BooleanBuilder();
 		 
 		 for(String algo: and) {
-			 builder.or(qa.articleAlgorithm.contains(JPAExpressions.select(qaa)
-			 			.from(qaa)
-			 			.where(qaa.algorithmName.algorithmName.eq(algo))
-			 			)
-					 );
+			 builder.or(qa.articleNo.eq(JPAExpressions
+						.select(qaa.articleNo.articleNo)
+						.from(qaa)
+						.where(qaa.algorithmName.algorithmName.eq(algo),qaa.articleNo.articleNo.eq(qa.articleNo))
+						));
 		 }
 		 for(String algo: not) {
-			 builder.andNot(qa.articleNo.eq(JPAExpressions.select(qaa.articleNo.articleNo)
+			 builder.and(qa.articleNo.notIn(JPAExpressions
+					 	.select(qaa.articleNo.articleNo)
 				 		.from(qaa)
 				 		.where(qaa.algorithmName.algorithmName.eq(algo),qaa.articleNo.articleNo.eq(qa.articleNo))
 				 		)
