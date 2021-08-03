@@ -35,7 +35,7 @@ public class Article {
   private Member member; // referenceName은 디폴트로 할당
   // 헌국뇌피셜 할당 자체를 Memeber로 뒀으니 자동으로 pk를 찾아서 정해주는게 아닐까??
   /// name은 어떤이름으로할것인지 정하는것
-  @Column(name="ARTICLE_TITLE",length = 200)
+  @Column(name="ARTICLE_TITLE",length = 500)
   private String articleTitle;
   
   @Column(name="ARTICLE_CONTENT",length = 3000)
