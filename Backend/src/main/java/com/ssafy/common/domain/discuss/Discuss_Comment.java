@@ -30,7 +30,7 @@ public class Discuss_Comment {
   @JoinColumn(name="DISCUSS_NO")
   private Discuss discussNo;
 
-  @Column(name="DISCUSS_COMMENT_CONTENT")
+  @Column(length = 3000,name="DISCUSS_COMMENT_CONTENT")
   private String discussCommentContent;
 
   @Column(name="DISCUSS_COMMENT_DATE")

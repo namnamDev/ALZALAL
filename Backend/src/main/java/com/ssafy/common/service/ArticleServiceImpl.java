@@ -1,9 +1,12 @@
 package com.ssafy.common.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -15,6 +18,7 @@ import com.ssafy.common.domain.article.Article_Algorithm;
 import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.article.Article_Like;
+import com.ssafy.common.domain.discuss.Discuss;
 import com.ssafy.common.domain.discuss.Discuss_Host;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
@@ -287,14 +291,38 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 		}
 	//초기 데이터 입력용 (관리자기능)
 	}else if(articleClass.equals("discussion")){
-//		List<String>hosts = new ArrayList<String>();
-		String[]hosts = new String[]{"카카오","라인","프로그래머스","백준"};
-		String[][][]discusses = new String[4][4][5];
+		String[]hosts ={"KAKAO", "LINE", "PROGRAMMERS", "BAEKJOON"};
+		String[]year = {"2016","2017","2018","2019","2020","2021"};
+		String[]type = {"INTERN","BLIND RECRUITMENT","TEST","CODE"};
+		String[]date = {"0103","0401","0602","1123","1105"};
+		String a = "";
+		Random r = new Random();
 		
-		for (String hostOne: hosts) {
+		for (int i =0; i<hosts.length;i++) {
+			Long g = (long) i;
+			String hostOne = hosts[i];
 			Discuss_Host dh = new Discuss_Host();
 			dh.setDiscussCompHostName(hostOne);
-			disHostRepo.save(dh);
+			dh.setDiscussCompHostNo(0L);
+			Discuss_Host inserted = disHostRepo.save(dh);
+			a = hostOne;
+			for (String yearOne:year) {
+				for (String typeOne:type) {
+					int dateOne = r.nextInt(5);
+					LocalDateTime d = LocalDateTime.parse(date[dateOne],DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+					Discuss ds = new Discuss();
+					ds.setDiscussCompHostNo(inserted);
+					ds.setDiscussCompName(hostOne+" "+ yearOne+" "+typeOne);
+					ds.setDiscussDate(d);
+					for (int ii = 1; ii < 6; ii ++) {
+						ds.setDiscussCompProblem(ii + "번");
+					}
+					Discuss insertedDiscuss = disRepo.save(ds);
+				
+				}
+				
+			}
+			
 		}
 		
 		
