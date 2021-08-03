@@ -21,7 +21,6 @@ public interface ArticleRepositoryCustom {
 
 	long articleDelete(Long articlePk);
 
-	long updateArticle(long articlePk, String content);
 
 	//작성자를 통한 게시글 갯수 조회
 	long countByMember(Long memberNo);
@@ -38,8 +37,11 @@ public interface ArticleRepositoryCustom {
 	Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo, Pageable page);
 
 	Optional<List<ArticleDTO>> sltMultiQnA(Long nowLoginMemberNo, Pageable page, Article_Class articleClass);
-	
+
 	//문제 검색 
 	Optional<List<ArticleDTO> > getProblemSearch(Long nowLoginMemberNo,Problem_Site problem, String language,
 			List<String> and, List<String> not, Pageable page,String sort);
+
+	long updateArticle(long articlePk, Article updateArticle);
+
 }

@@ -118,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService{
   
   
   @Override
-  public Map<String, Object>sltOneArticle(String articleClass,long pk,int page){
+  public Map<String, Object>sltOneArticle(String articleClass,long pk){
 	  //게시글 단건조회 및 댓글 조회
 	Long nowLoginMemberNo=0L;
 	try {
@@ -132,12 +132,7 @@ public class ArticleServiceImpl implements ArticleService{
 	  	if(articleClass.equals("article")){
 	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
-		    	List<Article_CommentDTO> comments = articleCommetRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
-		    	if (comments.size() == 0) {
-		    		msg = "등록된 댓글이 없습니다.";
-		    	}
 		    	res.put("articleDetail",article);
-		    	res.put("articleComments", comments);
 	    	}else {
 	    		msg="게시글이 존재하지 않습니다.";
 	    	}
@@ -145,10 +140,10 @@ public class ArticleServiceImpl implements ArticleService{
 	    else if(articleClass.equals("discussion")){
 	    	DiscussDTO article = disRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
-	    		List<Discuss_CommentDTO> comments = disComRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
-		    	if (comments.size() == 0) {
-		    		msg = "등록된 댓글이 없습니다.";
-		    	}
+//	    		List<Discuss_CommentDTO> comments = disComRepo.artiComments(pk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+//		    	if (comments.size() == 0) {
+//		    		msg = "등록된 댓글이 없습니다.";
+//		    	}
 	    	}
 	    	else {
 	    		msg="해당 토론이 존재하지 않습니다.";
@@ -205,7 +200,10 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
 	    		msg ="자신의 글만 삭제할 수 있습니다.";
 	    		}else{
 	        		String content = (String) req.get("content");
-	        		long updatedArticle = ArticleRepo.updateArticle(articlePk,content);
+	        		String title = (String)req.get("title");
+	        		article.setArticleContent(content);
+	        		article.setArticleTitle(title);
+	        		long updatedArticle = ArticleRepo.updateArticle(articlePk,article);
 	        		res.put("updatedArtcle", updatedArticle);
 	        		msg = "성공적으로 수정되었습니다.";
 	    		}
@@ -268,16 +266,16 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 						Article_Algorithm artiAlgo = new Article_Algorithm();
 						List<String> usedAlgo = (List<String>) req.get("algo");
 						if (usedAlgo !=null) {
-						for (String algo : usedAlgo) {
-							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
-							if (sltOneAlgo != null){
-								artiAlgo.setAlgorithmName(sltOneAlgo);
-								artiAlgo.setArticleNo(tempInserted);
-								Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
-							}else {
-								msg = "알고리즘이 존재하지 않습니다.";
+							for (String algo : usedAlgo) {
+								Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
+								if (sltOneAlgo != null){
+									artiAlgo.setAlgorithmName(sltOneAlgo);
+									artiAlgo.setArticleNo(tempInserted);
+									Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
+								}else {
+									msg = "알고리즘이 존재하지 않습니다.";
+								}
 							}
-						}
 						}
 						ArtiAlgoRepo.flush();
 						

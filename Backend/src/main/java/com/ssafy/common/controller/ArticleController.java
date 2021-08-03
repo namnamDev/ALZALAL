@@ -23,9 +23,8 @@ public class ArticleController {
   @GetMapping("/{articleClass}/{pk}")
   public Map<String,Object>sltOneArticle(
 		  @PathVariable(name="articleClass")String articleClass,
-		  @PathVariable(name="pk") long pk,
-		  @RequestParam(defaultValue = "0") int commentsPage){
-	  return as.sltOneArticle(articleClass, pk,commentsPage);
+		  @PathVariable(name="pk") long pk){
+	  return as.sltOneArticle(articleClass, pk);
   }  
   @DeleteMapping("/{articleClass}/{pk}")
   public Map<String,Object>deleteArticle(
