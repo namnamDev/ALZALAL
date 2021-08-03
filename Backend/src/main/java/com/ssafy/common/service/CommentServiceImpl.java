@@ -17,6 +17,7 @@ import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
+import com.ssafy.common.dto.Discuss_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_CommentRepository;
@@ -39,15 +40,16 @@ public class CommentServiceImpl implements CommentService{
 	  private Discuss_CommentRepository disComRepo;
 	@Override
 	public Map<String, Object> sltMultCommentByArticle(String articleClass,long articlePk,int page){
+		String msg = "";
+		Map<String, Object> res = new HashMap<String,Object>();
 		Long nowLoginMemberNo=0L;
 		try {
 			nowLoginMemberNo=SecurityUtil.getCurrentMemberId();
 		}catch (RuntimeException e) {
 			nowLoginMemberNo=0L;
 		}
-		Map<String, Object> res = new HashMap<String,Object>();
+		if (articleClass.equals("article")) {
 		Article article = articleRepo.sltOneArticle(articlePk);
-		String msg = "";
 		if (article != null) {
 	    	List<Article_CommentDTO> comments = ArtiComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
 	    	if (comments.size() == 0) {
@@ -57,7 +59,22 @@ public class CommentServiceImpl implements CommentService{
 	    	}
     	}else {
     		msg="게시글이 존재하지 않습니다.";
-    	}
+    		}
+		}else if(articleClass.equals("discussion")){
+			Discuss article = discussRepo.sltOneArticle(articlePk);
+			if (article != null) {
+		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	if (comments.size() == 0) {
+		    		msg = "등록된 댓글이 없습니다.";
+		    	}else {
+		    		res.put("articleComments", comments);
+		    	}
+	    	}else {
+	    		msg="게시글이 존재하지 않습니다.";
+	    		}
+
+		}
+		
 		res.put("msg",msg);
 		return res;
 	}
