@@ -268,16 +268,16 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 						Article_Algorithm artiAlgo = new Article_Algorithm();
 						List<String> usedAlgo = (List<String>) req.get("algo");
 						if (usedAlgo !=null) {
-						for (String algo : usedAlgo) {
-							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
-							if (sltOneAlgo != null){
-								artiAlgo.setAlgorithmName(sltOneAlgo);
-								artiAlgo.setArticleNo(tempInserted);
-								Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
-							}else {
-								msg = "알고리즘이 존재하지 않습니다.";
+							for (String algo : usedAlgo) {
+								Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
+								if (sltOneAlgo != null){
+									artiAlgo.setAlgorithmName(sltOneAlgo);
+									artiAlgo.setArticleNo(tempInserted);
+									Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
+								}else {
+									msg = "알고리즘이 존재하지 않습니다.";
+								}
 							}
-						}
 						}
 						ArtiAlgoRepo.flush();
 						
