@@ -19,10 +19,18 @@ public class adminController {
 	@Autowired
 	private AdminService adminSvc;
 	
-	@PostMapping("/discussion")
-	public Map<String, Object> insertdiscuss(
-			@RequestBody Map<String, Object> req) {
-		return adminSvc.insertArticle("discussion", req);
+	@PostMapping("/discussion/{num}")
+	public Map<String, Object> insertDiscuss(
+			@RequestBody Map<String, Object> req,
+			@PathVariable int num) {
+		return adminSvc.insertArticle("discussion", num);
+	};
+	
+	@PostMapping("/article/{num}")
+	public Map<String, Object> insertArticle(
+			@RequestBody Map<String, Object> req,
+			@PathVariable int num) {
+		return adminSvc.insertArticle("article", num);
 	};
 
 	//회원 30명 회원가입 되는 API
