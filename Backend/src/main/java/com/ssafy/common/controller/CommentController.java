@@ -4,11 +4,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.service.CommentService;
@@ -18,6 +20,14 @@ import com.ssafy.common.service.CommentService;
 public class CommentController {
 	@Autowired
 	CommentService cs;
+  @GetMapping("/{articleClass}/{pk}")
+  public Map<String,Object>sltMultiArticleComment(
+		  @PathVariable(name="articleClass")String articleClass,
+		  @PathVariable(name="pk") long articlePk,
+		  @RequestParam(defaultValue = "0") int page
+		  ){
+	  return cs.sltMultCommentByArticle(articleClass,articlePk,page);
+  }
   @PostMapping("/{articleClass}/{pk}")
   public Map<String,Object>insertArticleComment(
 	  @PathVariable(name="articleClass")String articleClass,
