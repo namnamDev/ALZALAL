@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class Article_AlgorithmPK implements Serializable{
   // private static final long serialVersionUID = -3033073092220146757L;
-  private Algorithm algorithmName;
-  private Article articleNo;
+  private String algorithmName;
+  private long articleNo;
 
 }

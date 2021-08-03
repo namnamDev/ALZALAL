@@ -49,7 +49,26 @@ public class ArticleDTO {
 	}
 
 
-
+	//article에 oneToMany관계 맺은뒤 타입형이 맞지않아서 생성자 다시 생성했습니다
+	//위의 생성자 필요없어지면 지워도 될것같습니다
+	public ArticleDTO(Long articleNo, MemberDTO member, String articleTitle,
+			String articleContent, LocalDateTime articleDate,
+			ProblemSiteDTO problemSite, String useLanguage,
+			Article_Class articleClass, int likeCount, Long likeState,
+			int commentCount) {
+		super();
+		this.articleNo = articleNo;
+		this.member = member;
+		this.articleTitle = articleTitle;
+		this.articleContent = articleContent;
+		this.articleDate = articleDate;
+		this.problemSite = problemSite;
+		this.useLanguage = useLanguage;
+		this.articleClass = articleClass;
+		this.likeCount = (long)likeCount;
+		this.likeState = likeState>0?true:false;
+		this.commentCount = (long)commentCount;
+	}
 
 	
 	

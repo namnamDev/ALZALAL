@@ -9,6 +9,7 @@ import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
+import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.dto.ArticleDTO;
 
 public interface ArticleRepositoryCustom {
@@ -37,4 +38,8 @@ public interface ArticleRepositoryCustom {
 	Optional<List<ArticleDTO>> sltMulti(Long nowLoginMemberNo, Pageable page);
 
 	Optional<List<ArticleDTO>> sltMultiQnA(Long nowLoginMemberNo, Pageable page, Article_Class articleClass);
+	
+	//문제 검색 
+	Optional<List<ArticleDTO> > getProblemSearch(Long nowLoginMemberNo,Problem_Site problem, String language,
+			List<String> and, List<String> not, Pageable page,String sort);
 }
