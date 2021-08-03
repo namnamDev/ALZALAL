@@ -47,7 +47,7 @@ public class Helpme {
   @JoinColumn(name = "HELPME_RECEPTOR_NO")
   private Member helpmeReceptorNo;
 
-  @Column(length = 500,name="HELPME_CONTENT")
+  @Column(length = 3000,name="HELPME_CONTENT")
   private String helpmeContent;
 
   @Column(length = 4, name = "HELPME_STATUS")

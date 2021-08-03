@@ -28,7 +28,7 @@ public class Article_Recomment {
   @JoinColumn(name="ARTICLE_COMMENT_NO")
   private Article_Comment articleCommentNo;
   
-  @Column(length = 500,name="ARTICLE_CONTENT")
+  @Column(length = 3000,name="ARTICLE_CONTENT")
   private String articleContent;
 
   @Column(name = "ARTICLE_RECOMMENT_DATE")

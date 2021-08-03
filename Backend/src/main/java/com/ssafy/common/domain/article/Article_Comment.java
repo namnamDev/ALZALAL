@@ -34,7 +34,7 @@ public class Article_Comment {
   @JoinColumn(name="ARTICLE_NO")
   private Article articleNo;
 
-  @Column(length = 500,name = "ARTICLE_COMMENT_CONTENT")
+  @Column(length = 3000,name = "ARTICLE_COMMENT_CONTENT")
   private String commentContent;
 
   @Column(name="ARTICLE_COMMENT_DATE",updatable = false,
