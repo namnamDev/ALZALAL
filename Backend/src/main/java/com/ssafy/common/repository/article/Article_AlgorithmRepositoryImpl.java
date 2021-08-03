@@ -1,6 +1,7 @@
 package com.ssafy.common.repository.article;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,13 +22,13 @@ public class Article_AlgorithmRepositoryImpl implements Article_AlgorithmReposit
 		return queryFactory.select(article_Algorithm).fetch();
 	
 	}
-	
-	public Article_Algorithm sltOne(Algorithm algo,Article article){
+	@Override
+	public Optional<Article_Algorithm> sltOne(Algorithm algo,Article article){
 		
-		return queryFactory.selectFrom(article_Algorithm).
+		return Optional.ofNullable(queryFactory.selectFrom(article_Algorithm).
 				where(article_Algorithm.algorithmName.eq(algo)).
 				where(article_Algorithm.articleNo.eq(article)).
-				fetchFirst();
+				fetchFirst());
 	}
 	
 }
