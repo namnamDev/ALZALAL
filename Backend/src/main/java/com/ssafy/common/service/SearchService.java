@@ -1,6 +1,7 @@
 package com.ssafy.common.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.common.dto.ArticleDTO;
 
@@ -9,6 +10,10 @@ public interface SearchService {
 	List<ArticleDTO> getArticleListByMemberNo(Long memberNo,int page);
 
 	// 문제검색
-	List<ArticleDTO> getProblemSearch(String problem, String language,
+	Map<String, Object>  getProblemSearch(String problem, String language,
 				List<String> and, List<String> not, int page, String sort);
+
+	// 알고리즘검색
+	Map<String, Object> getAlgorithmSearch(String language,
+			List<String> and, List<String> not, int page, String sort);
 }

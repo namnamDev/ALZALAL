@@ -3,6 +3,7 @@ package com.ssafy.common.repository.article;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 import com.ssafy.common.domain.article.Article;
@@ -10,6 +11,7 @@ import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
+import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.ArticleDTO;
 
 public interface ArticleRepositoryCustom {
@@ -42,6 +44,15 @@ public interface ArticleRepositoryCustom {
 	Optional<List<ArticleDTO> > getProblemSearch(Long nowLoginMemberNo,Problem_Site problem, String language,
 			List<String> and, List<String> not, Pageable page,String sort);
 
+	//알고리즘 검색 
+	Optional<List<ArticleDTO> > getAlgorithmSearch(Long nowLoginMemberNo, String language,
+			List<String> and, List<String> not, Pageable page,String sort);
+	//해당 알고리즘이 속한 문제 갯수 리턴
+	long countbyAlgorithm(String algorithmName);	
+	
+	//해당 문제가 속한 문제 갯수 리턴
+	long countbyProblem(Problem_Site problem);
+	
 	long updateArticle(long articlePk, Article updateArticle);
 
 }

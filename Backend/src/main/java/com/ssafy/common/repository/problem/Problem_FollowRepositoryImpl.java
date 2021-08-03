@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.domain.problem.QProblem_Follow;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,19 @@ public class Problem_FollowRepositoryImpl implements Problem_FollowRepositoryCus
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
+		
+		return result;
+	}
+	
+	//problem으로 현재 팔로잉 몇개인지 카운트
+	@Override
+	public long countProblemFollowings(String problemSite, long problemNo) {
+		QProblem_Follow pf=QProblem_Follow.problem_Follow;
+		
+		long result=jpaQueryFactory.selectFrom(pf)
+					.where(pf.followingProblemSiteName.problemSiteName.problemSiteName.eq(problemSite)
+							,pf.followingProblemSiteName.problemNo.eq(problemNo))
+					.fetchCount();
 		
 		return result;
 	}
