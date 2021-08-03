@@ -30,4 +30,18 @@ public class Algorithm_FolloweRepositoryImpl implements Algorithm_FolloweReposit
 		return result;
 	}
 	
+	//algorithm으로 현재 팔로잉 몇개인지 카운트
+	@Override
+	public long countAlgorithmFollowings(String algorithmName) {
+		
+	QAlgorithm_Follow af=QAlgorithm_Follow.algorithm_Follow;
+		
+		long result = jpaQueryFactory.select(af)
+				.from(af)
+				.where(af.followingArgorithmNo.algorithmName.eq(algorithmName))
+				.fetchCount();
+		
+		return result;
+	}
+	
 }
