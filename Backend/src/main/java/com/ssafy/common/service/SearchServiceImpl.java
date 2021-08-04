@@ -115,7 +115,20 @@ public class SearchServiceImpl implements SearchService {
 		List<ArticleDTO> list = articleRepository.getProblemSearch(nowLoginMemberNo,
 				problem_Site,language,and,not, PageRequest.of(page, 20),sort).orElse(null);
 
+		
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				if(atcl.getArticleClass()==Article_Class.A00)
+					continue;
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
+		
 		ret.put("aricleList", list);
+
 		
 		Problem_Site_List ptmp=new Problem_Site_List(problemName);
 		Problem_Site pstmp=new Problem_Site();
@@ -159,6 +172,15 @@ public class SearchServiceImpl implements SearchService {
 		
 		List<ArticleDTO> list = articleRepository.getAlgorithmSearch(nowLoginMemberNo,
 				language,and,not, PageRequest.of(page, 20),sort).orElse(null);
+
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
 
 		ret.put("aricleList", list);
 		
