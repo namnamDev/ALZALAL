@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.discuss.Discuss;
 import com.ssafy.common.domain.discuss.Discuss_Comment;
+import com.ssafy.common.domain.discuss.Discuss_Comment_Like;
 import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.Helpme_Comment;
+import com.ssafy.common.domain.helpme.Helpme_Comment_Like;
 import com.ssafy.common.domain.article.Article_Comment;
+import com.ssafy.common.domain.article.Article_Comment_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
@@ -24,10 +27,13 @@ import com.ssafy.common.dto.Helpme_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.Helpme_CommentRepository;
+import com.ssafy.common.repository.Helpme_Comment_LikeRepository;
 import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_CommentRepository;
+import com.ssafy.common.repository.article.Article_Comment_LikeRepository;
 import com.ssafy.common.repository.discuss.DiscussRepository;
 import com.ssafy.common.repository.discuss.Discuss_CommentRepository;
+import com.ssafy.common.repository.discuss.Discuss_Comment_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 
 @Service
@@ -47,6 +53,13 @@ public class CommentServiceImpl implements CommentService{
 	  private Discuss_CommentRepository disComRepo;
 	@Autowired
 	  private Helpme_CommentRepository helpComRepo;
+	@Autowired
+	  private Article_Comment_LikeRepository ArtiComLiRepo;
+	@Autowired
+	  private Discuss_Comment_LikeRepository disComLiRepo;
+	@Autowired
+	  private Helpme_Comment_LikeRepository helpComLiRepo;
+	
 	@Override
 	public Map<String, Object> sltMultCommentByArticle(String articleClass,long articlePk,int page){
 		String msg = "";
@@ -235,7 +248,46 @@ public class CommentServiceImpl implements CommentService{
 		Map<String,Object>res = new HashMap<String,Object>();
 		if (articleClass.equals("article")){
 			Article_Comment artiCom = ArtiComRepo.getById(commentPk);
+			Article_Comment_Like arCoLi = ArtiComLiRepo.ifMemberExist(commentPk, member.getNo());
+			if (arCoLi == null) {
+				Article_Comment_Like insertLike = new Article_Comment_Like();
+				insertLike.setArticleComment(artiCom);
+				insertLike.setMember(member);
+				ArtiComLiRepo.save(insertLike);
+				res.put("myLike", true);
+			}else {
+				ArtiComLiRepo.deleteLike(member.getNo(), commentPk);
+				res.put("mylike", false);
+				}
+		}else if(articleClass.equals("discussion")){
+			Discuss_Comment artiCom = disComRepo.getById(commentPk);
+			Discuss_Comment_Like arCoLi = disComLiRepo.ifMemberExist(commentPk, member.getNo());
+			if (arCoLi == null) {
+				Discuss_Comment_Like insertLike = new Discuss_Comment_Like();
+				insertLike.setDiscussCommentNo(artiCom);
+				insertLike.setMember(member);
+				disComLiRepo.save(insertLike);
+				res.put("myLike", true);
+			}else {
+				disComLiRepo.deleteLike(member.getNo(), commentPk);
+				res.put("mylike", false);
+				}
+			
+		}else if(articleClass.equals("helpme")){
+			Helpme_Comment artiCom = helpComRepo.getById(commentPk);
+			Helpme_Comment_Like arCoLi = helpComLiRepo.ifMemberExist(commentPk, member.getNo());
+			if (arCoLi == null) {
+				Helpme_Comment_Like insertLike = new Helpme_Comment_Like();
+				insertLike.setHelpmeCommentNo(artiCom);
+				insertLike.setMember(member);
+				helpComLiRepo.save(insertLike);
+				res.put("myLike", true);
+			}else {
+				helpComLiRepo.deleteLike(member.getNo(), commentPk);
+				res.put("mylike", false);
+				}
+			
 		}
-		return null;
+		return res;
 	}
 }

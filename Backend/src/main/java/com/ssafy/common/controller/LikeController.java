@@ -35,15 +35,15 @@ public class LikeController {
 			  @PathVariable(name="pk") long articlePk,
 			  @RequestBody Map<String,Object> req
 			  ){
-		  return as.likeArticle(articleClass, articlePk,req);
+		  return cs.likeComment(articleClass, articlePk,req);
 	  }
 	  
-	  @PostMapping("/{articleClass}/recomment/{pk}")
-	  public Map<String,Object>reCommentLike(
-			  @PathVariable(name="articleClass")String articleClass,
-			  @PathVariable(name="pk") long articlePk,
-			  @RequestBody Map<String,Object> req
-			  ){
-		  return as.likeArticle(articleClass, articlePk,req);
-	  }
+//	  @PostMapping("/{articleClass}/recomment/{pk}")
+//	  public Map<String,Object>reCommentLike(
+//			  @PathVariable(name="articleClass")String articleClass,
+//			  @PathVariable(name="pk") long articlePk,
+//			  @RequestBody Map<String,Object> req
+//			  ){
+//		  return as.likeArticle(articleClass, articlePk,req);
+//	  }
 }
