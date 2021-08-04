@@ -60,7 +60,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
-
+		if(ret==null)
+			return null;
 		return Optional.of(ret);
 	}
 
@@ -99,7 +100,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
 				.fetch();
-
+		if(ret==null)
+			return null;
 		return Optional.of(ret);
 	}
 	
@@ -133,6 +135,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 						.where(h.helpmeNo.eq(helpmeNo))
 						.fetchOne();
 		
+		if(ret==null)
+			return null;
 		return Optional.of(ret);
 	}
 	
