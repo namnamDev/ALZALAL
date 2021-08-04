@@ -348,7 +348,6 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
 		Article article = ArticleRepo.sltOneArticle(articlePk);
-		System.out.println(article+"##############");
 		//좋아요 누른적 있는지 조회
 		Article_Like arli = ArticleLikeRepo.ifMemberExist(articlePk,member.getNo());
 		//눌려져있으면 delete. 안눌러져 있으면 insert
