@@ -348,8 +348,9 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
 		Article article = ArticleRepo.sltOneArticle(articlePk);
+		System.out.println(article+"##############");
 		//좋아요 누른적 있는지 조회
-		Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
+		Article_Like arli = ArticleLikeRepo.ifMemberExist(articlePk,member.getNo());
 		//눌려져있으면 delete. 안눌러져 있으면 insert
 		if(arli == null) {
 			Article_Like insertLike = new Article_Like();
@@ -368,7 +369,7 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 		//토론은 좋아요 미구현인걸로 암
 	}else if(articleClass.equals("helpme")) {
 		Helpme article = helpmeRepo.getById(articlePk);
-		Helpme_Like arli = helLiRepo.ifMemberExist(member);
+		Helpme_Like arli = helLiRepo.ifMemberExist(articlePk,member.getNo());
 		if(arli == null) {
 			Helpme_Like insertLike = new Helpme_Like();
 			insertLike.setHelpmeNo(article);

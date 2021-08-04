@@ -15,9 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class Article_LikeRepositoryImpl implements Article_LikeRepositoryCustom{
 	private final JPAQueryFactory queryFactory;
 	@Override
-	public Article_Like ifMemberExist(Member member) {
+	public Article_Like ifMemberExist(Long articlePK,Long memberNo) {
 		return queryFactory.selectFrom(QArticle_Like.article_Like).
-				where(QArticle_Like.article_Like.member.eq(member)).fetchOne();
+				where(QArticle_Like.article_Like.member.no.eq(memberNo).
+						and(QArticle_Like.article_Like.articleNo.articleNo.eq(articlePK))).fetchOne();
 	}
 	@Override
 	public long deleteLike(Member member,Article article) {

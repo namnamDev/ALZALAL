@@ -267,7 +267,7 @@ public class AdminServiceImpl implements AdminService {
 			// 게시글 존재하는지 조회
 			Article article = ArticleRepo.sltOneArticle(articlePk);
 			// 좋아요 누른적 있는지 조회
-			Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
+			Article_Like arli = ArticleLikeRepo.ifMemberExist(articlePk,member.getNo());
 			// 눌려져있으면 delete. 안눌러져 있으면 insert
 			if (arli == null) {
 				Article_Like insertLike = new Article_Like();
@@ -284,6 +284,8 @@ public class AdminServiceImpl implements AdminService {
 			res.put("articleNo", article.getArticleNo());
 		} else if (articleClass.equals("discussion")) {
 
+		} else if (articleClass.equals("helpme")) {
+			
 		}
 		return res;
 	}
