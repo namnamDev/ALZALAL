@@ -5,15 +5,16 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.Tuple;
+import com.ssafy.common.dto.FollowMemberDto;
 
 public interface Member_FollowRepositoryCustom {
 
 
 	// memborNo를 팔로우 하고 있는 사람들(팔로워)
-	List<Tuple> getFollowers(Long memberNo,Pageable page);
+	List<FollowMemberDto> getFollowers(Long memberNo,Long nowLoginMemberNo, Pageable page);
 	
 	// memberNo가 팔로우 한 사람들(사람 팔로잉)
-	List<Tuple> getMemberFollowings(Long memberNo,Pageable page);
+	List<FollowMemberDto> getMemberFollowings(Long memberNo,Long nowLoginMemberNo,Pageable page);
 	
 
 }

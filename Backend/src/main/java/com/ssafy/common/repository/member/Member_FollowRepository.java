@@ -13,4 +13,7 @@ public interface Member_FollowRepository extends JpaRepository<Member_Follow, Me
 
 	// memborNo를 팔로우 하고 있는 사람들(팔로워) 인원 카운트
 	Long countByMemberNo(Member memberNo);
+	
+	// memberNo가 followNo를 팔로우하고있는지 확인
+	Long countByMemberNoAndFollowNo(Member memberNo,Member followNo);
 }
