@@ -15,6 +15,7 @@ import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
+import com.ssafy.common.dto.FollowMemberDto;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepositoryCustom;
@@ -104,6 +105,18 @@ public class ProfileServiceImpl implements ProfileService {
 
 		// helpme 응답완료 갯수
 		long helpmeSuccessCount = helpmeRepository.countByHelpmeReceptorNoAndHelpmeStatus(member,Helpme_Class.H03);
+		
+		// 로그인 한 유저의 해당 유저에대한 팔로우 여부
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		Member nowLoginMember=memberRepository.findById(nowLoginMemberNo).orElse(null);
+		long tmpcount= memberFollowRepository.countByMemberNoAndFollowNo(nowLoginMember, member);
+		boolean isfollow= tmpcount>0?true:false;
 
 		Map<String, Object> ret=new HashMap();
 		ret.put("no",member.getNo());
@@ -117,6 +130,7 @@ public class ProfileServiceImpl implements ProfileService {
 		ret.put("articleCount", articleCount);
 		ret.put("helpmeCount", helpmeCount);
 		ret.put("helpmeSuccessCount", helpmeSuccessCount);
+		ret.put("followState", isfollow);
 		
 		return ret;
 	}
@@ -124,38 +138,35 @@ public class ProfileServiceImpl implements ProfileService {
 	// 팔로워 리스트 가져오기
 	@Transactional(readOnly = true)
 	@Override
-	public List<Map<String, Object> > getFollowers(Long memberNo,int page) {
-		
-		List<Tuple> members= member_FollowRepositoryCustom.getFollowers(memberNo,PageRequest.of(page, 20));
-		
-		List<Map<String, Object> > followerList = new ArrayList<>();
-		
-		for(Tuple mem: members) {
-			Map<String,Object> tmp =new HashMap<>();
-			tmp.put("no",mem.get(0,Long.class));
-			tmp.put("name",mem.get(1,String.class));
-			followerList.add(tmp);
+	public List<FollowMemberDto> getFollowers(Long memberNo,int page) {
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
 		}
+
+		List<FollowMemberDto> members= member_FollowRepositoryCustom.getFollowers(memberNo,nowLoginMemberNo,PageRequest.of(page, 20));	
 	
-		return followerList;
+		return members;
 	}
 	
 	// 사람 팔로잉 리스트 가져오기
 	@Transactional(readOnly = true)
 	@Override
-	public List<Map<String, Object> > getMemberFollowings(Long memberNo,int page) {
-		
-		List<Tuple> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,PageRequest.of(page, 20));
-		List<Map<String, Object> > followingList = new ArrayList<>();
-		
-		for(Tuple mem: members) {
-			Map<String,Object> tmp =new HashMap<>();
-			tmp.put("no",mem.get(0,Long.class));
-			tmp.put("name",mem.get(1,String.class));
-			followingList.add(tmp);
+	public List<FollowMemberDto> getMemberFollowings(Long memberNo,int page) {
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
 		}
+		
+		List<FollowMemberDto> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,nowLoginMemberNo,PageRequest.of(page, 20));
 	
-		return followingList;
+		return members;
 	}
 	
 	// 알고리즘 팔로잉 리스트 가져오기
