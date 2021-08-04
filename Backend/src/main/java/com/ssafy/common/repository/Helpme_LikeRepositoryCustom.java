@@ -8,9 +8,8 @@ import com.ssafy.common.domain.member.Member;
 
 public interface Helpme_LikeRepositoryCustom {
 
-
-	Helpme_Like ifMemberExist(Member member);
-
 	long deleteLike(Member member, Helpme article);
+
+	Helpme_Like ifMemberExist(Long articlePK, Long memberNo);
 
 }
