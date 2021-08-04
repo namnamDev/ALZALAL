@@ -22,4 +22,5 @@ public interface Article_AlgorithmRepositoryCustom {
 
 	List<Article_AlgorithmDTO> sltMultiByArticleDTO(ArticleDTO article);
 
+
 }
