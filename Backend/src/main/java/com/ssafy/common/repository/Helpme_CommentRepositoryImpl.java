@@ -50,6 +50,7 @@ public class Helpme_CommentRepositoryImpl implements Helpme_CommentRepositoryCus
 				.where(arCo.helpmeNo.helpmeNo.eq(articleNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
+				.orderBy(arCo.helpmeCommentDate.asc())
 				.fetch();
 		return Optional.of(res);
 	}

@@ -52,6 +52,7 @@ public class Discuss_CommentRepositoryImpl implements Discuss_CommentRepositoryC
 				.where(arCo.discussNo.discussNo.eq(articleNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
+				.orderBy(arCo.discussCommentDate.asc())
 				.fetch();
 
 		return Optional.of(res);
