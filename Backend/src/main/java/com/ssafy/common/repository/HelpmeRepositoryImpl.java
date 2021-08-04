@@ -63,6 +63,7 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 				.where(h.helpmeReceptorNo.no.eq(memberNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
+				.orderBy(h.helpmeDate.desc())
 				.fetch();
 		if(ret==null)
 			return null;
@@ -103,6 +104,7 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 				.where(h.helpmeSenderNo.no.eq(memberNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
+				.orderBy(h.helpmeDate.desc())
 				.fetch();
 		if(ret==null)
 			return null;

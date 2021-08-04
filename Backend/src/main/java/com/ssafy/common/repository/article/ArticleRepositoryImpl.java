@@ -75,6 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 			.from(qa)
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
+			.orderBy(qa.articleDate.desc())
 			.fetch();
 	
 		
@@ -113,6 +114,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 			.where(qa.articleClass.eq(articleClass))
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
+			.orderBy(qa.articleDate.desc())
 			.fetch();
 	
 		System.out.println(articleClass);
@@ -245,6 +247,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 			.where(qa.member.no.eq(memberNo))
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
+			.orderBy(qa.articleDate.desc())
 			.fetch();
 	
 		
