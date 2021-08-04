@@ -13,12 +13,17 @@ import org.springframework.stereotype.Service;
 import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.discuss.Discuss;
 import com.ssafy.common.domain.discuss.Discuss_Comment;
+import com.ssafy.common.domain.helpme.Helpme;
+import com.ssafy.common.domain.helpme.Helpme_Comment;
 import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.ArticleDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.dto.Discuss_CommentDTO;
+import com.ssafy.common.dto.Helpme_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.HelpmeRepository;
+import com.ssafy.common.repository.Helpme_CommentRepository;
 import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.article.Article_CommentRepository;
 import com.ssafy.common.repository.discuss.DiscussRepository;
@@ -35,9 +40,13 @@ public class CommentServiceImpl implements CommentService{
 	@Autowired
 	  private  DiscussRepository discussRepo;
 	@Autowired
+	  private HelpmeRepository helpRepo;
+	@Autowired
 	  private Article_CommentRepository ArtiComRepo;
 	@Autowired
 	  private Discuss_CommentRepository disComRepo;
+	@Autowired
+	  private Helpme_CommentRepository helpComRepo;
 	@Override
 	public Map<String, Object> sltMultCommentByArticle(String articleClass,long articlePk,int page){
 		String msg = "";
@@ -64,6 +73,19 @@ public class CommentServiceImpl implements CommentService{
 			Discuss article = discussRepo.sltOneArticle(articlePk);
 			if (article != null) {
 		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	if (comments.size() == 0) {
+		    		msg = "등록된 댓글이 없습니다.";
+		    	}else {
+		    		res.put("articleComments", comments);
+		    	}
+	    	}else {
+	    		msg="게시글이 존재하지 않습니다.";
+	    		}
+
+		}else if(articleClass.equals("helpme")){
+			Helpme article = helpRepo.getById(articlePk);
+			if (article != null) {
+		    	List<Helpme_CommentDTO> comments = helpComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
 		    	if (comments.size() == 0) {
 		    		msg = "등록된 댓글이 없습니다.";
 		    	}else {
@@ -100,6 +122,7 @@ public class CommentServiceImpl implements CommentService{
 			res.put("msg", msg);
 		}else if(articleClass.equals("discussion")){
 			Discuss article = discussRepo.sltOneArticle(articlePk);
+			System.out.println(article);
 			if (article != null) {
 				Discuss_Comment comment = new Discuss_Comment();
 				comment.setDiscussCommentContent(content);
@@ -112,7 +135,18 @@ public class CommentServiceImpl implements CommentService{
 			res.put("msg", msg);
 
 		}else if(articleClass.equals("helpme")) {
-		
+			Helpme article = helpRepo.getById(articlePk);
+			System.out.println(article);
+			if (article != null) {
+				Helpme_Comment comment = new Helpme_Comment();
+				comment.setHelpmeCommentContent(content);
+				comment.setMember(member);
+				comment.setHelpmeNo(article);
+				helpComRepo.save(comment);
+			}else {
+				msg = "토론게시글이 존재하지 않습니다.";
+			}
+			res.put("msg", msg);
 		}
 		return res;
 	}
@@ -179,7 +213,15 @@ public class CommentServiceImpl implements CommentService{
 			}
 			
 		}else if (articleClass.equals("helpme")) {
-				
+			Helpme_Comment artiCom = helpComRepo.sltOneArtiCom(commentPK);
+			if (artiCom.getMember().getNo() == member.getNo()) {
+				String content = (String)req.get("commentContent");
+				msg="수정완료";
+				Long updated = helpComRepo.artiComUpdate(commentPK, content);
+				res.put("updated", updated);
+			}else {
+				msg = "작성자만 수정할 수 있습니다.";
+			}
 		}
 		res.put("msg", msg);
 		return res;
