@@ -8,6 +8,6 @@ public interface Article_LikeRepositoryCustom {
 
 	long deleteLike(Member member, Article article);
 
-	Article_Like ifMemberExist(Member member);
+	Article_Like ifMemberExist(Long articlePK, Long memberNo);
 
 }

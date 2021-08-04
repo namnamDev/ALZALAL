@@ -20,6 +20,8 @@ import com.ssafy.common.domain.article.Article_Comment;
 import com.ssafy.common.domain.article.Article_Like;
 import com.ssafy.common.domain.discuss.Discuss;
 import com.ssafy.common.domain.discuss.Discuss_Host;
+import com.ssafy.common.domain.helpme.Helpme;
+import com.ssafy.common.domain.helpme.Helpme_Like;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
@@ -29,6 +31,8 @@ import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.dto.DiscussDTO;
 import com.ssafy.common.dto.Discuss_CommentDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.HelpmeRepository;
+import com.ssafy.common.repository.Helpme_LikeRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Algorithm.AlgorithmRepository;
 import com.ssafy.common.repository.article.ArticleRepository;
@@ -53,6 +57,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ArticleServiceImpl implements ArticleService{
   @Autowired
   private  ArticleRepository ArticleRepo;
+  
+  @Autowired
+  private HelpmeRepository helpmeRepo;
+  @Autowired
+  private Helpme_LikeRepository helLiRepo;
   @Autowired
   private Article_CommentRepository articleCommetRepo;
   
@@ -339,8 +348,9 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
 		Article article = ArticleRepo.sltOneArticle(articlePk);
+		System.out.println(article+"##############");
 		//좋아요 누른적 있는지 조회
-		Article_Like arli = ArticleLikeRepo.ifMemberExist(member);
+		Article_Like arli = ArticleLikeRepo.ifMemberExist(articlePk,member.getNo());
 		//눌려져있으면 delete. 안눌러져 있으면 insert
 		if(arli == null) {
 			Article_Like insertLike = new Article_Like();
@@ -356,8 +366,25 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 		res.put("likeCount", likeCount);
 		res.put("articleNo", article.getArticleNo());
 	}else if(articleClass.equals("discussion")){
-		
+		//토론은 좋아요 미구현인걸로 암
+	}else if(articleClass.equals("helpme")) {
+		Helpme article = helpmeRepo.getById(articlePk);
+		Helpme_Like arli = helLiRepo.ifMemberExist(articlePk,member.getNo());
+		if(arli == null) {
+			Helpme_Like insertLike = new Helpme_Like();
+			insertLike.setHelpmeNo(article);
+			insertLike.setMember(member);
+			helLiRepo.save(insertLike);
+			res.put("mylike", true);
+		}else {
+			helLiRepo.deleteLike(member,article);
+			res.put("mylike", false);
+		}
+		long likeCount = helpmeRepo.likeArticle(article);
+		res.put("likeCount", likeCount);
+		res.put("articleNo", article.getHelpmeNo());
 	}
+	
 	return res;
 }
 @Override

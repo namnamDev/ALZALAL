@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.MemberSearchDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepositoryCustom;
 import com.ssafy.common.repository.article.ArticleRepository;
+import com.ssafy.common.repository.member.MemberRepositoryCustom;
 import com.ssafy.common.repository.problem.Problem_FollowRepository;
 import com.ssafy.common.repository.problem.Problem_FollowRepositoryCustom;
 
@@ -30,6 +32,9 @@ public class SearchServiceImpl implements SearchService {
 	private final Algorithm_FolloweRepositoryCustom algorithm_FolloweRepositoryCustom;
 	
 	private final Problem_FollowRepositoryCustom problem_FollowRepositoryCustom;
+	
+	private final MemberRepositoryCustom memberRepositoryCustom;
+	
 	
 	// 해당 멤버가 작성한 게시글 리스트 ArticleDTO로 가져옴
 	@Override
@@ -151,6 +156,24 @@ public class SearchServiceImpl implements SearchService {
 		}
 		
 		return ret;
+	}
+	
+	//회원검색
+	public List<MemberSearchDTO> getMemberSearch(String name,int page) {
+		if(name.trim().length()==0)
+			throw new IllegalStateException("검색어를 입력해 주세요");
+		
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		
+		List<MemberSearchDTO> list= memberRepositoryCustom.getMemberSearch(name, nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
+		
+		return list;
 	}
 
 	

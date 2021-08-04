@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.MemberSearchDTO;
 import com.ssafy.common.service.SearchService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class SearchController {
 	// 문제검색
 	@GetMapping("/article/problem")
 	public Map<String, Object> getProblemSearch(
-			@RequestParam String problem,
+			@RequestParam(defaultValue = "") String problem,
 			@RequestParam(value = "language", required = false) String language,
 			@RequestParam(required = false) List<String> and,
 			@RequestParam(required = false) List<String> not,
@@ -95,5 +96,25 @@ public class SearchController {
 		return ret;
 	}
 	
+	// 유저검색
+	@GetMapping("/member")
+	public Map<String, Object> getMemberSearch(
+			@RequestParam(defaultValue = "", required = false) String name,
+			@RequestParam(defaultValue = "0") int page) {
+		Map<String, Object> ret = new HashMap<>();
+
+		System.out.println("name "+name);
+		
+		try{
+			List<MemberSearchDTO> list=searchService.getMemberSearch(name, page);
+			ret.put("memberList", list);
+		}catch (IllegalStateException e) {
+			ret.put("success","False");
+			ret.put("msg", e.getMessage());
+		}
+		ret.put("success", "True");
+
+		return ret;
+	}
 	
 }

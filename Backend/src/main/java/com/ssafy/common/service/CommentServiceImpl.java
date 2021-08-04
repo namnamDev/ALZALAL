@@ -185,5 +185,15 @@ public class CommentServiceImpl implements CommentService{
 		return res;
 		
 	}
-
+	@Override
+	public Map<String, Object> likeComment(String articleClass, long commentPk, Map<String, Object> req){
+		//로그인한 유저 존재하는지 조회
+		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		Map<String,Object>res = new HashMap<String,Object>();
+		if (articleClass.equals("article")){
+			Article_Comment artiCom = ArtiComRepo.getById(commentPk);
+		}
+		return null;
+	}
 }
