@@ -1,15 +1,17 @@
 <template>
   <div>
-    <!-- <div class="follow" v-for="(item, index) in follower" :key="index">  -->
       <followerListImg v-for="(item,index) in follower" :key="index" v-bind:name="item.name" v-bind:no="item.no"/>
-    <!-- </div> -->
+      <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+        <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+      </infinite-loading>
   </div>
 </template>
 
 <script>
 import followerListImg from '@/components/profile/topProfile/follower/followerListImg.vue'
+import InfiniteLoading from 'vue-infinite-loading';
 import jwt_decode from "jwt-decode";
-import axios from 'axios';
+//import axios from 'axios';
 const token = localStorage.getItem("jwt");
 let userpk = "";
 if (token) {
@@ -17,32 +19,20 @@ if (token) {
   userpk = decoded.sub;
   
 }
-let page =0;
+
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-    followerListImg
+    followerListImg,
+    InfiniteLoading,
+
   },
   data(){
     return {
       follower:[],
+      page: 0
     }
-  },
-  created: function(){
-    
-    axios({
-      method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/followers`,
-      data: page
-    })   // back 에 로그인 요청
-    .then(res =>{
-      this.follower = res.data
-    })
-    .catch(err =>{  // 실패하면 error
-      console.log(err)
-      
-    })
   },
   computed: {
     getToken(){
@@ -53,6 +43,32 @@ export default {
       return config
     },
 	},
+  methods: {
+    infiniteHandler($state) {
+        fetch(`${SERVER_URL}/profile/${userpk}/followers`+"?page=" + (this.page), {method: "get"}).then(resp => {
+          return resp.json()
+        }).then(data => {
+          console.log(data)
+          setTimeout(() => {
+            if(data.length) {
+              this.follower = this.follower.concat(data)
+              $state.loaded()
+              this.page += 1
+              console.log("after", this.follower.length, this.page)
+              // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
+              if(data.length / 20 < 1) {
+                $state.complete()
+              }
+            } else {
+              // 끝 지정(No more data)
+              $state.complete()
+            }
+          }, 1000)
+        }).catch(err => {
+          console.error(err);
+        })
+    }
+  }
 }
 </script>
 

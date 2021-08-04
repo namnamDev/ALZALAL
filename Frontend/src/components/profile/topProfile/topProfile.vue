@@ -6,7 +6,7 @@
                     <!-- 프로필이미지 -->
                 <div class="col-lg-3">
                     <div class="profile-image">
-                        <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="replaceByDefault" alt="프로필사진">
+                        <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
                         <div class="modifyProfile">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -24,8 +24,8 @@
                         <div class="profile-stats">
                             <ul>
                                 <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
-                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
+                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
+                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -94,8 +94,7 @@ export default {
         .then(res =>{
             console.log(res)         
             this.no = res.data.no
-            this.follower = res.data.follower
-            console.log(res.data.follower)
+            this.follower = res.data.follower            
             this.following = res.data.following
             this.language = res.data.language
             this.problemsite = res.data.problemsite
@@ -104,7 +103,6 @@ export default {
             this.name = res.data.name
             this.articleCount = res.data.articleCount
             this.introduce = res.data.introduce
-            console.log(this.language)
         })
         .catch(err => {
             console.log(err);
@@ -127,9 +125,6 @@ export default {
         clickFollower: function() {
             this.$router.push({'name':'followPage'})
         },
-        replaceByDefault(e){
-            e.target.src = "@/assets/images/profileImg.png";
-        }
     },
     computed: {
         userPk: function(){

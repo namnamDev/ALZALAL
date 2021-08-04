@@ -10,13 +10,16 @@
             </span>
         </div>
       </div>
+      <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+        <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+      </infinite-loading>
     </div>
 </template>
 
 <script>
 import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/algoFollowBtn.vue'
 import jwt_decode from "jwt-decode";
-import axios from 'axios';
+//import axios from 'axios';
 const token = localStorage.getItem("jwt");
 let userpk = "";
 if (token) {
@@ -24,7 +27,6 @@ if (token) {
   userpk = decoded.sub;
   
 }
-let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
@@ -33,23 +35,34 @@ export default {
   data(){
     return {
       algo: [],
+      page:0
     }
   }, 
-  created: function(){
-    axios({
-      method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/algofollowings`,
-      data: page
-    })   // back 에 로그인 요청
-    .then(res =>{
-      console.log(res)
-      this.algo = res.data
-    })
-    .catch(err =>{  // 실패하면 error
-      console.log(err)
-      
-    })
-  },
+  methods:{
+    infiniteHandler($state) {
+        fetch(`${SERVER_URL}/profile/${userpk}/algofollowings`+"?page=" + (this.page), {method: "get"}).then(resp => {
+          return resp.json()
+        }).then(data => {
+          setTimeout(() => {
+            if(data.length) {
+              this.algo = this.algo.concat(data)
+              $state.loaded()
+              this.page += 1
+              console.log("after", this.algo.length, this.page)
+              // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
+              if(data.length / 20 < 1) {
+                $state.complete()
+              }
+            } else {
+              // 끝 지정(No more data)
+              $state.complete()
+            }
+          }, 1000)
+        }).catch(err => {
+          console.error(err);
+        })
+       },
+  }
   
 }
 </script>

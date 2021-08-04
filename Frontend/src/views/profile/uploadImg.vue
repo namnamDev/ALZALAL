@@ -80,7 +80,10 @@ export default {
           console.log("img", res);
           this.$router.push({ name: "profilePage" });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => { 
+          console.log(err)
+          console.log(this.getToken)
+        });
     },
     onFileChange(e) {
       const file = e.target.files[0];

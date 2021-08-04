@@ -9,7 +9,7 @@
           {{name}}
           </span>
           <span class="followBtn">
-          <button class="btn" @click="clickFollow" value="팔로우끊기" />
+          <button class="btn" id="fbtn" @click="clickFollow">Follow</button>
           </span>
       </div>      
   </div>
@@ -56,17 +56,29 @@ export default {
                     console.log(this.getToken)
                     console.log(err);
                 })
+            
+            const btn = document.querySelector('#fbtn')
+            if(btn.innerText == 'Follow' ){
+              btn.innerText = 'Unfollow'
+            }else{
+              btn.innerText = 'Follow'
+            }
+
         }
     },
 
 }
+
 </script>
 
 <style scoped>
+.row{
+  margin-left: 30px;
+}
 .userImg {
     width: 70px;
     height: 70px; 
-    border-radius: 70%;
+    border-radius: 75%;
     overflow: hidden;
     display: flex;
     margin: 20px 0px 0px 0px;

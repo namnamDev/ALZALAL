@@ -9,7 +9,7 @@
           {{name}}
           </span>
           <span class="followBtn">
-          <button class="btn" @click="clickFollow">팔로우</button>
+          <button class="btn" id="fbtn" @click="clickFollow">팔로우</button>
           </span>
       </div>      
   </div>
@@ -61,6 +61,13 @@ export default {
                     console.log(this.getToken)
                     console.log(err);
                 })
+            const btn = document.querySelector('#fbtn')
+            console.log(btn)
+            if(btn.innerText == 'Follow' ){
+              btn.innerText = 'Unfollow'
+            }else{
+              btn.innerText = 'Follow'
+            }
         }
     }
 }
@@ -70,7 +77,7 @@ export default {
 .userImg {
     width: 75px;
     height: 75px; 
-    border-radius: 70%;
+    border-radius: 75%;
     overflow: hidden;
     display: flex;
     margin: 20px 0px 0px 0px;
@@ -116,5 +123,8 @@ export default {
 }
 #clickFollower:hover{
   background-color: #a1d4e2;
+}
+#fbtn:hover{
+  border: 1px solid #3ed34a;
 }
 </style>

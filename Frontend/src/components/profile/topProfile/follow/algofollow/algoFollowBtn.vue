@@ -1,6 +1,6 @@
 <template>
   <span>
-      <button class="btn" @click="clickFollow">팔로우</button>
+      <button class="btn" id="fbtn" @click="clickFollow">팔로우</button>
   </span>
 </template>
 
@@ -38,6 +38,12 @@ export default {
                 console.log(this.getToken)
                 console.log(err);
             })
+            const btn = document.querySelector('#fbtn')
+            if(btn.innerText == 'Follow' ){
+              btn.innerText = 'Unfollow'
+            }else{
+              btn.innerText = 'Follow'
+            }
         }
   },
 }

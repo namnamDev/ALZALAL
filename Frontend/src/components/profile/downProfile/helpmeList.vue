@@ -8,7 +8,7 @@
     </div>
     <div class="feed-card">
       <div class="contentsWrap">
-        <h4 class="title">답변한 질문 제목</h4>
+        <h4 class="title">질문 제목</h4>
         <div class="wrap">
           <p class="date">2020.06.18</p>
         </div>
