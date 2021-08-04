@@ -79,9 +79,6 @@ public class ArticleServiceImpl implements ArticleService{
   private Discuss_HostRepository disHostRepo;
   @Override
   public Map<String, Object> sltMultiArticle(String articleClass,int page) {
-	  
-	//게시글 다건조회.. 추후 페이징처리 예정
-	 
     Map<String, Object> res = new HashMap<String,Object>();
     Long nowLoginMemberNo=0L;
 	try {
@@ -95,9 +92,15 @@ public class ArticleServiceImpl implements ArticleService{
     }else if(articleClass.equals("article")){
     	//게시글 전체 조회 결과
         List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
-        res.put("article", articleList);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
         	res.put("msg", "일반 게시글이 존재하지 않습니다.");
+        }else {
+        	//게시글 - 알고리즘 매번 추가해주기
+        	for(int idx = 0; idx < articleList.size();idx++) {
+        		List<Article_AlgorithmDTO> artiAlgo= ArtiAlgoRepo.sltMultiByArticleDTO(articleList.get(idx));
+        		articleList.get(idx).setAlgo(artiAlgo);
+        	}
+        	 res.put("article", articleList);
         }
     }else if(articleClass.equals("qna")){
         List<ArticleDTO> articleList = ArticleRepo.sltMultiQnA(nowLoginMemberNo, PageRequest.of(page, 20), Article_Class.A00).orElse(null);
@@ -134,8 +137,9 @@ public class ArticleServiceImpl implements ArticleService{
 	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
 	    		List<Article_AlgorithmDTO> existAlgos = ArtiAlgoRepo.sltMultiByArticleDTO(article);
+	    		article.setAlgo(existAlgos);
 		    	res.put("articleDetail",article);
-		    	res.put("algo",  existAlgos);
+//		    	res.put("algo",  existAlgos);
 	    	}else {
 	    		msg="게시글이 존재하지 않습니다.";
 	    	}
