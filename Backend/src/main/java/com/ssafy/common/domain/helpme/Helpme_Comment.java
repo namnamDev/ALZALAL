@@ -1,5 +1,6 @@
 package com.ssafy.common.domain.helpme;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.ssafy.common.domain.member.Member;
 
@@ -19,7 +22,7 @@ public class Helpme_Comment {
   @Id
   @GeneratedValue
   @Column(name = "HELPME_RECOMMENT_NO")
-  private long helpmeRecoomentNo;
+  private long helpmeCommentNo;
 
   @ManyToOne
   @JoinColumn(name = "HELPME_NO")
@@ -33,6 +36,8 @@ public class Helpme_Comment {
   @Column(length = 3000 ,name="HELPME_COMMENT_CONTENT")
   private String helpmeCommentContent;
 
-  @Column(name="HELPME_COMMENT_DATE")
-  private Timestamp helpmeCommentDate;
+  @Column(name="HELPME_COMMENT_DATE",updatable = false,
+		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+  @CreationTimestamp
+  private LocalDateTime helpmeCommentDate;
 }
