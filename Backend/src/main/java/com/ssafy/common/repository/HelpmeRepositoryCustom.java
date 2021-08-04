@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 
+import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.dto.HelpmeDTO;
 
 public interface HelpmeRepositoryCustom {
@@ -16,4 +17,6 @@ public interface HelpmeRepositoryCustom {
 	
 	//게시글 상세보기
 	public Optional<HelpmeDTO> getHelpme(Long helpmeNo, Long memberNo);
+
+	long likeArticle(Helpme article);
 }

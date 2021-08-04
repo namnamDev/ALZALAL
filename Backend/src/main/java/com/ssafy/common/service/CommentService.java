@@ -14,4 +14,6 @@ public interface CommentService {
 
 	Map<String, Object> sltMultCommentByArticle(String articleClass, long articlePk, int page);
 
+	Map<String, Object> likeComment(String articleClass, long articlePk, Map<String, Object> req);
+
 }
