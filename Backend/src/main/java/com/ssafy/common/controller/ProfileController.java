@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.common.dto.FollowMemberDto;
 import com.ssafy.common.service.FileService;
 import com.ssafy.common.service.MemberService;
 import com.ssafy.common.service.ProfileService;
@@ -135,7 +136,7 @@ public class ProfileController {
 
 	// 팔로워리스트 가져오기
 	@GetMapping("/{memberNo}/followers")
-	public List<Map<String, Object>> getMemberFollowings(@PathVariable Long memberNo,
+	public List<FollowMemberDto> getMemberFollowings(@PathVariable Long memberNo,
 			@RequestParam(defaultValue = "0") int page) {
 		Map<String, Object> ret = new HashMap<>();
 
@@ -144,7 +145,7 @@ public class ProfileController {
 
 	// 사람 팔로잉리스트 가져오기
 	@GetMapping("/{memberNo}/memfollowings")
-	public List<Map<String, Object>> getFollowers(@PathVariable Long memberNo,
+	public List<FollowMemberDto> getFollowers(@PathVariable Long memberNo,
 			@RequestParam(defaultValue = "0") int page) {
 		Map<String, Object> ret = new HashMap<>();
 

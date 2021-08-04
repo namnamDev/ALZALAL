@@ -176,7 +176,6 @@ public class SearchServiceImpl implements SearchService {
 		//받아온 게시글에 알고리즘 목록 넣어줌
 		if(ret!=null) {
 			for(ArticleDTO atcl:list) {
-				//Q&A게시판이면 알고리즘 목록 없으니 패스
 				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
 				atcl.setAlgo(algorithmList);
 			}
