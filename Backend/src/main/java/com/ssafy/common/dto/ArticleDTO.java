@@ -1,6 +1,7 @@
 package com.ssafy.common.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.ssafy.common.domain.article.Article_Class;
 
@@ -24,7 +25,8 @@ public class ArticleDTO {
 	
 	//좋아요 갯수
 	private Long likeCount;
-	private Boolean likeState; 
+	private Boolean likeState;
+	private List<Article_AlgorithmDTO> algo;
 	
 	//댓글 갯수
 	private Long commentCount;
