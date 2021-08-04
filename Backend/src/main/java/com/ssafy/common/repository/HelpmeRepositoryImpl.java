@@ -1,5 +1,7 @@
 package com.ssafy.common.repository;
 
+import static com.ssafy.common.domain.article.QArticle_Like.article_Like;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +12,8 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.common.domain.article.Article;
+import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.QHelpme;
 import com.ssafy.common.domain.helpme.QHelpme_Comment;
 import com.ssafy.common.domain.helpme.QHelpme_Like;
@@ -134,6 +138,15 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 						.fetchOne();
 		
 		return Optional.of(ret);
+	}
+	
+	@Override
+	public long likeArticle(Helpme article){
+		QHelpme qh=QHelpme.helpme;
+		long likeCounting = jpaQueryFactory.selectFrom(qh).
+				where(qh.eq(article)).
+				fetchCount();
+		return likeCounting;
 	}
 	
 }
