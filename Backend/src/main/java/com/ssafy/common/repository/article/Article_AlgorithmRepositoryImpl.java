@@ -57,5 +57,4 @@ public class Article_AlgorithmRepositoryImpl implements Article_AlgorithmReposit
 				)).from(qaa).
 				where(article_Algorithm.articleNo.articleNo.eq(article.getArticleNo())).fetch();
 	}
-
 }
