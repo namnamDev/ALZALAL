@@ -98,7 +98,11 @@ public class ArticleServiceImpl implements ArticleService{
         	//게시글 - 알고리즘 매번 추가해주기
         	for(int idx = 0; idx < articleList.size();idx++) {
         		List<Article_AlgorithmDTO> artiAlgo= ArtiAlgoRepo.sltMultiByArticleDTO(articleList.get(idx));
-        		articleList.get(idx).setAlgo(artiAlgo);
+        		List<String> tempAlgo = new ArrayList<String>();
+        		for(Article_AlgorithmDTO AlgoOne:artiAlgo) {
+        			tempAlgo.add(AlgoOne.getUsedAlgorithm());
+        		}
+        		articleList.get(idx).setAlgo(tempAlgo);
         	}
         	 res.put("article", articleList);
         }
@@ -137,7 +141,11 @@ public class ArticleServiceImpl implements ArticleService{
 	    	ArticleDTO article = ArticleRepo.sltOne(pk, nowLoginMemberNo);
 	    	if (article != null) {
 	    		List<Article_AlgorithmDTO> existAlgos = ArtiAlgoRepo.sltMultiByArticleDTO(article);
-	    		article.setAlgo(existAlgos);
+	    		List<String> tempAlgo = new ArrayList<String>();
+        		for(Article_AlgorithmDTO AlgoOne:existAlgos) {
+        			tempAlgo.add(AlgoOne.getUsedAlgorithm());
+        		}
+	    		article.setAlgo(tempAlgo);
 		    	res.put("articleDetail",article);
 //		    	res.put("algo",  existAlgos);
 	    	}else {
