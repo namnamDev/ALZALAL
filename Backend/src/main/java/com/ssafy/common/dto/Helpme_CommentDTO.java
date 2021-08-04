@@ -10,15 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Helpme_CommentDTO {
+	private Long helpmeCommentNo;
 	private long helpmeNo;
-	private ProblemSiteDTO problemSite;
-	//요청 한사람
-	private MemberDTO helpmeSenderNo;
+	private MemberDTO member;
 	//요청 받은사람
-	private MemberDTO helpmeReceptorNo;
-	private String helpmeContent;
-	private Helpme_Class helpmeStatus;
-	private LocalDateTime helpmeDate;
+	private String content;
+	private LocalDateTime helpmeCommentDate;
+	
 
 	// 좋아요 갯수
 	private Long likeCount;
@@ -26,26 +24,26 @@ public class Helpme_CommentDTO {
 	private Boolean likeState;
 
 	// 댓글 갯수
-	private Long commentCount;
 
 	//likeState를 갯수로 받아와서 생성자에서 boolean으로 변환시켜줌
-	public Helpme_CommentDTO(long helpmeNo, ProblemSiteDTO problemSite,
-			MemberDTO helpmeSenderNo, MemberDTO helpmeReceptorNo,
-			String helpmeContent, Helpme_Class helpmeStatus,
-			LocalDateTime helpmeDate, Long likeCount, Long likeState,
-			Long commentCount) {
-		super();
-		this.helpmeNo = helpmeNo;
-		this.problemSite = problemSite;
-		this.helpmeSenderNo = helpmeSenderNo;
-		this.helpmeReceptorNo = helpmeReceptorNo;
-		this.helpmeContent = helpmeContent;
-		this.helpmeStatus = helpmeStatus;
-		this.helpmeDate = helpmeDate;
-		this.likeCount = likeCount;
-		this.likeState = likeState>0?true:false;
-		this.commentCount = commentCount;
-	}	
+	public Helpme_CommentDTO(
+			Long helpmeCommentNo,
+			Long helpmeNo,
+			MemberDTO member,
+			String helpmeCommentContent,
+			Long likeCount,
+			Long likeState,
+			LocalDateTime helpmeCommentDate
+			) {
+			super();
+			this.helpmeCommentNo = helpmeCommentNo;
+			this.helpmeNo = helpmeNo;
+			this.member = member;
+			this.content = helpmeCommentContent;
+			this.likeCount = likeCount==null?0:likeCount;
+			this.likeState = likeState>0?true:false;
+			this.helpmeCommentDate = helpmeCommentDate;
+		}
 	
 	
 	

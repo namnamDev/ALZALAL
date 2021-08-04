@@ -3,11 +3,13 @@ package com.ssafy.common.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.common.domain.article.Article_Class;
 import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.ArticleDTO;
@@ -15,10 +17,12 @@ import com.ssafy.common.dto.MemberSearchDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepositoryCustom;
 import com.ssafy.common.repository.article.ArticleRepository;
+import com.ssafy.common.repository.article.Article_AlgorithmRepository;
 import com.ssafy.common.repository.member.MemberRepositoryCustom;
 import com.ssafy.common.repository.problem.Problem_FollowRepository;
 import com.ssafy.common.repository.problem.Problem_FollowRepositoryCustom;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,6 +39,7 @@ public class SearchServiceImpl implements SearchService {
 	
 	private final MemberRepositoryCustom memberRepositoryCustom;
 	
+	private final Article_AlgorithmRepository article_AlgorithmRepository;
 	
 	// 해당 멤버가 작성한 게시글 리스트 ArticleDTO로 가져옴
 	@Override
@@ -49,6 +54,17 @@ public class SearchServiceImpl implements SearchService {
 
 		List<ArticleDTO> ret = articleRepository.getListByMemberNO(memberNo,
 				nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
+		
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:ret) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				if(atcl.getArticleClass()==Article_Class.A00)
+					continue;
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
 
 		return ret;
 	}
@@ -99,7 +115,20 @@ public class SearchServiceImpl implements SearchService {
 		List<ArticleDTO> list = articleRepository.getProblemSearch(nowLoginMemberNo,
 				problem_Site,language,and,not, PageRequest.of(page, 20),sort).orElse(null);
 
+		
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				if(atcl.getArticleClass()==Article_Class.A00)
+					continue;
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
+		
 		ret.put("aricleList", list);
+
 		
 		Problem_Site_List ptmp=new Problem_Site_List(problemName);
 		Problem_Site pstmp=new Problem_Site();
@@ -143,6 +172,15 @@ public class SearchServiceImpl implements SearchService {
 		
 		List<ArticleDTO> list = articleRepository.getAlgorithmSearch(nowLoginMemberNo,
 				language,and,not, PageRequest.of(page, 20),sort).orElse(null);
+
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
 
 		ret.put("aricleList", list);
 		

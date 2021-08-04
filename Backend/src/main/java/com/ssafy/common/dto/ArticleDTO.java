@@ -26,6 +26,8 @@ public class ArticleDTO {
 	//좋아요 갯수
 	private Long likeCount;
 	private Boolean likeState;
+	
+	//알고리즘 목록
 	private List<String> algo;
 	
 	//댓글 갯수
