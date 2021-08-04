@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.MemberSearchDTO;
 
 public interface SearchService {
 	//해당 멤버가 작성한 게시글 리스트 ArticleDTO로 가져옴
@@ -16,4 +17,7 @@ public interface SearchService {
 	// 알고리즘검색
 	Map<String, Object> getAlgorithmSearch(String language,
 			List<String> and, List<String> not, int page, String sort);
+	
+	//회원검색
+	List<MemberSearchDTO> getMemberSearch(String name,int page);
 }

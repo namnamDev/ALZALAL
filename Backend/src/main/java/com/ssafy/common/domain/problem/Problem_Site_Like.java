@@ -1,6 +1,7 @@
 package com.ssafy.common.domain.problem;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,7 @@ public class Problem_Site_Like {
 	
 	//Member 도메인과 관계
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_no")
 	private Member memberNo;
 }
