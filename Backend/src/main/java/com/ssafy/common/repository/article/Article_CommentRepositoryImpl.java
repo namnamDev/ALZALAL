@@ -52,6 +52,7 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 				.where(arCo.articleNo.articleNo.eq(articleNo))
 				.offset(page.getOffset())
 				.limit(page.getPageSize())
+				.orderBy(arCo.articleCommentDate.asc())
 				.fetch();
 		return Optional.of(res);
 	}
