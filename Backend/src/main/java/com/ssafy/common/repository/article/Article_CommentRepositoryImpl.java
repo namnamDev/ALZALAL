@@ -88,8 +88,9 @@ public class Article_CommentRepositoryImpl implements Article_CommentRepositoryC
 	@Override
 	public long artiComDelete(Long commentPK){
 		QArticle_Comment arCo = QArticle_Comment.article_Comment;
-		return queryFactory.delete(arCo)
+		return queryFactory.update(arCo)
 				.where(arCo.articleCommentNo.eq(commentPK))
+				.setNull(arCo.commentContent)
 				.execute();
 	}
 	

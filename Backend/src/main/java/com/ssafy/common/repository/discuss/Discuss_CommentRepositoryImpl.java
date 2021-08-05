@@ -89,8 +89,9 @@ public class Discuss_CommentRepositoryImpl implements Discuss_CommentRepositoryC
 	@Override
 	public long artiComDelete(Long commentPK){
 		QDiscuss_Comment arCo = QDiscuss_Comment.discuss_Comment;
-		return queryFactory.delete(arCo)
+		return queryFactory.update(arCo)
 				.where(arCo.discussCommentNo.eq(commentPK))
+				.setNull(arCo.discussCommentContent)
 				.execute();
 	}
 	
