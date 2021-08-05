@@ -22,6 +22,7 @@
 <script>
 import problemFollowBtn from '@/components/profile/topProfile/follow/problemfollow/problemFollowBtn.vue'
 import jwt_decode from "jwt-decode";
+import InfiniteLoading from 'vue-infinite-loading';
 //import axios from 'axios';
 const token = localStorage.getItem("jwt");
 let userpk = "";
@@ -33,12 +34,13 @@ if (token) {
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-    problemFollowBtn
+    problemFollowBtn,
+    InfiniteLoading
   },
   data(){
     return {
       problems: [],
-      page:0
+      page:0,
     }
   },  
   methods:{

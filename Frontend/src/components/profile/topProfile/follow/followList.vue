@@ -35,7 +35,6 @@ export default {
   methods: {
       changeComponent: function(componentName) {
           this.comp = componentName
-          console.log(this.comp)
       }
   }
 }

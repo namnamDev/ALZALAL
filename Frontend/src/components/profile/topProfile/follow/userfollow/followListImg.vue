@@ -19,8 +19,6 @@
 <script>
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
-console.log(token)
 export default {
     props:{
         name: String,
@@ -50,8 +48,8 @@ export default {
                     data: {"memberNo": this.no},
                     headers: this.getToken,
                 })
-                .then(res =>{
-                    console.log(res)         
+                .then({
+                    
                 })
                 .catch(err => {
                     console.log(this.no)

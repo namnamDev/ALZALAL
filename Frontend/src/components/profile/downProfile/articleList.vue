@@ -104,10 +104,8 @@ export default {
           setTimeout(() => {
             if(data.articleList.length) {
               this.articleList = this.articleList.concat(data.articleList)
-              console.log(this.articleList)
               $state.loaded()
               this.page += 1
-              console.log("after", this.articleList.length, this.page)
               // 끝인지 판별
               if(data.articleList.length / 20 < 1) {
                 $state.complete()

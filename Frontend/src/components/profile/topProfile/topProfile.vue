@@ -85,14 +85,12 @@ export default {
         }
     },
     created: function() {
-        console.log(userpk)
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${userpk}`,
 
         })
-        .then(res =>{
-            console.log(res)         
+        .then(res =>{      
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following

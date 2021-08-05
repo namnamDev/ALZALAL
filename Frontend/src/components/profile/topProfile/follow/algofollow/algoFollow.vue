@@ -19,6 +19,7 @@
 <script>
 import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/algoFollowBtn.vue'
 import jwt_decode from "jwt-decode";
+import InfiniteLoading from 'vue-infinite-loading';
 //import axios from 'axios';
 const token = localStorage.getItem("jwt");
 let userpk = "";
@@ -30,7 +31,8 @@ if (token) {
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-    algoFollowBtn
+    algoFollowBtn,
+    InfiniteLoading
   },
   data(){
     return {
@@ -48,7 +50,7 @@ export default {
               this.algo = this.algo.concat(data)
               $state.loaded()
               this.page += 1
-              console.log("after", this.algo.length, this.page)
+             // console.log("after", this.algo.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(data.length / 20 < 1) {
                 $state.complete()

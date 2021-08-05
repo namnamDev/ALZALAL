@@ -62,17 +62,10 @@
 </template>
 
 <script>
-import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
-let userpk = "";
-if (token) {
-  const decoded = jwt_decode(token);
-  userpk = decoded.sub;
-  console.log(userpk)
-}
+
 export default {
   components:{
     InfiniteLoading
@@ -81,48 +74,20 @@ export default {
     return{
       helpmeSendList: [],
       page: 0
-        // "helpmeNo": '',
-        // "problemSite": {//문제 정보
-        //   "problemSiteName": '',
-        //   "problemNo": '',
-        //   "problemSiteLink": ''
-        // },
-        // "helpmeSenderNo": {//요청유저
-        //   "name": '',
-        //   "no": ''
-        // },
-        // "helpmeReceptorNo": {//대상유저
-        //   "name": '',
-        //   "no": ''
-        // },
-        // "helpmeContent": '',
-        // "helpmeStatus": '',
-        // "helpmeDate": '',
-        // "likeCount": '',
-        // "likeState": '',
-        // "commentCount": ''
     }
   },
   methods:{
     infiniteHandler($state) {
-      //fetch(`${SERVER_URL}/helpme/sendlist`+"?page=" + (this.page), {method: "get"},{headers:this.getToken})
       axios({
         method: 'get',
         url: `${SERVER_URL}/helpme/sendlist`+"?page=" + (this.page),
         headers: this.getToken
-      // })
-      //   .then(resp => {
-      //     return resp.json()
         }).then(res => {
           setTimeout(() => {
-            console.log(res.data.helpmeSendList)
-            console.log(res.data.helpmeSendList.length)
             if(res.data.helpmeSendList.length) {
               this.helpmeSendList = this.helpmeSendList.concat(res.data.helpmeSendList)
-              console.log(this.helpmeSendList)
               $state.loaded()
               this.page += 1
-              console.log("after", this.helpmeSendList.length, this.page)
               // 끝인지 판별
               if(res.data.helpmeSendList.length / 20 < 1) {
                 $state.complete()

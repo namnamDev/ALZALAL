@@ -52,13 +52,11 @@ export default {
           headers: this.getToken,
         }).then(res => {
           setTimeout(() => {
-            console.log(res.data.length)
-            console.log(res.data)
             if(res.data.length) {
               this.follower = this.follower.concat(res.data)
               $state.loaded()
               this.page += 1
-              console.log("after", this.follower.length, this.page)
+              //console.log("after", this.follower.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.length / 20 < 1) {
                 $state.complete()

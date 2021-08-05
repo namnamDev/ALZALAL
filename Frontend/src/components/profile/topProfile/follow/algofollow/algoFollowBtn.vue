@@ -30,8 +30,8 @@ export default {
                 },
                 headers: this.getToken,
             })
-            .then(res =>{
-                console.log(res)         
+            .then({
+                       
             })
             .catch(err => {
                 console.log(this.algo)

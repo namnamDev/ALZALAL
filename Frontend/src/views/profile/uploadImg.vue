@@ -36,7 +36,6 @@ let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
   userpk = decoded.sub;
-  console.log(userpk);
 }
 export default {
   data() {
@@ -67,8 +66,6 @@ export default {
       let profileImage = this.$refs["image"].files[0];
 
       formdata.append("profileImg", profileImage);
-      console.log("profileImg", profileImage);
-      console.log(this.getToken);
 
       axios({
         method: "post",

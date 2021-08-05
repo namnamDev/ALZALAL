@@ -71,7 +71,6 @@ let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
   userpk = decoded.sub;
-  console.log(userpk)
 }
 export default {
   components:{
@@ -81,47 +80,19 @@ export default {
     return{
       helpmeReceptList: [],
       page: 0
-        // "helpmeNo": '',
-        // "problemSite": {//문제 정보
-        //   "problemSiteName": '',
-        //   "problemNo": '',
-        //   "problemSiteLink": ''
-        // },
-        // "helpmeSenderNo": {//요청유저
-        //   "name": '',
-        //   "no": ''
-        // },
-        // "helpmeReceptorNo": {//대상유저
-        //   "name": '',
-        //   "no": ''
-        // },
-        // "helpmeContent": '',
-        // "helpmeStatus": '',
-        // "helpmeDate": '',
-        // "likeCount": '',
-        // "likeState": '',
-        // "commentCount": ''
     }
   },
   methods:{
     infiniteHandler($state) {
-      //fetch(`${SERVER_URL}/helpme/sendlist`+"?page=" + (this.page), {method: "get"},{headers:this.getToken})
       axios({
         method: 'get',
         url: `${SERVER_URL}/helpme/receptlist/${userpk}`+"?page=" + (this.page),
-      // })
-      //   .then(resp => {
-      //     return resp.json()
         }).then(res => {
           setTimeout(() => {
-            console.log(res.data.helpmeReceptList)
-            console.log(res.data.helpmeReceptList.length)
             if(res.data.helpmeReceptList.length) {
               this.helpmeReceptList = this.helpmeReceptList.concat(res.data.helpmeReceptList)
-              console.log(this.helpmeSendList)
               $state.loaded()
               this.page += 1
-              console.log("after", this.helpmeReceptList.length, this.page)
               // 끝인지 판별
               if(res.data.helpmeReceptList.length / 20 < 1) {
                 $state.complete()
