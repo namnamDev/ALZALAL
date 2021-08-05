@@ -184,9 +184,14 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 	
 	@Override
     public long articleDelete(Long articlePk) {
-    	long deletedArticle = queryFactory.delete(article).
-    			where(article.articleNo.eq(articlePk)).
-    			execute();
+    	
+    	long deletedArticle = queryFactory.update(article)
+    			.where(article.articleNo.eq(articlePk))
+    			.setNull(article.articleContent)
+    			.setNull(article.articleTitle)
+    			.setNull(article.articleDate)
+    			.setNull(article.articleClass)
+    			.execute();
     	return deletedArticle;
     			
     }
