@@ -80,21 +80,7 @@ export default {
       page:0
     }
   },
-  // created: function(){
-  //   axios({
-  //     method: 'get',
-  //     url: `${SERVER_URL}/articlelist/article`+"?page"+(this.page),
-  //     headers: this.getToken,
-  //   })
-  //   .then(res => {
-  //     console.log(res.data.article);
-  //     this.article = res.data.article
-  //   })
-  //   .catch(err => {
-  //     alert(err)
-  //     console.log(err)
-  //   })
-  // },
+
   methods:{
     infiniteHandler($state) {
       fetch(`${SERVER_URL}/search/article/${userpk}`+"?page=" + (this.page), {method: "get"

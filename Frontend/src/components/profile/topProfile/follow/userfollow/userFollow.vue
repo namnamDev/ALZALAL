@@ -30,6 +30,15 @@ export default {
       page:0
     }
   },
+  computed: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
+	},
   methods:{
       
         //  axios.get(`${SERVER_URL}/profile/${userpk}/memfollowings`+"?page="+this.page, {

@@ -182,7 +182,9 @@ export default {
         headers: this.getToken(),
       })   
       .then(res =>{
-        console.log(res);        
+        console.log(res);
+        alert("작성 완료!")
+        this.$router.push({ name: 'timeline' })       
       })
       .catch(err =>{  
         console.log(err)
