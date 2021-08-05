@@ -180,22 +180,24 @@ public class AdminServiceImpl implements AdminService {
 					Article tempInserted = ArticleRepo.save(insertArticle);
 					ArticleRepo.flush();
 					if (category.equals("A01")) {
-						Article_Algorithm artiAlgo = new Article_Algorithm();
 						int artiAlgoSize = r.nextInt(3)+1;
 						List<String> usedAlgo = new ArrayList<>();
 						
 						for(int algo = 0;algo<artiAlgoSize;algo++) {
 							usedAlgo.add(algos.get(r.nextInt(algos.size())).getAlgorithmName());
 						}
-//						List<String> usedAlgo = (List<String>) req.get("algo");
-						
+						System.out.println(usedAlgo);
 						for (String algo : usedAlgo) {
+							Article_Algorithm artiAlgo = new Article_Algorithm();
 							Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
 								artiAlgo.setAlgorithmName(sltOneAlgo);
 								artiAlgo.setArticleNo(tempInserted);
 								//단건조회 후 미존재시 입력할것
 								Optional<Article_Algorithm> aa = ArtiAlgoRepo.sltOne(sltOneAlgo, tempInserted);
-								if (aa == null) {
+								System.out.println(aa);
+								System.out.println(sltOneAlgo);
+								System.out.println(tempInserted);
+								if (aa.isEmpty()) {
 									ArtiAlgoRepo.save(artiAlgo);
 									}
 								}
