@@ -131,7 +131,7 @@ export default {
         console.log(err)
       })
 
-      this.$router.push({name : 'articleDetail'})
+      this.$router.push({name : 'articleDetail', params:{articleNo:this.articleNo}})
     },   
     
   },

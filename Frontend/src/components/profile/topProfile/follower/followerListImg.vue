@@ -9,8 +9,8 @@
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
           <span class="followBtn">
-            <button class="btn btn-light" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
-            <button class="btn btn-primary" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
+            <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
           
       </div>      
@@ -63,11 +63,13 @@ export default {
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
               event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
               
             }else{
               event.target.innerText = 'follow'
               
-              event.target.style.backgroundColor='#50bcdf'
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
             }
         },
         clickName: function(){
@@ -112,10 +114,7 @@ export default {
 }
 .followBtn {
   border-radius: 20%;
-  border: solid 1px skyblue;
   margin-left: 0;
-  
-
 }
 }
 .btn{
@@ -123,6 +122,15 @@ export default {
   font-weight: 700;
   font-size: 15px;
   border-radius: 11%;
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
+}
+.btn-follow{
+  background-color: blue;
+  color: white;
 }
 .btn:hover {
   background-color:#a1d4e2;

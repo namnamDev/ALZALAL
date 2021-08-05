@@ -1,27 +1,12 @@
 <template>
   <div class="row">
       <!-- 게시글 시작-->
-    <div class="boardList col-12 col-ml-12 col-lg-12" id="boardList" v-for="(item,index) in articleList" :key="index">
-        <div class="feed-card col-12 col-lg-12 col-ml-12">
-            <div class="contentsWrap">
-                <p class="title" @click="clickArticle">{{item.articleTitle}}     <span>{{item.algo}}</span></p>
-                <p>{{item.problemSite.problemSiteName}} {{item.problemSite.problemNo}}</p>                
-                <div class="articleContent">{{item.articleContent}}</div>
-            </div>
-        </div>
-    
-        <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
-            <div class="col box1 like-comment">
-              <i class="fas fa-heart me-2" v-if="item.likeState"></i>
-              <i class="far fa-heart me-2" v-else></i>
-              <span>{{item.likeCount}}</span>
-              <i class="far fa-comment-dots mx-2"></i>
-              <span >{{item.commentCount}}</span>
-              <div><p class="date">{{item.articleDate}}</p></div>
-            </div>
-        </div>
-        
-    </div>
+    <articleItem v-for="item, index in articleList" :key="index"
+     :articleNo="item.articleNo"
+     :articleContent="item.articleContent"
+     
+    >
+    </articleItem>
     <infinite-loading @infinite="infiniteHandler" spinner="sprial">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
     </infinite-loading>
@@ -31,6 +16,7 @@
 
 <script>
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import articleItem from '@/components/profile/downProfile/articleItem.vue'
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
@@ -43,12 +29,12 @@ if (token) {
 }
 export default {
   components:{
-    InfiniteLoading
+    InfiniteLoading,
+    articleItem
   },
   data(){
     return{
       articleList:[],
-      likeState: '',
       page:0
     }
   },
@@ -74,7 +60,6 @@ export default {
           console.log(this.getToken)
           setTimeout(() => {
             if(res.data.articleList.length) {
-              console.log(res.data.articleList)
               this.articleList = this.articleList.concat(res.data.articleList)
               $state.loaded()
               this.page += 1
@@ -91,9 +76,7 @@ export default {
           console.error(err);
         })
     },
-    clickArticle: function(){
-      this.$router.push({'name':'articleDetail', params:{articleNo:this.articleList.articleNo}})
-    }
+
   }
 }
 </script>

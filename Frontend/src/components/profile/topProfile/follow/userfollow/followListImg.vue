@@ -5,11 +5,11 @@
           <img class="profileImg" :src="imgsrc" alt="이미지">
       </div>
       <div class="user col-9">
-          <span class="userName" @click="clickName">
-          {{name}}
+          <span class="userName">
+          <button class="btn" @click="clickName">{{name}}</button>
           </span>
           <span class="followBtn">
-          <button class="btn" id="fbtn" @click="clickFollow($event)">follow</button>
+          <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
           <!-- {{followState}} -->
       </div>      
@@ -42,7 +42,7 @@ export default {
         }
 	},
     methods:{
-        clickFollow: function(){
+        clickFollow: function(event){
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
@@ -59,13 +59,20 @@ export default {
                 })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
+              
             }else{
               event.target.innerText = 'follow'
+              
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
             }
 
         },
         clickName: function(){
-          this.$router.push({'name':'profilePage', params:{userpk:this.no}})
+          localStorage.setItem('userPk',this.no)
+          this.$router.push({'name':'profilePage', params:{userPk:this.no}})
         }
     },
 
@@ -74,9 +81,7 @@ export default {
 </script>
 
 <style scoped>
-.row{
-  margin-left: 30px;
-}
+
 .userImg {
     width: 70px;
     height: 70px; 
@@ -92,7 +97,7 @@ export default {
     display: block;
 }
 
-.userName{
+.user{
   margin-right: 30px;
   font-weight: 550;
 }
@@ -104,18 +109,28 @@ export default {
   margin-left: 30px;
 }
 @media (max-width:768px) {
-
-  .followBtn {
-    border-radius: 10%;
-    border: solid 0.5px skyblue;
-    margin-left: 0;
-    
-
-  }
+.user{
+  margin-top: 5px;
+}
+.followBtn {
+  border-radius: 20%;
+  margin-left: 0;
+}
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
+}
+.btn-follow{
+  background-color: blue;
+  color: white;
 }
 .btn{
+  padding: 0.5rem 1.5rem;
   font-weight: 700;
-  font-size: 1vw;
+  font-size: 15px;
+  border-radius: 11%;
 }
 .btn:hover {
   background-color:#a1d4e2;
