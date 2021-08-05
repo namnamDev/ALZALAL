@@ -1,6 +1,6 @@
 <template>
   <div class="mb-5">
-    <Editor />
+    <Editor :articleNo="this.articleNo"/>
   </div>
 </template>
 
@@ -10,6 +10,9 @@ import Editor from '@/components/comment/CreateCommentEditor.vue'
 export default {
   components: {
     Editor
+  },
+  props: {
+    articleNo: Number,
   }
 }
 </script>

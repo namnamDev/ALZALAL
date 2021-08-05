@@ -1,17 +1,17 @@
 <template>
-  <div class="comment mb-5">
+  <div class="comment mb-2">
     <div class="user">
       <div class="row">
         <div class="col">
           <div class="inline">
-            작성자
+            {{this.memberName}}
           </div >
           <div class="inline">
-            작성날짜
+            | {{this.date | moment("YYYY-MM-DD HH:mm:ss")}}
           </div>
           <div class="inline">
             <i class="fal fa-thumbs-up">
-              <span class="ms-2">34</span>
+              <span class="ms-2">{{this.likeCount}}</span>
             </i>
           </div>
         </div>
@@ -21,15 +21,34 @@
       </div>
     </div>
     <div class="content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Est corrupti minus, inventore ab voluptate numquam nihil dolore illum harum suscipit veniam itaque aliquam velit porro cumque consectetur repellat ducimus sint minima ex. Nesciunt temporibus saepe impedit sed provident suscipit, dignissimos, delectus ab quasi eius iusto quisquam, non quos quaerat soluta!
+      <Viewer :viewerText="this.content"/>
     </div>
 
   </div>
 </template>
 
 <script>
-export default {
+import Viewer from '@/components/comment/CommentViewer.vue'
 
+import Vue from "vue";
+import vueMoment from "vue-moment";
+Vue.use(vueMoment);
+
+export default {
+  components: {
+    Viewer
+  },
+  props: {
+    comment: Object
+  },
+  data() {
+    return {
+      memberName: this.comment.member.name,
+      date: this.comment.articleCommentDate,
+      likeCount: this.comment.likeCount,
+      content: this.comment.content
+    }
+  },
 }
 </script>
 

@@ -12,8 +12,11 @@ export default new Vuex.Store({
     userEmail: '',
     //userName: '',
     isLogin: '',
-    content:'',
+    articleDetail: null,
+    articleComments: null,
+    qnaList: null,
   },
+
   mutations: {
     // state에 있는 변수에 값을 수정하거나 저장하기위해
     CREATE_USER_EMAIL: function(state, payload) {
@@ -23,10 +26,18 @@ export default new Vuex.Store({
     LOGOUT: function(state){
       state.isLogin = false
     },
-    CREATE_CONTENT: function(state,content){
-      state.content = content
+    CREATE_ARTICLE_DETAIL: function(state, item) {
+      state.articleDetail = item
     },
+    CREATE_ARTICLE_COMMENT: function(state, comments){
+      state.articleComments = comments
+    },
+    CREATE_QNA_LIST: function(state, qnalist){
+      state.qnaList = qnalist
+    }
+
   },
+
   actions: {
     // 요청해서 받아온값 mutation으로
     login: function({commit}, payload) {
@@ -35,10 +46,18 @@ export default new Vuex.Store({
     logout: function({commit}){
       commit("LOGOUT")
     },
-    create_content: function({commit}, content){
-      commit("CREATE_CONTENT", content)
+    createArticleDetail: function({commit}, item) {
+      commit("CREATE_ARTICLE_DETAIL", item)
     },
+    createArticleComment: function({commit}, comments) {
+      commit("CREATE_ARTICLE_COMMENT", comments)
+    },
+    createQnaList: function({commit}, qnalist){
+      commit('CREATE_QNA_LIST', qnalist)
+    }
+
   },
+
   getters: {
     // state에 있는 정보를 가져오는 역할
     getEmail: function(state){
@@ -47,11 +66,17 @@ export default new Vuex.Store({
     isLogin: function(state){
       return state.isLogin
     },
-    getContent: function(state){
-      return state.content
+    getArticleDetail: function(state){
+      return state.articleDetail
     },
-
+    getArticleComments: function(state) {
+      return state.articleComments
+    },
+    getQnaList: function(state){
+      return state.qnaList
+    }
   },
+
   modules: {
   }
 })

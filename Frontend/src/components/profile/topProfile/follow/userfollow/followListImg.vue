@@ -51,10 +51,10 @@ export default {
                 .then({
                     
                 })
-                .catch(err => {
-                    console.log(this.no)
-                    console.log(this.getToken)
-                    console.log(err);
+                .catch({
+                    // console.log(this.no)
+                    // console.log(this.getToken)
+                    // console.log(err);
                 })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
