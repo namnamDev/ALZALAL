@@ -8,7 +8,7 @@
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
-          <span class="followBtn" v-if="!this.isLogin">
+          <span class="followBtn" v-if="!this.isLogin && !this.me">
             <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
             <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
@@ -38,6 +38,7 @@ export default {
             imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
             myPage: '',
             isLogin: '',
+            me: '',
         }
     },
     created: function() {
@@ -55,6 +56,11 @@ export default {
         this.isLogin = true
       }else{
         this.isLogin = false
+      }
+      if(this.no == userpk){
+        this.me=true
+      }else{
+        this.me=false
       }
 
     },
@@ -75,6 +81,7 @@ export default {
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
                 }
+
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
