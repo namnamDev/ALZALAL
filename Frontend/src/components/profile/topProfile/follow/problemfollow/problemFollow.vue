@@ -3,23 +3,27 @@
       <div class="follow" v-for="(item,index) in problems" :key="index">
         <div class="user col-10">
             <span class="problem">
-            {{item.site}}
+            {{item.site}} 
             </span>
             <span class="problem">
-             문제번호: {{item.no}}
+             {{item.no}}번
             </span>
             <span class="followBtn">
               <problemFollowBtn :site="item.site" :no="item.no"/>
             </span>
         </div>
       </div>
+      <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+        <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+      </infinite-loading>
     </div>
 </template>
 
 <script>
 import problemFollowBtn from '@/components/profile/topProfile/follow/problemfollow/problemFollowBtn.vue'
 import jwt_decode from "jwt-decode";
-import axios from 'axios';
+import InfiniteLoading from 'vue-infinite-loading';
+//import axios from 'axios';
 const token = localStorage.getItem("jwt");
 let userpk = "";
 if (token) {
@@ -27,88 +31,60 @@ if (token) {
   userpk = decoded.sub;
   
 }
-let page =0;
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-    problemFollowBtn
+    problemFollowBtn,
+    InfiniteLoading
   },
   data(){
     return {
-      problems: []
+      problems: [],
+      page:0,
     }
   },  
-  created: function(){
-    axios({
-      method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/problemfollowings`,
-      data: page
-    })   // back 에 로그인 요청
-    .then(res =>{
-      console.log(res)
-      this.problems = res.data
-    })
-    .catch(err =>{  // 실패하면 error
-      console.log(err)
-      
-    })
-  },
+  methods:{
+    infiniteHandler($state) {
+        fetch(`${SERVER_URL}/profile/${userpk}/problemfollowings`+"?page=" + (this.page), {method: "get"}).then(resp => {
+          return resp.json()
+        }).then(data => {
+          setTimeout(() => {
+            if(data.length) {
+              this.problems = this.problems.concat(data)
+              $state.loaded()
+              this.page += 1
+              console.log("after", this.problems.length, this.page)
+              // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
+              if(data.length / 20 < 1) {
+                $state.complete()
+              }
+            } else {
+              // 끝 지정(No more data)
+              $state.complete()
+            }
+          }, 1000)
+        }).catch(err => {
+          console.error(err);
+        })
+  }
+}
 }
 </script>
 
 <style scoped>
-.container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 120px;
-  }
-}
-.userImg1 {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-/* 두개 비교할려고 냅둠 */
-.userImg {
-    
-    width: 75px;
-    height: 75px; 
-    border-radius: 70%;
-    overflow: hidden;
-    display: flex;
-    margin: 20px 0px 0px auto;
-}
-.profileImg{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
 .follow {
   display: flex;
 }
-.nav {
-  cursor:pointer;
-  margin-bottom: 50px;
-}
-.nav-link{
-  font-weight: 700;
-}
 .user{
   margin-top: 30px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   margin-left: 100px;
   
 }
-.userName{
-  margin-right: 30px;
+.problem{
+  font-weight: 550;
+  font-size: 22px;
 }
 .followBtn {
   border-radius: 10%;
@@ -133,12 +109,7 @@ export default {
 
   }
 }
-.btn{
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .1rem;
-  font-size: 1vw;
-}
+
 #clickFollowing:hover {
   background-color:#a1d4e2;
 }

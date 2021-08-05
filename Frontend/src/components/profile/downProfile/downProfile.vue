@@ -7,7 +7,7 @@
             <button class="btn" @click="changeComponent('articleList')">게시글</button>
           </div>
           <div class="col-4 col-lg-4">
-            <button class="btn" @click="changeComponent('helpmeList')">요청한 문제</button>
+            <button class="btn" @click="changeComponent('helpmeList')">내가 요청한 문제</button>
           </div>
           <div class="col-4 col-lg-4">
             <button class="btn" @click="changeComponent('receptList')">요청받은 문제</button>
@@ -38,7 +38,6 @@ export default {
   methods: {
       changeComponent: function(componentName) {
           this.comp = componentName
-          console.log(this.comp)
       }
   }
 }

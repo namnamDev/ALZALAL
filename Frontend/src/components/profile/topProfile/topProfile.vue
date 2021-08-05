@@ -7,7 +7,6 @@
                 <div class="col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
-                        <img class="profileImg" v-if="!imgsrc" src="@/assets/images/profileImg.png" alt="">
                         <div class="modifyProfile">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -20,16 +19,13 @@
                     <div class="row-lg-8">
                         <div class="profile-user-settings row-lg-8">
                             <h1 class="profile-user-name">{{name}}<button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button></h1>
-                            <!-- <span>
-                                <button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
-                            </span> -->
                         </div>
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
                                 <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
-                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
+                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
+                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -73,6 +69,7 @@ if (token) {
 export default {
     data(){
         return{
+           defaultImg: '@/assets/images/profileImg.png',
            imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
            no: '',
            follower: '',
@@ -88,16 +85,14 @@ export default {
         }
     },
     created: function() {
-        console.log(userpk)
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${userpk}`,
 
         })
-        .then(res =>{
-            console.log(res)         
+        .then(res =>{      
             this.no = res.data.no
-            this.follower = res.data.follower
+            this.follower = res.data.follower            
             this.following = res.data.following
             this.language = res.data.language
             this.problemsite = res.data.problemsite
@@ -106,7 +101,6 @@ export default {
             this.name = res.data.name
             this.articleCount = res.data.articleCount
             this.introduce = res.data.introduce
-            console.log(this.language)
         })
         .catch(err => {
             console.log(err);
@@ -134,17 +128,6 @@ export default {
         userPk: function(){
             return userpk
         },
-        // outputLanguage: function(language){
-        //      var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        //     //특수문자 검증
-        //     if(reg.test(language)){
-        //         //특수문자 제거후 리턴
-        //         return language.replace(reg, "");    
-        //     } else {
-        //         //특수문자가 없으므로 본래 문자 리턴
-        //         return language;
-        //     }  
-        // }
     }
 }
 </script>
@@ -251,7 +234,7 @@ i {
     margin-left: -70px;
 }
 .clickImg{
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 550;
 }
 @media (max-width:576px) {

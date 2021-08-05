@@ -1,8 +1,7 @@
 <template>
-  <div>
-      <button class="btn" @click="clickFollow">팔로우</button>
-      {{site}}
-  </div>
+    <span>
+      <button class="btn" id="fbtn" @click="clickFollow($event)">팔로우</button>
+    </span>
 </template>
 
 <script>
@@ -33,8 +32,8 @@ export default {
                 },
                 headers: this.getToken,
             })
-            .then(res =>{
-                console.log(res)         
+            .then({
+                
             })
             .catch(err => {
                 console.log(this.site)
@@ -42,11 +41,25 @@ export default {
                 console.log(this.getToken)
                 console.log(err);
             })
-        }
+            if(event.target.innerText == 'follow' ){
+              event.target.innerText = 'Unfollow'
+            }else{
+              event.target.innerText = 'follow'
+            }
+        },
   },
 }
 </script>
 
 <style>
-
+.btn:focus{
+    border:none;
+    outline: none;
+}
+.btn{
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  border-radius: .1rem;
+  font-size: 15px;
+}
 </style>
