@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -24,7 +25,7 @@ public class Helpme_Comment {
   @Column(name = "HELPME_RECOMMENT_NO")
   private long helpmeCommentNo;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "HELPME_NO")
   private Helpme helpmeNo;
 

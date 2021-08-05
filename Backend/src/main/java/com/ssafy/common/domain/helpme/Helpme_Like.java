@@ -1,6 +1,7 @@
 package com.ssafy.common.domain.helpme;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -21,7 +22,7 @@ public class Helpme_Like {
   private Member member;
 
   @Id
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="HELPME_NO")
   private Helpme helpmeNo;
 }

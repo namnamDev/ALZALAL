@@ -176,7 +176,8 @@ public class CommentServiceImpl implements CommentService{
 			//로그인중인 유저와 일치하는지 조회
 			if (artiCom.getMember().getNo() == member.getNo()) {
 				msg="삭제완료";
-				Long deleted = ArtiComRepo.artiComDelete(commentPK);
+				ArtiComRepo.deleteById(commentPK);
+				Long deleted = commentPK;
 				res.put("deleted", deleted);
 			}else {
 				msg = "작성자만 삭제할 수 있습니다.";
@@ -185,7 +186,8 @@ public class CommentServiceImpl implements CommentService{
 			Discuss_Comment artiCom = disComRepo.sltOneArtiCom(commentPK);
 			if (artiCom.getMember().getNo() == member.getNo()) {
 				msg="삭제완료";
-				Long deleted = disComRepo.artiComDelete(commentPK);
+				disComRepo.deleteById(commentPK);
+				Long deleted =commentPK;
 				res.put("deleted", deleted);
 			}else {
 				msg = "작성자만 삭제할 수 있습니다.";

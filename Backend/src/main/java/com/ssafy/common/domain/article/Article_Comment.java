@@ -2,14 +2,17 @@ package com.ssafy.common.domain.article;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -30,7 +33,7 @@ public class Article_Comment {
   @JoinColumn(name="MEMBER_NO")
   private Member member;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="ARTICLE_NO")
   private Article articleNo;
 
@@ -41,4 +44,8 @@ public class Article_Comment {
 		  columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
   @CreationTimestamp
   private LocalDateTime articleCommentDate;
+  
+  //좋아요
+  @OneToMany(mappedBy = "articleComment", cascade = CascadeType.REMOVE)
+  private List<Article_Comment_Like> articleCommentLike;
 }
