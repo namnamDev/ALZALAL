@@ -106,7 +106,8 @@ const routes = [
   {
     path: '/articleDetail',
     name: 'articleDetail',
-    component: ArticleDetail
+    component: ArticleDetail,
+    props: true
   },
   {
     path: '*',

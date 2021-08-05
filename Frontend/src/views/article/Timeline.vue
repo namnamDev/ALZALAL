@@ -1,10 +1,8 @@
 <template>
   <div class="container">
-    <TimelineItem />
-    <TimelineItem />
-    <TimelineItem />
-    <TimelineItem />
-    
+    <div class="container" v-for="item,idx in articleItems" :key="idx">
+      <TimelineItem :articleNo="item.articleNo" :content="item.articleContent"/>      
+    </div>
   </div>
 </template>
 
@@ -16,6 +14,11 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   components: { TimelineItem },
+  data: function(){
+    return {
+      articleItems: null
+    }
+  },
   methods: {
     getToken(){
       const token = localStorage.getItem('jwt')
@@ -25,13 +28,18 @@ export default {
       return config
     },
   },
+  mounted() {
+    const search = document.querySelector('#search')
+    search.style.display = 'block'
+  },
   created() {
     axios({
         method: 'get',
         url: `${SERVER_URL}/articlelist/article`,
+        headers: this.getToken(),
       })   
       .then(res =>{
-        console.log(res);        
+        this.articleItems = res.data.article      
       })
       .catch(err =>{  
         console.log(err)
