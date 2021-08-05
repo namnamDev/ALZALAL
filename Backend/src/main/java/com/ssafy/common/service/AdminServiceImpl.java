@@ -197,9 +197,8 @@ public class AdminServiceImpl implements AdminService {
 								System.out.println(aa);
 								System.out.println(sltOneAlgo);
 								System.out.println(tempInserted);
-								if (aa.isEmpty()) {
-									ArtiAlgoRepo.save(artiAlgo);
-									}
+								ArtiAlgoRepo.save(artiAlgo);
+
 								}
 						}
 						ArtiAlgoRepo.flush();
