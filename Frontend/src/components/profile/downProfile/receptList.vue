@@ -41,14 +41,27 @@ export default {
   data(){
     return{
       helpmeReceptList: [],
-      page: 0
+      page: 0,
+      pk: '',
+    }
+  },
+  created: function() {
+    console.log("target",this.userPk)
+    const userPk = localStorage.getItem("userPk")
+    console.log(userPk)
+    if(userPk){
+        this.pk = userPk
+        this.myPage = false
+    }else{
+        this.pk = userpk
+        this.myPage = true
     }
   },
   methods:{
     infiniteHandler($state) {
       axios({
         method: 'get',
-        url: `${SERVER_URL}/helpme/receptlist/${userpk}`+"?page=" + (this.page),
+        url: `${SERVER_URL}/helpme/receptlist/${this.pk}`+"?page=" + (this.page),
         }).then(res => {
           setTimeout(() => {
             if(res.data.helpmeReceptList.length) {

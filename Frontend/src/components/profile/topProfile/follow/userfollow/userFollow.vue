@@ -1,7 +1,7 @@
 <template>
     <div class="followlist">
       <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
-      <infinite-loading @infinite="infiniteHandler" spinner="spiral">
+      <infinite-loading @infinite="infiniteHandler" spinner="sprial">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
       </infinite-loading>
     </div>
@@ -27,8 +27,23 @@ export default {
   data(){
     return {
       following:[],
-      page:0
+      page:0,
+      pk: '',
+      myPage: '',
+      isLogin: '',
     }
+  },
+  created: function() {
+      console.log("target",this.userPk)
+      const userPk = localStorage.getItem("userPk")
+      console.log(userPk)
+      if(userPk){
+          this.pk = userPk
+          this.myPage = false
+      }else{
+          this.pk = userpk
+          this.myPage = true
+      }
   },
   computed: {
     getToken(){
@@ -41,23 +56,10 @@ export default {
 	},
   methods:{
       
-        //  axios.get(`${SERVER_URL}/profile/${userpk}/memfollowings`+"?page="+this.page, {
-
-        //   }).then(({ data }) => {
-        //     console.log(data)
-        //     if (data.length) {
-        //       this.following.push(...data);
-        //       console.log(this.page)
-        //       $state.loaded();
-        //       this.page+=1;
-        //     } else {
-        //       $state.complete();
-        //     }
-        //   });
     infiniteHandler($state) {
       axios({
       method: 'get',
-      url: `${SERVER_URL}/profile/${userpk}/memfollowings`+"?page=" + (this.page),
+      url: `${SERVER_URL}/profile/${this.pk}/memfollowings`+"?page=" + (this.page),
       headers: this.getToken,
       }).then(res => {
         setTimeout(() => {  

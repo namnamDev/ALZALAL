@@ -1,5 +1,5 @@
 <template>
-  <div class="row my-5" @click="clickArticle">
+  <div class="row my-5">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
     <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
       <div class="row top mt-2">
@@ -7,10 +7,10 @@
           <i class="fas fa-user" style="font-size: 60px"></i>
         </div>
         <div class="col box1">
-          <div class="row box1 name">
+          <div class="row box1 name" @click="clickName">
             <p>{{ this.memberName }}</p>
           </div>
-          <div class="row box1 mt-2">
+          <div class="row box1 mt-2" @click="clickArticle">
             <div>
               <div class="title mb-1">{{ this.articleTitle }}</div>
               <div class="hashtag">
@@ -132,7 +132,11 @@ export default {
       })
 
       this.$router.push({name : 'articleDetail', params:{articleNo:this.articleNo}})
-    },   
+    },
+    clickName: function(){
+      localStorage.setItem('userPk',this.memberNo)
+      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+    }   
     
   },
 };

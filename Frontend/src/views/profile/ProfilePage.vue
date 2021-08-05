@@ -13,12 +13,6 @@ export default {
      TopProfile,
      DownProfile
  },
-  created: function() {
-    const token = localStorage.getItem('jwt')
-    if(!token){
-      this.$router.push({name:'login'})
-    }
-  },
 }
 </script>
 

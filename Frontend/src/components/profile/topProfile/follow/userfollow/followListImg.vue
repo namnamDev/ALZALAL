@@ -8,7 +8,7 @@
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
-          <span class="followBtn">
+          <span class="followBtn" v-if="!this.isLogin">
           <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
           <!-- {{followState}} -->
@@ -18,8 +18,14 @@
 
 <script>
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-
+const token = localStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
     props:{
         name: String,
@@ -28,9 +34,27 @@ export default {
     },
     data(){
         return{
-            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
-            
+          imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+          myPage: '',
+          isLogin: '', 
         }
+    },
+    created: function() {
+      console.log("target",this.userPk)
+      const userPk = localStorage.getItem("userPk")
+      console.log(userPk)
+      if(userPk){
+          this.pk = userPk
+          this.myPage = false
+      }else{
+          this.pk = userpk
+          this.myPage = true
+      }
+      if(this.token){
+        this.isLogin = true
+      }else{
+        this.isLogin = false
+      }
     },
     computed: {
         getToken(){
@@ -68,6 +92,7 @@ export default {
               event.target.style.backgroundColor='blue'
               event.target.style.color="white"
             }
+
 
         },
         clickName: function(){

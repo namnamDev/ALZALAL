@@ -2,7 +2,7 @@
   <div>
       <followerListImg v-for="(item,index) in follower" :key="index"
        v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
-      <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+      <infinite-loading @infinite="infiniteHandler" spinner="sprial">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
       </infinite-loading>
   </div>
@@ -32,8 +32,23 @@ export default {
   data(){
     return {
       follower:[],
-      page: 0
+      page: 0,
+      pk: '',
+      isLogin: '',
+      myPage: '',
     }
+  },
+  created: function() {
+        console.log("target",this.userPk)
+        const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        if(userPk){
+            this.pk = userPk
+            this.myPage = false
+        }else{
+            this.pk = userpk
+            this.myPage = true
+        }
   },
   computed: {
     getToken(){
@@ -48,7 +63,7 @@ export default {
     infiniteHandler($state) {
         axios({
           method: 'get',
-          url: `${SERVER_URL}/profile/${userpk}/followers`+"?page=" + (this.page),
+          url: `${SERVER_URL}/profile/${this.pk}/followers`+"?page=" + (this.page),
           headers: this.getToken,
         }).then(res => {
           setTimeout(() => {

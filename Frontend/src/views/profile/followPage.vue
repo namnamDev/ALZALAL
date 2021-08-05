@@ -5,10 +5,10 @@
       <div class="col-lg-6 col-md-10 col-sm-9 col-10 ">
         <div class="row">
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followerList')">follower</button>
+            <button class="btn" id="follower" @click="changeComponent('followerList')">follower</button>
           </div>
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followList')"> follow</button>
+            <button class="btn" id="following" @click="changeComponent('followList')"> following</button>
           </div>
         </div>
         <div class="tab-item">
@@ -27,17 +27,20 @@ import followerList from '@/components/profile/topProfile/follower/followerList.
 export default {
   components: {
     followList,
-    followerList
+    followerList,
   },
   data() {
-      return { comp: 'followerList' }
+      return {
+         comp: 'followerList',
+         isFollower:true,
+         isFollowing:false
+       }
   },
   methods: {
       changeComponent: function(componentName) {
           this.comp = componentName
-          console.log(this.comp)
       }
-  }
+  },
 
 }
 </script>

@@ -35,7 +35,20 @@ export default {
   data(){
     return{
       articleList:[],
-      page:0
+      page:0,
+      pk: '',
+    }
+  },
+  created: function() {
+    console.log("target",this.userPk)
+    const userPk = localStorage.getItem("userPk")
+    console.log(userPk)
+    if(userPk){
+        this.pk = userPk
+        this.myPage = false
+    }else{
+        this.pk = userpk
+        this.myPage = true
     }
   },
 	computed: {
@@ -54,7 +67,7 @@ export default {
       //     return resp.json()
       axios({
         method: 'get',
-        url: `${SERVER_URL}/search/article/${userpk}`+"?page=" + (this.page),
+        url: `${SERVER_URL}/search/article/${this.pk}`+"?page=" + (this.page),
         headers: this.getToken
         }).then(res => {
           console.log(this.getToken)

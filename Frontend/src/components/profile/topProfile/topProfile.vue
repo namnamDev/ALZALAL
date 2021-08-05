@@ -7,7 +7,7 @@
                 <div class="col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
-                        <div class="modifyProfile">
+                        <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
                             </button>
@@ -18,7 +18,11 @@
                 <div class="col-lg-9">
                     <div class="row-lg-8">
                         <div class="profile-user-settings row-lg-8">
-                            <h1 class="profile-user-name">{{name}}<button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button></h1>
+                            <h1 class="profile-user-name">{{name}}
+                                <button v-if="this.myPage" class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
+                            </h1>
+                            <button class="btn btn-follow" v-if="!this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
+                            <button class="btn btn-unfollow" v-if="!this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
                         </div>
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
@@ -47,8 +51,11 @@
                 </div>
                 <div class="introduceline">
                     <p class="introtext" align="left">{{introduce}}
-                        <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                        <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
                     </p>
+                </div>
+                <div v-if="!myPage">
+                    <button @click="clickRequest" class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
 	    </div>
@@ -72,19 +79,21 @@ export default {
     },
     data(){
         return{
-           defaultImg: '@/assets/images/profileImg.png',
-           imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
-           no: '',
-           follower: '',
-           language: [],
-           problemsite: [],
-           helpmeSuccessCount: '',
-           following: '',
-           name: '',
-           articleCount:'',
-           helpmeCount:'',
-           introduce: '',
-
+            defaultImg: '@/assets/images/profileImg.png',
+            imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+            no: '',
+            follower: '',
+            language: [],
+            problemsite: [],
+            helpmeSuccessCount: '',
+            following: '',
+            name: '',
+            articleCount:'',
+            helpmeCount:'',
+            introduce: '',
+            isLogin: '',
+            myPage: '',
+            followState: '',
         }
     },
     created: function() {
@@ -94,13 +103,15 @@ export default {
         let pk = ''
         if(userPk){
             pk = userPk
+            this.myPage = false
         }else{
             pk = userpk
+            this.myPage = true
         }
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
-
+            headers: this.getToken
         })
         .then(res =>{   
             console.log(res.data)   
@@ -114,11 +125,22 @@ export default {
             this.name = res.data.name
             this.articleCount = res.data.articleCount
             this.introduce = res.data.introduce
+            this.followState = res.data.followState
         })
         .catch(err => {
             console.log(err);
         })
+
        
+    },
+    computed:{
+        getToken(){
+        const token = localStorage.getItem('jwt')
+        const config = {
+            Authorization: `Bearer ${token}`
+        }
+        return config
+        }
     },
     methods: {
         clickIntro: function() {
@@ -136,7 +158,48 @@ export default {
         clickFollower: function() {
             this.$router.push({'name':'followPage'})
         },
+        clickRequest: function(){
+            const token = localStorage.getItem('jwt')
+                if(!token){
+                    alert("로그인이 필요합니다.")
+                this.$router.push({name:'login'})
+                }
+        },
+        clickFollowBtn: function(event){
+                const token = localStorage.getItem('jwt')
+                if(!token){
+                    alert("로그인이 필요합니다.")
+                this.$router.push({name:'login'})
+                }
+            axios({
+                    method: 'post',
+                    url: `${SERVER_URL}/follow/member`,
+                    data: {"memberNo": this.no},
+                    headers: this.getToken,
+                })
+                .then(res=>{
+                    console.log(res)
+                })
+                .catch({
+                    // console.log(this.no)
+                    // console.log(this.getToken)
+                    // console.log(err);
+                })
+            if(event.target.innerText == 'follow' ){
+              event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
+              
+            }else{
+              event.target.innerText = 'follow'
+              
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
+            }
+
+        },
     },
+    
 
 }
 </script>
@@ -261,5 +324,14 @@ i {
     border-radius: 75%;
     
 }
+}
+.btn-follow{
+      background-color: blue;
+  color: white;
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
 }
 </style>
