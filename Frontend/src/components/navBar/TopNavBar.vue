@@ -78,7 +78,11 @@ export default {
       this.$router.push({'name':'passwordConfirm'})
     },
     goProfile: function() {
-      this.$router.push({'name':'profilePage'})
+      localStorage.removeItem("userPk")
+      // if(!localStorage.getItem('userPk')){
+      // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
+      location.href=`http://localhost:8080/profilePage/${userpk}`
+      
     },
     login: function() {
       this.$router.push({'name':'login'})

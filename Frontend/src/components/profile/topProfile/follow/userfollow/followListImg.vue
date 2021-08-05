@@ -5,7 +5,7 @@
           <img class="profileImg" :src="imgsrc" alt="이미지">
       </div>
       <div class="user col-9">
-          <span class="userName">
+          <span class="userName" @click="clickName">
           {{name}}
           </span>
           <span class="followBtn">
@@ -19,6 +19,7 @@
 <script>
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 export default {
     props:{
         name: String,
@@ -62,6 +63,9 @@ export default {
               event.target.innerText = 'follow'
             }
 
+        },
+        clickName: function(){
+          this.$router.push({'name':'profilePage', params:{userpk:this.no}})
         }
     },
 

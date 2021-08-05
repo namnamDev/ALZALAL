@@ -67,6 +67,9 @@ if (token) {
   userpk = decoded.sub
 }
 export default {
+    props:{
+        userPk: Number
+    },
     data(){
         return{
            defaultImg: '@/assets/images/profileImg.png',
@@ -85,12 +88,22 @@ export default {
         }
     },
     created: function() {
+        console.log("target",this.userPk)
+        const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        let pk = ''
+        if(userPk){
+            pk = userPk
+        }else{
+            pk = userpk
+        }
         axios({
             method: 'get',
-            url: `${SERVER_URL}/profile/${userpk}`,
+            url: `${SERVER_URL}/profile/${pk}`,
 
         })
-        .then(res =>{      
+        .then(res =>{   
+            console.log(res.data)   
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following
@@ -124,11 +137,7 @@ export default {
             this.$router.push({'name':'followPage'})
         },
     },
-    computed: {
-        userPk: function(){
-            return userpk
-        },
-    }
+
 }
 </script>
 

@@ -6,10 +6,10 @@
       </div>
       <div class="user col-10 col-sm-10 col-lg-10">
           <span class="userName">
-          {{name}}
+          <button class="btn" @click="clickName">{{name}}</button>
           </span>
           <span class="followBtn">
-            <button class="btn" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn btn-light" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
             <button class="btn btn-primary" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
           
@@ -69,7 +69,12 @@ export default {
               
               event.target.style.backgroundColor='#50bcdf'
             }
+        },
+        clickName: function(){
+           localStorage.setItem('userPk', this.no)
+          this.$router.push({'name':'profilePage', params:{ userPk:this.no }})
         }
+
     }
 }
 </script>

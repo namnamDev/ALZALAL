@@ -1,6 +1,6 @@
 <template>
     <div class="followlist">
-      <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
+      <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.member.no" v-bind:followState="item.followState"/>
       <infinite-loading @infinite="infiniteHandler" spinner="spiral">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
       </infinite-loading>
