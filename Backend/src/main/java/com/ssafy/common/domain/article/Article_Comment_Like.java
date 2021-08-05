@@ -1,6 +1,7 @@
 package com.ssafy.common.domain.article;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -16,7 +17,7 @@ import lombok.Setter;
 @IdClass(Article_Comment_LikePK.class)
 public class Article_Comment_Like {
   @Id
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "ARTICLE_COMMENT_NO")
   private Article_Comment articleComment;
 

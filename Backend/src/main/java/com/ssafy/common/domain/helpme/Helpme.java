@@ -60,10 +60,10 @@ public class Helpme {
   private LocalDateTime helpmeDate;
   
   @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
-  List<Helpme_Comment> comments;
+  private List<Helpme_Comment> comments;
   
   @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
-  List<Helpme_Like> likes;
+  private List<Helpme_Like> likes;
   
   
   
