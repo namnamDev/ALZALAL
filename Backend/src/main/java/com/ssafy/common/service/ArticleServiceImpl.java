@@ -191,7 +191,8 @@ public class ArticleServiceImpl implements ArticleService{
 	    		if(member != article.getMember()){
 	    		msg ="자신의 글만 삭제할 수 있습니다.";
 	    		}else{
-		    		long deletedArticle = ArticleRepo.articleDelete(articlePk);
+		    		ArticleRepo.deleteById(articlePk);
+		    		long deletedArticle = articlePk;
 		    		res.put("deletedArtcle", deletedArticle);
 		    		msg = "성공적으로 삭제되었습니다.";
 	    		}

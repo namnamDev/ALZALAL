@@ -194,10 +194,7 @@ public class HelpmeServiceImpl implements HelpmeService {
 		if(helpme.getHelpmeSenderNo().getNo()!= member.getNo()) {
 			throw new IllegalStateException("게시글은 작성자만 삭제 할 수 있습니다");
 		}
-		
-		//댓글 삭제
-		
-		//좋아요 삭제
+		//OneToMany관계로 cascade처리해줌
 		
 		
 		helpmeRepository.deleteById(helpmeNo);

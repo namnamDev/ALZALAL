@@ -74,7 +74,7 @@ public class Article {
   private List<Article_Like> articleLike;
   
   //알고리즘
-  @OneToMany(mappedBy = "articleNo",cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "articleNo", cascade = CascadeType.REMOVE)
   private List<Article_Algorithm> articleAlgorithm;
   
 }
