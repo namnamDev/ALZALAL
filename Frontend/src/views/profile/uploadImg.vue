@@ -67,8 +67,8 @@ export default {
       let profileImage = this.$refs["image"].files[0];
 
       formdata.append("profileImg", profileImage);
-      console.log("profileImg", profileImage);
-      console.log(this.getToken);
+      // console.log("profileImg", profileImage);
+      // console.log(this.getToken);
 
       axios({
         method: "post",

@@ -1,8 +1,9 @@
 <template>
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
-    <div>
-      <Viewer     
+    <div>      
+      <Viewer  
+      class="viewer"      
       height="500px" 
       :initialValue="viewerContent"
       :options="viewerOptions"/>
@@ -35,6 +36,7 @@ export default {
   },
   data() {
     return {
+      // viewerText: '# hello world',
       viewerOptions: VIEWER_OPTION,
     };
   },
@@ -46,23 +48,16 @@ export default {
   methods: {
 
   },
+
 };
 </script>
 
 <style scoped>
-.editor {
-  position: absolute;
-  /* border: 1px solid black; */
-  width: 800px;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 200px;  
-}
 .viewer{
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 7; /* 라인수 */
+  -webkit-line-clamp: 8; /* 라인수 */
   -webkit-box-orient: vertical;
   word-wrap:break-word; 
   height:100%;
