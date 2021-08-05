@@ -52,7 +52,7 @@ export default {
     clickArticle: function() {
       this.$router.push({name : 'articleDetail'})
     }
-  }
+  },
 };
 </script>
 

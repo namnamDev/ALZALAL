@@ -9,8 +9,9 @@
           {{name}}
           </span>
           <span class="followBtn">
-          <button class="btn" id="fbtn" @click="clickFollow">Follow</button>
+          <button class="btn" id="fbtn" @click="clickFollow($event)">follow</button>
           </span>
+          <!-- {{followState}} -->
       </div>      
   </div>
 </template>
@@ -23,7 +24,8 @@ console.log(token)
 export default {
     props:{
         name: String,
-        no: Number
+        no: Number,
+        followState: Boolean
     },
     data(){
         return{
@@ -56,12 +58,10 @@ export default {
                     console.log(this.getToken)
                     console.log(err);
                 })
-            
-            const btn = document.querySelector('#fbtn')
-            if(btn.innerText == 'Follow' ){
-              btn.innerText = 'Unfollow'
+            if(event.target.innerText == 'follow' ){
+              event.target.innerText = 'Unfollow'
             }else{
-              btn.innerText = 'Follow'
+              event.target.innerText = 'follow'
             }
 
         }
@@ -96,7 +96,7 @@ export default {
 }
 .followBtn {
   border-radius: 10%;
-  border: solid 0.5px skyblue;
+  border: solid 1px skyblue;
   
   width: 30%;
   margin-left: 30px;
@@ -112,15 +112,11 @@ export default {
   }
 }
 .btn{
-  padding: 0.5rem 1.5rem;
   font-weight: 700;
-  border-radius: .1rem;
   font-size: 1vw;
 }
-#clickFollowing:hover {
+.btn:hover {
   background-color:#a1d4e2;
 }
-#clickFollower:hover{
-  background-color: #a1d4e2;
-}
+
 </style>

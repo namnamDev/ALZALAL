@@ -1,19 +1,20 @@
 <template>
   <div class="row">
       <!-- 게시글 시작-->
-    <div class="boardList" id="boardList" v-for="(item,index) in articleList" :key="index">
+    <div class="boardList col-12 col-ml-12 col-lg-12" id="boardList" v-for="(item,index) in articleList" :key="index">
         <div class="feed-card col-10 col-lg-10 col-ml-10">
             <div class="contentsWrap">
-                <p class="title">{{item.articleTitle}}</p>
-                <div>{{item.articleContent}}</div>
+                <p class="title">{{item.articleTitle}}     <span>{{item.algo}}</span></p>                
+                <div class="articleContent">{{item.articleContent}}</div>
                 <div class="wrap">
-                <p class="date">{{item.articleDate}}</p>
+                  <p class="comment"><i class="fas fa-comment"></i>  {{item.commentCount}}</p>
+                  <p class="date">{{item.articleDate}}</p>
                 </div>
             </div>
         </div>
     
         <div class="btn-group wrap col-2 col-lg-2 col-ml-2">
-            <div class="like likeScrap">
+            <div class="like likeScrap row">
                 <svg
                 class="svg-inline--fa fa-heart fa-w-16 icon full"
                 aria-hidden="true"
@@ -47,6 +48,7 @@
                 
                 </svg>
                 <i class="far fa-heart icon empty"></i>
+                
             </div>
         </div>
     </div>
@@ -124,9 +126,6 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  cursor: pointer;
-}
 .boardList{
   margin-left: 30px;
 }
@@ -197,5 +196,15 @@ export default {
     margin-left:0;
   }
 }
-
+.comment{
+  margin-right: 30px;
+}
+.articleContent {
+  overflow:hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  
+  white-space:normal;
+  }
 </style>

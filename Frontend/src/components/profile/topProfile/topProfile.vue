@@ -236,7 +236,7 @@ i {
     margin-left: -70px;
 }
 .clickImg{
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 550;
 }
 @media (max-width:576px) {

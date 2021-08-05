@@ -9,8 +9,10 @@
           {{name}}
           </span>
           <span class="followBtn">
-          <button class="btn" id="fbtn" @click="clickFollow">팔로우</button>
+            <button class="btn" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn btn-primary" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
+          
       </div>      
   </div>
 </template>
@@ -25,12 +27,11 @@ export default {
     props:{
         name: String,
         no: Number,
+        followState: Boolean
     },
     data(){
         return{
             imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
-            counter:1,
-            btnText:''
         }
     },
     computed: {
@@ -44,7 +45,7 @@ export default {
 
 	},
     methods:{
-        clickFollow: function(){
+        clickFollow: function(event){
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
@@ -61,12 +62,15 @@ export default {
                     console.log(this.getToken)
                     console.log(err);
                 })
-            const btn = document.querySelector('#fbtn')
-            console.log(btn)
-            if(btn.innerText == 'Follow' ){
-              btn.innerText = 'Unfollow'
+                
+            if(event.target.innerText == 'follow' ){
+              event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              
             }else{
-              btn.innerText = 'Follow'
+              event.target.innerText = 'follow'
+              
+              event.target.style.backgroundColor='#50bcdf'
             }
         }
     }
@@ -105,8 +109,8 @@ export default {
   margin-top: 5px;
 }
 .followBtn {
-  border-radius: 10%;
-  border: solid 0.5px skyblue;
+  border-radius: 20%;
+  border: solid 1px skyblue;
   margin-left: 0;
   
 
@@ -115,16 +119,11 @@ export default {
 .btn{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
-  border-radius: .1rem;
   font-size: 15px;
+  border-radius: 11%;
 }
-#clickFollowing:hover {
+.btn:hover {
   background-color:#a1d4e2;
 }
-#clickFollower:hover{
-  background-color: #a1d4e2;
-}
-#fbtn:hover{
-  border: 1px solid #3ed34a;
-}
+
 </style>
