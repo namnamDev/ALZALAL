@@ -54,34 +54,33 @@ export default {
         //       $state.complete();
         //     }
         //   });
-      infiniteHandler($state) {
-         axios({
-          method: 'get',
-          url: `${SERVER_URL}/profile/${userpk}/memfollowings`+"?page=" + (this.page),
-          headers: this.getToken,
-        }).then(res => {
-          setTimeout(() => {
-            
-            if(res.data.length) {
-              console.log(res.data.length)
-              this.following = this.following.concat(res.data)
-              $state.loaded()
-              this.page += 1
-              console.log("after", this.following.length, this.page)
+    infiniteHandler($state) {
+      axios({
+      method: 'get',
+      url: `${SERVER_URL}/profile/${userpk}/memfollowings`+"?page=" + (this.page),
+      headers: this.getToken,
+      }).then(res => {
+        setTimeout(() => {  
+          if(res.data.length) {
+            console.log(res.data.length)
+            this.following = this.following.concat(res.data)
+            $state.loaded()
+            this.page += 1
+            console.log("after", this.following.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(res.data.length / 20 < 1) {
-                $state.complete()
-              }
-            } else {
-              // 끝 지정(No more data)
+            if(res.data.length / 20 < 1) {
               $state.complete()
             }
-          }, 1000)
-        }).catch(err => {
-          console.error(err);
-        })
-       },
-   },
+          } else {
+              // 끝 지정(No more data)
+            $state.complete()
+          }
+        }, 1000)
+      }).catch(err => {
+        console.error(err);
+      })
+    },
+  },
 
 }
 </script>

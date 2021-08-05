@@ -306,4 +306,7 @@ li {
   margin-left: 10px;
   width:5%;
 }
+button{
+  float: right;
+}
 </style>

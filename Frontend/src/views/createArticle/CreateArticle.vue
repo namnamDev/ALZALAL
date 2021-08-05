@@ -139,6 +139,10 @@ export default {
       .catch(err =>{  
         console.log(err)
       })
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    } 
   },
 
   methods: {
