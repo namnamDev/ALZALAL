@@ -334,9 +334,20 @@ public class MemberServiceImpl implements MemberService {
 	//회원탈퇴
 	@Override
 	public void deleteMember() {
-		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+		Long memberNo=SecurityUtil.getCurrentMemberId();
+		Member member = memberRepository.findByNo(memberNo)
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
-		memberRepository.delete(member);
+//		memberRepository.deleteById(memberNo);
+		
+		//회원은 삭제되는게 아니라 회원정보만 지움
+		//근데 지금 not null세팅되어있음
+		member.setEmail("탈퇴한 회원"+memberNo);
+		member.setPassword("탈퇴한 회원"+memberNo);// 비번은 원래 암호화 되어 저장되어야하는데 디비에 평문이 들어가 있어서 로그인 못함
+		member.setName("탈퇴한 회원"+memberNo);
+		member.setProblemSiteList(null);
+		member.setUseLanguageLike(null);
+		member.setIntroduce(null);
+		member.setAuthority(null);
 		
 		return;
 	}
