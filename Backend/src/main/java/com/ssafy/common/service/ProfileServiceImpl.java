@@ -147,7 +147,7 @@ public class ProfileServiceImpl implements ProfileService {
 			nowLoginMemberNo = 0L;
 		}
 
-		List<FollowMemberDto> members= member_FollowRepositoryCustom.getFollowers(memberNo,nowLoginMemberNo,PageRequest.of(page, 20));	
+		List<FollowMemberDto> members= member_FollowRepositoryCustom.getFollowers(memberNo,nowLoginMemberNo,PageRequest.of(page, Common.PAGE));	
 	
 		return members;
 	}
@@ -164,7 +164,7 @@ public class ProfileServiceImpl implements ProfileService {
 			nowLoginMemberNo = 0L;
 		}
 		
-		List<FollowMemberDto> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,nowLoginMemberNo,PageRequest.of(page, 20));
+		List<FollowMemberDto> members= member_FollowRepositoryCustom.getMemberFollowings(memberNo,nowLoginMemberNo,PageRequest.of(page, Common.PAGE));
 	
 		return members;
 	}
@@ -174,7 +174,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<String> getAlgorithmFollowings(Long memberNo,int page) {
 		
-		List<String> algorithm= algorithm_FolloweRepositoryCustom.getAlgorithmFollowings(memberNo,PageRequest.of(page, 20));
+		List<String> algorithm= algorithm_FolloweRepositoryCustom.getAlgorithmFollowings(memberNo,PageRequest.of(page, Common.PAGE));
 		
 	
 		return algorithm;
@@ -185,7 +185,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<Map<String, Object>> getProblemFollowings(Long memberNo,int page) {
 		
-		List<Tuple> problem = followRepositoryCustom.getProblemFollowings(memberNo, PageRequest.of(page, 20));		
+		List<Tuple> problem = followRepositoryCustom.getProblemFollowings(memberNo, PageRequest.of(page, Common.PAGE));		
 		List<Map<String, Object>> followingList = new ArrayList<>();
 		
 		for(Tuple prob: problem) {

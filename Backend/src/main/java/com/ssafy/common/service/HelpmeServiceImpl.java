@@ -48,7 +48,7 @@ public class HelpmeServiceImpl implements HelpmeService {
 		}
 		List<HelpmeDTO> ret = helpmeRepository
 				.getReceptHelpmeListByMemberNo(memberNo, nowLoginMemberNo,
-						PageRequest.of(page, 20))
+						PageRequest.of(page, Common.PAGE))
 				.orElse(null);
 
 		return ret;
@@ -61,7 +61,7 @@ public class HelpmeServiceImpl implements HelpmeService {
 		Long memberNo = SecurityUtil.getCurrentMemberId();
 
 		List<HelpmeDTO> ret = helpmeRepository
-				.getSendHelpmeListByMemberNo(memberNo, PageRequest.of(page, 20))
+				.getSendHelpmeListByMemberNo(memberNo, PageRequest.of(page, Common.PAGE))
 				.orElse(null);
 
 		return ret;

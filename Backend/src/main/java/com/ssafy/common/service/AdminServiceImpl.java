@@ -295,7 +295,7 @@ public class AdminServiceImpl implements AdminService {
 		Map<String, Object> res = new HashMap<String, Object>();
 		String msg = "";
 		List<DiscussDTO> discussList = disRepo
-				.sltMultiByDisHost(HostPK, PageRequest.of(page, 20))
+				.sltMultiByDisHost(HostPK, PageRequest.of(page, Common.PAGE))
 				.orElse(null);
 		res.put("article", discussList);
 		if (discussList.size() == 0) {

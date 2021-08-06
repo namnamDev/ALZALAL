@@ -42,7 +42,7 @@ public class MainServiceImpl implements MainService{
 		}catch (RuntimeException e) {
 			nowLoginMemberNo=0L;
 		}
-		List<ArticleDTO> mainArticle= memfolRepo.getFollowingArticle(nowLoginMemberNo, PageRequest.of(page, 20));
+		List<ArticleDTO> mainArticle= memfolRepo.getFollowingArticle(nowLoginMemberNo, PageRequest.of(page, Common.PAGE));
 		for(int idx = 0; idx < mainArticle.size();idx++) {
     		List<Article_AlgorithmDTO> artiAlgo= ArtiAlgoRepo.sltMultiByArticleDTO(mainArticle.get(idx));
     		List<String> tempAlgo = new ArrayList<String>();

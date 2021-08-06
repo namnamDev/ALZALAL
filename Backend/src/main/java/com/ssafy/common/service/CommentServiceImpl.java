@@ -73,7 +73,7 @@ public class CommentServiceImpl implements CommentService{
 		if (articleClass.equals("article")) {
 		Article article = articleRepo.sltOneArticle(articlePk);
 		if (article != null) {
-	    	List<Article_CommentDTO> comments = ArtiComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+	    	List<Article_CommentDTO> comments = ArtiComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, Common.PAGE)).orElse(null);
 	    	if (comments.size() == 0) {
 	    		msg = "등록된 댓글이 없습니다.";
 	    	}else {
@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService{
 		}else if(articleClass.equals("discussion")){
 			Discuss article = discussRepo.sltOneArticle(articlePk);
 			if (article != null) {
-		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, Common.PAGE)).orElse(null);
 		    	if (comments.size() == 0) {
 		    		msg = "등록된 댓글이 없습니다.";
 		    	}else {
@@ -98,7 +98,7 @@ public class CommentServiceImpl implements CommentService{
 		}else if(articleClass.equals("helpme")){
 			Helpme article = helpRepo.getById(articlePk);
 			if (article != null) {
-		    	List<Helpme_CommentDTO> comments = helpComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 20)).orElse(null);
+		    	List<Helpme_CommentDTO> comments = helpComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, Common.PAGE)).orElse(null);
 		    	if (comments.size() == 0) {
 		    		msg = "등록된 댓글이 없습니다.";
 		    	}else {
