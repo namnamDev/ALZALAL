@@ -44,8 +44,7 @@
           <option value="atcoder">atcoder</option>
           <option value="jungol">jungol</option>
           <option value="codeforce">codeforce</option>
-          <option value="programmers">programmers</option>
-          >
+          <option value="programmers">programmers</option>          
         </select>
 
         <div class="box col-sm-2 mb-2">문제번호</div>
@@ -84,8 +83,10 @@
       </div>
       <div class="row mt-2 mb-5">
         <button @click="submit">작성하기</button>
+        
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -142,6 +143,10 @@ export default {
   },
 
   methods: {
+    // blur() {
+    //   const ul = document.querySelector('#algo-ul')
+    //   ul.style.display = 'none'
+    // },
     // toast editor에서 작성된 내용 가져오기
     getContent() {
       return this.$refs.toastEditor.getContent();
@@ -199,7 +204,7 @@ export default {
           const algoHastag = document.createElement("span");
 
           algoHastag.innerText = event.target.innerText;
-          algoHastag.style.display = "inline";
+          algoHastag.style.display = "inline-block";
           algoHastag.style.fontSize = "14px";
           algoHastag.style.borderRadius = "3px";
           algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
@@ -211,12 +216,19 @@ export default {
           algoHastag.style.cursor = "pointer";
 
           if (boxAlgo.childElementCount != 4) {
+            console.log('1234')
             boxAlgo.appendChild(algoHastag);
           }
         });
       });
       // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
-      document.getElementById("algo-ul").classList.toggle("show");
+      const ul = document.querySelector('#algo-ul')
+      if (ul.style.display == 'block') {
+        ul.style.display = 'none'
+      }
+      else{
+        ul.style.display = 'block'
+      }
     },
     // 검색필터 적용
     filterFunction() {
@@ -308,7 +320,7 @@ li:hover {
 .box-algo {
   /* border: 1px solid black; */
   height: 30px;
-  width: 550px;
+  width: 800px;
   text-align: start;
   align-items: center;
   border-radius: 3px;

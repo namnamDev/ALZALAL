@@ -59,6 +59,6 @@ export default {
   -webkit-line-clamp: 8; /* 라인수 */
   -webkit-box-orient: vertical;
   word-wrap:break-word; 
-  height:100%;
 }
+
 </style>
