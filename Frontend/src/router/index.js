@@ -18,6 +18,9 @@ import uploadImg from '@/views/profile/uploadImg.vue'
 import createDebate from '@/views/debate/createDebate.vue'
 import debateDetail from '@/views/debate/debateDetail.vue'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
+import SearchProblem from '@/components/article/SearchProblem.vue'
+import SearchAlgorithm from '@/components/article/SearchAlgorithm.vue'
+import SearchUser from '@/components/article/SearchUser.vue'
 
 Vue.use(VueRouter)
 
@@ -107,6 +110,24 @@ const routes = [
     path: '/articleDetail',
     name: 'articleDetail',
     component: ArticleDetail,
+    props: true
+  },
+  {
+    path: '/searchProblem',
+    name: 'searchProblem',
+    component: SearchProblem,
+    props: true
+  },
+  {
+    path: '/searchAlgorithm',
+    name: 'searchAlgorithm',
+    component: SearchAlgorithm,
+    props: true
+  },
+  {
+    path: '/searchUser',
+    name: 'searchUser',
+    component: SearchUser,
     props: true
   },
   {

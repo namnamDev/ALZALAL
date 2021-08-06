@@ -33,6 +33,7 @@ export default {
     search.style.display = 'block'
   },
   created() {
+    console.log('created')
     axios({
         method: 'get',
         url: `${SERVER_URL}/articlelist/article`,

@@ -1,23 +1,23 @@
 <template>
   <div class="row my-5" @click="clickArticle">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="box col-lg-6 col-md-10 col-sm-9 col-10">
+    <div class="article-content col-lg-6 col-md-10 col-sm-9 col-10">
 
       <div class="row top mt-2">
-        <div class="col-3 box1 image mt-2">
+        <div class="col-3 image mt-2">
           <i class="fas fa-user" style="font-size:60px;"></i>
         </div>
-        <div class="col box1">
-          <div class="row box1 name">
+        <div class="col">
+          <div class="row name">
             <p>{{item.member.name}}</p>
           </div>
-          <div class="row box1 mt-2">
+          <div class="row mt-2">
             <div>
               <div class="title mb-1">{{item.articleTitle}}</div>
               <div class="hashtag">
+                <span>QnA</span>
                 <span>{{item.problemSite.problemSiteName}} {{item.problemSite.problemNo}}</span>                
                 <span>{{item.useLanguage}}</span>
-                <span>알고리즘 추가</span>
               </div>
             </div>
           </div>
@@ -25,13 +25,13 @@
       </div>
 
       <div class="row middle">
-        <div class="col box1 content">
+        <div class="col content">
           <Viewer id="viewer" :viewerText="item.articleContent" />
         </div>
       </div>
 
       <div class="row bottom mt-4">
-        <div class="col box1 like-comment">
+        <div class="col like-comment">
           <i class="fas fa-heart me-2" v-if="item.likeState"></i>
           <i class="far fa-heart me-2" v-else></i>
           <span>{{item.likeCount}}</span>
@@ -88,27 +88,27 @@ export default {
 .feed {
   margin-top: 13vw;
 }
-.box {
+.article-content {
   background: white;
-  -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
   border-radius: 1px;
   padding: 15px 15px;
-  height: 400px;
+  /* height: 400px; */
 }
-.box:hover{
-  box-shadow: 0 20px 20px rgba(161,212,226,0.6);
-  transform: scale(1.1);
+.article-content:hover{
+  -webkit-box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
+  box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
+  transform: scale(1.05);
   cursor: pointer;
 }
-.box1 {
-  /* border: 1px solid black; */
-}
+
 .image{
   text-align: center;
+  align-self: center;
 }
 .top{
-  height:100px;
+  /* height:100px; */
 }
 .name{
   height:25px;
@@ -122,7 +122,7 @@ export default {
 .middle{
   margin-top: 10px;  
   padding: 0 20px;
-  height: 210px;
+  /* height: 210px; */
 }
 .content{
   overflow: hidden;
@@ -141,10 +141,11 @@ export default {
   font-size: 16px;
   border-radius: 3px;
   background-color : rgba(221,223,230,1);
-  padding:1px 8px;
+  padding:0px 8px;
   margin-right: 6px;
+  display:inline-block;
 }
 .hashtag{
-  height:20px;
+  /* height:20px; */
 }
 </style>
