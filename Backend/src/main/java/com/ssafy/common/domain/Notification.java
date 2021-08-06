@@ -36,10 +36,20 @@ public class Notification {
   @Column(name="NOTIFICATION_READ_STATUS")
   private boolean notificationReadStatus;
 
-  @Column(length =3,name= "NOTIFICATION_CLASS")
-  @Enumerated(EnumType.STRING)
-  private Notification_Class notificationClass;
+  @Column(name= "NOTIFICATION_TARGET_NO")
+  private Long notificationTargetNO;
 
+  @Column(length =3,name= "NOTIFICATION_TASK")
+  @Enumerated(EnumType.STRING)
+  private Notification_Task notificationTask;
+  
+  
+  @Column(length =3,name= "NOTIFICATION_SUBTASK")
+  @Enumerated(EnumType.STRING)
+  private Notification_SubTask notificationSubTask;
+  
+  
+  
   @Column(name = "NOTIFICATION_DATE")
   private Timestamp notificationDate;
 }
