@@ -1,7 +1,7 @@
 <template>
   <div class="row my-5">
-  <div class="col-lg-4 col-md-2 col-sm-3 col-1 col-xl-5"></div>
-  <div class="feed-item col-lg-5 col-md-10 col-sm-9 col-10 col-xl-6">
+  <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div>
+  <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
      <div class="row">
           <div class="col-4 col-lg-4">
             <button class="btn" @click="changeComponent('articleList')">게시글</button>
