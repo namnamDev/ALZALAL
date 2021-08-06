@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-lg-4 col-md-2 col-sm-3 col-3 col-xl-5"></div>
+        <div class="col-lg-3 col-md-2 col-sm-3 col-3 col-xl-3"></div>
         <div class="col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
             <div class="row-lg-8">
                     <!-- 프로필이미지 -->

@@ -7,10 +7,10 @@
           <i class="fas fa-user" style="font-size: 60px"></i>
         </div>
         <div class="col">
-          <div class="row name">
+          <div class="row name" @click="clickName">
             <p>{{ this.memberName }}</p>
           </div>
-          <div class="row  mt-2">
+          <div class="row  mt-2" @click="clickArticle">
             <div>
               <div class="title mb-1">{{ this.articleTitle }}</div>
               <div class="hashtag">
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="row middle">
+      <div class="row middle" @click="clickArticle">
         <div class="col content">
           <Viewer id="viewer" :viewerText="content" />
         </div>
