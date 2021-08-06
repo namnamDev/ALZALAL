@@ -61,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 				.antMatchers(HttpMethod.GET,"/comment/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/algorithmList").permitAll()//알고리즘 리스트 가져오기				
+				.antMatchers("/connectNotification/**").permitAll()// 소켓통신 연결			
+				
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요
 
