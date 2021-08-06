@@ -12,8 +12,5 @@ public class NotificationSocketDTO {
 	private boolean isNew;
 	
 	//알람 갯수
-	private int count;	
-	
-	//받는사람
-	private String to;
+	private long count;	
 }
