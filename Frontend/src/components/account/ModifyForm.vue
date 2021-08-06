@@ -162,6 +162,7 @@ export default{
       })
       .then(res => {
         console.log(res);
+        alert(res.data.msg)
         localStorage.removeItem("jwt")
         localStorage.removeItem("vuex")
         this.$router.push({ name: 'login' })
@@ -305,5 +306,8 @@ li {
 .form li input{
   margin-left: 10px;
   width:5%;
+}
+button{
+  float: right;
 }
 </style>

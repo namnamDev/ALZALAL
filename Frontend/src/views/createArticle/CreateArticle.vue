@@ -140,6 +140,10 @@ export default {
       .catch(err =>{  
         console.log(err)
       })
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    } 
   },
 
   methods: {
@@ -187,7 +191,9 @@ export default {
         headers: this.getToken(),
       })   
       .then(res =>{
-        console.log(res);        
+        console.log(res);
+        alert("작성 완료!")
+        this.$router.push({ name: 'timeline' })       
       })
       .catch(err =>{  
         console.log(err)

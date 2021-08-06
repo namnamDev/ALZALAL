@@ -6,10 +6,10 @@
       </div>
       <div class="user col-9">
           <span class="userName">
-          {{name}}
+          <button class="btn" @click="clickName">{{name}}</button>
           </span>
-          <span class="followBtn">
-          <button class="btn" id="fbtn" @click="clickFollow($event)">follow</button>
+          <span class="followBtn" v-if="!this.isLogin && !this.me">
+          <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
           <!-- {{followState}} -->
       </div>      
@@ -18,7 +18,14 @@
 
 <script>
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const token = localStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
     props:{
         name: String,
@@ -27,9 +34,33 @@ export default {
     },
     data(){
         return{
-            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
-            
+          imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+          myPage: '',
+          isLogin: '', 
+          me: '',
         }
+    },
+    created: function() {
+      console.log("target",this.userPk)
+      const userPk = localStorage.getItem("userPk")
+      console.log(userPk)
+      if(userPk){
+          this.pk = userPk
+          this.myPage = false
+      }else{
+          this.pk = userpk
+          this.myPage = true
+      }
+      if(this.token){
+        this.isLogin = true
+      }else{
+        this.isLogin = false
+      }
+      if(this.no == userpk){
+        this.me=true
+      }else{
+        this.me=false
+      }
     },
     computed: {
         getToken(){
@@ -41,7 +72,7 @@ export default {
         }
 	},
     methods:{
-        clickFollow: function(){
+        clickFollow: function(event){
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
@@ -58,10 +89,21 @@ export default {
                 })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
+              
             }else{
               event.target.innerText = 'follow'
+              
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
             }
 
+
+        },
+        clickName: function(){
+          localStorage.setItem('userPk',this.no)
+          this.$router.push({'name':'profilePage', params:{userPk:this.no}})
         }
     },
 
@@ -70,9 +112,7 @@ export default {
 </script>
 
 <style scoped>
-.row{
-  margin-left: 30px;
-}
+
 .userImg {
     width: 70px;
     height: 70px; 
@@ -88,7 +128,7 @@ export default {
     display: block;
 }
 
-.userName{
+.user{
   margin-right: 30px;
   font-weight: 550;
 }
@@ -100,18 +140,28 @@ export default {
   margin-left: 30px;
 }
 @media (max-width:768px) {
-
-  .followBtn {
-    border-radius: 10%;
-    border: solid 0.5px skyblue;
-    margin-left: 0;
-    
-
-  }
+.user{
+  margin-top: 5px;
+}
+.followBtn {
+  border-radius: 20%;
+  margin-left: 0;
+}
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
+}
+.btn-follow{
+  background-color: blue;
+  color: white;
 }
 .btn{
+  padding: 0.5rem 1.5rem;
   font-weight: 700;
-  font-size: 1vw;
+  font-size: 15px;
+  border-radius: 11%;
 }
 .btn:hover {
   background-color:#a1d4e2;

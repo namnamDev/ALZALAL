@@ -6,11 +6,11 @@
       </div>
       <div class="user col-10 col-sm-10 col-lg-10">
           <span class="userName">
-          {{name}}
+          <button class="btn" @click="clickName">{{name}}</button>
           </span>
-          <span class="followBtn">
-            <button class="btn" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
-            <button class="btn btn-primary" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
+          <span class="followBtn" v-if="!this.isLogin && !this.me">
+            <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
           
       </div>      
@@ -18,9 +18,15 @@
 </template>
 
 <script>
-
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const token = localStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
     props:{
         name: String,
@@ -30,7 +36,33 @@ export default {
     data(){
         return{
             imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+            myPage: '',
+            isLogin: '',
+            me: '',
         }
+    },
+    created: function() {
+      console.log("target",this.userPk)
+      const userPk = localStorage.getItem("userPk")
+      console.log(userPk)
+      if(userPk){
+          this.pk = userPk
+          this.myPage = false
+      }else{
+          this.pk = userpk
+          this.myPage = true
+      }
+      if(this.token){
+        this.isLogin = true
+      }else{
+        this.isLogin = false
+      }
+      if(this.no == userpk){
+        this.me=true
+      }else{
+        this.me=false
+      }
+
     },
     computed: {
         getToken(){
@@ -44,6 +76,12 @@ export default {
 	},
     methods:{
         clickFollow: function(event){
+            const token = localStorage.getItem('jwt')
+                if(!token){
+                    alert("로그인이 필요합니다.")
+                this.$router.push({name:'login'})
+                }
+
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
@@ -63,13 +101,20 @@ export default {
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
               event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
               
             }else{
               event.target.innerText = 'follow'
               
-              event.target.style.backgroundColor='#50bcdf'
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
             }
+        },
+        clickName: function(){
+           localStorage.setItem('userPk', this.no)
+          this.$router.push({'name':'profilePage', params:{ userPk:this.no }})
         }
+
     }
 }
 </script>
@@ -101,26 +146,39 @@ export default {
   width: 30%;
   margin-left: 30px;
 }
-@media (max-width:768px) {
+@media (max-width:576px) {
 .user{
   margin-top: 5px;
 }
 .followBtn {
   border-radius: 20%;
-  border: solid 1px skyblue;
   margin-left: 0;
-  
-
+}
+.row{
+  margin-left: 30px;
 }
 }
 .btn{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   font-size: 15px;
-  border-radius: 11%;
+  border-radius: 5%;
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
+}
+.btn-follow{
+  background-color: blue;
+  color: white;
 }
 .btn:hover {
   background-color:#a1d4e2;
 }
-
+@media (min-width:768px) {
+  .row{
+    margin-left: 70px;
+  }
+}
 </style>

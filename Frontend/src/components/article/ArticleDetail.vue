@@ -9,7 +9,7 @@
             {{articleTitle}}
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col clickName"  @click="clickName">
               {{memberName}}
             </div>
             <div class="col text-end">
@@ -114,6 +114,7 @@ export default {
     this.articleNo = article.articleNo
     this.articleTitle = article.articleTitle
     this.memberName = article.member.name
+    this.memberNo = article.member.no
     this.date = article.articleDate
     this.content = article.articleContent
     this.likeCount = article.likeCount
@@ -165,6 +166,10 @@ export default {
         this.likeCount += 1
       }
     },
+    clickName: function(){
+      localStorage.setItem('userPk',this.memberNo)
+      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+    }
 
   }
 }
@@ -219,5 +224,8 @@ export default {
 button{
   width: 120px;
   height: 30px;
+}
+.clickName{
+  cursor: pointer;
 }
 </style>

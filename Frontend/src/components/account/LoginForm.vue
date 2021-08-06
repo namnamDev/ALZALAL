@@ -4,7 +4,7 @@
     <div class="col-lg-6 col-md-10 col-sm-9 col-10">
       <div class="row top mt-2 form-wrapper form-wrapper-sm">
       <form @submit.prevent="submitForm" class="form">
-        <div>
+        <div class="row">
           <label align="left" for="email">E-mail</label>
           <input id="email" type="text" v-model="form.email" />
           <p class="validation-text">
@@ -13,27 +13,30 @@
             </span>
           </p>
         </div>
-        <div>
+        <div class="row">
           <label align="left" for="password">Password</label>
           <input id="password" type="password" v-model="form.password" />
         </div>
-        <button
-                :disabled="!isEmailValid && form.password"
-          type="submit"
-          class="btn"
-                >
-          Login
-        </button>
-        <div>
-          <span><button class="btn btn-user">비밀번호찾기</button>
-                <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
-          </span>      
+        <div class="row btnclass">
+          <div class="btn-login col-7 col-ml-7 col-lg-7"></div>
+          <div class="btn-login col-5 col-ml-5 col-lg-5"> 
+            <button
+                    :disabled="!isEmailValid && form.password"
+              type="submit"
+              class="btn"
+                    >
+              Login
+            </button>
+            <span>
+              <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
+            </span> 
+          </div>
         </div>
-        <div class='snsLogin'>
+        <!-- <div class='snsLogin'>
           <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
           <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
           <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
-        </div>
+        </div> -->
       </form>
       </div>
     </div>
@@ -149,7 +152,7 @@ export default {
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
 }
-@media (min-width: 1440px){
+@media (min-width: 1200px){
 .form input,
 .form textarea {
   font-family: inherit;
@@ -170,6 +173,12 @@ export default {
 	justify-content: space-between;
 }
 }
+@media (max-width: 576){
+.btn-user{
+  font-size: 10px;
+      opacity: 0.8;
+}
+}
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
 }
@@ -183,11 +192,18 @@ export default {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.btn-login{
+  float: right;
+}
 .btn-user{
     opacity: 0.8;
 }
 .btn-sns {
   display: block;
   margin-left: 0 auto;
+}
+.btnclass{
+  margin-top: 10px;
+  margin-left: 30px;
 }
 </style>

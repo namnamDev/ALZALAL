@@ -57,9 +57,10 @@ const routes = [
     component: PasswordConfirm,
   },
   {
-    path: `/profilePage/:userpk`,
+    path: `/profilePage/:userPk`,
     name: 'profilePage',
     component: ProfilePage,
+    props:true
   },
   {
     path: '/targetProfilePage',
@@ -107,7 +108,7 @@ const routes = [
     component: CreateArticle
   },
   {
-    path: '/articleDetail',
+    path: '/articleDetail/:articleNo',
     name: 'articleDetail',
     component: ArticleDetail,
     props: true

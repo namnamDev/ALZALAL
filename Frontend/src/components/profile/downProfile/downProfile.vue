@@ -1,13 +1,13 @@
 <template>
   <div class="row my-5">
-  <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-   <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10">
+  <div class="col-lg-4 col-md-2 col-sm-3 col-1 col-xl-5"></div>
+  <div class="feed-item col-lg-5 col-md-10 col-sm-9 col-10 col-xl-6">
      <div class="row">
           <div class="col-4 col-lg-4">
             <button class="btn" @click="changeComponent('articleList')">게시글</button>
           </div>
-          <div class="col-4 col-lg-4">
-            <button class="btn" @click="changeComponent('helpmeList')">내가 요청한 문제</button>
+          <div class="col-4 col-lg-4" v-if="this.myPage">
+            <button class="btn" @click="changeComponent('helpmeList')">내가요청한 문제</button>
           </div>
           <div class="col-4 col-lg-4">
             <button class="btn" @click="changeComponent('receptList')">요청받은 문제</button>
@@ -26,6 +26,13 @@
 import articleList from '@/components/profile/downProfile/articleList'
 import helpmeList from '@/components/profile/downProfile/helpmeList'
 import receptList from '@/components/profile/downProfile/receptList'
+import jwt_decode from 'jwt-decode'
+const token = localStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
   components: {
     articleList,
@@ -33,7 +40,21 @@ export default {
     receptList
   },
   data() {
-      return { comp: 'articleList' }
+      return { comp: 'articleList', myPage: '', }
+  },
+  created: function() {
+        console.log("target",this.userPk)
+        const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        let pk = ''
+        console.log(pk)
+        if(userPk){
+            pk = userPk
+            this.myPage = false
+        }else{
+            pk = userpk
+            this.myPage = true
+        }
   },
   methods: {
       changeComponent: function(componentName) {
