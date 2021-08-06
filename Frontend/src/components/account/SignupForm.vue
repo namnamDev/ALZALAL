@@ -118,11 +118,13 @@ export default{
           })
           .then(res => {
             console.log(res);
+            alert(res.data.msg)
             this.$router.push({ name: 'login' })
+            
         
           })
           .catch(err => {
-            alert(err)
+            alert("이미 등록된 계정입니다.")
             console.log(err)
           })
         }
@@ -240,5 +242,8 @@ li {
 .form li input{
   margin-left: 10px;
   width:5%;
+}
+button{
+  float: right;
 }
 </style>

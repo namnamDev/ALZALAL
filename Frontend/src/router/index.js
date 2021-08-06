@@ -18,7 +18,9 @@ import uploadImg from '@/views/profile/uploadImg.vue'
 import createDebate from '@/views/debate/createDebate.vue'
 import debateDetail from '@/views/debate/debateDetail.vue'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
-import followSend from '@/views/profile/followSend.vue'
+import SearchProblem from '@/components/article/SearchProblem.vue'
+import SearchAlgorithm from '@/components/article/SearchAlgorithm.vue'
+import SearchUser from '@/components/article/SearchUser.vue'
 
 Vue.use(VueRouter)
 
@@ -55,9 +57,10 @@ const routes = [
     component: PasswordConfirm,
   },
   {
-    path: `/profilePage/:userpk`,
+    path: `/profilePage/:userPk`,
     name: 'profilePage',
     component: ProfilePage,
+    props:true
   },
   {
     path: '/targetProfilePage',
@@ -105,20 +108,34 @@ const routes = [
     component: CreateArticle
   },
   {
-    path: '/articleDetail',
+    path: '/articleDetail/:articleno',
     name: 'articleDetail',
-    component: ArticleDetail
+    component: ArticleDetail,
+    props: true
+  },
+  {
+    path: '/searchProblem',
+    name: 'searchProblem',
+    component: SearchProblem,
+    props: true
+  },
+  {
+    path: '/searchAlgorithm',
+    name: 'searchAlgorithm',
+    component: SearchAlgorithm,
+    props: true
+  },
+  {
+    path: '/searchUser',
+    name: 'searchUser',
+    component: SearchUser,
+    props: true
   },
   {
     path: '*',
     name: 'PageNotFound',
     component: PageNotFound
   },
-  {
-    path: '/followSend',
-    name: 'followSend',
-    component: followSend
-  }
 ]
 
 const router = new VueRouter({

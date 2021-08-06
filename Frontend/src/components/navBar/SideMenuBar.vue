@@ -3,7 +3,7 @@
     <div id="menu">
       <p @click="clickLogo">LOGO</p>
       <ul>
-        <li @click="clickLogo">timeline</li>
+        <li @click="clickLogo">타임라인</li>
         <li @click="clickQnA">Q&A</li>
         <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
@@ -14,7 +14,7 @@
       <p @click="clickLogo">LOGO</p>
       <ul>
         <li @click="clickLogo">타임라인</li>
-        <li>Q&A</li>
+        <li @click="clickQnA">Q&A</li>
         <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
         <li class="search">검색하기</li>
@@ -95,7 +95,7 @@ export default {
   position:fixed;
   background-color:rgba(224,245,249,1);
   height: 100vh;
-  width: 20%;
+  width: 200px;
   z-index:5;
 }
 

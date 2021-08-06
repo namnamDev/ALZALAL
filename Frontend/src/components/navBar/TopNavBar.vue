@@ -18,7 +18,7 @@
           >
             <span class="username">{{userEmail}}</span>
             <span class="imageSection">
-              <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+              <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
             </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -62,6 +62,8 @@ export default {
   data(){
     return{
       imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+      imageError: false,
+      defaultImage: require("@/assets/images/profileImg.png")
     }
   },
   methods: {
@@ -76,7 +78,11 @@ export default {
       this.$router.push({'name':'passwordConfirm'})
     },
     goProfile: function() {
-      this.$router.push({'name':'profilePage'})
+      localStorage.removeItem("userPk")
+      // if(!localStorage.getItem('userPk')){
+      // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
+      location.href=`http://localhost:8080/profilePage/${userpk}`
+      
     },
     login: function() {
       this.$router.push({'name':'login'})
@@ -86,7 +92,7 @@ export default {
     },
     click: function() {
       console.log('click')
-    }
+    },
   },
   computed: {
     isLogin(){
@@ -98,6 +104,9 @@ export default {
     },
     userEmail(){
       return this.$store.getters.getEmail
+    },
+    creatorImage() {
+        return this.imageError ? this.defaultImage : "imgsrc";
     }
 
   }

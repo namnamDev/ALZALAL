@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import algofollow from '@/components/profile/follow/algoFollow.vue'
-import problemfollow from '@/components/profile/follow/problemFollow.vue'
-import userfollow from '@/components/profile/follow/userFollow.vue'
+import algofollow from '@/components/profile/topProfile/follow/algofollow/algoFollow.vue'
+import problemfollow from '@/components/profile/topProfile/follow/problemfollow/problemFollow.vue'
+import userfollow from '@/components/profile/topProfile/follow/userfollow/userFollow.vue'
 export default {
   components: {
     userfollow,
@@ -35,7 +35,6 @@ export default {
   methods: {
       changeComponent: function(componentName) {
           this.comp = componentName
-          console.log(this.comp)
       }
   }
 }

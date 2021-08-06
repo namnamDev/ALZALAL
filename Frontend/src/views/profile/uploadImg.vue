@@ -15,7 +15,7 @@
             <img class="profileImg" :src="url" />
           </div>
           <div id="preview" class="profile-image" v-if="!url">
-            <img class="profileImg" alt="any img" />
+            <img class="profileImg" alt="프로필이미지를 등록해주세요" />
           </div>
 
           <button type="submit" class="btn btn-submit">
@@ -36,7 +36,6 @@ let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
   userpk = decoded.sub;
-  console.log(userpk);
 }
 export default {
   data() {
@@ -67,8 +66,6 @@ export default {
       let profileImage = this.$refs["image"].files[0];
 
       formdata.append("profileImg", profileImage);
-      console.log("profileImg", profileImage);
-      console.log(this.getToken);
 
       axios({
         method: "post",
@@ -80,7 +77,10 @@ export default {
           console.log("img", res);
           this.$router.push({ name: "profilePage" });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => { 
+          console.log(err)
+          console.log(this.getToken)
+        });
     },
     onFileChange(e) {
       const file = e.target.files[0];

@@ -1,14 +1,13 @@
 <template>
-    <div class="row">
-        <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
-        <div class="col-lg-6 col-md-10 col-sm-9 col-6 ">
-            <div class="row-lg-8">
+    <div class="row top">
+        <div class="col-lg-3 col-md-2 col-sm-3 col-3 col-xl-3"></div>
+        <div class="col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
+            <div class="row">
                     <!-- 프로필이미지 -->
-                <div class="col-lg-3">
+                <div class="offset-1 col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
-                        <img class="profileImg" v-if="!imgsrc" src="@/assets/images/profileImg.png" alt="">
-                        <div class="modifyProfile">
+                        <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
                             </button>
@@ -16,20 +15,21 @@
                     </div>
                 </div>
                     <!-- 프로필 이름, 수정버튼 -->
-                <div class="col-lg-9">
-                    <div class="row-lg-8">
+                <div class="col-lg-7">
+                    <div class="row">
                         <div class="profile-user-settings row-lg-8">
-                            <h1 class="profile-user-name">{{name}}<button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button></h1>
-                            <!-- <span>
-                                <button class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
-                            </span> -->
+                            <h1 class="profile-user-name">{{name}}
+                                <button v-if="this.myPage" class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
+                            </h1>
+                            <button class="btn btn-follow" v-if="!this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
+                            <button class="btn btn-unfollow" v-if="!this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
                         </div>
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
                                 <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
-                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
+                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
+                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -45,14 +45,17 @@
                   
                 </div>
             </div>
-            <div class="row-lg-4">
+            <div class="row">
                 <div>
                     <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
                 <div class="introduceline">
                     <p class="introtext" align="left">{{introduce}}
-                        <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                        <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
                     </p>
+                </div>
+                <div v-if="!myPage">
+                    <button @click="clickRequest" class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
 	    </div>
@@ -71,33 +74,49 @@ if (token) {
   userpk = decoded.sub
 }
 export default {
+    props:{
+        userPk: Number
+    },
     data(){
         return{
-           imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
-           no: '',
-           follower: '',
-           language: [],
-           problemsite: [],
-           helpmeSuccessCount: '',
-           following: '',
-           name: '',
-           articleCount:'',
-           helpmeCount:'',
-           introduce: '',
-
+            defaultImg: '@/assets/images/profileImg.png',
+            imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+            no: '',
+            follower: '',
+            language: [],
+            problemsite: [],
+            helpmeSuccessCount: '',
+            following: '',
+            name: '',
+            articleCount:'',
+            helpmeCount:'',
+            introduce: '',
+            isLogin: '',
+            myPage: '',
+            followState: '',
         }
     },
     created: function() {
-        console.log(userpk)
+        console.log("target",this.userPk)
+        const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        let pk = ''
+        if(userPk){
+            pk = userPk
+            this.myPage = false
+        }else{
+            pk = userpk
+            this.myPage = true
+        }
         axios({
             method: 'get',
-            url: `${SERVER_URL}/profile/${userpk}`,
-
+            url: `${SERVER_URL}/profile/${pk}`,
+            headers: this.getToken
         })
-        .then(res =>{
-            console.log(res)         
+        .then(res =>{   
+            console.log(res.data)   
             this.no = res.data.no
-            this.follower = res.data.follower
+            this.follower = res.data.follower            
             this.following = res.data.following
             this.language = res.data.language
             this.problemsite = res.data.problemsite
@@ -106,12 +125,22 @@ export default {
             this.name = res.data.name
             this.articleCount = res.data.articleCount
             this.introduce = res.data.introduce
-            console.log(this.language)
+            this.followState = res.data.followState
         })
         .catch(err => {
             console.log(err);
         })
+
        
+    },
+    computed:{
+        getToken(){
+        const token = localStorage.getItem('jwt')
+        const config = {
+            Authorization: `Bearer ${token}`
+        }
+        return config
+        }
     },
     methods: {
         clickIntro: function() {
@@ -129,28 +158,54 @@ export default {
         clickFollower: function() {
             this.$router.push({'name':'followPage'})
         },
-    },
-    computed: {
-        userPk: function(){
-            return userpk
+        clickRequest: function(){
+            const token = localStorage.getItem('jwt')
+                if(!token){
+                    alert("로그인이 필요합니다.")
+                this.$router.push({name:'login'})
+                }
         },
-        // outputLanguage: function(language){
-        //      var reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        //     //특수문자 검증
-        //     if(reg.test(language)){
-        //         //특수문자 제거후 리턴
-        //         return language.replace(reg, "");    
-        //     } else {
-        //         //특수문자가 없으므로 본래 문자 리턴
-        //         return language;
-        //     }  
-        // }
-    }
+        clickFollowBtn: function(event){
+                const token = localStorage.getItem('jwt')
+                if(!token){
+                    alert("로그인이 필요합니다.")
+                this.$router.push({name:'login'})
+                }
+            axios({
+                    method: 'post',
+                    url: `${SERVER_URL}/follow/member`,
+                    data: {"memberNo": this.no},
+                    headers: this.getToken,
+                })
+                .then(res=>{
+                    console.log(res)
+                })
+                .catch({
+                    // console.log(this.no)
+                    // console.log(this.getToken)
+                    // console.log(err);
+                })
+            if(event.target.innerText == 'follow' ){
+              event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
+              
+            }else{
+              event.target.innerText = 'follow'
+              
+              event.target.style.backgroundColor='blue'
+              event.target.style.color="white"
+            }
+
+        },
+    },
+    
+
 }
 </script>
 
 <style scoped>
-.row {
+.top {
     margin-top: 120px;
 }
 
@@ -251,7 +306,7 @@ i {
     margin-left: -70px;
 }
 .clickImg{
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 550;
 }
 @media (max-width:576px) {
@@ -269,5 +324,14 @@ i {
     border-radius: 75%;
     
 }
+}
+.btn-follow{
+      background-color: blue;
+  color: white;
+}
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid blue;
 }
 </style>
