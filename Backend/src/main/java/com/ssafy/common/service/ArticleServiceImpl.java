@@ -100,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService{
     	
     }else if(articleClass.equals("article")){
     	//게시글 전체 조회 결과
-        List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
+        List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
         	res.put("msg", "일반 게시글이 존재하지 않습니다.");
         }else {
@@ -116,7 +116,7 @@ public class ArticleServiceImpl implements ArticleService{
         	 res.put("article", articleList);
         }
     }else if(articleClass.equals("qna")){
-        List<ArticleDTO> articleList = ArticleRepo.sltMultiQnA(nowLoginMemberNo, PageRequest.of(page, 20), Article_Class.A00).orElse(null);
+        List<ArticleDTO> articleList = ArticleRepo.sltMultiQnA(nowLoginMemberNo, PageRequest.of(page, Common.PAGE), Article_Class.A00).orElse(null);
         res.put("article", articleList);
         if (articleList.size()==0) //게시글이 존재하지 않을 시.
         	res.put("msg", "QnA 게시글이 존재하지 않습니다.");
@@ -391,7 +391,7 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 public Map<String,Object>sltMultiDiscussByHost(Long HostPK,int page){
 	Map<String,Object>res = new HashMap<String,Object>();
 	String msg = "";
-	List<DiscussDTO> discussList = disRepo.sltMultiByDisHost(HostPK, PageRequest.of(page, 20)).orElse(null);
+	List<DiscussDTO> discussList = disRepo.sltMultiByDisHost(HostPK, PageRequest.of(page, Common.PAGE)).orElse(null);
 	res.put("article", discussList);
 	if (discussList.size() ==0) {
 		msg = "등록된 토론이 없습니다";

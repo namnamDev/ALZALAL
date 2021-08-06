@@ -53,7 +53,7 @@ public class SearchServiceImpl implements SearchService {
 		}
 
 		List<ArticleDTO> ret = articleRepository.getListByMemberNO(memberNo,
-				nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
+				nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
 		
 		//받아온 게시글에 알고리즘 목록 넣어줌
 		if(ret!=null) {
@@ -113,7 +113,7 @@ public class SearchServiceImpl implements SearchService {
 		
 		
 		List<ArticleDTO> list = articleRepository.getProblemSearch(nowLoginMemberNo,
-				problem_Site,language,and,not, PageRequest.of(page, 20),sort).orElse(null);
+				problem_Site,language,and,not, PageRequest.of(page, Common.PAGE),sort).orElse(null);
 
 		
 		//받아온 게시글에 알고리즘 목록 넣어줌
@@ -171,7 +171,7 @@ public class SearchServiceImpl implements SearchService {
 		}
 		
 		List<ArticleDTO> list = articleRepository.getAlgorithmSearch(nowLoginMemberNo,
-				language,and,not, PageRequest.of(page, 20),sort).orElse(null);
+				language,and,not, PageRequest.of(page, Common.PAGE),sort).orElse(null);
 
 		//받아온 게시글에 알고리즘 목록 넣어줌
 		if(ret!=null) {
@@ -208,7 +208,7 @@ public class SearchServiceImpl implements SearchService {
 			nowLoginMemberNo = 0L;
 		}
 		
-		List<MemberSearchDTO> list= memberRepositoryCustom.getMemberSearch(name, nowLoginMemberNo, PageRequest.of(page, 20)).orElse(null);
+		List<MemberSearchDTO> list= memberRepositoryCustom.getMemberSearch(name, nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
 		
 		return list;
 	}
