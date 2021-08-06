@@ -15,6 +15,7 @@ export default new Vuex.Store({
     articleDetail: null,
     articleComments: null,
     qnaList: null,
+    searchArticle: null,
   },
 
   mutations: {
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     CREATE_QNA_LIST: function(state, qnalist){
       state.qnaList = qnalist
+    },
+    CREATE_SEARCH_ARTICLE: function(state, data){
+      state.searchArticle = data
     }
 
   },
@@ -54,6 +58,9 @@ export default new Vuex.Store({
     },
     createQnaList: function({commit}, qnalist){
       commit('CREATE_QNA_LIST', qnalist)
+    },
+    createSearchArticle: function({commit},data){
+      commit('CREATE_SEARCH_ARTICLE', data)
     }
 
   },
@@ -74,6 +81,9 @@ export default new Vuex.Store({
     },
     getQnaList: function(state){
       return state.qnaList
+    },
+    getSearchArticle: function(state){
+      return state.searchArticle
     }
   },
 

@@ -151,8 +151,8 @@ export default {
         headers: this.getToken(),
         data :{}
       })
-      .then( {
-        // console.log(res)
+      .then(res=> {
+        console.log(res)
       })
       .catch(err => {
         console.log(err)

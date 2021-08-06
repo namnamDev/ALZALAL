@@ -3,20 +3,22 @@
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
     <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
       <div class="row top mt-2">
-        <div class="col-3 box1 image mt-2">
+        <div class="col-3 image mt-2">
           <i class="fas fa-user" style="font-size: 60px"></i>
         </div>
-        <div class="col box1">
-          <div class="row box1 name" @click="clickName">
+        <div class="col">
+          <div class="row name">
             <p>{{ this.memberName }}</p>
           </div>
-          <div class="row box1 mt-2" @click="clickArticle">
+          <div class="row  mt-2">
             <div>
               <div class="title mb-1">{{ this.articleTitle }}</div>
               <div class="hashtag">
+                <span v-if="articleClass=='A01'">문제풀이</span>
+                <span v-else>QnA</span>
                 <span>{{ this.problemSite }} {{ problemNo }}</span>
                 <span>{{ this.language }}</span>
-                <span>알고리즘 추가</span>
+                <span class='mt-2' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
               </div>
             </div>
           </div>
@@ -24,13 +26,13 @@
       </div>
 
       <div class="row middle">
-        <div class="col box1 content">
+        <div class="col content">
           <Viewer id="viewer" :viewerText="content" />
         </div>
       </div>
 
       <div class="row bottom mt-0 mt-sm-4">
-        <div class="col box1 like-comment">
+        <div class="col like-comment">
           <i class="fas fa-heart me-2" v-if="likeState"></i>
           <i class="far fa-heart me-2" v-else></i>
           <span>{{this.likeCount}}</span>
@@ -154,23 +156,25 @@ export default {
 }
 .article-box {
   background: white;
-  -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
-  border-radius: 1px;
+  -webkit-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
   padding: 15px 15px;
-  height: 400px;
+  /* height: 400px; */
 }
 .article-box:hover {
-  box-shadow: 0 20px 20px rgba(161, 212, 226, 0.6);
-  transform: scale(1.1);
+  -webkit-box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
+  box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
+  transform: scale(1.05);
   cursor: pointer;
 }
 
 .image {
   text-align: center;
+  align-self: center;
 }
 .top {
-  height: 100px;
+  /* height: 140px; */
 }
 .name {
   height: 25px;
@@ -183,8 +187,8 @@ export default {
 }
 .middle {
   margin-top: 10px;
-  padding: 0 20px;
-  height: 210px;
+  padding: 0 20px;  
+  /* height: 210px; */
 }
 .content {
   overflow: hidden;
@@ -203,20 +207,18 @@ export default {
   font-size: 16px;
   border-radius: 3px;
   background-color: rgba(221, 223, 230, 1);
-  padding: 1px 8px;
+  padding:0px 8px;
   margin-right: 6px;
+  display:inline-block;
 }
-
 .hashtag {
-  height: 20px;
+  /* height: 20px; */
 }
 @media (max-width: 767px) {
   .top {
     margin-bottom: 30px;
   }
-  .box {
-    height: 350px;
-  }
+
 }
 </style>
 
