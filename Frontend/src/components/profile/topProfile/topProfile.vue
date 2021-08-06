@@ -1,10 +1,10 @@
 <template>
-    <div class="row">
-        <div class="col-lg-4 col-md-2 col-sm-3 col-3 col-xl-5"></div>
+    <div class="row top">
+        <div class="col-lg-3 col-md-2 col-sm-3 col-3 col-xl-3"></div>
         <div class="col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
-            <div class="row-lg-8">
+            <div class="row">
                     <!-- 프로필이미지 -->
-                <div class="col-lg-3">
+                <div class="offset-1 col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
                         <div class="modifyProfile" v-if="this.myPage">
@@ -15,8 +15,8 @@
                     </div>
                 </div>
                     <!-- 프로필 이름, 수정버튼 -->
-                <div class="col-lg-9">
-                    <div class="row-lg-8">
+                <div class="col-lg-7">
+                    <div class="row">
                         <div class="profile-user-settings row-lg-8">
                             <h1 class="profile-user-name">{{name}}
                                 <button v-if="this.myPage" class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
@@ -45,7 +45,7 @@
                   
                 </div>
             </div>
-            <div class="row-lg-4">
+            <div class="row">
                 <div>
                     <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
@@ -205,7 +205,7 @@ export default {
 </script>
 
 <style scoped>
-.row {
+.top {
     margin-top: 120px;
 }
 

@@ -203,7 +203,7 @@ export default {
   top: 170px;
   position:fixed;
   /* border-left: 1px solid black;   */
-  /* display: none; */
+  display: none !important;
 }
 #search-bar{
   position: absolute;
@@ -308,7 +308,7 @@ export default {
 
 @media (min-width:992px){
   #search{
-    display:block; 
+    display:block !important; 
   }
 }
 </style>

@@ -63,6 +63,9 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'ArticleDetail',
+  props:{
+    // articleno: Number
+  },
 
   components:{
     Comment,
@@ -87,6 +90,7 @@ export default {
     }
   },
   computed: {
+
     getComments: function() {
       return this.$store.getters.getArticleComments
     },
@@ -110,6 +114,7 @@ export default {
   },
 
   created() {    
+    console.log(this.articleno)
     const article = this.$store.getters.getArticleDetail
     this.articleNo = article.articleNo
     this.articleTitle = article.articleTitle
