@@ -40,10 +40,20 @@ public class Notification {
   //알림 상태 (확인여부)
   private boolean notificationReadStatus;
 
-  @Column(length =3,name= "NOTIFICATION_CLASS")
-  @Enumerated(EnumType.STRING)
-  private Notification_Class notificationClass;
+  @Column(name= "NOTIFICATION_TARGET_NO")
+  private Long notificationTargetNO;
 
+  @Column(length =3,name= "NOTIFICATION_TASK")
+  @Enumerated(EnumType.STRING)
+  private Notification_Task notificationTask;
+  
+  
+  @Column(length =3,name= "NOTIFICATION_SUBTASK")
+  @Enumerated(EnumType.STRING)
+  private Notification_SubTask notificationSubTask;
+  
+  
+  
   @Column(name = "NOTIFICATION_DATE")
   //생성시간
   private Timestamp notificationDate;
