@@ -162,6 +162,7 @@ export default{
       })
       .then(res => {
         console.log(res);
+        alert(res.data.msg)
         localStorage.removeItem("jwt")
         localStorage.removeItem("vuex")
         this.$router.push({ name: 'login' })

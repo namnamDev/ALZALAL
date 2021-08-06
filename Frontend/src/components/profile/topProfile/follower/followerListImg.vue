@@ -146,7 +146,7 @@ export default {
   width: 30%;
   margin-left: 30px;
 }
-@media (max-width:768px) {
+@media (max-width:576px) {
 .user{
   margin-top: 5px;
 }
@@ -154,12 +154,15 @@ export default {
   border-radius: 20%;
   margin-left: 0;
 }
+.row{
+  margin-left: 30px;
+}
 }
 .btn{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   font-size: 15px;
-  border-radius: 11%;
+  border-radius: 5%;
 }
 .btn-unfollow {
   background-color: white;
@@ -173,5 +176,9 @@ export default {
 .btn:hover {
   background-color:#a1d4e2;
 }
-
+@media (min-width:768px) {
+  .row{
+    margin-left: 70px;
+  }
+}
 </style>

@@ -17,20 +17,20 @@
           <label align="left" for="password">Password</label>
           <input id="password" type="password" v-model="form.password" />
         </div>
-        <div class="row">
-        <div class="btn-login col-7 col-ml-7 col-lg-7"></div>
-        <div class="btn-login col-5 col-ml-5 col-lg-5"> 
-          <button
-                  :disabled="!isEmailValid && form.password"
-            type="submit"
-            class="btn"
-                  >
-            Login
-          </button>
-          <span>
-            <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
-          </span> 
-    </div>
+        <div class="row btnclass">
+          <div class="btn-login col-7 col-ml-7 col-lg-7"></div>
+          <div class="btn-login col-5 col-ml-5 col-lg-5"> 
+            <button
+                    :disabled="!isEmailValid && form.password"
+              type="submit"
+              class="btn"
+                    >
+              Login
+            </button>
+            <span>
+              <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
+            </span> 
+          </div>
         </div>
         <!-- <div class='snsLogin'>
           <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
@@ -152,7 +152,7 @@ export default {
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
 }
-@media (min-width: 1440px){
+@media (min-width: 1200px){
 .form input,
 .form textarea {
   font-family: inherit;
@@ -171,6 +171,12 @@ export default {
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
+}
+}
+@media (max-width: 576){
+.btn-user{
+  font-size: 10px;
+      opacity: 0.8;
 }
 }
 .form div:nth-last-child(2) {
@@ -195,5 +201,9 @@ export default {
 .btn-sns {
   display: block;
   margin-left: 0 auto;
+}
+.btnclass{
+  margin-top: 10px;
+  margin-left: 30px;
 }
 </style>
