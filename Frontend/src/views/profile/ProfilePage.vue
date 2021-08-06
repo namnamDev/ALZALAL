@@ -19,7 +19,7 @@ export default {
 <style scoped>
 .container{
   margin-top: 90px;
-  margin-left: 50px;
+  /* margin-left: 50px; */
 }
 @media (max-width:576px){
   .container{

@@ -7,10 +7,10 @@
           <i class="fas fa-user" style="font-size: 60px"></i>
         </div>
         <div class="col">
-          <div class="row name">
+          <div class="row name" @click="clickName">
             <p>{{ this.memberName }}</p>
           </div>
-          <div class="row  mt-2">
+          <div class="row mt-2">
             <div>
               <div class="title mb-1">{{ this.articleTitle }}</div>
               <div class="hashtag">
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="row middle">
+      <div class="row middle" @click="clickArticle">
         <div class="col content">
           <Viewer id="viewer" :viewerText="content" />
         </div>
@@ -133,7 +133,7 @@ export default {
         console.log(err)
       })
 
-      this.$router.push({name : 'articleDetail', params:{articleNo:this.articleNo}})
+      this.$router.push({name : 'articleDetail', params:{articleno:this.articleNo}})
     },
     clickName: function(){
       localStorage.setItem('userPk',this.memberNo)
@@ -166,7 +166,6 @@ export default {
   -webkit-box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
   box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
   transform: scale(1.05);
-  cursor: pointer;
 }
 
 .image {
@@ -198,6 +197,7 @@ export default {
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   height: 100%;
+  cursor:pointer;
 }
 
 .like-comment {

@@ -155,8 +155,8 @@ export default {
       })   
       .then(res =>{
         this.$store.dispatch('createArticleComment',res.data.articleComments)
-        // this.$router.push({name : 'articleDetail'})
-        location.href = 'articleDetail'
+        this.$router.push({name : 'articleDetail'})
+        // location.href = 'articleDetail'
       })
       .catch(err =>{  
         console.log(err)
