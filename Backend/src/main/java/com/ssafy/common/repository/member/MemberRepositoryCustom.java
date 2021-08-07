@@ -12,4 +12,7 @@ import com.ssafy.common.dto.MemberSearchDTO;
 public interface MemberRepositoryCustom {
 	//회원검색
 	Optional<List<MemberSearchDTO>> getMemberSearch(String name,Long nowLoginMember,Pageable page);
+	
+	//회원검색 Count
+	Long getMemberSearchCount(String name);
 }

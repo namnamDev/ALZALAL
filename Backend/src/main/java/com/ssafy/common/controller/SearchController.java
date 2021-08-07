@@ -106,8 +106,7 @@ public class SearchController {
 		System.out.println("name "+name);
 		
 		try{
-			List<MemberSearchDTO> list=searchService.getMemberSearch(name, page);
-			ret.put("memberList", list);
+			ret=searchService.getMemberSearch(name, page);
 		}catch (IllegalStateException e) {
 			ret.put("success","False");
 			ret.put("msg", e.getMessage());
