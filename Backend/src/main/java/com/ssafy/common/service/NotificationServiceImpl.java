@@ -185,4 +185,40 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
 		return;
 	}
+	
+	//풀이요청게시글 응답 알림 저장후 알림 갯수 소켓통신으로 전송
+	@Override
+	public void helpmeChangeState(long helpmeNo,long receiverNo, Notification_SubTask subTask) {
+		Member sender=memberRepository.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		Member receiver=memberRepository.findById(receiverNo)
+				.orElseThrow(() -> new IllegalStateException("작성자가 존재하지 않습니다"));
+		
+		Notification notification=new Notification();
+		notification.setNotificationSender(sender);//풀이요청게시글 응답 누른사람
+		notification.setNotificationReciever(receiver);//풀이요청게시글 작성자
+		notification.setNotificationReadStatus(false);//안읽은 상태로 설정 
+		notification.setNotificationTargetNO(helpmeNo);//풀이요청 게시글 PK
+		notification.setNotificationTask(Notification_Task.HLP);//좋아요
+		notification.setNotificationSubTask(subTask);//응답 종류
+
+		
+		
+		// 1. 알림 등록
+		notificationRepository.save(notification);
+		
+		// 2. member테이블의 notificationCount 1증가
+		long notificationCount = receiver.getNotificationCount()+1;
+		receiver.setNotificationCount(notificationCount);
+		
+		// 3. 알림 전송
+		NotificationSocketDTO socketDTO=new NotificationSocketDTO();
+		if(receiver.getNotificationCount()>0) {
+			socketDTO.setNew(true);
+			socketDTO.setCount(receiver.getNotificationCount());
+		}
+		//알림 전송
+		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		return;
+	}
 }

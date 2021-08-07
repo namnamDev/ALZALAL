@@ -1,15 +1,15 @@
 package com.ssafy.common.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.ssafy.common.domain.article.Article;
 import com.ssafy.common.domain.helpme.Helpme;
 import com.ssafy.common.domain.helpme.Helpme_Class;
 import com.ssafy.common.domain.member.Member;
@@ -19,6 +19,7 @@ import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.HelpmeDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.HelpmeRepository;
+import com.ssafy.common.repository.article.ArticleRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 import com.ssafy.common.repository.problem.Problem_Site_Repository;
@@ -34,6 +35,7 @@ public class HelpmeServiceImpl implements HelpmeService {
 	private final MemberRepository memberRepository;
 	private final Problem_Site_Repository problem_Site_Repository;
 	private final Problem_Site_ListRepository problem_Site_ListRepository;
+	private final ArticleRepository articleRepository;
 
 	// memberNo가 받은 문제풀이 요청 목록
 	@Override
@@ -198,6 +200,49 @@ public class HelpmeServiceImpl implements HelpmeService {
 		
 		
 		helpmeRepository.deleteById(helpmeNo);
+		
+		return;
+	}
+	
+	//풀이요청 응답
+	@Override
+	public long changeState(Long helpmeNo, String answer) {
+		Helpme helpme=helpmeRepository.findById(helpmeNo)
+				.orElseThrow(()-> new IllegalStateException("존재하지 않는 게시글입니다"));
+		Member member = memberRepository
+				.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		
+		if(helpme.getHelpmeReceptorNo().getNo()!=member.getNo()) {
+			throw new IllegalStateException("답변 요청 받은 유저만 응답이 가능합니다");
+		}
+		
+		if(answer.equals("accept")) {
+			helpme.setHelpmeStatus(Helpme_Class.H01);//수락
+		}else if(answer.equals("reject")) {
+			helpme.setHelpmeStatus(Helpme_Class.H02);//거절
+		}else if(answer.equals("end")) 
+			helpme.setHelpmeStatus(Helpme_Class.H03);//답변완료
+		//알림에 사용할 게시글 작성자 No
+		return helpme.getHelpmeSenderNo().getNo();
+	}
+	
+	//풀이요청 답변
+	//helpme게시판에 해당 게시글 답변게시글로 등록
+	@Override
+	public void answerArticleMapping(Long answerArticleNo, Long helpmeNo) {
+		Helpme helpme=helpmeRepository.findById(helpmeNo)
+				.orElseThrow(()-> new IllegalStateException("존재하지 않는 게시글입니다"));
+		Article answerArticle = articleRepository.findById(answerArticleNo)
+				.orElseThrow(()-> new IllegalStateException("답변게시글이 등록되지 않았습니다"));
+		Member member = memberRepository
+				.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		if(helpme.getHelpmeReceptorNo().getNo()!=member.getNo()) {
+			throw new IllegalStateException("답변 요청 받은 유저만 응답이 가능합니다");
+		}
+		
+		helpme.setHelpmeAnswerArticleNo(answerArticleNo);
 		
 		return;
 	}
