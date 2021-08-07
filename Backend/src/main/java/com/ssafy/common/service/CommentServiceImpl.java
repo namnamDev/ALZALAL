@@ -259,9 +259,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				ArtiComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getArticleNo().getArticleNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				ArtiComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 		}else if(articleClass.equals("discussion")){
 			Discuss_Comment artiCom = disComRepo.getById(commentPk);
@@ -272,9 +274,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				disComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getDiscussNo().getDiscussNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				disComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 			
 		}else if(articleClass.equals("helpme")){
@@ -286,9 +290,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				helpComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getHelpmeNo().getHelpmeNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				helpComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 			
 		}

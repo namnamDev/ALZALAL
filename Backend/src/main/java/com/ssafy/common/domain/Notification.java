@@ -1,9 +1,10 @@
 package com.ssafy.common.domain;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,10 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.ssafy.common.domain.member.Member;
 
-// import com.ssafy.common.domain.Member;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,7 +48,7 @@ public class Notification {
 	@Enumerated(EnumType.STRING)
 	private Notification_Task notificationTask;
 
-	@Column(length = 3, name = "NOTIFICATION_SUBTASK")
+	@Column(length = 4, name = "NOTIFICATION_SUBTASK")
 	@Enumerated(EnumType.STRING)
 	private Notification_SubTask notificationSubTask;
 
