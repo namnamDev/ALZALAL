@@ -47,4 +47,17 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 		return Optional.of(result);
 	}
 	
+	//회원검색 Count
+	@Override
+	public Long getMemberSearchCount(String name) {
+		QMember member=QMember.member;
+
+		Long result= queryFactory.select(member)					
+					.from(member)
+					.where(member.name.like(name+"%"))
+					.fetchCount();
+
+		
+		return result;
+	}
 }

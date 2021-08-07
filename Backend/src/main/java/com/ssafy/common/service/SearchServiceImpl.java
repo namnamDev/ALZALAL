@@ -125,11 +125,13 @@ public class SearchServiceImpl implements SearchService {
 				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
 				atcl.setAlgo(algorithmList);
 			}
-		}
-		
-		ret.put("aricleList", list);
+		}		
+		ret.put("articleList", list);
 
-		
+		// 전체 검색된 게시글 갯수
+		Long count = articleRepository.getProblemSearchCount(problem_Site, language, and, not);
+		ret.put("articleSearchCount", count);
+
 		Problem_Site_List ptmp=new Problem_Site_List(problemName);
 		Problem_Site pstmp=new Problem_Site();
 		pstmp.setProblemSiteName(ptmp);
@@ -181,7 +183,12 @@ public class SearchServiceImpl implements SearchService {
 			}
 		}
 
-		ret.put("aricleList", list);
+		ret.put("articleList", list);
+		
+		
+		// 전체 검색된 게시글 갯수
+		Long count = articleRepository.getAlgorithmSearchCount(language, and, not);
+		ret.put("articleSearchCount", count);
 		
 		//팔로잉 떠야된다고 알려줘야함
 		if(and.size()==1 && not.size()==0) {
@@ -196,7 +203,8 @@ public class SearchServiceImpl implements SearchService {
 	}
 	
 	//회원검색
-	public List<MemberSearchDTO> getMemberSearch(String name,int page) {
+	@Override
+	public Map<String, Object> getMemberSearch(String name,int page) {
 		if(name.trim().length()==0)
 			throw new IllegalStateException("검색어를 입력해 주세요");
 		
@@ -209,8 +217,15 @@ public class SearchServiceImpl implements SearchService {
 		}
 		
 		List<MemberSearchDTO> list= memberRepositoryCustom.getMemberSearch(name, nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
+		Map<String, Object> ret = new HashMap<>();
+		ret.put("memberList", list);
 		
-		return list;
+		//전체 검색된 회원 갯수
+		Long count = memberRepositoryCustom.getMemberSearchCount(name);
+		ret.put("memberSearchCount", count);
+		
+		
+		return ret;
 	}
 
 	

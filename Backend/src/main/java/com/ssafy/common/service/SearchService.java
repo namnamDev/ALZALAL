@@ -19,5 +19,5 @@ public interface SearchService {
 			List<String> and, List<String> not, int page, String sort);
 	
 	//회원검색
-	List<MemberSearchDTO> getMemberSearch(String name,int page);
+	Map<String, Object> getMemberSearch(String name,int page);
 }
