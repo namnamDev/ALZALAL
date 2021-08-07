@@ -132,6 +132,7 @@ public class CommentServiceImpl implements CommentService{
 			}else {
 				msg = "게시글이 존재하지 않습니다.";		
 			}
+			res.put("member", article.getMember().getNo());//작성자
 			res.put("msg", msg);
 		}else if(articleClass.equals("discussion")){
 			Discuss article = discussRepo.sltOneArticle(articlePk);
@@ -157,8 +158,9 @@ public class CommentServiceImpl implements CommentService{
 				comment.setHelpmeNo(article);
 				helpComRepo.save(comment);
 			}else {
-				msg = "토론게시글이 존재하지 않습니다.";
+				msg = "풀이요청게시글이 존재하지 않습니다.";
 			}
+			res.put("member", article.getHelpmeSenderNo().getNo());//작성자
 			res.put("msg", msg);
 		}
 		return res;

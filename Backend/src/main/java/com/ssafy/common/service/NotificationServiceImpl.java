@@ -2,7 +2,6 @@ package com.ssafy.common.service;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.common.domain.Notification;
@@ -72,4 +71,41 @@ public class NotificationServiceImpl implements NotificationService {
 		return;
 	}
 	
+	
+	//댓글 알림 저장후 알림 갯수 소켓통신으로 전송
+	@Override
+	public void articleComment(String articleClass,long articleNo,long receiverNo) {
+		Member sender=memberRepository.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		Member receiver=memberRepository.findById(receiverNo)
+				.orElseThrow(() -> new IllegalStateException("존재하지 않는 팔로우 대상입니다"));
+		
+		Notification notification=new Notification();
+		notification.setNotificationSender(sender);//댓글 적은사람
+		notification.setNotificationReciever(receiver);//게시글 작성자
+		notification.setNotificationReadStatus(false);//안읽은 상태로 설정 
+		notification.setNotificationTargetNO(articleNo);//게시글 PK
+		notification.setNotificationTask(Notification_Task.COM);//댓글
+		if(articleClass.equals("article"))
+			notification.setNotificationSubTask(Notification_SubTask.NAC);//게시글 종류(일반 게시글)
+		else
+			notification.setNotificationSubTask(Notification_SubTask.NHC);//게시글 종류(풀이요청 게시글)
+		
+		// 1. 알림 등록
+		notificationRepository.save(notification);
+		
+		// 2. member테이블의 notificationCount 1증가
+		long notificationCount = receiver.getNotificationCount()+1;
+		receiver.setNotificationCount(notificationCount);
+		
+		// 3. 알림 전송
+		NotificationSocketDTO socketDTO=new NotificationSocketDTO();
+		if(receiver.getNotificationCount()>0) {
+			socketDTO.setNew(true);
+			socketDTO.setCount(receiver.getNotificationCount());
+		}
+		//알림 전송
+		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		return;
+	}
 }

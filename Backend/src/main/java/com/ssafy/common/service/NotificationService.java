@@ -7,4 +7,7 @@ public interface NotificationService {
 	
 	//회원 팔로우 알림 저장후 알림 갯수 소켓통신으로 전송
 	void followMember(long receiverNo);
+
+	//댓글 알림 저장후 알림 갯수 소켓통신으로 전송
+	void articleComment(String articleClass,long articleNo,long receiverNo);
 }
