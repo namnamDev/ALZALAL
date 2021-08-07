@@ -357,10 +357,11 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 			insertLike.setArticleNo(article);
 			insertLike.setMember(member);
 			ArticleLikeRepo.save(insertLike);
-			res.put("mylike", true);
+			res.put("myLike", true);
+			res.put("member",article.getMember().getNo());//게시글 작성자
 		}else {
 			ArticleLikeRepo.deleteLike(member,article);
-			res.put("mylike", false);
+			res.put("myLike", false);
 		}
 		long likeCount = ArticleRepo.likeArticle(article);
 		res.put("likeCount", likeCount);
@@ -375,10 +376,11 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 			insertLike.setHelpmeNo(article);
 			insertLike.setMember(member);
 			helLiRepo.save(insertLike);
-			res.put("mylike", true);
+			res.put("myLike", true);
+			res.put("member",article.getHelpmeSenderNo().getNo());//게시글 작성자
 		}else {
 			helLiRepo.deleteLike(member,article);
-			res.put("mylike", false);
+			res.put("myLike", false);
 		}
 		long likeCount = helpmeRepo.likeArticle(article);
 		res.put("likeCount", likeCount);

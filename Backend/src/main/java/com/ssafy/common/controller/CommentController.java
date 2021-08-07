@@ -14,46 +14,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.service.CommentService;
+import com.ssafy.common.service.NotificationService;
 
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
 	@Autowired
 	CommentService cs;
-  @GetMapping("/{articleClass}/{pk}")
-  public Map<String,Object>sltMultiArticleComment(
-		  @PathVariable(name="articleClass")String articleClass,
-		  @PathVariable(name="pk") long articlePk,
-		  @RequestParam(defaultValue = "0") int page
-		  ){
-	  return cs.sltMultCommentByArticle(articleClass,articlePk,page);
-  }
-  @PostMapping("/{articleClass}/{pk}")
-  public Map<String,Object>insertArticleComment(
-	  @PathVariable(name="articleClass")String articleClass,
-	  @PathVariable(name="pk") long articlePk,
-	  @RequestBody Map<String,Object> req
-	  ){
-  return cs.insertArticleComment(articleClass,articlePk,req);
-  }
-  //댓글삭제
-  @DeleteMapping("/{articleClass}/{pk}")
-  public Map<String,Object>deletedArticCom(
-		  @PathVariable(name="articleClass")String articleClass,
-		  @PathVariable(name="pk") long commentPK){
-			return cs.deleteArticleComment(articleClass,commentPK);
-	  
-  }
-  @PutMapping("/{articleClass}/{pk}")
-	public Map<String,Object>updateArticCom(
-			  @PathVariable(name="articleClass")String articleClass,
-			  @PathVariable(name="pk") long commentPK,
-			  @RequestBody Map<String,Object> req
-			  ){
-				return cs.updateArtiComment(articleClass,commentPK,req);
-		  
+	@Autowired
+	NotificationService notificationService;
+	@GetMapping("/{articleClass}/{pk}")
+	public Map<String, Object> sltMultiArticleComment(
+			@PathVariable(name = "articleClass") String articleClass,
+			@PathVariable(name = "pk") long articlePk,
+			@RequestParam(defaultValue = "0") int page) {
+		return cs.sltMultCommentByArticle(articleClass, articlePk, page);
 	}
-  //댓글 업데이트
-  //댓글 좋아요
+	@PostMapping("/{articleClass}/{pk}")
+	public Map<String, Object> insertArticleComment(
+			@PathVariable(name = "articleClass") String articleClass,
+			@PathVariable(name = "pk") long articlePk,
+			@RequestBody Map<String, Object> req) {
+		Map<String, Object> ret =
+				cs.insertArticleComment(articleClass, articlePk, req);
+		
+		//토론게시판 빼고 알림 발생
+		if(!articleClass.equals("discussion")) {
+			notificationService.articleComment(articleClass,articlePk, (long)ret.get("member"));
+			ret.remove("member");
+		}
+		return ret;
+	}
+	// 댓글삭제
+	@DeleteMapping("/{articleClass}/{pk}")
+	public Map<String, Object> deletedArticCom(
+			@PathVariable(name = "articleClass") String articleClass,
+			@PathVariable(name = "pk") long commentPK) {
+		return cs.deleteArticleComment(articleClass, commentPK);
+
+	}
+	@PutMapping("/{articleClass}/{pk}")
+	public Map<String, Object> updateArticCom(
+			@PathVariable(name = "articleClass") String articleClass,
+			@PathVariable(name = "pk") long commentPK,
+			@RequestBody Map<String, Object> req) {
+		return cs.updateArtiComment(articleClass, commentPK, req);
+
+	}
 
 }
