@@ -297,6 +297,23 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 		return Optional.of(result);		
 	}	
 	
+	//문제검색 결과 count
+	@Override
+	public Long getProblemSearchCount(Problem_Site problem, String language,List<String> and, List<String> not){
+		QArticle qa=QArticle.article;
+		QArticle_Algorithm qaa=QArticle_Algorithm.article_Algorithm;
+		
+		Long result = queryFactory.select(qa)
+				.from(qa)
+				.where(qa.problemSite.eq(problem)
+						,language==null?null:qa.useLanguage.useLanguage.eq(language)
+						,algorithmCondition(and,not,qaa,qa)
+						)				
+				.fetchCount();
+		
+		return result;		
+	}
+	
 	//알고리즘 검색 
 	//sort: 좋아요순, 최신순 같은 정렬기준
 	@Override
@@ -332,6 +349,23 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
 			
 		
 		return Optional.of(result);		
+	}
+	
+	//알고리즘 검색결과 Count
+	@Override
+	public Long getAlgorithmSearchCount(String language, List<String> and, List<String> not){
+		QArticle qa=QArticle.article;
+		QArticle_Algorithm qaa=QArticle_Algorithm.article_Algorithm;
+		
+		Long result = queryFactory.select(qa)
+				.from(qa)
+				.where(language==null?null:qa.useLanguage.useLanguage.eq(language)
+						,algorithmCondition(and,not,qaa,qa)
+						)				
+				.fetchCount();
+			
+		
+		return result;		
 	}
 	
 	//알고리즘 태그 여러개 조회하는 조건생성하는 메서드

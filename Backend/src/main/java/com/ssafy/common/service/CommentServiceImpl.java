@@ -132,6 +132,7 @@ public class CommentServiceImpl implements CommentService{
 			}else {
 				msg = "게시글이 존재하지 않습니다.";		
 			}
+			res.put("member", article.getMember().getNo());//작성자
 			res.put("msg", msg);
 		}else if(articleClass.equals("discussion")){
 			Discuss article = discussRepo.sltOneArticle(articlePk);
@@ -157,8 +158,9 @@ public class CommentServiceImpl implements CommentService{
 				comment.setHelpmeNo(article);
 				helpComRepo.save(comment);
 			}else {
-				msg = "토론게시글이 존재하지 않습니다.";
+				msg = "풀이요청게시글이 존재하지 않습니다.";
 			}
+			res.put("member", article.getHelpmeSenderNo().getNo());//작성자
 			res.put("msg", msg);
 		}
 		return res;
@@ -257,9 +259,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				ArtiComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getArticleNo().getArticleNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				ArtiComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 		}else if(articleClass.equals("discussion")){
 			Discuss_Comment artiCom = disComRepo.getById(commentPk);
@@ -270,9 +274,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				disComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getDiscussNo().getDiscussNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				disComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 			
 		}else if(articleClass.equals("helpme")){
@@ -284,9 +290,11 @@ public class CommentServiceImpl implements CommentService{
 				insertLike.setMember(member);
 				helpComLiRepo.save(insertLike);
 				res.put("myLike", true);
+				res.put("articleNo",artiCom.getHelpmeNo().getHelpmeNo());//게시판 번호
+				res.put("member",artiCom.getMember().getNo());//댓글 작성자 No
 			}else {
 				helpComLiRepo.deleteLike(member.getNo(), commentPk);
-				res.put("mylike", false);
+				res.put("myLike", false);
 				}
 			
 		}

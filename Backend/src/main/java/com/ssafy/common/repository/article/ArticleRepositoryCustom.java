@@ -44,9 +44,16 @@ public interface ArticleRepositoryCustom {
 	Optional<List<ArticleDTO> > getProblemSearch(Long nowLoginMemberNo,Problem_Site problem, String language,
 			List<String> and, List<String> not, Pageable page,String sort);
 
+	//문제검색 결과 count
+	Long getProblemSearchCount(Problem_Site problem, String language,List<String> and, List<String> not);
+	
 	//알고리즘 검색 
 	Optional<List<ArticleDTO> > getAlgorithmSearch(Long nowLoginMemberNo, String language,
 			List<String> and, List<String> not, Pageable page,String sort);
+	
+	//알고리즘 검색결과 Count
+	Long getAlgorithmSearchCount(String language, List<String> and, List<String> not);
+	
 	//해당 알고리즘이 속한 문제 갯수 리턴
 	long countbyAlgorithm(String algorithmName);	
 	

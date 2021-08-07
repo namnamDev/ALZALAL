@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.service.FollowService;
+import com.ssafy.common.service.NotificationService;
 
 @RestController
 @RequestMapping("/follow")
@@ -18,6 +19,9 @@ public class FollowController {
 	@Autowired
 	private FollowService followService;
 
+	@Autowired
+	private NotificationService notificationService;
+	
 	// 멤버 팔로우 ,팔로우 취소
 	@PostMapping("/member")
 	public Map<String, Object> memberFollow(@RequestBody Map<String, Long> req) {
@@ -32,6 +36,12 @@ public class FollowController {
 			ret.put("msg", e.getMessage());
 			return ret;
 		}
+		
+		//팔로우 취소는 알림 보내면안됨
+		if(ret.get("msg").equals("팔로우 완료")) {
+			notificationService.followMember(memberNo);
+		}
+		
 		return ret;
 	}
 	

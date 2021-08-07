@@ -12,24 +12,25 @@ import org.springframework.stereotype.Component;
 import com.ssafy.common.jwt.TokenProvider;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor {
     private final TokenProvider tokenProvider;
 
+    //소켓통신이 연결되기전에 JWT토큰이 유효한지 확인하는 메소드
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println("message:" + message);
-        System.out.println("헤더 : " + message.getHeaders());
-        System.out.println("토큰" + accessor.getNativeHeader("Authorization")+"\n");
-        
-    
+//        log.info("message:" + message);
+//        log.info("헤더 : " + message.getHeaders());
+//        log.info("토큰" + accessor.getNativeHeader("Authorization")+"\n");
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            System.out.println("jwt "+accessor.getFirstNativeHeader("Authorization").substring(7));
-            System.out.println("jwt boolean "+tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7)));
+//        	log.info("jwt "+accessor.getFirstNativeHeader("Authorization").substring(7));
+//        	log.info("jwt boolean "+tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7)));
             
         	if(!tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7))) {
         		throw new IllegalStateException("토큰이 유효하지 않습니다");        

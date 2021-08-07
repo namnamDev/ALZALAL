@@ -2,29 +2,50 @@ package com.ssafy.common.controller;
 
 import java.security.Principal;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import com.ssafy.common.dto.MemberDTO;
 import com.ssafy.common.dto.NotificationSocketDTO;
+import com.ssafy.common.service.NotificationService;
+import com.ssafy.common.websocket.NotificationSender;
 
-@Controller
+import lombok.RequiredArgsConstructor;
+
+@Controller //소켓통신 받아오는거때매 rest안붙임
+@RequiredArgsConstructor
 public class NotificationController {
 
-	@Autowired
-	private SimpMessagingTemplate simpMessagingTemplate;
+	private final NotificationSender notificationSender;
 
-	
+	private final NotificationService notificationService;
+
+	// 유저가 소켓서버에 연결되었을때 연결을 알리기위해 보낸 메세지에 매핑되는 곳으로
+	// 유저의 sessionID를 디비에 저장시켜줌
 	@MessageMapping("/connect")
-	public void sendSpecific(Principal principal,@Payload NotificationSocketDTO socketDTO,@Header("simpSessionId") String sessionId) throws Exception {
-		System.out.println("socketDTO "+ socketDTO);
-		System.out.println("Principal "+principal.getName());
-		System.out.println("sessionID "+ sessionId);
+	public void socketConnect(@Payload MemberDTO member,Principal principal) throws Exception {
+		NotificationSocketDTO socketDTO = new NotificationSocketDTO();
+
+		//알림 갯수 가져옴
+		long notificationCount = notificationService
+				.setMemberSessionId(member.getNo(), principal.getName());
+		if (notificationCount > 0) {
+			socketDTO.setNew(true);
+			socketDTO.setCount(notificationCount);
+		}
 		
-		simpMessagingTemplate.convertAndSendToUser(socketDTO.getTo(),
-				"/queue/test", socketDTO);
+		//로그인한 유저에게 전송
+		notificationSender.sendNotification(principal.getName(), socketDTO);
+		return;
 	}
+	
+	//유저의 알림 리스트 가져오기
+//	@ResponseBody
+//	@GetMapping("/list")
+//	public void getNotificationList() {
+//		
+//	}
+	
+	
 }
