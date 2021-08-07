@@ -23,4 +23,11 @@ public interface HelpmeService {
 	
 	//게시글 삭제
 	void deleteHelpme(Long helpmeNo);
+	
+	//풀이요청 응답
+	long changeState(Long helpmeNo, String answer);
+	
+	//풀이요청 답변
+	//helpme게시판에 해당 게시글 답변게시글로 등록
+	void answerArticleMapping(Long answerArticleNo, Long helpmeNo);
 }

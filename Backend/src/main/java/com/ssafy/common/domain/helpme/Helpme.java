@@ -59,11 +59,16 @@ public class Helpme {
   @CreationTimestamp
   private LocalDateTime helpmeDate;
   
+  //풀이 답변 게시판 No
+  @Column(name = "HELPME_ANSWER_ARTICLE_NO")
+  private Long helpmeAnswerArticleNo;
+  
   @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
   private List<Helpme_Comment> comments;
   
   @OneToMany(mappedBy = "helpmeNo" ,cascade = CascadeType.REMOVE)
   private List<Helpme_Like> likes;
+  
   
   
   
