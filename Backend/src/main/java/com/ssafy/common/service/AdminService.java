@@ -10,4 +10,7 @@ public interface AdminService {
 	// 회원가입
 	public int signup(Map<String, Object> req, int num);
 	Map<String, Object> insertArticle(String articleClass, int num);
+	Map<String, Object> setZero();
+	
+	
 }
