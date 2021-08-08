@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -19,9 +20,11 @@ import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.domain.member.RefreshToken;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.domain.problem.Problem_Site_List;
+import com.ssafy.common.dto.NotificationDTO;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.NotificationRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Use_Language_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
@@ -51,7 +54,8 @@ public class MemberServiceImpl implements MemberService {
 	private Problem_Site_LikeRepository problem_Site_LikeRepository;
 	@Autowired
 	private Use_Language_LikeRepository use_Language_LikeRepository;
-
+	@Autowired
+	private NotificationRepository notiRepo;
 	@Override
 	public long signup(Member member, List<String> problem_site_list, List<String> use_language_like) {
 		// name, email 중복확인
@@ -357,5 +361,22 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("qwer   "+memberNo);
 		Member member=memberRepository.findById(memberNo).get();
 		return member.getProfileImg();
+	}
+	
+	@Override
+	public Map<String, Object> getMemberNoti(int page){
+		  Map<String,Object>res = new HashMap<String,Object>();
+		  String msg = "";
+		  Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
+				  .orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		  List<NotificationDTO> notiList = notiRepo.notiList(member.getNo(),PageRequest.of(page, Common.PAGE)).orElse(null);
+		  res.put("notificationList", notiList);
+		  if (notiList==null) {
+			  msg = "알람이 없습니다.";
+			  res.put("msg", msg);
+		  }
+		return res;
+		  
+		  
 	}
 }
