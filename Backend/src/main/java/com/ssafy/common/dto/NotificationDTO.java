@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 public class NotificationDTO {
 	
 	private long notiNo;
-	private long notiReciever;
+	private long notiSender;
+	private String notiSenderNM;
 	private boolean notiReadStatus;
 	private long notiTargetNo;
 	private Notification_Task notiTaskClass;
