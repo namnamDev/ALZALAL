@@ -381,6 +381,27 @@ public class AdminServiceImpl implements AdminService {
 
 		memberRepository.save(member);
 	}
-
+	@Override
+	public Map<String, Object> setZero() {
+		String msg = "";
+		int suc = 0;
+		int fal =0;
+		
+		Map<String, Object> res = new HashMap<String, Object>();
+		List<Member> aa = memberRepository.findAll();
+		for(Member bb : aa) {
+			if (bb.getNotificationCount() == null) {
+				Member temp = bb; 
+				temp.setNotificationCount(0L);
+				memberRepository.save(temp);
+				suc++;
+			}else {
+				fal++;
+			}
+		}
+		res.put("SUCCESS", suc);
+		res.put("FAIL", fal);
+		return res;
+	}
 
 }

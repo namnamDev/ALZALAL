@@ -43,6 +43,10 @@ public class adminController {
 		ret.put("msg",cnt+"개의 회원가입에 성공했습니다");
 		return ret;
 	}
-	
+	@PostMapping("/member/setNotiNo")
+	public Map<String,Object> setZero(@RequestBody Map<String, Object> req){
+		return adminSvc.setZero();
+		
+	}
 	
 }
