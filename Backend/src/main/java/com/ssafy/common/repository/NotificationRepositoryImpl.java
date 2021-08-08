@@ -26,7 +26,8 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
 		QNotification qn = QNotification.notification;
 		List<NotificationDTO>res = queryFactory.select(Projections.constructor(NotificationDTO.class
 				,qn.notificationNo
-				,qn.notificationReciever.no
+				,qn.notificationSender.no
+				,qn.notificationSender.name
 				,qn.notificationReadStatus
 				,qn.notificationTargetNO
 				,qn.notificationTask
