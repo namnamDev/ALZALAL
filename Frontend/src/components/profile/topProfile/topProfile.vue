@@ -55,7 +55,7 @@
                     </p>
                 </div>
                 <div v-if="!myPage">
-                    <button @click="clickRequest" class="btn btn-request">문제풀이 요청하기</button>
+                    <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
 	    </div>
@@ -108,6 +108,7 @@ export default {
             pk = userpk
             this.myPage = true
         }
+        
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
@@ -140,7 +141,8 @@ export default {
             Authorization: `Bearer ${token}`
         }
         return config
-        }
+        },
+
     },
     methods: {
         clickIntro: function() {
@@ -164,6 +166,7 @@ export default {
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
                 }
+            this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
                 const token = localStorage.getItem('jwt')

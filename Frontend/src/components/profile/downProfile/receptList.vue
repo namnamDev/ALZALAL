@@ -3,7 +3,7 @@
   <!-- 보낸요청 시작 -->
   <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz" v-for="(item,index) in helpmeReceptList" :key="index">
     <div class="feed-card col-12 col-lg-12 col-ml-12">
-      <div class="contentsWrap">
+      <div class="contentsWrap" @click="clickHelpmeName">
         <span>{{item.problemSite.problemSiteName}}  </span>
         <span>{{item.problemSite.problemNo}}번 문제</span>
         <div>
@@ -80,6 +80,9 @@ export default {
         }).catch(err => {
           console.error(err);
         })
+    },
+    clickHelpmeName(){
+
     }
   },
 	computed: {
@@ -112,6 +115,7 @@ export default {
         box-sizing: border-box;
         padding: 12px;
         float: left;
+        cursor:pointer
  }
  .title {
     color:#000;

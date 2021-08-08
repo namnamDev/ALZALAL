@@ -111,7 +111,7 @@ export default {
             }
         },
         clickName: function(){
-           localStorage.setItem('userPk', this.no)
+          localStorage.setItem('userPk', this.no)
           this.$router.push({'name':'profilePage', params:{ userPk:this.no }})
         }
 

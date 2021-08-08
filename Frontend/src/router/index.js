@@ -8,7 +8,6 @@ import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
 import followPage from '@/views/profile/followPage.vue'
-import TargetProfilePage from '@/views/profile/targetProfilePage'
 import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
 import Timeline from '@/views/article/Timeline.vue'
@@ -21,6 +20,8 @@ import ArticleDetail from '@/components/article/ArticleDetail.vue'
 import SearchProblem from '@/components/article/SearchProblem.vue'
 import SearchAlgorithm from '@/components/article/SearchAlgorithm.vue'
 import SearchUser from '@/components/article/SearchUser.vue'
+import createHelpme from '@/views/createHelpme/createHelpme.vue'
+import helpmeDetail from '@/views/createHelpme/helpmeDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -61,11 +62,6 @@ const routes = [
     name: 'profilePage',
     component: ProfilePage,
     props:true
-  },
-  {
-    path: '/targetProfilePage',
-    name: 'targetProfilePage',
-    component: TargetProfilePage
   },
   {
     path: '/profilePage/followPage',
@@ -129,6 +125,18 @@ const routes = [
     path: '/searchUser',
     name: 'searchUser',
     component: SearchUser,
+    props: true
+  },
+  {
+    path: '/createHelpme',
+    name: 'createHelpme',
+    component: createHelpme,
+    props: true
+  },
+  {
+    path: '/helpmeDetail/:helpmeNo',
+    name: 'helpmeDetail',
+    component: helpmeDetail,
     props: true
   },
   {
