@@ -101,7 +101,8 @@ const routes = [
   {
     path: '/createArticle',
     name: 'createArticle',
-    component: CreateArticle
+    component: CreateArticle,
+    props:true
   },
   {
     path: '/articleDetail/:articleno',

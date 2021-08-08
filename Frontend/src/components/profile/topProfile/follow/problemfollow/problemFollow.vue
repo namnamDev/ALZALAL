@@ -55,7 +55,7 @@ export default {
               this.page += 1
               console.log("after", this.problems.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(data.length / 20 < 1) {
+              if(data.length / 10 < 1) {
                 $state.complete()
               }
             } else {

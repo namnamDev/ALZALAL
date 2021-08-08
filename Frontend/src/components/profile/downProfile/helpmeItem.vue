@@ -7,9 +7,15 @@
         <div>
           <p class="helpmeContent">{{this.helpmeContent}}</p>
         </div>
-        <div class="wrap">
-          <p class="comment"><i class="fas fa-comment"></i>  {{this.commentCount}}</p>
-          <p class="date">{{this.helpmeDate}}</p>
+        <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
+            <div class="col box1 like-comment">
+              <i class="fas fa-heart me-2" v-if="this.likeState"></i>
+              <i class="far fa-heart me-2" v-else></i>
+              <span>{{this.likeCount}}</span>
+              <i class="far fa-comment-dots mx-2"></i>
+              <span >{{this.commentCount}}</span>
+              <div><p class="date">{{this.helpmeDate}}</p></div>
+            </div>
         </div>
       </div>
     </div>

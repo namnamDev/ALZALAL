@@ -64,7 +64,7 @@ export default {
               $state.loaded()
               this.page += 1
               // 끝인지 판별
-              if(res.data.helpmeSendList.length / 20 < 1) {
+              if(res.data.helpmeSendList.length / 10 < 1) {
                 $state.complete()
               }
             } else {
