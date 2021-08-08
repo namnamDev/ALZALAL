@@ -75,7 +75,7 @@ public class Member {
 	private String profileImg;
 	
 	//알림 갯수
-	@Column(columnDefinition = "long default 0")
+	@ColumnDefault(value = "'0'")
 	private Long notificationCount;
 	
 	//소켓 통신에 사용되는 세션ID

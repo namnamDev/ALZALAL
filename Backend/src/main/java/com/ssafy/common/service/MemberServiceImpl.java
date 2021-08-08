@@ -101,7 +101,6 @@ public class MemberServiceImpl implements MemberService {
 
 		// 비밀번호 암호화
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		member.setNotificationCount(0L);
 		memberRepository.save(member);
 
 		return member.getNo();
