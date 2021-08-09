@@ -2,8 +2,9 @@
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
     <div>
-      <Viewer         
-      :initialValue="viewerText"
+      <Viewer     
+      height="500px" 
+      :initialValue="viewerContent"
       :options="viewerOptions"/>
     </div>
   </div>
@@ -29,23 +30,22 @@ export default {
   components: {
     Viewer,
   },
+  props: {
+    viewerText: String,
+  },
   data() {
     return {
-      // viewerText: '# hello world',
       viewerOptions: VIEWER_OPTION,
     };
   },
   computed: {
-    viewerText: function() {
-      return this.$store.getters.getContent
+    viewerContent: function() {
+      return this.viewerText
     },
   },
   methods: {
 
   },
-  created() {
-    
-  }
 };
 </script>
 
@@ -57,5 +57,14 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   top: 200px;  
+}
+.viewer{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 7; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap:break-word; 
+  height:100%;
 }
 </style>

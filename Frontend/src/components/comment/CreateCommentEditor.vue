@@ -7,7 +7,7 @@
       :options="editorOptions"
      />
     <div class="text-end mt-3 mb-5">
-      <button>저장</button>
+      <button @click="submit">저장</button>
     </div>
   </div>
 </template>
@@ -25,7 +25,12 @@ import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 
- 
+import axios from 'axios';
+
+import $ from 'jquery'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL 
+
 export default {
   components: {
     Editor,
@@ -48,6 +53,13 @@ export default {
 
   },
   methods: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
     // 마크다운 에디터 내용 가져오기
     getContent() {
       return this.$refs.toastEditor.invoke('getMarkdown')
@@ -55,6 +67,47 @@ export default {
     setContent(content) {
       this.$refs.toastEditor.invoke('setMarkdown', content)
     },
+    //댓글 작성버튼 클릭
+    submit() {
+      this.$swal('댓글을 작성하였습니다.');
+      const articleNo = localStorage.getItem('articleNo')
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/comment/article/${articleNo}`,
+        headers: this.getToken(),
+        data:{
+          'commentContent' : this.getContent()
+        }
+      })   
+      .then(() => {
+        this.setContent('')
+        axios({
+          method: 'get',
+          url: `${SERVER_URL}/comment/article/${articleNo}`,
+        })   
+        .then(res =>{
+          this.$store.dispatch('createArticleComment',res.data.articleComments)
+        })
+        .catch(err =>{  
+          console.log(err)
+        })
+      })
+      .catch(err =>{  
+        console.log(err)
+      })
+
+      var commentForm = $('#create-comment')
+ 
+      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+      if( commentForm.is(":visible") ){
+          commentForm.slideUp(500);
+      }else{
+          commentForm.slideDown(1000);
+      }
+
+      
+
+    }
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
       <ModifyForm></ModifyForm>
   </div>
 </template>
@@ -13,6 +13,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.container{
+  margin-top: 110px;
+}
+@media (max-width:576px){
+  .container{
+    margin-top: 60px;
+  }
+}
 </style>

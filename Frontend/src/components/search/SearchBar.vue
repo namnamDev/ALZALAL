@@ -1,37 +1,40 @@
 <template>
-  <div id="search" >
-    <div id="search-bar">
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        검색해주세요.
-      </div>
-      <!-- <div class="search-detail">
-
-      </div> -->
-    </div> 
+  <div>
+    <div id="search" >    
+      <div id="search-bar">
+        <div class="search-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <i class="fas fa-search"></i>
+          검색해주세요.
+        </div>
+      </div>     
+    </div>
+    <Modal />
   </div>
 </template>
 
 <script>
+import Modal from '@/components/search/SearchModal.vue'
 
 export default {
-
+  components: {
+    Modal
+  },  
 }
 </script>
 
 <style scoped>
 #search{
   height: 100vh;
-  width: 20%;
-  /* border-left: 1px solid black;   */
-  right: 0px;
-  top: 210px;
+  width: 280px;
+  right: 70px;
+  top: 170px;
   position:fixed;
-  display: none;
+  /* border-left: 1px solid black;   */
+  /* display: none; */
+  display: block;
 }
 #search-bar{
   position: absolute;
-  /* display:flex; */
   z-index:-2;
 }
 .fas{
@@ -40,23 +43,90 @@ export default {
 }
 .search-box{
   border:1px solid black;
-  width: 250px;
+  width: 230px;
   border-radius: 5px;
   padding:4px 7px;  
-}
-.search-detail{
-  border:1px solid black;
-  position: absolute;
-  width: 300px;
-  left: -25px;
-  height: 300px;
-  border-radius: 5px;
-  padding:4px 7px;  
+  cursor: pointer;
 }
 
-@media (min-width:992px){
+#category{
+  /* position: absolute; */
+  width: 130px;
+  height:30px;
+  border-radius: 3px;
+}
+#language{
+  width: 130px;
+  height:30px;
+  border-radius: 3px;
+  /* position:absolute; */
+  top: 50px;
+}
+.search-algo-input-div{
+  border-radius: 3px;
+  /* position: absolute; */
+  top: 100px;
+  z-index: 1;
+  display: inline;
+}
+.show {
+  display: block;
+}
+#search-algo-input-1{
+  width:200px;
+}
+#search-algo-ul{
+  padding-left: 3px;
+  border: 1px solid black;
+  background-color: white;
+  list-style: none;
+  text-align: start;
+  display: none;
+  overflow: auto;
+  height: 150px;
+  box-shadow: 0 20px 20px rgba(39, 40, 41, 0.2);
+}
+#search-algo-li:hover {
+  background-color: antiquewhite;
+}
+.include{
+  border: 1px solid black;
+  height:140px;
+  width: 200px;
+  /* position: absolute; */
+  top: 150px;
+}
+.exclude{
+  border: 1px solid black;
+  height:140px;
+  width: 200px;
+  /* position: absolute; */
+  top: 320px;
+}
+.btn-include{
+  /* position:absolute; */
+  width: 40px;
+  top:3px;
+  right:-50px;
+  cursor: pointer;
+}
+.btn-exclude{
+  /* position:absolute; */
+  width:40px;
+  top:3px;
+  right: -100px;
+  cursor: pointer;
+}
+.btn-search{
+  /* position: absolute; */
+  width:200px;
+  top: 470px;
+
+}
+
+@media (max-width:992px){
   #search{
-    display:block; 
+    display:none; 
   }
 }
 </style>

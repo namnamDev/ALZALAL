@@ -1,43 +1,46 @@
 <template>
-  <div class="contents">
+  <div class="row">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-		<div class="form-wrapper form-wrapper-sm col-lg-6 col-md-10 col-sm-9 col-10">
-			<form @submit.prevent="submitForm" class="form">
-				<div>
-					<label align="left" for="email">E-mail</label>
-					<input id="email" type="text" v-model="form.email" />
-					<p class="validation-text">
-						<span class="warning" v-if="!isEmailValid || !form.email">
-							Please enter an email address
-						</span>
-					</p>
-				</div>
-				<div>
-					<label align="left" for="password">Password</label>
-					<input id="password" type="password" v-model="form.password" />
-				</div>
-				<button
-                :disabled="!isEmailValid && form.password"
-					type="submit"
-					class="btn"
-                >
-					Login
-				</button>
-        <div>
-          <span><button class="btn btn-user">비밀번호찾기</button>
-                <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
-          </span>      
+    <div class="col-lg-6 col-md-10 col-sm-9 col-10">
+      <div class="row top mt-2 form-wrapper form-wrapper-sm">
+      <form @submit.prevent="submitForm" class="form">
+        <div class="row">
+          <label align="left" for="email">E-mail</label>
+          <input id="email" type="text" v-model="form.email" />
+          <p class="validation-text">
+            <span class="warning" v-if="!isEmailValid || !form.email">
+              Please enter an email address
+            </span>
+          </p>
         </div>
-        <div class='snsLogin'>
+        <div class="row">
+          <label align="left" for="password">Password</label>
+          <input id="password" type="password" v-model="form.password" />
+        </div>
+        <div class="row btnclass">
+          <div class="btn-login col-7 col-ml-7 col-lg-7"></div>
+          <div class="btn-login col-5 col-ml-5 col-lg-5"> 
+            <button
+                    :disabled="!isEmailValid && form.password"
+              type="submit"
+              class="btn"
+                    >
+              Login
+            </button>
+            <span>
+              <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
+            </span> 
+          </div>
+        </div>
+        <!-- <div class='snsLogin'>
           <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
           <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
           <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
-        </div>
-			</form>
-		
-		</div>
-       
-	</div>
+        </div> -->
+      </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -47,7 +50,7 @@ import axios from 'axios';
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    data() {
+  data() {
 		return {
       form: {
         email : '',
@@ -84,8 +87,12 @@ export default {
         }
         this.$store.dispatch("login",payload)
         //this.$store.dispatch("login",this.form.email)
-        this.$router.push({name: 'timeline'})
         
+        location.href = '/timeline'
+        // this.$router.replace({name: 'timeline'})
+        if(res.data.success=="False"){
+          alert(res.data.msg)
+        }
       })
       .catch(err =>{  // 실패하면 error
         console.log(err)
@@ -99,13 +106,9 @@ export default {
 
 <style scoped>
 /*--- LAYOUT ---*/
-.contents {
-  position: absolute;
-  margin: 0 auto;
-  padding: 0 5px;
-  width: 100%;  
-  top:90px;
-}
+.row {
+  margin-top: 40px;
+} 
 .form-wrapper {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
@@ -114,8 +117,7 @@ export default {
   padding: 15px 15px;
 }
 .form-wrapper.form-wrapper-sm {
-  max-width: 500px;
-  margin: 40px auto;
+  max-width: 700px;
 }
 .form-wrapper-sm .page-header {
   padding: 0px 0 20px;
@@ -128,7 +130,7 @@ export default {
 	margin-top: -0.5rem;
 	margin-bottom: 0.5rem;
   margin-right: 3rem;
-	font-size: 1rem;
+	font-size: 15px;
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
@@ -137,17 +139,45 @@ export default {
   width: 100%;
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 90%;
+  font-size: 25px;
+  font-weight: 550;
 }
 .form input,
 .form textarea {
   font-family: inherit;
-  font-size: 100%;
-  width: 90%;
+  font-size: 20px;
+  width: 100%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
+}
+@media (min-width: 1200px){
+.form input,
+.form textarea {
+  font-family: inherit;
+  font-size: 20px;
+  width: 120%;
+  border: 1px solid #dae1e7;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+}
+.form .validation-text {
+	margin-top: -0.5rem;
+	margin-bottom: 0.5rem;
+  margin-right: -4.5rem;
+	font-size: 16px;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+}
+}
+@media (max-width: 576){
+.btn-user{
+  font-size: 10px;
+      opacity: 0.8;
+}
 }
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
@@ -156,10 +186,14 @@ export default {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: .25rem;
+  font-size: 20px;
 }
 .btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.btn-login{
+  float: right;
 }
 .btn-user{
     opacity: 0.8;
@@ -167,5 +201,9 @@ export default {
 .btn-sns {
   display: block;
   margin-left: 0 auto;
+}
+.btnclass{
+  margin-top: 10px;
+  margin-left: 30px;
 }
 </style>

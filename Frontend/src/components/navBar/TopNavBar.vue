@@ -3,18 +3,11 @@
     <div class="logo" onclick="window.scrollTo(0,0)">
       <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
     </div>
-    <div class="user">
-      
+    <div class="user">      
 
       <!-- 로그인 했을 때 -->
-      <ul class="navbar-nav me-4" v-if="isLogin">
-        <li class="nav-item dropdown">
-          <div v-if="isLogin">
-            로그인했다
-          </div>
-          <div v-else>
-            로그인 안했다.
-          </div>
+      <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
+        <li class="nav-item dropdown" @click="click">
           <a
             class="nav-link"
             href="#"
@@ -23,8 +16,10 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            {{userEmail}},
-            
+            <span class="username">{{userEmail}}</span>
+            <span class="imageSection">
+              <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+            </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
@@ -35,12 +30,16 @@
       </ul>
 
 <!-- 로그인 안했을 때 -->
-      <ul class="navbar-nav me-4" v-if="!isLogin">
+      <div class="login-signup mt-4" v-if="!isLogin">
+        <span @click="login" class="loginBtn">Log in </span>
+        <span @click="signup" class="signupBtn"> Sign Up</span>
+      </div>
+      <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
         <li class="nav-item dropdown">
           <a class="" @click="login">Log in </a>
         </li>
         <li><a class="" @click="signup">Sign Up</a></li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>
@@ -48,15 +47,25 @@
 <script>
 import jwt_decode from 'jwt-decode'
 const token = localStorage.getItem('jwt')
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 let username = '';
+let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
   //userpk = decoded.sub
   username = decoded.name
+  userpk = decoded.sub
 }
 //let userpk = '';
 
 export default {
+  data(){
+    return{
+      imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+      imageError: false,
+      defaultImage: require("@/assets/images/profileImg.png")
+    }
+  },
   methods: {
     logout: function(){
       this.$store.dispatch('logout')
@@ -69,13 +78,20 @@ export default {
       this.$router.push({'name':'passwordConfirm'})
     },
     goProfile: function() {
-      this.$router.push({'name':'profilePage'})
+      localStorage.removeItem("userPk")
+      // if(!localStorage.getItem('userPk')){
+      // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
+      location.href=`http://localhost:8080/profilePage/${userpk}`
+      
     },
     login: function() {
       this.$router.push({'name':'login'})
     },
     signup: function() {
-      this.$router.push({'name':'login'})
+      this.$router.push({'name':'signup'})
+    },
+    click: function() {
+      console.log('click')
     },
   },
   computed: {
@@ -88,6 +104,9 @@ export default {
     },
     userEmail(){
       return this.$store.getters.getEmail
+    },
+    creatorImage() {
+        return this.imageError ? this.defaultImage : "imgsrc";
     }
 
   }
@@ -96,9 +115,6 @@ export default {
 
 <style scoped>
 
-.box{
-  background-color: bisque;
-}
 .top{
   position:fixed;
   background-color: white;
@@ -116,13 +132,15 @@ export default {
   cursor: pointer;
 }
 .user{
-  border: 10px solid blanchedalmond;
-  font-size:2vw;
+  /* border: 10px solid blanchedalmond; */
+  font-size:20px;
   position: absolute;
   right: 7%;
+  top: 20px;
 }
+
 .nav-link{
-    font-size: 2vw;
+    font-size: 25px;
     font-weight: 600;
     line-height: 1.0;
     color: black;
@@ -132,6 +150,63 @@ export default {
       font-size: 1.0rem;
     font-weight: 600;
     line-height: 1.0;
+}
+.login-signup{
+  /* margin-top: */
+  cursor: pointer;
+  font-weight: 550;
+}
+.loginBtn{
+    font-size: 25px;
+    margin-right: 10px;
+  }
+.signupBtn{
+    font-size: 25px;
+    margin-right: 10px;
+}
+.login-signup span:hover{
+  /* transform: scale(1.2); */
+  font-size: 25px;
+}
+.username {
+  margin-right: 15px;
+}
+
+@media (max-width: 576px){
+    .login-signup{
+    font-weight: 550;
+    font-size: 20px;
+  }
+  .loginBtn{
+    display: block;
+    font-size: 25px;
+    margin-right: 10px;
+  }
+  .signupBtn{
+    font-size: 25px;
+    margin-right: 10px;
+  }
+  .user{
+      right: 0;    
+  }
+  .profileImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 75%;
+  }
+}
+@media (max-width: 768px){
+  .username {
+    display: none;
+  }
+}
+
+.imageSection{
+}
+.profileImg {
+    width: 70px;
+    height: 70px;
+    border-radius: 75%;
 }
 
 </style>

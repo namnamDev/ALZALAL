@@ -1,35 +1,97 @@
 <template>
-  <div class="comment mb-5">
+  <div class="comment mb-2">
     <div class="user">
       <div class="row">
         <div class="col">
           <div class="inline">
-            작성자
+            {{this.memberName}}
           </div >
           <div class="inline">
-            작성날짜
+            | {{this.date | moment("YYYY-MM-DD HH:mm:ss")}}
           </div>
           <div class="inline">
-            <i class="fal fa-thumbs-up">
-              <span class="ms-2">34</span>
-            </i>
+            <i class="fas fa-heart ms-2" v-if="likeState"></i>
+            <i class="far fa-heart ms-2" v-else></i>
+            <span class="" >
+              {{likeCount}}
+            </span>
           </div>
         </div>
-        <div class="col text-end pe-3">
-          좋아요
+        <div class="col text-end pe-3" @click="clickLike">
+          <span class="like-btn">좋아요</span>
         </div>
       </div>
     </div>
     <div class="content">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Est corrupti minus, inventore ab voluptate numquam nihil dolore illum harum suscipit veniam itaque aliquam velit porro cumque consectetur repellat ducimus sint minima ex. Nesciunt temporibus saepe impedit sed provident suscipit, dignissimos, delectus ab quasi eius iusto quisquam, non quos quaerat soluta!
+      {{this.content}}
+      <Viewer :viewerText="this.content"/>
     </div>
 
   </div>
 </template>
 
 <script>
-export default {
+import Viewer from '@/components/comment/CommentViewer.vue'
 
+import Vue from "vue";
+import vueMoment from "vue-moment";
+import axios from 'axios';
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+Vue.use(vueMoment);
+
+export default {
+  components: {
+    Viewer
+  },
+  props: {
+    comment: Object
+  },
+
+  data() {
+    return {
+      memberName: this.comment.member.name,
+      date: this.comment.articleCommentDate,
+      likeCount: this.comment.likeCount,
+      content: this.comment.content,
+      likeState: this.comment.likeState
+    }
+  },
+
+
+  methods: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
+    clickLike() {      
+
+      const commentNo = this.comment.articleCommentNo
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/like/article/comment/${commentNo}`,
+        headers: this.getToken(),
+        data :{}
+      })
+      .then(res=> {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      if (this.likeState) {
+        this.likeState = false
+        this.likeCount -= 1
+      }
+      else{
+        this.likeState = true
+        this.likeCount += 1
+      }
+    }
+  },
 }
 </script>
 
@@ -42,5 +104,12 @@ export default {
 }
 .inline{
   display:inline;
+}
+.fa-heart{
+  color: red;
+}
+.like-btn{
+  cursor: pointer;
+  color:rgb(70, 172, 235);
 }
 </style>

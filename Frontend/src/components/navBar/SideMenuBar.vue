@@ -7,20 +7,20 @@
         <li @click="clickQnA">Q&A</li>
         <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
-        <li class="search">검색하기</li>
+        <li class="mobile-search">검색하기</li>
       </ul>
     </div>
     <div id="menu-1" style="left:-230px;" v-if="width < 576">
       <p @click="clickLogo">LOGO</p>
       <ul>
         <li @click="clickLogo">타임라인</li>
-        <li>Q&A</li>
+        <li @click="clickQnA">Q&A</li>
         <li @click="clickDebate">토론게시판</li>
         <li @click="clickCreate">글작성</li>
-        <li class="search">검색하기</li>
+        <li class="mobile-search">검색하기</li>
       </ul>
     </div>        
-    <div class="icon" @click="ClickMenuButton">
+    <div class="icon ms-3" @click="ClickMenuButton">
       <i class="fas fa-bars menuIcon"></i>
     </div>
   </div>
@@ -95,7 +95,7 @@ export default {
   position:fixed;
   background-color:rgba(224,245,249,1);
   height: 100vh;
-  width: 20%;
+  width: 200px;
   z-index:5;
 }
 
@@ -170,12 +170,12 @@ p{
   cursor: pointer;
 }
 
-.search{
+.mobile-search{
   display: none;
 }
 
 @media (max-width: 992px){
-  .search{
+  .mobile-search{
     display: block;
   }
 }

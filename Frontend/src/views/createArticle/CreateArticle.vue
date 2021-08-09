@@ -1,10 +1,12 @@
-<template clsas="temp">
+<template>
   <div class="create-form">
-    <div class="container">
+    <!-- <notifications group="notifyApp" position="top center" width="400px"/> -->
+
+    <div >
       <div class="row justify-content-start mb-3">
         <div class="box">카테고리</div>
         <select id="select" name="category" v-model="category">
-          <option value="solution" selected>문제풀이</option>
+          <option value="solution">문제풀이</option>
           <option value="QnA">Q&A</option>
           >
         </select>
@@ -14,24 +16,17 @@
         <div class="row mb-3 text-center algo-div">
           <div class="algo-input-div me-2">
             <input
-              id="algo-input"
+              id="algo-input-1"
               type="text"
               placeholder="알고리즘을 입력해주세요"
               @click="clickAlgoInput"
               @keyup="filterFunction"
+              @blur="blur"
             />
             <ul id="algo-ul">
-              <li>bfs</li>
-              <li>dfs</li>
-              <li>dp</li>
-              <li>다이나믹 프로그래밍</li>
-              <li>tree</li>
-              <li>정렬</li>
-              <li>탐색</li>
-              <li>깊이우선탐색</li>
-              <li>넓이우선탐색</li>
-              <li>다익스트라</li>
-              <li>탐색</li>
+              <li id="algo-li" v-for="item,idx in algoList" :key="idx">
+                {{item}}
+              </li>
             </ul>
           </div>
           <div class="box-algo"></div>
@@ -46,9 +41,13 @@
           class="col-sm-2 m-size mb-2"
           v-model="pSite"
         >
-          <option value="백준" selected>백준</option>
-          <option value="SWEA">SWEA</option>
-          >
+          <option value="boj">백준</option>
+          <option value="swea">SWEA</option>
+          <option value="algopost">algopost</option>
+          <option value="atcoder">atcoder</option>
+          <option value="jungol">jungol</option>
+          <option value="codeforce">codeforce</option>
+          <option value="programmers">programmers</option>          
         </select>
 
         <div class="box col-sm-2 mb-2">문제번호</div>
@@ -65,6 +64,9 @@
           <option value="C">C</option>
           <option value="C++">C++</option>
           <option value="Python">python</option>
+          <option value="Ruby">Ruby</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Go">Go</option>
         </select>
       </div>
 
@@ -82,12 +84,12 @@
       <div class="row editor">
         <Editor ref="toastEditor" />
       </div>
-      <div class="row mt-2 mb-5">
+      <div class="row mt-2 mb-5 pb-5">
         <button @click="submit">작성하기</button>
+        
       </div>
     </div>
-
-    <div class="side"></div>
+    
   </div>
 </template>
 
@@ -104,57 +106,54 @@ export default {
   },
   data() {
     return {
-      category: "",
+      category: "solution",
       title: "",
       content: "",
       pNum: "",
-      pSite: "",
-      language: "",
+      pSite: "boj",
+      language: "Java",
+      algoList: [],
     };
   },
 
   computed: {
-    liTags: function () {
-      return document.querySelectorAll("#algo-ul > li");
-    },
     articleClass: function () {
       if (this.category == 'solution') {
         return 'A01'
       } else {
         return 'A00'
       }
-
     }
-
   },
 
-  mounted: function () {
-    // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
-    this.liTags.forEach((element) => {
-      element.addEventListener("click", function (event) {
-        let boxAlgo = document.querySelector(".box-algo");
-        const algoHastag = document.createElement("span");
-
-        algoHastag.innerText = event.target.innerText;
-        algoHastag.style.display = "inline";
-        algoHastag.style.fontSize = "14px";
-        algoHastag.style.borderRadius = "3px";
-        algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
-        algoHastag.style.padding = "4px 8px";
-        algoHastag.classList.add("me-3");
-        algoHastag.addEventListener("click", function (event) {
-          event.target.remove();
-        });
-        algoHastag.style.cursor = "pointer";
-
-        if (boxAlgo.childElementCount != 4) {
-          boxAlgo.appendChild(algoHastag);
-        }
-      });
-    });
+  created: function() {
+    axios({
+        method: 'get',
+        url: `${SERVER_URL}/algorithmList`,
+      })   
+      .then(res =>{
+        res.data.algorithmList.forEach(element => {
+          this.algoList.push(element)
+        });   
+      })
+      .catch(err =>{  
+        console.log(err)
+      })
+    const token = localStorage.getItem('jwt')
+    if(!token){
+      this.$router.push({name:'login'})
+    } 
   },
 
   methods: {
+    blur() {
+      const ul = document.querySelector('#algo-ul')
+      setTimeout(() => {
+        if (ul.style.display == 'block'){
+          ul.style.display = 'none'        
+        }
+      }, 100);
+    },
     // toast editor에서 작성된 내용 가져오기
     getContent() {
       return this.$refs.toastEditor.getContent();
@@ -169,6 +168,7 @@ export default {
     },
     // 글 작성하기
     submit() {
+      this.$swal('Complete', '새 글이 작성되었습니다.', 'OK');
       let algoList = [];
       const boxAlgo = document.querySelectorAll(".box-algo span");
       boxAlgo.forEach((element) => {
@@ -187,37 +187,78 @@ export default {
       }
       console.log(data)
 
-      this.$store.dispatch("create_content",this.getContent())
 
       axios({
         method: 'post',
-        url: `${SERVER_URL}/article/${this.articleClass}`,
+        url: `${SERVER_URL}/article/article`,
         data: data,
         headers: this.getToken(),
       })   
-      .then(res =>{
-        console.log(res);        
+      .then(() =>{
+        setTimeout(() => {
+          this.$router.push({ name: 'timeline' })       
+        }, 1000);         
       })
       .catch(err =>{  
         console.log(err)
       })
     },
 
-    // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
+    
     clickAlgoInput() {
-      document.getElementById("algo-ul").classList.toggle("show");
+      // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
+      const liTags = document.querySelectorAll("#algo-li")
+      liTags.forEach((element) => {
+        element.addEventListener("click", function (event) {
+          let boxAlgo = document.querySelector(".box-algo");
+          const algoHastag = document.createElement("span");
+
+          algoHastag.innerText = event.target.innerText;
+          algoHastag.style.display = "inline-block";
+          algoHastag.style.fontSize = "14px";
+          algoHastag.style.borderRadius = "3px";
+          algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+          algoHastag.style.padding = "4px 8px";
+          algoHastag.classList.add("me-3");
+          algoHastag.addEventListener("click", function (event) {
+            event.target.remove();
+          });
+          algoHastag.style.cursor = "pointer";
+
+          // console.log(boxAlgo.childNodes)
+          if (boxAlgo.childElementCount != 4) {
+            let flag = true
+            boxAlgo.childNodes.forEach(element => {
+              if (algoHastag.innerText == element.innerText){
+                flag = false
+                
+              }
+              console.log(element.innerText)
+            });
+            if (flag){
+              boxAlgo.appendChild(algoHastag);
+            }            
+          }
+        });
+      });
+      // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
+      const ul = document.querySelector('#algo-ul')
+      if (ul.style.display == 'block') {
+        ul.style.display = 'none'
+      }
+      else{
+        ul.style.display = 'block'
+      }
     },
     // 검색필터 적용
     filterFunction() {
-      console.log("filterfunction");
-      var input = document.getElementById("algo-input");
+      var input = document.getElementById("algo-input-1");
       var filter = input.value.toUpperCase();
       var div = document.querySelector(".algo-input-div");
       var li = div.getElementsByTagName("li");
 
       for (var i = 0; i < li.length; i++) {
         const txtValue = li[i].textContent || li[i].innerText;
-        console.log(i, txtValue);
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           li[i].style.display = "";
         } else {
@@ -230,15 +271,6 @@ export default {
 </script>
 
 <style scoped>
-.side {
-  height: 40px;
-  width: 20%;
-  /* border: 1px solid black;   */
-  background-color: white;
-  right: 0px;
-  top: 205px;
-  position: fixed;
-}
 .box {
   border: 1px solid black;
   height: 30px;
@@ -250,10 +282,11 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 70%;
+  width: 100%;
   height: 500px;
   left: 23%;
   position: absolute;
+  background-color: white;
 }
 
 .container {
@@ -280,7 +313,7 @@ export default {
   width: 230px;
   z-index: 1;
 }
-#algo-input {
+#algo-input-1 {
   width: 100%;
 }
 .show {
@@ -303,7 +336,7 @@ li:hover {
 .box-algo {
   /* border: 1px solid black; */
   height: 30px;
-  width: 550px;
+  width: 800px;
   text-align: start;
   align-items: center;
   border-radius: 3px;
@@ -323,11 +356,11 @@ li:hover {
   padding: 0 0;
 }
 .title > input {
-  width: 70%;
+  width: 68%;
   border-radius: 3px;
 }
 .editor {
-  width: 100%;
+  width: 70%;
   transform: translateX(-11px);
   margin-top: 20px;
 }
@@ -342,6 +375,8 @@ button {
 .m-size{
   margin-right:8px;
 }
+
+
 @media (max-width: 576px) {
   .create-form {
     left: 5%;
@@ -374,4 +409,5 @@ button {
     margin-right:145px;
   }
 }
+
 </style>
