@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,45 +16,41 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.common.domain.Use_Language;
 import com.ssafy.common.domain.Use_Language_Like;
 import com.ssafy.common.domain.member.Member;
-import com.ssafy.common.domain.member.RefreshToken;
 import com.ssafy.common.domain.problem.Problem_Site_Like;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.dto.NotificationDTO;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.redis.util.RedisUtil;
 import com.ssafy.common.repository.NotificationRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Use_Language_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
-import com.ssafy.common.repository.member.RefreshTokenRepository;
 import com.ssafy.common.repository.problem.Problem_Site_LikeRepository;
 import com.ssafy.common.repository.problem.Problem_Site_ListRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class MemberServiceImpl implements MemberService {
 
-	@Autowired
-	private MemberRepository memberRepository;
-	@Autowired
-	private Problem_Site_ListRepository problem_Site_ListRepository;
-	@Autowired
-	private Use_LanguageRepository use_LanguageRepository;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	@Autowired
-	private TokenProvider tokenProvider;
-	@Autowired
-	private AuthenticationManagerBuilder authenticationManagerBuilder;
-	@Autowired
-	private RefreshTokenRepository refreshTokenRepository;
-	@Autowired
-	private Problem_Site_LikeRepository problem_Site_LikeRepository;
-	@Autowired
-	private Use_Language_LikeRepository use_Language_LikeRepository;
-	@Autowired
-	private NotificationRepository notiRepo;
+	private final MemberRepository memberRepository;
+	private final Problem_Site_ListRepository problem_Site_ListRepository;
+	private final Use_LanguageRepository use_LanguageRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final TokenProvider tokenProvider;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final Problem_Site_LikeRepository problem_Site_LikeRepository;
+	private final Use_Language_LikeRepository use_Language_LikeRepository;
+	private final NotificationRepository notiRepo;
+	private final RedisUtil redisUtil;
+
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3;            // 3시간
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    
 	@Override
 	public long signup(Member member, List<String> problem_site_list, List<String> use_language_like) {
 		// name, email 중복확인
@@ -133,12 +128,14 @@ public class MemberServiceImpl implements MemberService {
 		TokenDto jwt = tokenProvider.generateTokenDto(authentication, memberName);
 		// -------- 토큰 생성완료
 
-		// RefreshToken 저장
-		RefreshToken refreshToken = RefreshToken.builder().key(authentication.getName()).value(jwt.getRefreshToken())
-				.build();
-
-		refreshTokenRepository.save(refreshToken);
-
+		// RefreshToken 저장(mariaDB에 저장하던걸 Redis에 저장하는걸로 변경)
+//		RefreshToken refreshToken = RefreshToken.builder().key(authentication.getName()).value(jwt.getRefreshToken())
+//				.build();
+//		refreshTokenRepository.save(refreshToken);
+		
+		Long refreshTokenExpiresIn=jwt.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
+		redisUtil.setDataExpire(authentication.getName(),jwt.getRefreshToken(),refreshTokenExpiresIn);
+		
 		return jwt;
 	}
 
@@ -152,12 +149,13 @@ public class MemberServiceImpl implements MemberService {
 		// 2. Access Token 에서 Member ID(memberNo) 가져오기
 		Authentication authentication = tokenProvider.getAuthentication(tokenDto.getAccessToken());
 
-		// 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
-		RefreshToken refreshToken = refreshTokenRepository.findByMemberEmail(authentication.getName())
-				.orElseThrow(() -> new IllegalStateException("로그아웃 된 사용자입니다"));
+		// 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴(mariaDB에서 가져오던걸 Redis에서 가져오게 변경)
+//		RefreshToken refreshToken = refreshTokenRepository.findByMemberNo(authentication.getName())
+//				.orElseThrow(() -> new IllegalStateException("로그아웃 된 사용자입니다"));
+		String refreshToken=redisUtil.getData(authentication.getName());
 
 		// 4. Refresh Token 일치하는지 검사
-		if (!refreshToken.getRefreshToken().equals(tokenDto.getRefreshToken())) {
+		if (!refreshToken.equals(tokenDto.getRefreshToken())) {
 			throw new IllegalStateException("토큰의 유저 정보가 일치하지 않습니다");
 		}
 
@@ -171,9 +169,11 @@ public class MemberServiceImpl implements MemberService {
 		// 5. 새로운 토큰 생성
 		TokenDto retTokenDto = tokenProvider.generateTokenDto(authentication, memberName);
 
-		// 6. 저장소 정보 업데이트
-		RefreshToken newRefreshToken = refreshToken.updateValue(retTokenDto.getRefreshToken());
-		refreshTokenRepository.save(newRefreshToken);
+		// 6. 저장소 정보 업데이트(mariaDB에 저장하던걸 Redis에 저장하는걸로 변경)
+//		RefreshToken newRefreshToken = refreshToken.updateValue(retTokenDto.getRefreshToken());
+//		refreshTokenRepository.save(newRefreshToken);
+		Long refreshTokenExpiresIn=retTokenDto.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
+		redisUtil.setDataExpire(authentication.getName(), retTokenDto.getRefreshToken(), refreshTokenExpiresIn);
 
 		// 토큰 발급
 		return retTokenDto;
@@ -193,14 +193,6 @@ public class MemberServiceImpl implements MemberService {
 		return;
 	}
 
-//	@Override
-//  @Transactional(readOnly = true)
-//  public Member getMemberInfo(String email) {
-//  	Member member=mr.findByEmail(email)
-//  			.orElseThrow(()->new IllegalStateException("유저정보가 없습니다"));
-//  	
-//      return member;               
-//  }
 
 	// 현재 SecurityContext 에 있는 유저 정보 가져오기
 	@Override
@@ -322,13 +314,13 @@ public class MemberServiceImpl implements MemberService {
 			jwt = tokenProvider.generateTokenDto(authentication, memberName);
 			// -------- 토큰 생성완료
 
-			// 기존 RefreshToken삭제해줘야하나?
+			// RefreshToken 저장 (mariaDB에 저장하던걸 Redis에 저장하는걸로 변경) 
+//			RefreshToken refreshToken = RefreshToken.builder().key(authentication.getName())
+//					.value(jwt.getRefreshToken()).build();
+//			refreshTokenRepository.save(refreshToken);			
+			Long refreshTokenExpiresIn=jwt.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
+			redisUtil.setDataExpire(authentication.getName(), jwt.getRefreshToken(), refreshTokenExpiresIn);
 
-			// RefreshToken 저장
-			RefreshToken refreshToken = RefreshToken.builder().key(authentication.getName())
-					.value(jwt.getRefreshToken()).build();
-
-			refreshTokenRepository.save(refreshToken);
 		}
 
 		return jwt;
