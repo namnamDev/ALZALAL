@@ -20,7 +20,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: localhost
+    host: i5d205.p.ssafy.io
     port: 6379
 
 jwt:
