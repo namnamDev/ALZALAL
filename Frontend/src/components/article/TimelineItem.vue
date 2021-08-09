@@ -8,7 +8,12 @@
         </div>
         <div class="col">
           <div class="row name" @click="clickName">
-            <p>{{ this.memberName }}</p>
+            <div class="col">
+              {{ this.memberName }}
+            </div>
+            <div class="col text-end">
+              {{date}}
+            </div>
           </div>
           <div class="row mt-2">
             <div>
@@ -99,7 +104,6 @@ export default {
         this.item = res.data
         this.articleClass= detail.articleClass,
         this.articleTitle= detail.articleTitle,
-        this.date= detail.articleDate,
         this.commentCount= detail.commentCount,
         this.likeCount= detail.likeCount,
         this.likeState= detail.likeState,
@@ -109,12 +113,46 @@ export default {
         this.problemNo= detail.problemSite.problemNo,
         this.language= detail.useLanguage
         this.algoList = detail.algo
+
+        const date = res.data.articleDetail.articleDate
+        const year = date.substr(0,4)
+        const month = date.substr(5,2)
+        const day = date.substr(8,2)
+        const hour = date.substr(11,2)
+        const min = date.substr(14,2)
+        const sec = date.substr(17,2)
+
+        this.date = this.getDate(year,month,day,hour,min,sec)
       })
       .catch(err =>{  
         console.log(err)
       })
   },
   methods: {    
+    getDate: function(year,month,day,hour,min,sec) {
+      const today  = new Date()
+      const timeValue  = new Date(year,month,day,hour,min,sec)
+      timeValue.setHours(timeValue.getHours() - 9);
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금전';
+      if (betweenTime < 60) {
+          return `${betweenTime}분전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+          return `${betweenTimeHour}시간전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+          return `${betweenTimeDay}일전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+    },
     // 게시글 상세 정보 페이지로 이동
     clickArticle: function() {
       localStorage.setItem('articleNo', this.articleNo)

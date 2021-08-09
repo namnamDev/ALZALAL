@@ -80,7 +80,7 @@ export default {
     data(){
         return{
             defaultImg: '@/assets/images/profileImg.png',
-            imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+            // imgsrc: `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`,
             no: '',
             follower: '',
             language: [],
@@ -99,7 +99,7 @@ export default {
     created: function() {
         console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
+        // console.log(userPk)
         let pk = ''
         if(userPk){
             pk = userPk
@@ -118,7 +118,7 @@ export default {
             headers: this.getToken
         })
         .then(res =>{   
-            console.log(res.data)   
+            // console.log(res.data)   
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following
@@ -145,6 +145,11 @@ export default {
         }
         return config
         },
+        imgsrc() {
+            const img = `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`
+            console.log(img)
+            return img
+        }
 
     },
     methods: {
@@ -183,8 +188,8 @@ export default {
                     data: {"memberNo": this.no},
                     headers: this.getToken,
                 })
-                .then(res=>{
-                    console.log(res)
+                .then(()=>{
+                    // console.log(res)
                 })
                 .catch({
                     // console.log(this.no)

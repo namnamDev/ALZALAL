@@ -91,7 +91,7 @@
 
     <div class="footer mb-2">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="button" class="btn" id="submit" data-bs-dismiss="modal" @click="submit">검색하기</button>
+      <button type="button" class="btn" id="submit" @click="submit">검색하기</button>
     </div>
   </div>
 </template>
@@ -199,8 +199,24 @@ export default {
       const searchData = this.getData()
       const category = searchData.category
       let data = {}
+
       // 문제풀이, qna인 경우
       if (category == 'solution') {
+        if(!this.inputData){
+          this.$swal.fire({
+            text: "문제 번호를 입력해주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".placeholder");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+      else{
         data.category = searchData.category
         data.language = searchData.language
         data.includeAlgo = searchData.includeData,
@@ -210,22 +226,56 @@ export default {
         // this.$router.push({name : 'searchProblem'})
         location.href="/searchProblem"
       }
+
+      }
       // 알고리즘인 경우
       else if (category == 'algorithm'){
-        data.category = searchData.category
-        data.language = searchData.language
-        data.includeAlgo = searchData.includeData,
-        data.excludeAlgo = searchData.excludeData
-        this.$store.dispatch('createSearchArticle',data)
-        // this.$router.push({name : 'searchAlgorithm'})
-        location.href="/searchAlgorithm"
+        if(searchData.includeData.length == 0){
+          this.$swal.fire({
+            text: "검색할 알고리즘을 입력해주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".search-algo-li");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+        else{
+          data.category = searchData.category
+          data.language = searchData.language
+          data.includeAlgo = searchData.includeData,
+          data.excludeAlgo = searchData.excludeData
+          this.$store.dispatch('createSearchArticle',data)
+          // this.$router.push({name : 'searchAlgorithm'})
+          location.href="/searchAlgorithm"
+        }
       }
       // 유저인 경우
       else if (category == 'user'){
-        data.user = searchData.inputData
-        this.$store.dispatch('createSearchArticle',data)
-        // this.$router.push({name : 'searchUser', params:{user:searchData.inputData}})
-        location.href=`/searchUser/${searchData.inputData}`
+        if(!this.inputData){
+          this.$swal.fire({
+            text: "사용자 이름을 입력해주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".placeholder");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+        else{
+          data.user = searchData.inputData
+          this.$store.dispatch('createSearchArticle',data)
+          // this.$router.push({name : 'searchUser', params:{user:searchData.inputData}})
+          location.href=`/searchUser/${searchData.inputData}`
+        }
       }
     },
 

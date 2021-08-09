@@ -6,7 +6,10 @@
       <div class="col-lg-6 col-md-10 col-sm-9 col-10">
         <div class="row top">
           <div class="col">
-            <div v-if="problem">#{{ problem }}</div>
+            <div v-if="problem">
+              #{{ problem }} 
+              <span class="follow-btn" @click="follow">Follow</span>
+            </div>
           </div>
         </div>
 
@@ -139,6 +142,9 @@ export default {
     },
   },
   methods: {
+    follow() {
+
+    },
     clickOrderByLike() {
       this.articleList = this.articleLikeList
       const like = document.querySelector('.order-by-like')
@@ -173,11 +179,10 @@ export default {
         params: this.params,
       })
         .then((res) => {
+          console.log(res.data)
           this.articleCount = res.data.articleSearchCount
-          console.log(res.data.articleList)
           setTimeout(() => {
             if (res.data.articleList.length) {
-              //console.log(res.data.article.length)         
               this.articleDateList = this.articleDateList.concat(res.data.articleList);
               this.articleList = this.articleDateList
               this.followingNumber = res.data.followInfo.followingNumber;
@@ -214,7 +219,6 @@ export default {
             setTimeout(() => {
               if (res.data.articleList.length) {
                 //console.log(res.data.article.length)      
-                console.log(res.data)   
                 this.articleLikeList = this.articleLikeList.concat(res.data.articleList);
                 if (this.isOneAlgo){
                   this.followingNumber = res.data.followInfo.followingNumber;
@@ -239,24 +243,6 @@ export default {
           });
     },
 
-    // requestProblem: function (params) {
-    //   axios({
-    //     method: "get",
-    //     url: `${SERVER_URL}/search/article/problem`,
-    //     headers: this.getToken(),
-    //     params: params,
-    //   })
-    //     .then((res) => {
-    //       console.log(res)
-    //       this.followingNumber = res.data.followInfo.followingNumber;
-    //       this.articleNumber = res.data.followInfo.articleNumber;
-    //       this.articleList = res.data.aricleList;
-    //       this.articleCount = res.data.aricleList.length
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
 
     articleDetail(articleNo) {
       localStorage.setItem("articleNo", articleNo);
@@ -409,5 +395,13 @@ export default {
   font-size: 15px;
   font-weight:bold;
   display: inline-block
+}
+.follow-btn{
+  font-size:20px;
+  background-color: rgb(0, 153, 255);
+  padding:3px 12px;
+  border-radius: 4px;
+  color:white;
+  cursor: pointer;
 }
 </style>
