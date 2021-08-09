@@ -96,9 +96,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}catch (RuntimeException e) {
 		nowLoginMemberNo=0L;
 	}
-    if (articleClass.equals("main")){
-    	
-    }else if(articleClass.equals("article")){
+	if(articleClass.equals("article")){
     	//게시글 전체 조회 결과
         List<ArticleDTO> articleList = ArticleRepo.sltMulti(nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
         if (articleList.size()==0) {//게시글이 존재하지 않을 시.
@@ -219,13 +217,18 @@ public Map<String, Object> updateArticle(String articleClass, long articlePk, Ma
     		msg = "존재하지 않는 게시글입니다.";
     	}else {
     		if(member != article.getMember()){
-	    		msg ="자신의 글만 삭제할 수 있습니다.";
+	    		msg ="자신의 글만 수정할 수 있습니다.";
 	    		}else{
 	        		String content = (String) req.get("content");
 	        		String title = (String)req.get("title");
 	        		String category = (String) req.get("category");
 	        		article.setArticleContent(content);
 	        		article.setArticleTitle(title);
+	        		if (content.trim() == "" || title.trim() == "") {
+							msg = "제목이나 내용을 입력하여 주십시오";
+							res.put("msg", msg);
+							return res;
+						}
 	        		article.setArticleClass(Article_Class.valueOf(category));
 	        		long updatedArticle = ArticleRepo.updateArticle(articlePk,article);
 	        		res.put("updatedArtcle", updatedArticle);
@@ -279,7 +282,6 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 		String problemNoCheck =  (String) req.get("pNum");
 		if (problemNoCheck.equals("")){
 			msg = "문제넘버를 입력해주세요";
-//			throw new IllegalStateException(msg);
 		}else {
 			Problem_Site_List problemSite = problemSiteListRepo.findOne(problemSiteNM);
 			if (problemSite == null){
@@ -301,37 +303,43 @@ public Map<String, Object> insertArticle(String articleClass,Map<String, Object>
 				if(useLanguage == null){
 					msg = "해당 언어가 존재하지 않습니다.";
 				}else{
-					Article insertArticle = new Article();
-					insertArticle.setArticleClass(Article_Class.valueOf(category));
-					insertArticle.setArticleContent((String) req.get("content"));
-					insertArticle.setArticleTitle((String)req.get("title"));
-					insertArticle.setMember(member);
-					insertArticle.setProblemSite(problem);
-					insertArticle.setUseLanguage(useLanguage);
-					Article tempInserted = ArticleRepo.save(insertArticle);
-					ArticleRepo.flush();
-					if (category.equals("A01")){
-						Article_Algorithm artiAlgo = new Article_Algorithm();
-						List<String> usedAlgo = (List<String>) req.get("algo");
-						if (usedAlgo !=null) {
-							for (String algo : usedAlgo) {
-								Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
-								if (sltOneAlgo != null){
-									artiAlgo.setAlgorithmName(sltOneAlgo);
-									artiAlgo.setArticleNo(tempInserted);
-									Article_Algorithm insertedArtiAlgo = ArtiAlgoRepo.save(artiAlgo);
-								}else {
-									msg = "알고리즘이 존재하지 않습니다.";
+					String content = (String) req.get("content");
+					String title = (String)req.get("title");
+					if (content.trim() == "" || title.trim() == "") {
+						msg = "제목이나 내용을 입력하여 주십시오";
+						}else {
+						Article insertArticle = new Article();
+						insertArticle.setArticleClass(Article_Class.valueOf(category));
+						insertArticle.setArticleContent(content);
+						insertArticle.setArticleTitle(title);
+						insertArticle.setMember(member);
+						insertArticle.setProblemSite(problem);
+						insertArticle.setUseLanguage(useLanguage);
+						Article tempInserted = ArticleRepo.save(insertArticle);
+						ArticleRepo.flush();
+						if (category.equals("A01")){
+							Article_Algorithm artiAlgo = new Article_Algorithm();
+							List<String> usedAlgo = (List<String>) req.get("algo");
+							if (usedAlgo !=null) {
+								for (String algo : usedAlgo) {
+									Algorithm sltOneAlgo = AlgoRepo.sltOne(algo);
+									if (sltOneAlgo != null){
+										artiAlgo.setAlgorithmName(sltOneAlgo);
+										artiAlgo.setArticleNo(tempInserted);
+										ArtiAlgoRepo.save(artiAlgo);
+									}else {
+										msg = "알고리즘이 존재하지 않습니다. 알고리즘이 등록되지 않은 채로 작성됩니다.";
+									}
 								}
 							}
+							ArtiAlgoRepo.flush();
+							
 						}
-						ArtiAlgoRepo.flush();
-						
+						ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
+						List<Article_CommentDTO> comments = articleCommetRepo.artiComments(inserted.getArticleNo(),member.getNo(),PageRequest.of(0, 20)).orElse(null);
+						res.put("article", inserted);
+						res.put("articleComments", comments);
 					}
-					ArticleDTO inserted = ArticleRepo.sltOne(tempInserted.getArticleNo(), member.getNo());
-					List<Article_CommentDTO> comments = articleCommetRepo.artiComments(inserted.getArticleNo(),member.getNo(),PageRequest.of(0, 20)).orElse(null);
-					res.put("article", inserted);
-					res.put("articleComments", comments);
 				}
 			}	
 		}
@@ -349,6 +357,10 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	if (articleClass.equals("article")){
 		//게시글 존재하는지 조회
 		Article article = ArticleRepo.sltOneArticle(articlePk);
+		if (article == null) {
+			res.put("msg", "게시글이 존재하지 않습니다");
+			return res;
+		}
 		//좋아요 누른적 있는지 조회
 		Article_Like arli = ArticleLikeRepo.ifMemberExist(articlePk,member.getNo());
 		//눌려져있으면 delete. 안눌러져 있으면 insert
@@ -371,6 +383,10 @@ public Map<String, Object> likeArticle(String articleClass, long articlePk, Map<
 	}else if(articleClass.equals("helpme")) {
 		Helpme article = helpmeRepo.getById(articlePk);
 		Helpme_Like arli = helLiRepo.ifMemberExist(articlePk,member.getNo());
+		if (article == null) {
+			res.put("msg", "게시글이 존재하지 않습니다");
+			return res;
+		}
 		if(arli == null) {
 			Helpme_Like insertLike = new Helpme_Like();
 			insertLike.setHelpmeNo(article);
