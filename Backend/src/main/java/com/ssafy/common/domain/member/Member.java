@@ -78,8 +78,9 @@ public class Member {
 	@ColumnDefault(value = "'0'")
 	private Long notificationCount;
 	
-	//소켓 통신에 사용되는 세션ID
-	private String sessionId;
+	
+//	//소켓 통신에 사용되는 세션ID (redis추가한뒤 필요없어짐)
+//	private String sessionId;
 
 	// 생성 메서드
 	public void createMember(List<Problem_Site_Like> problem_site_like, List<Use_Language_Like> use_language_like) {
