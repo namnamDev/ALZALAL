@@ -119,9 +119,18 @@ public class CommentServiceImpl implements CommentService{
 		String msg = "";
 		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		
 		String content = (String)req.get("commentContent");
+		if (content.trim() == "") {
+			msg = "내용을 입력하여 주십시오";
+			res.put("msg", msg);
+			return res;
+		}
+		
+		
 		if (articleClass.equals("article")) {
 			Article article = articleRepo.sltOneArticle(articlePk);
+
 			if (article != null) {
 				Article_Comment comment= new Article_Comment();
 				comment.setCommentContent(content);
@@ -175,6 +184,11 @@ public class CommentServiceImpl implements CommentService{
 		if (articleClass.equals("article")) {
 			//댓글단건조회
 			Article_Comment artiCom = ArtiComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			//로그인중인 유저와 일치하는지 조회
 			if (artiCom.getMember().getNo() == member.getNo()) {
 				msg="삭제완료";
@@ -186,6 +200,11 @@ public class CommentServiceImpl implements CommentService{
 			}
 		}else if (articleClass.equals("discussion")) {
 			Discuss_Comment artiCom = disComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			if (artiCom.getMember().getNo() == member.getNo()) {
 				msg="삭제완료";
 				disComRepo.deleteById(commentPK);
@@ -195,7 +214,20 @@ public class CommentServiceImpl implements CommentService{
 				msg = "작성자만 삭제할 수 있습니다.";
 			}
 		}else if (articleClass.equals("helpme")) {
-			
+			Helpme_Comment artiCom = helpComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
+			if (artiCom.getMember().getNo() == member.getNo()) {
+				msg="삭제완료";
+				helpComRepo.deleteById(commentPK);
+				Long deleted =commentPK;
+				res.put("deleted", deleted);
+			}else {
+				msg = "작성자만 삭제할 수 있습니다.";
+			}
 		}
 		res.put("msg", msg);
 		return res;
@@ -207,11 +239,22 @@ public class CommentServiceImpl implements CommentService{
 		String msg = "";
 		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		
+		String content = (String)req.get("commentContent");
+		if (content.trim() == "") {
+			msg = "내용을 입력하여 주십시오";
+			res.put("msg", msg);
+			return res;
+		}
 		if (articleClass.equals("article")) {
 		//댓글단건조회
 			Article_Comment artiCom = ArtiComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			if (artiCom.getMember().getNo() == member.getNo()) {
-				String content = (String)req.get("commentContent");
 				msg="수정완료";
 				Long updated = ArtiComRepo.artiComUpdate(commentPK, content);
 				res.put("updated", updated);
@@ -220,8 +263,12 @@ public class CommentServiceImpl implements CommentService{
 			}
 		}else if (articleClass.equals("discussion")) {
 			Discuss_Comment artiCom = disComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			if (artiCom.getMember().getNo() == member.getNo()) {
-				String content = (String)req.get("commentContent");
 				msg="수정완료";
 				Long updated = disComRepo.artiComUpdate(commentPK, content);
 				res.put("updated", updated);
@@ -231,8 +278,12 @@ public class CommentServiceImpl implements CommentService{
 			
 		}else if (articleClass.equals("helpme")) {
 			Helpme_Comment artiCom = helpComRepo.sltOneArtiCom(commentPK);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			if (artiCom.getMember().getNo() == member.getNo()) {
-				String content = (String)req.get("commentContent");
 				msg="수정완료";
 				Long updated = helpComRepo.artiComUpdate(commentPK, content);
 				res.put("updated", updated);
@@ -250,8 +301,14 @@ public class CommentServiceImpl implements CommentService{
 		Member member = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 		Map<String,Object>res = new HashMap<String,Object>();
+		String msg = "";
 		if (articleClass.equals("article")){
 			Article_Comment artiCom = ArtiComRepo.getById(commentPk);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			Article_Comment_Like arCoLi = ArtiComLiRepo.ifMemberExist(commentPk, member.getNo());
 			if (arCoLi == null) {
 				Article_Comment_Like insertLike = new Article_Comment_Like();
@@ -267,6 +324,11 @@ public class CommentServiceImpl implements CommentService{
 				}
 		}else if(articleClass.equals("discussion")){
 			Discuss_Comment artiCom = disComRepo.getById(commentPk);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			Discuss_Comment_Like arCoLi = disComLiRepo.ifMemberExist(commentPk, member.getNo());
 			if (arCoLi == null) {
 				Discuss_Comment_Like insertLike = new Discuss_Comment_Like();
@@ -283,6 +345,11 @@ public class CommentServiceImpl implements CommentService{
 			
 		}else if(articleClass.equals("helpme")){
 			Helpme_Comment artiCom = helpComRepo.getById(commentPk);
+			if (artiCom == null) {
+				msg = "댓글이 존재하지 않습니다.";
+				res.put("msg" , msg);
+				return res;
+			}
 			Helpme_Comment_Like arCoLi = helpComLiRepo.ifMemberExist(commentPk, member.getNo());
 			if (arCoLi == null) {
 				Helpme_Comment_Like insertLike = new Helpme_Comment_Like();

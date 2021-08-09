@@ -59,13 +59,36 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public long signup(Member member, List<String> problem_site_list, List<String> use_language_like) {
 		// name, email 중복확인
-
+		String memberNM = member.getName().trim();
+		String memberEmail = member.getEmail().trim();
+		String memberPassword = member.getPassword().trim();
+		String msg = "";
+		if (2 > memberNM.length() && memberNM.length() > 10) {
+			msg = "이름은 2자이상 10자 이하로 입력하여 주십시오";
+			throw new IllegalStateException(msg);
+			
+		}
+		
+		if (!Common.isValidEmail(memberEmail)) {
+			msg = "이메일 형식으로 입력하여 주십시오";
+			throw new IllegalStateException(msg);
+		}
+		
+		if (10>memberPassword.length() || memberPassword.length()>20) {
+			msg = "비밀번호는 10자이상, 20자 이하로 입력하여 주십시오";
+			throw new IllegalStateException(msg);
+		}
+		if (2>memberNM.length() || memberNM.length()>10) {
+			msg = "이름은 2자이상, 10자 이하로 입력하여 주십시오";
+			throw new IllegalStateException(msg);
+		}
+		
 		if (memberRepository.findByName(member.getName()).isPresent())
 			throw new IllegalStateException("이미 존재하는 이름입니다");
 
 		if (memberRepository.findByEmail(member.getEmail()).isPresent())
 			throw new IllegalStateException("이미 존재하는 이메일입니다");
-
+		
 		// 선호하는 문제 사이트 추가
 		List<Problem_Site_Like> pslikeList = new ArrayList<>();
 		if (problem_site_list != null) {
