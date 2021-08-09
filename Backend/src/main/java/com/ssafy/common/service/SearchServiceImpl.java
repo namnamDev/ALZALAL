@@ -132,16 +132,13 @@ public class SearchServiceImpl implements SearchService {
 		Long count = articleRepository.getProblemSearchCount(problem_Site, language, and, not);
 		ret.put("articleSearchCount", count);
 
-		Problem_Site_List ptmp=new Problem_Site_List(problemName);
-		Problem_Site pstmp=new Problem_Site();
-		pstmp.setProblemSiteName(ptmp);
-		pstmp.setProblemNo(problemNo);
-		
 		
 		//팔로잉 정보
 		Map<String,Object> followInfo=new HashMap<>();
 		followInfo.put("followingNumber", problem_FollowRepositoryCustom.countProblemFollowings(problemName,(long)problemNo));
-		followInfo.put("articleNumber", articleRepository.countbyProblem(pstmp));
+		followInfo.put("articleNumber", articleRepository.countbyProblem(problem_Site));
+		followInfo.put("followingState", problem_FollowRepositoryCustom.isProblemFollowing(nowLoginMemberNo,problem_Site));
+		
 		
 		ret.put("followInfo", followInfo);
 		
@@ -195,6 +192,7 @@ public class SearchServiceImpl implements SearchService {
 			Map<String,Object> followInfo=new HashMap<>();
 			followInfo.put("followingNumber", algorithm_FolloweRepositoryCustom.countAlgorithmFollowings(and.get(0)));
 			followInfo.put("articleNumber", articleRepository.countbyAlgorithm(and.get(0)));
+			followInfo.put("followingState", algorithm_FolloweRepositoryCustom.isAlgorithmFollowing(nowLoginMemberNo,and.get(0)));
 			
 			ret.put("followInfo", followInfo);
 		}

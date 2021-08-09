@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.common.domain.problem.Problem_Follow;
+import com.ssafy.common.domain.problem.Problem_Site;
 import com.ssafy.common.domain.problem.Problem_Site_List;
 import com.ssafy.common.domain.problem.QProblem_Follow;
 
@@ -43,6 +45,21 @@ public class Problem_FollowRepositoryImpl implements Problem_FollowRepositoryCus
 					.fetchCount();
 		
 		return result;
+	}
+	
+	//memberNo가 problem을 팔로우 중인지 아닌지
+	@Override
+	public boolean isProblemFollowing(long memberNo, Problem_Site problemSite) {
+		QProblem_Follow pf=QProblem_Follow.problem_Follow;
+		
+		long result=jpaQueryFactory.select(pf).from(pf)
+					.where(pf.followingProblemSiteName.eq(problemSite),pf.member.no.eq(memberNo))
+					.fetchCount();
+		
+		if(result>0)
+			return true;
+		else 
+			return false;
 	}
 	
 }
