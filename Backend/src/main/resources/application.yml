@@ -17,6 +17,11 @@ spring:
     multipart:
       maxFileSize: 5MB
       maxRequestSize: 5MB
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
 
 jwt:
   header: Authorization
