@@ -1,7 +1,8 @@
 <template>
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
-    <div>      
+    <div>    
+      {{viewerContent}}  
       <Viewer  
       class="viewer"      
       height="500px" 
@@ -34,20 +35,20 @@ export default {
   props: {
     viewerText: String,
   },
+
   data() {
     return {
       // viewerText: '# hello world',
       viewerOptions: VIEWER_OPTION,
+      viewerContent: this.viewerText,
     };
   },
   computed: {
-    viewerContent: function() {
-      return this.viewerText
-    },
+    // viewerContent: function() {
+    //   return this.viewerText
+    // },
   },
-  methods: {
 
-  },
 
 };
 </script>

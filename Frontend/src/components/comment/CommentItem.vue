@@ -10,17 +10,20 @@
             | {{this.date | moment("YYYY-MM-DD HH:mm:ss")}}
           </div>
           <div class="inline">
-            <i class="fal fa-thumbs-up">
-              <span class="ms-2">{{this.likeCount}}</span>
-            </i>
+            <i class="fas fa-heart ms-2" v-if="likeState"></i>
+            <i class="far fa-heart ms-2" v-else></i>
+            <span class="" >
+              {{likeCount}}
+            </span>
           </div>
         </div>
-        <div class="col text-end pe-3">
-          좋아요
+        <div class="col text-end pe-3" @click="clickLike">
+          <span class="like-btn">좋아요</span>
         </div>
       </div>
     </div>
     <div class="content">
+      {{this.content}}
       <Viewer :viewerText="this.content"/>
     </div>
 
@@ -32,6 +35,9 @@ import Viewer from '@/components/comment/CommentViewer.vue'
 
 import Vue from "vue";
 import vueMoment from "vue-moment";
+import axios from 'axios';
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 Vue.use(vueMoment);
 
 export default {
@@ -41,12 +47,49 @@ export default {
   props: {
     comment: Object
   },
+
   data() {
     return {
       memberName: this.comment.member.name,
       date: this.comment.articleCommentDate,
       likeCount: this.comment.likeCount,
-      content: this.comment.content
+      content: this.comment.content,
+      likeState: this.comment.likeState
+    }
+  },
+
+
+  methods: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
+    clickLike() {      
+
+      const commentNo = this.comment.articleCommentNo
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/like/article/comment/${commentNo}`,
+        headers: this.getToken(),
+        data :{}
+      })
+      .then(res=> {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      if (this.likeState) {
+        this.likeState = false
+        this.likeCount -= 1
+      }
+      else{
+        this.likeState = true
+        this.likeCount += 1
+      }
     }
   },
 }
@@ -61,5 +104,12 @@ export default {
 }
 .inline{
   display:inline;
+}
+.fa-heart{
+  color: red;
+}
+.like-btn{
+  cursor: pointer;
+  color:rgb(70, 172, 235);
 }
 </style>

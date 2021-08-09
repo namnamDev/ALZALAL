@@ -105,7 +105,7 @@ const routes = [
     props:true
   },
   {
-    path: '/articleDetail/:articleno',
+    path: '/articleDetail/:Page',
     name: 'articleDetail',
     component: ArticleDetail,
     props: true
@@ -123,7 +123,7 @@ const routes = [
     props: true
   },
   {
-    path: '/searchUser',
+    path: '/searchUser/:userno',
     name: 'searchUser',
     component: SearchUser,
     props: true

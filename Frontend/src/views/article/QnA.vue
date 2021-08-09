@@ -56,7 +56,7 @@ export default {
               this.page += 1
               console.log("after", this.article.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(res.data.length / 20 < 1) {
+              if(res.data.length / 10 < 1) {
                 $state.complete()
               }
             } else {
@@ -69,10 +69,7 @@ export default {
         })
        },
    },
-  mounted() {
-    const search = document.querySelector('#search')
-    search.style.display = 'block'
-  },
+
   // created() {
   //   axios({
   //       method: 'get',
