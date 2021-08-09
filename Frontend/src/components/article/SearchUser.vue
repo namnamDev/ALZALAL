@@ -5,7 +5,10 @@
       <div class="col-lg-3 col-md-2 col-sm-3 col-1">        
       </div>
 
-      <div class="col-lg-6 col-md-10 col-sm-9 col-10 mt-5">       
+      <div class="col-lg-6 col-md-10 col-sm-9 col-10 mt-5">   
+        <div class="row ms-5 ps-5">
+          총 {{articleCount}}명의 유저가 검색되었습니다.
+        </div>    
         <div class="row mt-5 profile-card" v-for="member,idx in memberList" :key="idx">
           <div class="col-2 me-5">
             <i class="fas fa-user" style="font-size: 80px"></i>
@@ -35,23 +38,37 @@
 
       </div>
     </div>
-
+    <infinite-loading @infinite="infiniteHandler" spinner="sprial">
+      <div
+        slot="no-more"
+        style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+      >
+        목록의 끝입니다 :)
+      </div>
+    </infinite-loading>
 
   </div>
 </template>
 
 <script>
+import InfiniteLoading from "vue-infinite-loading";
+
 import axios from 'axios';
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
+  components: {
+    InfiniteLoading
+  },
   props:{
     user: String,
   },
   data() {
     return{
-      memberList: null,
+      memberList: [],
+      page:0,
+      articleCount: 0 ,
     }
   },
    computed: {
@@ -59,24 +76,7 @@ export default {
       return this.$store.getters.getSearchArticle
     }
   },
-  created() {
-    const data = this.getArticle    
-    axios({
-      method: 'get',
-      url: `${SERVER_URL}/search/member`,
-      headers: this.getToken(),
-      params: {
-        name: data.user,
-      }
-    })
-    .then(res=>{
-      this.memberList = res.data.memberList
-      console.log(res.data)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
-  },
+
   methods: {
     getToken(){
       const token = localStorage.getItem('jwt')
@@ -85,7 +85,43 @@ export default {
       }
       return config
     },
-  }
+
+    infiniteHandler($state) {
+      const data = this.getArticle  
+      axios({
+        method: "get",
+        url: `${SERVER_URL}/search/member` + "?page=" + this.page,
+        headers: this.getToken(),
+        params: {
+          name: data.user,
+        }
+      })
+        .then((res) => {
+          console.log(res.data)
+          this.articleCount = res.data.memberSearchCount
+          setTimeout(() => {
+            if (res.data.memberList.length) {
+              //console.log(res.data.article.length)         
+              this.memberList = this.memberList.concat(res.data.memberList);
+              $state.loaded();
+              this.page += 1;
+              //console.log("after", this.page)
+              // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면
+              if (res.data.memberList.length / 10 < 1) {
+                $state.complete();
+              }
+            } else {
+              // 끝 지정(No more data)
+              $state.complete();
+            }
+          }, 1000);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
+
 }
 </script>
 
