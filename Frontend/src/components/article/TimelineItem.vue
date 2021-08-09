@@ -14,11 +14,11 @@
             <div>
               <div class="title mb-1">{{ this.articleTitle }}</div>
               <div class="hashtag">
-                <span v-if="articleClass=='A01'">문제풀이</span>
-                <span v-else>QnA</span>
-                <span>{{ this.problemSite }} {{ problemNo }}</span>
-                <span>{{ this.language }}</span>
-                <span class='mt-2' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
+                <span v-if="articleClass=='A01'" class="has-category">문제풀이</span>
+                <span v-else class="has-category">QnA</span>
+                <span class="has-problem">{{ this.problemSite }} {{ problemNo }}</span>
+                <span class="has-language">{{ this.language }}</span>
+                <span class='mt-2 has-algo' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
               </div>
             </div>
           </div>
@@ -118,22 +118,7 @@ export default {
     // 게시글 상세 정보 페이지로 이동
     clickArticle: function() {
       localStorage.setItem('articleNo', this.articleNo)
-
-      this.$store.dispatch('createArticleDetail',this.item.articleDetail)
-
-      // 댓글 정보 요청후 store에 저장
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/comment/article/${this.articleNo}`,
-      })   
-      .then(res =>{
-        this.$store.dispatch('createArticleComment',res.data.articleComments)
-      })
-      .catch(err =>{  
-        console.log(err)
-      })
-
-      this.$router.push({name : 'articleDetail', params:{articleno:this.articleNo}})
+      this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
     },
     clickName: function(){
       localStorage.setItem('userPk',this.memberNo)
@@ -204,16 +189,28 @@ export default {
   text-align: end;
 }
 .hashtag > span {
-  font-size: 16px;
+  font-size: 13px;
   border-radius: 3px;
-  background-color: rgba(221, 223, 230, 1);
+  /* background-color: rgba(221, 223, 230, 1); */
   padding:0px 8px;
   margin-right: 6px;
   display:inline-block;
 }
-.hashtag {
-  /* height: 20px; */
+.has-category{
+  background-color:rgba(170, 224, 217) ;
+  font-weight: bold;
 }
+.has-problem{
+  background-color:rgb(97, 209, 209) ;
+}
+.has-language{
+  background-color:rgb(126, 208, 233) ; 
+}
+.has-algo{
+  background-color: rgba(186,184,189,1);
+}
+
+
 @media (max-width: 767px) {
   .top {
     margin-bottom: 30px;
