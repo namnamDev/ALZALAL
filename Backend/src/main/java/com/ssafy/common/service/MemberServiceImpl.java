@@ -198,6 +198,10 @@ public class MemberServiceImpl implements MemberService {
 		Long refreshTokenExpiresIn=retTokenDto.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
 		redisUtil.setDataExpire(authentication.getName(), retTokenDto.getRefreshToken(), refreshTokenExpiresIn);
 
+		//sessionID갱신
+		String sessionId=redisUtil.getData("notification"+authentication.getName());
+		redisUtil.setDataExpire("notification"+authentication.getName(), sessionId, retTokenDto.getAccessTokenExpiresIn());
+		
 		// 토큰 발급
 		return retTokenDto;
 	}
