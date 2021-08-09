@@ -15,12 +15,17 @@
             </div>
             <div class="col text-end">
              {{articleDetail.articleDate | moment("YYYY-MM-DD HH:mm:ss")}}
+             {{date}}
             </div>
           </div>
         </div>
 
         <div class="row middle py-4 px-0">
           <div class="row mb-5">
+            <div class="col text-end px-0" v-if="isMine">
+              <span style="cursor:pointer">수정</span> | 
+              <span @click="deleteArticle" style="cursor:pointer">삭제</span>
+            </div>
             <div>
               <Viewer :viewerText="articleDetail.articleContent"/>  
             </div>
@@ -43,19 +48,17 @@
               <CreateComment :articleNo="articleDetail.articleNo"/>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              총 {{commentCount}}개의 댓글이 있습니다.
-            </div>
-          </div>
+
           <div class="row my-3" v-for="comment,idx in getArticleComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-          <div class="row">
-            <div class="col ">
-              <span class="mx-4" @click="click1">1</span>
-              <span class="mx-4" @click="click2">2</span>
-              <span class="mx-4">3</span>
+          <div class="row mb-5 py-5">
+            <div class="col text-center">
+              <span class="previous-btn" @click="clickPreviousBtn">previous</span>
+              <!-- <span class="mx-4" @click="click1">1</span>/ -->
+              <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
+              /<span class="mx-4">{{commentCount}}</span>
+              <span class="next-btn" @click="clickNextBtn">next</span>
             </div>
           </div>
         </div>
@@ -71,6 +74,8 @@ import Viewer from '@/components/article/Viewer.vue'
 import CreateComment from '@/components/comment/CreateCommentEditor.vue'
 import $ from 'jquery';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode'
+
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -85,32 +90,71 @@ export default {
   props: {
     Page: String,
   },
-  computed: {
-    getArticleComments: function() {
-      return this.$store.getters.getArticleComments
-    }
-  },
-
   data: function() {
     return {
       articleDetail: '',
       likeState:'',
       commentCount: 0,
       commentList: null,
+      currentPage: Number(this.Page)+1,
+      date: '',
     }
   },
+
+
+  computed: {
+    getArticleComments: function() {
+      return this.$store.getters.getArticleComments
+    },
+    isMine: function() {
+      const token = localStorage.getItem('jwt')
+      let username = '';
+      if (token) {
+        const decoded = jwt_decode(token)
+        username = decoded.name
+        if (username == this.articleDetail.member.name){
+          return true
+        }
+        else{
+          return false
+        }
+      }
+      return false
+    }
+  },
+
 
   mounted() { 
     this.getArticleDetail()       
     this.getCommentList()
-    console.log('this.Page : ',this.Page)
   },
 
   methods: {
+    clickNextBtn: function() {
+      if (Number(this.Page) < this.commentCount -1){
+        const page = String(Number(this.Page) + 1)
+        location.href=`/articleDetail/${page}`  
+      }
+    },
+    clickPreviousBtn: function() {
+      if (Number(this.Page) > 0){
+        const page = String(Number(this.Page) - 1)
+        location.href=`/articleDetail/${page}`  
+      }
+    },
+    goPage: function() {
+      location.href=`/articleDetail/${this.currentPage-1}`
+    },
+
     // 몇시간전, 몇분전 표기
     getDate: function(year,month,day,hour,min,sec) {
       const today  = new Date()
       const timeValue  = new Date(year,month,day,hour,min,sec)
+      console.log('1 : ',timeValue)
+      timeValue.setHours(timeValue.getHours() - 9);
+
+      console.log('2 : ',today)
+      console.log('3 : ',timeValue)
 
       const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
       if (betweenTime < 1) return '방금전';
@@ -131,6 +175,35 @@ export default {
       return `${Math.floor(betweenTimeDay / 365)}년전`;
 
     },
+    // 삭제 버튼
+    deleteArticle: function() {
+      const articleNo = localStorage.getItem('articleNo')
+      this.$swal.fire({
+        title: '글을 삭제하시겠습니까?',
+        text: "삭제하시면 다시 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'delete',
+            url: `${SERVER_URL}/article/article/${articleNo}`,
+            headers: this.getToken(),
+          })   
+          .then(() =>{
+            this.$router.push({name: 'timeline'})
+          })
+          .catch(err =>{  
+            console.log(err)
+          }) 
+        }
+      })
+      
+    },
     // 게시글 상세정보 불러오기
     getArticleDetail() {
       const articleNo = localStorage.getItem('articleNo')
@@ -148,9 +221,9 @@ export default {
           const min = date.substr(14,2)
           const sec = date.substr(17,2)
           
-          this.getDate(year,month,day,hour,min,sec)
+          this.date = this.getDate(year,month,day,hour,min,sec)
 
-          this.commentCount = res.data.articleDetail.commentCount
+          this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
@@ -162,15 +235,14 @@ export default {
 
     //댓글 리스트 불러오기
     getCommentList:function() {
+      this.$store.dispatch('deleteArticleComment')
       const articleNo = localStorage.getItem('articleNo')
-      console.log('asdfasd',this.Page)
       axios({
           method: 'get',
           url: `${SERVER_URL}/comment/article/${articleNo}?page=${this.Page}`,
           headers: this.getToken(),
         })   
         .then(res =>{
-          console.log('댓글작성!!!!')
           this.commentList = res.data.articleComments
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
@@ -297,5 +369,18 @@ button{
   border-radius: 3px;
   color:rgb(255, 255, 255);
   font-weight: bold;
+}
+.current-page{
+  width: 30px;
+  height:23px;
+  margin-left:10px;
+  margin-right:15px;
+  text-align: center;
+}
+.previous-btn{
+  cursor: pointer;
+}
+.next-btn{
+  cursor: pointer;
 }
 </style>

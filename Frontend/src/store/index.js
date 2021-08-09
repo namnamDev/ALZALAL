@@ -46,6 +46,9 @@ export default new Vuex.Store({
     },
     CREATE_HELPME_COMMENTS: function(state, item){
       state.helpComments = item
+    },
+    DELETE_ARTICLE_COMMENT(state){
+      state.articleComments = []
     }
 
   },
@@ -75,6 +78,9 @@ export default new Vuex.Store({
     },
     createHelpmeComment: function({commit}, item){
       commit("CREATE_HELPME_COMMENTS",item)
+    },
+    deleteArticleComment: function({commit}){
+      commit('DELETE_ARTICLE_COMMENT')
     }
 
   },

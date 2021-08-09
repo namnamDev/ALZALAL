@@ -85,8 +85,7 @@ export default {
           method: 'get',
           url: `${SERVER_URL}/comment/article/${articleNo}`,
         })   
-        .then(res =>{
-          console.log(res)
+        .then(res =>{    
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
         .catch(err =>{  
