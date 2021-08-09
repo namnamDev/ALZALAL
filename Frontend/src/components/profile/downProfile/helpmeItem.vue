@@ -119,6 +119,19 @@ export default {
         console.log(err)
       })
 
+      // 댓글 리스트 불러오기
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/comment/helpme/${this.helpmeNo}`,
+      })   
+      .then(res =>{
+        console.log(res)
+        this.$store.dispatch('createHelpmeComment',res.data.articleComments)
+      })
+      .catch(err =>{  
+        console.log(err)
+      })
+
       this.$router.push({name : 'helpmeDetail', params:{helpmeNo:this.helpmeNo}})
     },   
     

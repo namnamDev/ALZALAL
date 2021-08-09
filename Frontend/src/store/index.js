@@ -17,6 +17,7 @@ export default new Vuex.Store({
     qnaList: null,
     searchArticle: null,
     helpmeDetail: null,
+    helpComments: null,
   },
 
   mutations: {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     CREATE_SEARCH_ARTICLE: function(state, data){
       state.searchArticle = data
+    },
+    CREATE_HELPME_COMMENTS: function(state, item){
+      state.helpComments = item
     }
 
   },
@@ -69,6 +73,9 @@ export default new Vuex.Store({
     createHelpmeDetail: function({commit}, item) {
       commit("CREATE_HELPME_DETAIL", item)
     },
+    createHelpmeComment: function({commit}, item){
+      commit("CREATE_HELPME_COMMENTS",item)
+    }
 
   },
 
@@ -94,6 +101,9 @@ export default new Vuex.Store({
     },
     getSearchArticle: function(state){
       return state.searchArticle
+    },
+    getHelpmeComments: function(state){
+      return state.helpComments
     }
   },
 

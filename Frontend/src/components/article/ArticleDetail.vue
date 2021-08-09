@@ -48,7 +48,7 @@
               총 {{commentCount}}개의 댓글이 있습니다.
             </div>
           </div>
-          <div class="row my-3" v-for="comment,idx in commentList" :key="idx">
+          <div class="row my-3" v-for="comment,idx in getArticleComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
           <div class="row">
@@ -84,6 +84,11 @@ export default {
   },
   props: {
     Page: String,
+  },
+  computed: {
+    getArticleComments: function() {
+      return this.$store.getters.getArticleComments
+    }
   },
 
   data: function() {
@@ -165,6 +170,7 @@ export default {
           headers: this.getToken(),
         })   
         .then(res =>{
+          console.log('댓글작성!!!!')
           this.commentList = res.data.articleComments
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
