@@ -16,6 +16,11 @@
           <div>
             <label for="password" align="left">비밀번호 </label>
             <input id="password" type="password" v-model="form.password" />
+            <p class="validation-text">
+                <span class="warning" v-if="!passwordLength">
+                  비밀번호는 10자 이상 20자 이하로 입력해주세요.
+                </span>
+            </p>
           </div>
                   <div>
             <label for="passwordConfirm" align="left">비밀번호 확인 </label>
@@ -30,10 +35,10 @@
             <label for="name" align="left">닉네임</label>
             <input id="name" type="text" v-model="form.name" />
             <p class="validation-text">
-              <span class='warning' v-if="!form.name">
-                Write your name.
+              <span class='warning' v-if="!nameLength">
+                닉네임은 2자이상 10자 이하로 입력해주세요
               </span>
-            </p>          
+            </p>            
           </div>
           <div class='checkbox' align="left">
               <details>
@@ -65,7 +70,7 @@
           </div>
                   
           <button
-            :disabled="!form.password || !passwordConfirm || !form.name"
+            :disabled="!passwordLength || !passwordConfirm || !nameLength"
             type="submit"
             class="btn">
               수정
@@ -133,7 +138,19 @@ export default{
         Authorization: `Bearer ${token}`
       }
       return config
-    }
+    },
+    passwordLength(){
+      if(this.form.password.length > 9 && this.form.password.length<21){
+        return true;
+      }
+      return false
+    },
+    nameLength(){
+      if(this.form.name.length > 2 && this.form.name.length<10){
+        return true;
+      }
+      return false
+    },
 	},
   methods: {
     submitForm: function () {
