@@ -15,9 +15,9 @@
             <div>
               <div class="title mb-1">{{item.articleTitle}}</div>
               <div class="hashtag">
-                <span>QnA</span>
-                <span>{{item.problemSite.problemSiteName}} {{item.problemSite.problemNo}}</span>                
-                <span>{{item.useLanguage}}</span>
+                <span class="has-category">QnA</span>
+                <span class="has-problem">{{item.problemSite.problemSiteName}} {{item.problemSite.problemNo}}</span>                
+                <span class="has-language">{{item.useLanguage}}</span>
               </div>
             </div>
           </div>
@@ -138,14 +138,22 @@ export default {
   text-align: end;
 }
 .hashtag > span{
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 3px;
-  background-color : rgba(221,223,230,1);
+  /* background-color : rgba(221,223,230,1); */
   padding:0px 8px;
   margin-right: 6px;
   display:inline-block;
 }
-.hashtag{
-  /* height:20px; */
+.has-category{
+  background-color:rgba(170, 224, 217) ;
+  font-weight: bold;
 }
+.has-problem{
+  background-color:rgb(97, 209, 209) ;
+}
+.has-language{
+  background-color:rgb(126, 208, 233) ; 
+}
+
 </style>

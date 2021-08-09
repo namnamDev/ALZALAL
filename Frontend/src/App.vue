@@ -20,6 +20,7 @@ export default {
     TopMenuBar,
     SearchBar,
   },
+
   methods: {
     // side menu 바 다른 곳 클릭시 창 사라짐
     clickApp: function(event) {

@@ -1,6 +1,8 @@
-<template clsas="temp">
+<template>
   <div class="create-form">
-    <div class="container">
+    <!-- <notifications group="notifyApp" position="top center" width="400px"/> -->
+
+    <div >
       <div class="row justify-content-start mb-3">
         <div class="box">카테고리</div>
         <select id="select" name="category" v-model="category">
@@ -19,6 +21,7 @@
               placeholder="알고리즘을 입력해주세요"
               @click="clickAlgoInput"
               @keyup="filterFunction"
+              @blur="blur"
             />
             <ul id="algo-ul">
               <li id="algo-li" v-for="item,idx in algoList" :key="idx">
@@ -81,7 +84,7 @@
       <div class="row editor">
         <Editor ref="toastEditor" />
       </div>
-      <div class="row mt-2 mb-5">
+      <div class="row mt-2 mb-5 pb-5">
         <button @click="submit">작성하기</button>
         
       </div>
@@ -122,10 +125,6 @@ export default {
       }
     }
   },
-  mounted() {
-    const search = document.querySelector('#search')
-    search.style.display = 'none'
-  },
 
   created: function() {
     axios({
@@ -147,10 +146,14 @@ export default {
   },
 
   methods: {
-    // blur() {
-    //   const ul = document.querySelector('#algo-ul')
-    //   ul.style.display = 'none'
-    // },
+    blur() {
+      const ul = document.querySelector('#algo-ul')
+      setTimeout(() => {
+        if (ul.style.display == 'block'){
+          ul.style.display = 'none'        
+        }
+      }, 100);
+    },
     // toast editor에서 작성된 내용 가져오기
     getContent() {
       return this.$refs.toastEditor.getContent();
@@ -165,6 +168,7 @@ export default {
     },
     // 글 작성하기
     submit() {
+      this.$swal('Complete', '새 글이 작성되었습니다.', 'OK');
       let algoList = [];
       const boxAlgo = document.querySelectorAll(".box-algo span");
       boxAlgo.forEach((element) => {
@@ -190,10 +194,10 @@ export default {
         data: data,
         headers: this.getToken(),
       })   
-      .then(res =>{
-        console.log(res);
-        alert("작성 완료!")
-        this.$router.push({ name: 'timeline' })       
+      .then(() =>{
+        setTimeout(() => {
+          this.$router.push({ name: 'timeline' })       
+        }, 1000);         
       })
       .catch(err =>{  
         console.log(err)
@@ -221,9 +225,19 @@ export default {
           });
           algoHastag.style.cursor = "pointer";
 
+          // console.log(boxAlgo.childNodes)
           if (boxAlgo.childElementCount != 4) {
-            console.log('1234')
-            boxAlgo.appendChild(algoHastag);
+            let flag = true
+            boxAlgo.childNodes.forEach(element => {
+              if (algoHastag.innerText == element.innerText){
+                flag = false
+                
+              }
+              console.log(element.innerText)
+            });
+            if (flag){
+              boxAlgo.appendChild(algoHastag);
+            }            
           }
         });
       });
@@ -238,7 +252,6 @@ export default {
     },
     // 검색필터 적용
     filterFunction() {
-      console.log("filterfunction");
       var input = document.getElementById("algo-input-1");
       var filter = input.value.toUpperCase();
       var div = document.querySelector(".algo-input-div");
@@ -246,7 +259,6 @@ export default {
 
       for (var i = 0; i < li.length; i++) {
         const txtValue = li[i].textContent || li[i].innerText;
-        console.log(i, txtValue);
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           li[i].style.display = "";
         } else {
@@ -259,9 +271,6 @@ export default {
 </script>
 
 <style scoped>
-#search{
- display:none; 
-}
 .box {
   border: 1px solid black;
   height: 30px;
@@ -273,10 +282,11 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 70%;
+  width: 100%;
   height: 500px;
   left: 23%;
   position: absolute;
+  background-color: white;
 }
 
 .container {
@@ -346,11 +356,11 @@ li:hover {
   padding: 0 0;
 }
 .title > input {
-  width: 70%;
+  width: 68%;
   border-radius: 3px;
 }
 .editor {
-  width: 100%;
+  width: 70%;
   transform: translateX(-11px);
   margin-top: 20px;
 }
@@ -365,6 +375,8 @@ button {
 .m-size{
   margin-right:8px;
 }
+
+
 @media (max-width: 576px) {
   .create-form {
     left: 5%;
@@ -397,4 +409,5 @@ button {
     margin-right:145px;
   }
 }
+
 </style>
