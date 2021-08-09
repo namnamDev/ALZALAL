@@ -94,9 +94,8 @@ export default {
           alert(res.data.msg)
         }
       })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        alert("ID 또는 비밀번호가 틀렸습니다.")
+      .catch(()=>{  // 실패하면 error
+        this.$swal('ID 혹은 비밀번호가 틀렸습니다');
       })
     }
   }

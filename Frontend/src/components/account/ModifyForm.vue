@@ -68,17 +68,18 @@
                 </ul>
               </details>
           </div>
-                  
-          <button
-            :disabled="!passwordLength || !passwordConfirm || !nameLength"
-            type="submit"
-            class="btn">
-              수정
-          </button>
-          <router-link to="/profilePage"><button class="btn">취소</button></router-link>
-          <button @click="deleteUser" class="btn">
-              회원삭제
-          </button>
+          <div>    
+            <button
+              :disabled="!passwordLength || !passwordConfirm || !nameLength"
+              type="submit"
+              class="btn">
+                수정
+            </button>
+            <router-link to="/profilePage"><button class="btn">취소</button></router-link>
+            <button @click="deleteUser" class="btn">
+                회원탈퇴
+            </button>
+          </div>
         </form>
         
       </div>
@@ -154,39 +155,63 @@ export default{
 	},
   methods: {
     submitForm: function () {
-      console.log(this.form)
-      console.log(this.getToken)
-      axios({
-        method: 'put',
-        url: `${SERVER_URL}/member/modify`,
-        data: this.form,
-        headers: this.getToken
-      })
-      .then(res => {
-        console.log(res);
-        this.$router.push({ name: 'profilePage' })
-      })
-      .catch(err => {
-        alert(err)
-        console.log(err)
+      this.$swal.fire({
+        title: '입력한 정보로 수정하시겠습니까?',
+        text: "다시 회원정보를 수정하실 수 있습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '수정',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'put',
+            url: `${SERVER_URL}/member/modify`,
+            data: this.form,
+            headers: this.getToken
+          })
+          .then(res => {
+            console.log(res);
+            this.$router.push({ name: 'profilePage' })
+          })
+          .catch(err => {
+            alert(err)
+            console.log(err)
+          })
+        }
       })
     },
     deleteUser: function(){
-      axios({
-        method: 'delete',
-        url: `${SERVER_URL}/member/modify`,
-        headers: this.getToken
-      })
-      .then(res => {
-        console.log(res);
-        alert(res.data.msg)
-        localStorage.removeItem("jwt")
-        localStorage.removeItem("vuex")
-        this.$router.push({ name: 'login' })
-      })
-      .catch(err => {
-        alert(err)
-        console.log(err)
+      this.$swal.fire({
+        title: '탈퇴하시겠습니까?',
+        text: "탈퇴하시면 다시 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '탈퇴',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'delete',
+            url: `${SERVER_URL}/member/modify`,
+            headers: this.getToken
+          })
+          .then(res => {
+            console.log(res);
+            alert(res.data.msg)
+            localStorage.removeItem("jwt")
+            localStorage.removeItem("vuex")
+            this.$router.push({ name: 'login' })
+          })
+          .catch(err => {
+            alert(err)
+            console.log(err)
+          })
+        }
       })
     }
   }
@@ -282,12 +307,7 @@ summary {
 }
 }
 
-.form input.valid {
 
-}
-.form input.invalid {
-
-}
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
 }
