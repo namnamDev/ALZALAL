@@ -104,6 +104,9 @@ export default {
         if(userPk){
             pk = userPk
             this.myPage = false
+            if(pk==userpk){
+                this.myPage = true
+            }
         }else{
             pk = userpk
             this.myPage = true

@@ -170,7 +170,7 @@ export default {
       const helpmeNo = localStorage.getItem('helpmeNo')
       axios({
         method: 'post',
-        url: `${SERVER_URL}/like/article/article/${helpmeNo}`,
+        url: `${SERVER_URL}/like/helpme/article/${helpmeNo}`,
         headers: this.getToken(),
         data :{}
       })

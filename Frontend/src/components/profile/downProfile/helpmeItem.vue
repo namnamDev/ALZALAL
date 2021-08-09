@@ -2,8 +2,9 @@
   <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz">
     <div class="feed-card col-12 col-lg-12 col-ml-12">
       <div class="contentsWrap" @click="clickHelpmeName">
-        <span>{{this.problemSiteName}}  </span>
+        <span>{{this.item.problemSiteName}}  </span>
         <span>{{this.problemNo}}번 문제</span>
+        <span>  {{getStatus}}</span>
         <div>
           <p class="helpmeContent">{{this.helpmeContent}}</p>
         </div>
@@ -41,6 +42,19 @@ export default {
       }
       return config
     },
+    getStatus: function(){
+      let status = ''
+      if(this.helpmeStatus =='H00'){
+        status =  '답변대기중'
+      }else if(this.helpmeStatus =='H01'){
+        status =  '답변중'
+      }else if(this.helpmeStatus =='H02'){
+        status =  '거절됨'
+      }else if(this.helpmeStatus =='H03'){
+        status =  '답변완료'
+      }
+      return status
+    }
   },
   data: function() {
     return{
@@ -54,6 +68,7 @@ export default {
       problemNo: '',
       helpmeReceptorNo: '',
       helpmeReceptorName: '',
+      helpmeStatus:'',
       item:null
     }
   },
@@ -65,20 +80,21 @@ export default {
       })   
       .then(res =>{
           console.log(res.data)
-        // const detail = res.data.articleDetail
+        const detail = res.data.helpme
          this.item = res.data
-        // this.articleClass= detail.articleClass,
-        // this.articleTitle= detail.articleTitle,
-        // this.date= detail.articleDate,
-        // this.commentCount= detail.commentCount,
-        // this.likeCount= detail.likeCount,
-        // this.likeState= detail.likeState,
-        // this.memberName= detail.member.name,
-        // this.memberNo= detail.member.no,
-        // this.problemSite= detail.problemSite.problemSiteName,
-        // this.problemNo= detail.problemSite.problemNo,
-        // this.language= detail.useLanguage
-        // this.algoList = detail.algo
+         console.log(this.item)
+        this.helpmeSenderNo= detail.helpmeSenderNo.no,
+        this.helpmeSenderName= detail.helpmeSenderNo.name,
+        this.helpmeDate= detail.helpmeDate,
+        this.commentCount= detail.commentCount,
+        this.likeCount= detail.likeCount,
+        this.likeState= detail.likeState,
+        this.problemSiteName= detail.problemSite.problemSiteName,
+        this.problemNo= detail.problemSite.problemNo,
+        this.helpmeReceptorNo= detail.helpmeReceptorNo.no,
+        this.helpmeReceptorName= detail.helpmeReceptorNo.name,
+        this.helpmeStatus= detail.helpmeStatus
+        
       })
       .catch(err =>{  
         console.log(err)
