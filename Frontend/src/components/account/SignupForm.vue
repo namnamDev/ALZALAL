@@ -61,7 +61,7 @@
           </div>
                   
           <button
-            
+            :disabled="!isEmailValid || member_password || !passwordConfirm || !member_name  || !member_email"
             type="submit"
             class="btn"
                   >회원 가입</button>
