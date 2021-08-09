@@ -22,6 +22,7 @@ import com.ssafy.common.dto.NotificationDTO;
 import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.jwt.TokenProvider;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.redis.RedisUtil;
 import com.ssafy.common.repository.NotificationRepository;
 import com.ssafy.common.repository.Use_LanguageRepository;
 import com.ssafy.common.repository.Use_Language_LikeRepository;
@@ -45,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
 	private final Problem_Site_LikeRepository problem_Site_LikeRepository;
 	private final Use_Language_LikeRepository use_Language_LikeRepository;
 	private final NotificationRepository notiRepo;
-//	private final RedisUtil redisUtil;
+	private final RedisUtil redisUtil;
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3;            // 3시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
@@ -155,8 +156,8 @@ public class MemberServiceImpl implements MemberService {
 //				.build();
 //		refreshTokenRepository.save(refreshToken);
 		
-//		Long refreshTokenExpiresIn=jwt.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
-//		redisUtil.setDataExpire(authentication.getName(),jwt.getRefreshToken(),refreshTokenExpiresIn);
+		Long refreshTokenExpiresIn=jwt.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
+		redisUtil.setDataExpire(authentication.getName(),jwt.getRefreshToken(),refreshTokenExpiresIn);
 		
 		return jwt;
 	}
@@ -174,8 +175,8 @@ public class MemberServiceImpl implements MemberService {
 		// 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴(mariaDB에서 가져오던걸 Redis에서 가져오게 변경)
 //		RefreshToken refreshToken = refreshTokenRepository.findByMemberNo(authentication.getName())
 //				.orElseThrow(() -> new IllegalStateException("로그아웃 된 사용자입니다"));
-//		String refreshToken=redisUtil.getData(authentication.getName());
-		String refreshToken=null;
+		String refreshToken=redisUtil.getData(authentication.getName());
+		
 		// 4. Refresh Token 일치하는지 검사
 		if (!refreshToken.equals(tokenDto.getRefreshToken())) {
 			throw new IllegalStateException("토큰의 유저 정보가 일치하지 않습니다");
@@ -195,7 +196,7 @@ public class MemberServiceImpl implements MemberService {
 //		RefreshToken newRefreshToken = refreshToken.updateValue(retTokenDto.getRefreshToken());
 //		refreshTokenRepository.save(newRefreshToken);
 		Long refreshTokenExpiresIn=retTokenDto.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
-//		redisUtil.setDataExpire(authentication.getName(), retTokenDto.getRefreshToken(), refreshTokenExpiresIn);
+		redisUtil.setDataExpire(authentication.getName(), retTokenDto.getRefreshToken(), refreshTokenExpiresIn);
 
 		// 토큰 발급
 		return retTokenDto;
@@ -341,7 +342,7 @@ public class MemberServiceImpl implements MemberService {
 //					.value(jwt.getRefreshToken()).build();
 //			refreshTokenRepository.save(refreshToken);			
 			Long refreshTokenExpiresIn=jwt.getAccessTokenExpiresIn() - ACCESS_TOKEN_EXPIRE_TIME + REFRESH_TOKEN_EXPIRE_TIME;
-//			redisUtil.setDataExpire(authentication.getName(), jwt.getRefreshToken(), refreshTokenExpiresIn);
+			redisUtil.setDataExpire(authentication.getName(), jwt.getRefreshToken(), refreshTokenExpiresIn);
 
 		}
 
