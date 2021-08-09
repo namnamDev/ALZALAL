@@ -168,40 +168,89 @@ export default {
     },
     // 글 작성하기
     submit() {
-      this.$swal('Complete', '새 글이 작성되었습니다.', 'OK');
-      let algoList = [];
-      const boxAlgo = document.querySelectorAll(".box-algo span");
-      boxAlgo.forEach((element) => {
-        console.log(element.textContent);
-        algoList.push(element.innerText);
-      });
-
-      const data = {
-        category: this.articleClass,
-        title: this.title,
-        content: this.getContent(),
-        pNum: this.pNum,
-        pSite: this.pSite,
-        language: this.language,
-        algo: algoList,
+      if (!this.pNum){
+        this.$swal.fire({
+        text: "문제 번호를 입력해주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector("#problem-input");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })     
       }
-      console.log(data)
-
-
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/article/article`,
-        data: data,
-        headers: this.getToken(),
-      })   
-      .then(() =>{
-        setTimeout(() => {
-          this.$router.push({ name: 'timeline' })       
-        }, 1000);         
-      })
-      .catch(err =>{  
-        console.log(err)
-      })
+      else if(!this.title){
+        this.$swal.fire({
+        text: "제목을 입력해 주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector("#title");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })   
+      }
+      else if(!this.getContent()){
+        this.$swal.fire({
+        text: "내용을 입력해 주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector(".editor");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })   
+      }
+      else{
+        let algoList = [];
+        const boxAlgo = document.querySelectorAll(".box-algo span");
+        boxAlgo.forEach((element) => {
+          algoList.push(element.innerText);
+        });
+  
+        const data = {
+          category: this.articleClass,
+          title: this.title,
+          content: this.getContent(),
+          pNum: this.pNum,
+          pSite: this.pSite,
+          language: this.language,
+          algo: algoList,
+        }
+  
+        this.$swal.fire({
+          text: "글을 작성하시겠습니까?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인',
+          cancelButtonText: '취소'
+          }).then(() => {          
+            axios({
+              method: 'post',
+              url: `${SERVER_URL}/article/article`,
+              data: data,
+              headers: this.getToken(),
+            })   
+            .then(() =>{
+              this.$swal('글을 작성하였습니다.');
+              this.$router.push({ name: 'timeline' })                         
+            })
+            .catch(err =>{  
+              console.log(err)
+            })               
+          })   
+      }      
     },
 
     

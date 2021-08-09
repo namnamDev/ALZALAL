@@ -58,7 +58,6 @@ export default {
     }
   },
 
-
   methods: {
     getToken(){
       const token = localStorage.getItem('jwt')
