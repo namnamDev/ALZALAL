@@ -4,13 +4,11 @@
       <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
       <div class="col-lg-6 col-md-10 col-sm-9 col-6 content">
        
-        <div class="row top mb-3">
-          <div class="row">
+        <div class="row top mb-5">
+          <div class="row mt-5">
             <div class="col clickName"  @click="clickName">
-              
-            </div>
-            <div class="col text-end">
              {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}
+              
             </div>
           </div>
         </div>
@@ -57,9 +55,14 @@
 
 <script>
 import Comment from '@/components/comment/CommentItem.vue'
-import CreateComment from '@/components/comment/CreateCommentEditor.vue'
+import CreateComment from '@/views/createHelpme/createHelpmeComment.vue'
+
+import Vue from "vue";
+import vueMoment from "vue-moment";
 import axios from 'axios';
 import $ from 'jquery';
+Vue.use(vueMoment);
+
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'helpmeDetail',
@@ -94,7 +97,7 @@ export default {
   computed: {
 
     getComments: function() {
-      return this.$store.getters.getArticleComments
+      return this.$store.getters.getHelpmeComments
     },
     getStatus: function(){
       let status = ''
@@ -109,27 +112,10 @@ export default {
       }
       return status
     }
-    // getTime: function() {
-    //   const milliSeconds = new Date() - this.date
-    //   const seconds = milliSeconds / 1000
-    //   if (seconds < 60) return `방금 전`
-    //   const minutes = seconds / 60
-    //   if (minutes < 60) return `${Math.floor(minutes)}분 전`
-    //   const hours = minutes / 60
-    //   if (hours < 24) return `${Math.floor(hours)}시간 전`
-    //   const days = hours / 24
-    //   if (days < 7) return `${Math.floor(days)}일 전`
-    //   const weeks = days / 7
-    //   if (weeks < 5) return `${Math.floor(weeks)}주 전`
-    //   const months = days / 30
-    //   if (months < 12) return `${Math.floor(months)}개월 전`
-    //   const years = days / 365
-    //   return `${Math.floor(years)}년 전`
-    // }
+
   },
 
-  created() {    
-    
+  created() {        
     const helpme = this.$store.getters.getHelpmeDetail
     this.helpmeContent = helpme.helpmeContent
     this.helpmeDate = helpme.helpmeDate

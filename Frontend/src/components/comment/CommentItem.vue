@@ -6,7 +6,7 @@
           <div class="inline">
             {{this.memberName}}
           </div >
-          <div class="inline">
+          <div class="inline">            
             | {{this.date | moment("YYYY-MM-DD HH:mm:ss")}}
           </div>
           <div class="inline">

@@ -70,10 +70,10 @@ export default {
     //댓글 작성버튼 클릭
     submit() {
       this.$swal('댓글을 작성하였습니다.');
-      const articleNo = localStorage.getItem('articleNo')
+      const articleNo = localStorage.getItem('helpmeNo')
       axios({
         method: 'post',
-        url: `${SERVER_URL}/comment/article/${articleNo}`,
+        url: `${SERVER_URL}/comment/helpme/${articleNo}`,
         headers: this.getToken(),
         data:{
           'commentContent' : this.getContent()
@@ -83,11 +83,11 @@ export default {
         this.setContent('')
         axios({
           method: 'get',
-          url: `${SERVER_URL}/comment/article/${articleNo}`,
+          url: `${SERVER_URL}/comment/helpme/${articleNo}`,
         })   
         .then(res =>{
           console.log(res)
-          this.$store.dispatch('createArticleComment',res.data.articleComments)
+          this.$store.dispatch('createHelpmeComment',res.data.articleComments)
         })
         .catch(err =>{  
           console.log(err)
