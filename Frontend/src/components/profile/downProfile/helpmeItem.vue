@@ -2,7 +2,7 @@
   <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz">
     <div class="feed-card col-12 col-lg-12 col-ml-12">
       <div class="contentsWrap" @click="clickHelpmeName">
-        <span>{{this.item.problemSiteName}}  </span>
+        <span>{{this.problemSiteName}}  </span>
         <span>{{this.problemNo}}번 문제</span>
         <span>  {{getStatus}}</span>
         <div>
@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nav-link {
   cursor: pointer;
 }
