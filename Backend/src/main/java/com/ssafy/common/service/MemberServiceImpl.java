@@ -377,8 +377,9 @@ public class MemberServiceImpl implements MemberService {
 	//memberNo를 통한 프로필이미지 이름 출력
 	@Override
 	public String getProfileImgUri(Long memberNo) {
-		System.out.println("qwer   "+memberNo);
 		Member member=memberRepository.findById(memberNo).get();
+		if(member.getProfileImg()==null)
+			return "0.png";
 		return member.getProfileImg();
 	}
 	
