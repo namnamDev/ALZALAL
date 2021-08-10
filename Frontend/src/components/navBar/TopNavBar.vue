@@ -7,26 +7,38 @@
 
       <!-- 로그인 했을 때 -->
       <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
-        <li class="nav-item dropdown" @click="click">
-          <a
-            class="nav-link"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <span class="username">{{userEmail}}</span>
-            <span class="imageSection">
-              <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+        <div class="row">
+          <div class="col-1 me-3 pt-3">
+            <span class="notifi-btn" @click="clickAlarm">
+              <i class="fas fa-bell" v-if="getNotify"></i>
+              <i class="far fa-bell" v-else></i>
             </span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
-            <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
-            <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
-          </ul>
-        </li>
+
+          </div>
+          <div class="col">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="imageSection">
+                  <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+                </span>
+                <span class="username">{{userEmail}}</span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
+                <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
+                <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
+              </ul>
+            </li>
+
+          </div>
+        </div>
       </ul>
 
 <!-- 로그인 안했을 때 -->
@@ -67,6 +79,9 @@ export default {
     }
   },
   methods: {
+    clickAlarm: function() {
+      this.$store.dispatch('deleteNotify')
+    }, 
     logout: function(){
       this.$store.dispatch('logout')
       localStorage.removeItem("jwt");
@@ -91,11 +106,11 @@ export default {
     signup: function() {
       this.$router.push({'name':'signup'})
     },
-    click: function() {
-      console.log('click')
-    },
   },
   computed: {
+    getNotify() {
+      return this.$store.getters.getNotify
+    },
     isLogin(){
       //console.log(this.$store.getters.isLogin)
       return this.$store.getters.isLogin
@@ -115,7 +130,10 @@ export default {
 </script>
 
 <style scoped>
+.notifi-btn{
+  font-size:40px;
 
+}
 .top{
   position:fixed;
   background-color: white;
@@ -136,8 +154,9 @@ export default {
   /* border: 10px solid blanchedalmond; */
   font-size:20px;
   position: absolute;
-  right: 7%;
+  right: 0;
   top: 20px;
+  width:400px;
 }
 
 .nav-link{

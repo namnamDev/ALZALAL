@@ -18,6 +18,7 @@ export default new Vuex.Store({
     searchArticle: null,
     helpmeDetail: null,
     helpComments: null,
+    notify: false,
   },
 
   mutations: {
@@ -52,6 +53,12 @@ export default new Vuex.Store({
     },
     DELETE_COMMENT: function(state, index){
       state.articleComments.splice(index,1)
+    },
+    CREATE_NOTIFY:function(state){
+      state.notify = true
+    },
+    DELETE_NOTIFY: function(state){
+      state.notify = false
     }
 
   },
@@ -88,8 +95,13 @@ export default new Vuex.Store({
     deleteComment: function(context, comment){
       const index = context.state.articleComments.indexOf(comment)
       context.commit('DELETE_COMMENT',index)
+    },
+    createNotify: function({commit}){
+      commit("CREATE_NOTIFY")
+    },
+    deleteNotify: function({commit}){
+      commit("DELETE_NOTIFY")
     }
-
 
 
   },
@@ -119,6 +131,9 @@ export default new Vuex.Store({
     },
     getHelpmeComments: function(state){
       return state.helpComments
+    },
+    getNotify: function(state){
+      return state.notify
     }
   },
 

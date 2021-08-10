@@ -14,6 +14,8 @@ import SearchBar from "@/components/search/SearchBar.vue";
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import jwt_decode from 'jwt-decode'
+import axios from 'axios';
+
 import $ from 'jquery'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -44,6 +46,13 @@ export default {
     }
   },
   methods: {
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
     connect: function () {
       let socket = new SockJS(`${SERVER_URL}/connectNotification`);
       this.stompClient = Stomp.over(socket);
@@ -57,6 +66,20 @@ export default {
     },
     onMessageReceived:function (payload) {
       let message = JSON.parse(payload.body);
+
+      this.$store.dispatch('createNotify')
+
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/list`,
+        headers: this.getToken()
+      })
+      .then(res=>{
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
       console.log("messege", message);
     },
