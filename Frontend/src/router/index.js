@@ -95,9 +95,10 @@ const routes = [
     component: createDebate
   },
   {
-    path: '/debate/debateDetail',
+    path: '/debate/debateDetail/:disscussionNo',
     name: 'debateDetail',
-    component: debateDetail
+    component: debateDetail,
+    props: true
   },
   {
     path: '/createArticle',

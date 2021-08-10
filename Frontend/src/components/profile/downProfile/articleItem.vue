@@ -26,15 +26,15 @@
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    components:{
-        
-    },
-    props:{
-        articleContent: String,
-        articleNo: Number,
-        
-    },
-      computed:{
+  components:{
+      
+  },
+  props:{
+      articleContent: String,
+      articleNo: Number,
+      
+  },
+  computed:{
     Content: function() {
       return this.content
     },

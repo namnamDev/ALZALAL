@@ -6,8 +6,8 @@
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
-                        <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
-                        <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
+                        <img class="profileImg"  :src="imgsrc">
+                        <!-- <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else> -->
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -80,8 +80,8 @@ export default {
     },
     data(){
         return{
-            imgsrc: '',
-            // imgsrc: `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`,
+            //imgsrc: `${SERVER_URL}/profile/img/1004`,
+             imgsrc: `${SERVER_URL}/profile/img/${this.pk}`,
             no: '',
             follower: '',
             language: [],
@@ -95,7 +95,6 @@ export default {
             isLogin: '',
             myPage: '',
             followState: '',
-            flag: false,
         }
     },
     created: function() {
@@ -135,20 +134,19 @@ export default {
         .catch(err => {
             console.log(err);
         })
-        axios({
-            method: 'get',
-            url: `${SERVER_URL}/profile/img/${pk}`
-        })
-        .then(res => {
-            console.log(pk)
-            this.flag = true
-            this.imgsrc = res.data
-        })
-        .catch(() => {
-            this.flag= false
-            this.imgsrc = 'profile'
-            // console.log(err)
-        })
+        // axios({
+        //     method: 'get',
+        //     url: `${SERVER_URL}/profile/img/${this.pk}`
+        // })
+        // .then(res => {
+        //     this.flag = true
+        //     this.imgsrc = res.data
+        // })
+        // .catch(() => {
+        //     this.flag= false
+        //     this.imgsrc = 'profile'
+        //     // console.log(err)
+        // })
        
     },
     computed:{

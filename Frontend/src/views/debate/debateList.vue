@@ -1,21 +1,5 @@
 <template>
   <div class="container feed">
-      <div class="row">
-        <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
-        <div class="debate feed-card col-lg-6 col-md-10 col-sm-9 col-12">
-            <div class="contentsWrap">
-                <p class="title">카카오 2016 인턴  <span>1번문제</span></p>
-                <p>카카오</p>  
-            </div>
-            <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
-                <div class="col box1 like-comment">
-                  <i class="far fa-comment-dots mx-2"></i>
-                  <span >2</span>
-                  <div><p class="date">2016-01-03 09:00:00</p></div>
-                </div>
-            </div>
-        </div>
-      </div>
       <debateItem v-for="item,index in discussion" :key="index"
         :discussionHostName="item.discussCompHostNo.name"
         :discussionHostNo="item.discussCompHostNo.no"
@@ -93,21 +77,11 @@ export default {
 </script>
 
 <style scoped>
-.feed{
-  position: absolute;
-  margin-top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-left:0;
-}
+
 .row{
   margin-top: 100px;
 }
-.debate {
-  height: 300px;
-  font-size: 1vw;
-  line-height: 2;
-}
+
 @media (max-width:577px) {
   .feed{
     left: 0;
@@ -127,30 +101,5 @@ export default {
   overflow: hidden;
   
 }
-.contentsWrap {
-  box-sizing: border-box;
-  padding: 12px;
-  float: left;
-}
-.title {
-  color:#000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-wrap:break-word; 
-  line-height: 1.5em;
-  font-size: 25px;
-  font-weight: 550;
-  margin: 0 0 8px;
-  white-space: normal;
-}
-.date {
-  float: right;
-  font-size: 15px;
-  color:rgba(0, 0, 0, .5);
-  
-}
-.comment{
-  margin-right: 30px;
-}
+
 </style>

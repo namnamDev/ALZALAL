@@ -15,7 +15,6 @@
                       <option value="atcoder">엣코더</option>
                       <option value="programmers">프로그래머스</option>
                   </select>
-                
                 <div>
                   <label align="left" for="agency">대회 이름</label>
                   <input type="text" v-model="form.conferenceName">
