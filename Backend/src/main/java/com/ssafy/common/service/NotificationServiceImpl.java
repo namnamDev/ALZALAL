@@ -13,6 +13,7 @@ import com.ssafy.common.domain.Notification_Task;
 import com.ssafy.common.domain.member.Member;
 import com.ssafy.common.dto.NotificationSocketDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.redis.RedisUtil;
 import com.ssafy.common.repository.NotificationRepository;
 import com.ssafy.common.repository.member.MemberRepository;
 import com.ssafy.common.websocket.NotificationSender;
@@ -29,6 +30,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationRepository notificationRepository;
 	
 	private final NotificationSender notificationSender;
+	private final RedisUtil redisUtil;
 	
 	//멤버 세션id 저장 후 알림 갯수 가져옴
 	@Override
@@ -37,7 +39,10 @@ public class NotificationServiceImpl implements NotificationService {
 		Member member = memberRepository.findByNo(memberNo)
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 		
-		member.setSessionId(sessionId);
+//		member.setSessionId(sessionId);
+		long now = (new Date()).getTime();
+		long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3; //엑세스토큰처럼 만료기간 3시간으로 설정
+		redisUtil.setDataExpire("notification"+member.getNo(),sessionId,new Date(now + ACCESS_TOKEN_EXPIRE_TIME).getTime());
 		return member.getNotificationCount();
 	}
 	
@@ -69,8 +74,9 @@ public class NotificationServiceImpl implements NotificationService {
 			socketDTO.setNew(true);
 			socketDTO.setCount(receiver.getNotificationCount());
 		}
+		String sessionId=redisUtil.getData("notification"+receiverNo);
 		//알림 전송
-		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
 	}
 	
@@ -107,8 +113,9 @@ public class NotificationServiceImpl implements NotificationService {
 			socketDTO.setNew(true);
 			socketDTO.setCount(receiver.getNotificationCount());
 		}
+		String sessionId=redisUtil.getData("notification"+receiverNo);
 		//알림 전송
-		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
 	}
 	
@@ -144,8 +151,9 @@ public class NotificationServiceImpl implements NotificationService {
 			socketDTO.setNew(true);
 			socketDTO.setCount(receiver.getNotificationCount());
 		}
+		String sessionId=redisUtil.getData("notification"+receiverNo);
 		//알림 전송
-		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
 	}
 	
@@ -184,8 +192,9 @@ public class NotificationServiceImpl implements NotificationService {
 			socketDTO.setNew(true);
 			socketDTO.setCount(receiver.getNotificationCount());
 		}
+		String sessionId=redisUtil.getData("notification"+receiverNo);
 		//알림 전송
-		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
 	}
 	
@@ -220,8 +229,9 @@ public class NotificationServiceImpl implements NotificationService {
 			socketDTO.setNew(true);
 			socketDTO.setCount(receiver.getNotificationCount());
 		}
+		String sessionId=redisUtil.getData("notification"+receiverNo);
 		//알림 전송
-		notificationSender.sendNotification(receiver.getSessionId(), socketDTO);
+		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
 	}
 

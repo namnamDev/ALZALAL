@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.common.domain.Algorithm_Follow;
 import com.ssafy.common.domain.QAlgorithm_Follow;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,23 @@ public class Algorithm_FolloweRepositoryImpl implements Algorithm_FolloweReposit
 				.fetchCount();
 		
 		return result;
+	}
+	
+	//memberNo가 algorithm을 팔로우 중인지 리턴
+	@Override
+	public boolean isAlgorithmFollowing(long memberNo, String algorithmName) {
+		
+	QAlgorithm_Follow af=QAlgorithm_Follow.algorithm_Follow;
+		
+		Algorithm_Follow result = jpaQueryFactory.select(af)
+				.from(af)
+				.where(af.followingArgorithmNo.algorithmName.eq(algorithmName),af.memberNo.no.eq(memberNo))
+				.fetchFirst();
+		
+		if(result==null)
+			return false;
+		else 
+			return true;
 	}
 	
 }
