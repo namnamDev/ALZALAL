@@ -1,5 +1,7 @@
 package com.ssafy.common.service;
 
+import java.util.Map;
+
 import com.ssafy.common.domain.Notification_SubTask;
 
 public interface NotificationService {
@@ -21,4 +23,6 @@ public interface NotificationService {
 	
 	//풀이요청게시글 응답 알림 저장후 알림 갯수 소켓통신으로 전송
 	void helpmeChangeState(long helpmeNo,long receiverNo, Notification_SubTask subTask);
+
+	Map<String, Object> readNoti(Map<String, Long> req);
 }

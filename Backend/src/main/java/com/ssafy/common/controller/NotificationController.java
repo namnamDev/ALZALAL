@@ -8,6 +8,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -51,10 +53,15 @@ public class NotificationController {
 	
 	//유저의 알림 리스트 가져오기
 	@ResponseBody
-	@GetMapping("/list")
+	@GetMapping("/notilist")
 	public Map<String, Object> getNotificationList(@RequestParam(defaultValue = "0") int page) {
 		return memSvc.getMemberNoti(page);
 	}
-	
+	@ResponseBody
+	@PostMapping("/notiRead")
+	public Map<String,Object> readNoti(@RequestBody Map<String,Long> req){
+		return notificationService.readNoti(req);
+		
+	}
 	
 }

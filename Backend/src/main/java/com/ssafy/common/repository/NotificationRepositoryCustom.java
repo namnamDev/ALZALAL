@@ -11,4 +11,6 @@ public interface NotificationRepositoryCustom {
 
 	Optional<List<NotificationDTO>> notiList(Long memberNo, Pageable page);
 
+	Long readNoti(Long notiNo);
+
 }

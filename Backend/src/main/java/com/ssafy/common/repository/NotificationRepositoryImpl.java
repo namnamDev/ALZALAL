@@ -41,4 +41,10 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom{
 				.fetch();
 		return Optional.of(res) ;
 	}
+	@Override
+	public Long readNoti(Long notiNo) {
+		QNotification qn = QNotification.notification;
+		Long res = queryFactory.update(qn).set(qn.notificationReadStatus, true).execute();
+		return res;
+	}
 }

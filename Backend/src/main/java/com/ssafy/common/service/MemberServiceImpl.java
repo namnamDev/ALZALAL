@@ -398,6 +398,8 @@ public class MemberServiceImpl implements MemberService {
 			  msg = "알람이 없습니다.";
 			  res.put("msg", msg);
 		  }
+		  member.setNotificationCount(0L);
+		  memberRepository.save(member);
 		return res;
 		  
 		  
