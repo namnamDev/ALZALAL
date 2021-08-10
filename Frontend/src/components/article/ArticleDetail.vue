@@ -10,12 +10,11 @@
             {{articleDetail.articleTitle}}
           </div>
           <div class="row">
-            <div class="col clickName"  @click="clickName">
-              {{articleDetail.member.name}}
+            <div class="col clickName"  >
+              <span @click="clickName" class="member-name">{{articleDetail.member.name}}</span>
             </div>
             <div class="col text-end">
              {{articleDetail.articleDate | moment("YYYY-MM-DD HH:mm:ss")}}
-             {{date}}
             </div>
           </div>
         </div>
@@ -95,9 +94,7 @@ export default {
       articleDetail: '',
       likeState:'',
       commentCount: 0,
-      commentList: null,
       currentPage: Number(this.Page)+1,
-      date: '',
     }
   },
 
@@ -146,35 +143,7 @@ export default {
       location.href=`/articleDetail/${this.currentPage-1}`
     },
 
-    // 몇시간전, 몇분전 표기
-    getDate: function(year,month,day,hour,min,sec) {
-      const today  = new Date()
-      const timeValue  = new Date(year,month,day,hour,min,sec)
-      console.log('1 : ',timeValue)
-      timeValue.setHours(timeValue.getHours() - 9);
 
-      console.log('2 : ',today)
-      console.log('3 : ',timeValue)
-
-      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-      if (betweenTime < 1) return '방금전';
-      if (betweenTime < 60) {
-          return `${betweenTime}분전`;
-      }
-
-      const betweenTimeHour = Math.floor(betweenTime / 60);
-      if (betweenTimeHour < 24) {
-          return `${betweenTimeHour}시간전`;
-      }
-
-      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-      if (betweenTimeDay < 365) {
-          return `${betweenTimeDay}일전`;
-      }
-
-      return `${Math.floor(betweenTimeDay / 365)}년전`;
-
-    },
     // 삭제 버튼
     deleteArticle: function() {
       const articleNo = localStorage.getItem('articleNo')
@@ -212,16 +181,7 @@ export default {
           url: `${SERVER_URL}/article/article/${articleNo}`,
           headers: this.getToken(),
         })   
-        .then(res =>{
-          const date = res.data.articleDetail.articleDate
-          const year = date.substr(0,4)
-          const month = date.substr(5,2)
-          const day = date.substr(8,2)
-          const hour = date.substr(11,2)
-          const min = date.substr(14,2)
-          const sec = date.substr(17,2)
-          
-          this.date = this.getDate(year,month,day,hour,min,sec)
+        .then(res =>{          
 
           this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
@@ -243,7 +203,6 @@ export default {
           headers: this.getToken(),
         })   
         .then(res =>{
-          this.commentList = res.data.articleComments
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
         .catch(err =>{  
@@ -251,12 +210,6 @@ export default {
         }) 
     },
 
-    click1() {
-      location.href="/articleDetail/0"
-    },
-    click2() {
-      location.href="/articleDetail/1"
-    },
     getToken(){
       const token = localStorage.getItem('jwt')
       const config = {
@@ -267,6 +220,22 @@ export default {
 
     //댓글 작성하기
     clickCreateComment() {
+      const token = localStorage.getItem('jwt')
+      if(!token){
+        this.$swal.fire({          
+          text: "로그인 후 이용해주세요.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '로그인',
+          cancelButtonText: '취소'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({'name':'login'})
+          }
+        })
+      }
 
       var commentForm = $('#create-comment')
  
@@ -382,5 +351,11 @@ button{
 }
 .next-btn{
   cursor: pointer;
+}
+.member-name{
+  cursor:pointer;
+}
+.member-name:hover{
+  font-size:18px;
 }
 </style>

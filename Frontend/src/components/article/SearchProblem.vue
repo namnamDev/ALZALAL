@@ -8,7 +8,8 @@
           <div class="col">
             <div v-if="problem">
               #{{ problem }} 
-              <span class="follow-btn" @click="follow">Follow</span>
+              <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
+              <span class="follow-btn" @click="follow" v-else>팔로우</span>
             </div>
           </div>
         </div>
@@ -125,6 +126,8 @@ export default {
       includeAlgo: "",
       excludeAlgo: "",
       problem: "",
+      problemSite: '',
+      problemNo: '',
       language: "",
       followingNumber: "",
       articleNumber: "",
@@ -133,7 +136,8 @@ export default {
       articleDateList: [],
       page: 0,
       params: '',
-      articleCount: 0 ,
+      articleCount: 0 ,   
+      followingState: false,   
     };
   },
   computed: {
@@ -143,7 +147,31 @@ export default {
   },
   methods: {
     follow() {
-
+      this.followingState = !this.followingState
+      if(this.followingState){
+        this.followingNumber += 1
+        this.$swal(`'${this.problem}' 문제를 팔로우 하셨습니다.`)
+      }
+      else{
+        this.followingNumber -= 1
+        this.$swal(`'${this.problem}' 문제를 팔로우 취소 하셨습니다.`)
+      }
+      const data = {
+        problemSite: this.problemSite,
+        problemNo: this.problemNo,
+      }
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/follow/problem`,
+        headers: this.getToken(),
+        data: data
+      })
+      .then(()=>{
+        
+      })
+      .catch(err=>{
+        console.log(err)
+      })
     },
     clickOrderByLike() {
       this.articleList = this.articleLikeList
@@ -179,7 +207,7 @@ export default {
         params: this.params,
       })
         .then((res) => {
-          console.log(res.data)
+          this.followingState = res.data.followInfo.followingState
           this.articleCount = res.data.articleSearchCount
           setTimeout(() => {
             if (res.data.articleList.length) {
@@ -283,6 +311,8 @@ export default {
     const data = this.getArticle;
 
     this.problem = data.problem;
+    this.problemSite = data.problemSite;
+    this.problemNo = data.problemNo;
     this.includeAlgo = data.includeAlgo;
     this.excludeAlgo = data.excludeAlgo;
     this.language = data.language;
@@ -399,9 +429,28 @@ export default {
 .follow-btn{
   font-size:20px;
   background-color: rgb(0, 153, 255);
-  padding:3px 12px;
+  padding:4px 12px;
   border-radius: 4px;
   color:white;
   cursor: pointer;
+}
+.follow-btn:hover{
+  background-color: rgb(0, 89, 255);
+  padding:5px 16px;
+  font-size:22px
+}
+.follow-cancel-btn{
+  font-size:20px;
+  background-color: white;
+  border: 1px solid blue;
+  padding:3px 12px;
+  border-radius: 4px;
+  color:rgb(59, 121, 223);
+  cursor: pointer;
+}
+.follow-cancel-btn:hover{
+  /* background-color: rgb(0, 89, 255); */
+  font-size:22px;
+  padding:5px 16px;
 }
 </style>

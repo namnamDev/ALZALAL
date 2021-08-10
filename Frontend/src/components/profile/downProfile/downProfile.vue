@@ -26,13 +26,13 @@
 import articleList from '@/components/profile/downProfile/articleList'
 import helpmeList from '@/components/profile/downProfile/helpmeList'
 import receptList from '@/components/profile/downProfile/receptList'
-// import jwt_decode from 'jwt-decode'
-// const token = localStorage.getItem('jwt')
-// let userpk = '';
-// if (token) {
-//   const decoded = jwt_decode(token)
-//   userpk = decoded.sub
-// }
+import jwt_decode from 'jwt-decode'
+const token = localStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
   components: {
     articleList,
@@ -48,13 +48,14 @@ export default {
         console.log(userPk)
         // let pk = ''
         // console.log(pk)
-        if(userPk){
+        if(userpk != userPk){
             // pk = userPk
             this.myPage = false
         }else{
             // pk = userpk
             this.myPage = true
         }
+        console.log(this.myPage)
   },
   methods: {
       changeComponent: function(componentName) {

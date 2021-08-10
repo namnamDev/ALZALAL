@@ -1,5 +1,5 @@
 <template>
-  <div class="row my-5" @click="clickArticle">
+  <div class="row my-5">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
     <div class="article-content col-lg-6 col-md-10 col-sm-9 col-10">
 
@@ -8,8 +8,13 @@
           <i class="fas fa-user" style="font-size:60px;"></i>
         </div>
         <div class="col">
-          <div class="row name">
-            <p>{{item.member.name}}</p>
+          <div class="row">
+            <div class="col">
+              <span class="name">{{item.member.name}}</span>
+            </div>
+            <div class="col text-end pe-4">
+              {{date}}
+            </div>
           </div>
           <div class="row mt-2">
             <div>
@@ -24,7 +29,7 @@
         </div>
       </div>
 
-      <div class="row middle">
+      <div class="row middle" @click="clickArticle">
         <div class="col content">
           <Viewer id="viewer" :viewerText="item.articleContent" />
         </div>
@@ -57,7 +62,39 @@ export default {
   props: {
     item: Object,
   },
+  data() {
+    return{
+      date : '',
+    }
+  },
+  created() {
+    this.date = this.getDate(this.item.articleDate)
+  },
   methods: {
+    //몇분전 표기
+    getDate: function(date) {
+      const today  = new Date()
+      const timeValue  = new Date(date)
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금전';
+      if (betweenTime < 60) {
+          return `${betweenTime}분전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+          return `${betweenTimeHour}시간전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+          return `${betweenTimeDay}일전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+    },
     // 상세 정보 페이지이동
     clickArticle: function() {
       localStorage.setItem('articleNo', this.item.articleNo)
@@ -100,7 +137,6 @@ export default {
   -webkit-box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
   box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
   transform: scale(1.05);
-  cursor: pointer;
 }
 
 .image{
@@ -154,6 +190,13 @@ export default {
 }
 .has-language{
   background-color:rgb(126, 208, 233) ; 
+}
+.name{
+  display: inline-block;
+}
+.name:hover{
+  font-size:18px;
+  cursor:pointer;
 }
 
 </style>

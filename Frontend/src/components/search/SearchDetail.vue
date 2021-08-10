@@ -121,6 +121,7 @@ export default {
     category: function() {
       if (this.category == 'solution'){
         this.placeholder = '문제번호를 입력해주세요'
+        this.placeholder1 = '알고리즘을 입력해 주세요(필수X)'
         document.querySelector('#placeholder').style.display = 'block'
         document.querySelector('#language').style.display = 'block'
         document.querySelector('#pSite').style.visibility = 'visible'
@@ -222,6 +223,8 @@ export default {
         data.includeAlgo = searchData.includeData,
         data.excludeAlgo = searchData.excludeData
         data.problem = searchData.pSite + searchData.inputData
+        data.problemSite = searchData.pSite
+        data.problemNo = searchData.inputData
         this.$store.dispatch('createSearchArticle',data)        
         // this.$router.push({name : 'searchProblem'})
         location.href="/searchProblem"
