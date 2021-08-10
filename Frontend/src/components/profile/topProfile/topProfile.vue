@@ -81,7 +81,7 @@ export default {
     data(){
         return{
             //imgsrc: `${SERVER_URL}/profile/img/1004`,
-             imgsrc: `${SERVER_URL}/profile/img/${this.pk}`,
+            imgsrc: '',
             no: '',
             follower: '',
             language: [],
@@ -100,18 +100,21 @@ export default {
     created: function() {
         // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        // console.log(userPk)
+         console.log(userPk)
         let pk = ''
         if(userPk){
             pk = userPk
             this.myPage = false
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             if(pk==userpk){
                 this.myPage = true
             }
         }else{
             pk = userpk
             this.myPage = true
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
         }
+        console.log(this.pk)
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
