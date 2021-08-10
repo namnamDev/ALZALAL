@@ -241,8 +241,9 @@ public class AdminServiceImpl implements AdminService {
 						ds.setDiscussDate(d);
 						for (int ii = 1; ii < 6; ii++) {
 							ds.setDiscussCompProblem(ii + "번");
+							disRepo.save(ds);
 						}
-						Discuss insertedDiscuss = disRepo.save(ds);
+//						Discuss insertedDiscuss = disRepo.save(ds);
 
 					}
 
