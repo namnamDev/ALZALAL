@@ -1,6 +1,7 @@
 package com.ssafy.common.service;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -232,5 +233,19 @@ public class NotificationServiceImpl implements NotificationService {
 		//알림 전송
 		notificationSender.sendNotification(sessionId, socketDTO);
 		return;
+	}
+
+	@Override
+	public Map<String, Object> readNoti(Map<String, Long> req) {
+		Member member=memberRepository.findById(SecurityUtil.getCurrentMemberId())
+				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
+		Map<String, Object>res = new HashMap<String,Object>();
+		
+//		System.out.println(notiNo);
+		System.out.println(req.get("notiNo"));
+		System.out.println(req.get("notiNo"));
+		Long notiNo = (Long)req.get("notiNo");
+		notificationRepository.readNoti(notiNo);
+		return res;
 	}
 }
