@@ -77,8 +77,7 @@ export default {
         url: `${SERVER_URL}/member/login`,
         data: this.form
       })   // back 에 로그인 요청
-      .then(res =>{
-        console.log(res.data.token);                    
+      .then(res =>{                  
         localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
         localStorage.setItem('refresh', res.data.token.refreshToken);
         const payload = {
@@ -94,9 +93,8 @@ export default {
           alert(res.data.msg)
         }
       })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        alert("ID 또는 비밀번호가 틀렸습니다.")
+      .catch(()=>{  // 실패하면 error
+        this.$swal('ID 혹은 비밀번호가 틀렸습니다');
       })
     }
   }

@@ -7,7 +7,7 @@
           <div>
             <label for="email" align="left">E-mail </label>
             <input id="email" type="text" v-model="form.email" />
-                      <p class="validation-text">
+              <p class="validation-text">
               <span class="warning" v-if="!isEmailValid && !form.email">
                 Please enter an email address
               </span>
@@ -16,20 +16,29 @@
           <div>
             <label for="password" align="left">비밀번호 </label>
             <input id="password" type="password" v-model="form.password" />
+            <p class="validation-text">
+              <span class="warning" v-if="!passwordLength">
+                비밀번호는 10자 이상 20자 이하로 입력해주세요.
+              </span>
+            </p>
           </div>
                   <div>
             <label for="passwordConfirm" align="left">비밀번호 확인 </label>
             <input id="passwordConfirm" type="password" v-model="passwordConfirm" />
             <p class="validation-text">
-            <span class='warning' v-if="!isPasswordValid">
-              Please check the password
-            </span>
+              <span class='warning' v-if="!isPasswordValid">
+                Please check the password
+              </span>
             </p>
           </div>
           <div>
             <label for="name" align="left">닉네임</label>
             <input id="name" type="text" v-model="form.name" />
-                      
+            <p class="validation-text">
+              <span class='warning' v-if="!nameLength">
+                닉네임은 2자이상 10자 이하로 입력해주세요
+              </span>
+            </p>            
           </div>
           <div class='checkbox' align="left">
             <details>
@@ -61,7 +70,7 @@
           </div>
                   
           <button
-            :disabled="!isEmailValid || member_password || !passwordConfirm || !member_name  || !member_email"
+            :disabled="!isEmailValid || !passwordLength || !passwordConfirm || !nameLength  || !form.email"
             type="submit"
             class="btn"
                   >회원 가입</button>
@@ -91,6 +100,7 @@ export default{
 			//log Message
 			},
       passwordConfirm: '',
+      
 		};
 	},
 	computed: {
@@ -99,7 +109,19 @@ export default{
 		},
     isPasswordValid(){
       return validatePassword(this.form.password, this.passwordConfirm);
-    }
+    },
+    passwordLength(){
+      if(this.form.password.length > 9 && this.form.password.length<21){
+        return true;
+      }
+      return false
+    },
+    nameLength(){
+      if(this.form.name.length > 2 && this.form.name.length<10){
+        return true;
+      }
+      return false
+    },
 	},
   created: function() {
     const token = localStorage.getItem('jwt')
@@ -117,14 +139,10 @@ export default{
 
           })
           .then(res => {
-            console.log(res);
-            alert(res.data.msg)
+            this.$swal(res.data.msg)
             this.$router.push({ name: 'login' })
-            
-        
           })
           .catch(err => {
-            alert("이미 등록된 계정입니다.")
             console.log(err)
           })
         }

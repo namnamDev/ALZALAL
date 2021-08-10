@@ -2,7 +2,8 @@
   <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
       <div class="userImg col-3">
-          <img class="profileImg" :src="imgsrc" alt="이미지">
+          <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
+          <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
       </div>
       <div class="user col-9">
           <span class="userName">
@@ -34,7 +35,7 @@ export default {
     },
     data(){
         return{
-          imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+          imgsrc: '',
           myPage: '',
           isLogin: '', 
           me: '',
@@ -61,6 +62,21 @@ export default {
       }else{
         this.me=false
       }
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/profile/img/${this.no}`
+      })
+      .then(res => {
+        this.flag = true
+        this.imgsrc = res.data
+        console.log(res)
+      })
+      .catch(() => {
+        this.flag= false
+        console.log('1231241241441')
+        this.imgsrc = 'profile'
+        // console.log(err)
+      })
     },
     computed: {
         getToken(){

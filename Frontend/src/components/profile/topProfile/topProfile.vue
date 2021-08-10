@@ -6,7 +6,8 @@
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
-                        <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+                        <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
+                        <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -79,7 +80,7 @@ export default {
     },
     data(){
         return{
-            defaultImg: '@/assets/images/profileImg.png',
+            imgsrc: '',
             // imgsrc: `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`,
             no: '',
             follower: '',
@@ -94,10 +95,11 @@ export default {
             isLogin: '',
             myPage: '',
             followState: '',
+            flag: false,
         }
     },
     created: function() {
-        console.log("target",this.userPk)
+        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
         // console.log(userPk)
         let pk = ''
@@ -111,7 +113,6 @@ export default {
             pk = userpk
             this.myPage = true
         }
-        
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
@@ -134,7 +135,20 @@ export default {
         .catch(err => {
             console.log(err);
         })
-
+        axios({
+            method: 'get',
+            url: `${SERVER_URL}/profile/img/${pk}`
+        })
+        .then(res => {
+            console.log(pk)
+            this.flag = true
+            this.imgsrc = res.data
+        })
+        .catch(() => {
+            this.flag= false
+            this.imgsrc = 'profile'
+            // console.log(err)
+        })
        
     },
     computed:{
@@ -145,11 +159,6 @@ export default {
         }
         return config
         },
-        imgsrc() {
-            const img = `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`
-            console.log(img)
-            return img
-        }
 
     },
     methods: {
@@ -335,6 +344,16 @@ i {
     border-radius: 75%;
     
 }
+}
+@media (max-width:1200px),(min-width: 992px){
+    .profile-stats{
+        margin-left: 20px;
+    }
+}
+@media (min-width:992px){
+    .profile-bio{
+        margin-left: 40px;
+    }
 }
 .btn-follow{
       background-color: blue;

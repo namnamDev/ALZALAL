@@ -56,7 +56,7 @@ export default {
       // location.href = '/timeline'
     },
     onMessageReceived:function (payload) {
-      let message = JSON.parse(payload.body);
+       let message = JSON.parse(payload.body);
 
       console.log("messege", message);
     },
