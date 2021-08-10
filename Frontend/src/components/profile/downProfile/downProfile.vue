@@ -48,13 +48,14 @@ export default {
         console.log(userPk)
         // let pk = ''
         // console.log(pk)
-        if(userPk != userpk){
+        if(userpk != userPk){
             // pk = userPk
             this.myPage = false
         }else{
             // pk = userpk
             this.myPage = true
         }
+        console.log(this.myPage)
   },
   methods: {
       changeComponent: function(componentName) {

@@ -229,7 +229,7 @@ export default {
   
         this.$swal.fire({
           text: "글을 작성하시겠습니까?",
-          icon: 'warning',
+          icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',

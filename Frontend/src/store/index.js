@@ -49,6 +49,9 @@ export default new Vuex.Store({
     },
     DELETE_ARTICLE_COMMENT(state){
       state.articleComments = []
+    },
+    DELETE_COMMENT: function(state, index){
+      state.articleComments.splice(index,1)
     }
 
   },
@@ -81,7 +84,13 @@ export default new Vuex.Store({
     },
     deleteArticleComment: function({commit}){
       commit('DELETE_ARTICLE_COMMENT')
+    },
+    deleteComment: function(context, comment){
+      const index = context.state.articleComments.indexOf(comment)
+      context.commit('DELETE_COMMENT',index)
     }
+
+
 
   },
 

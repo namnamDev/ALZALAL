@@ -2,7 +2,7 @@
   <div>
     <div id="search" >    
       <div id="search-bar">
-        <div class="search-box" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div class="search-box " data-bs-toggle="modal" data-bs-target="#exampleModal">
           <i class="fas fa-search"></i>
           검색해주세요.
         </div>
@@ -121,7 +121,11 @@ export default {
   /* position: absolute; */
   width:200px;
   top: 470px;
-
+}
+.fa-search{
+  animation-name: heartBeat;
+  animation-duration: 2s;
+  animation-iteration-count: infinite; 
 }
 
 @media (max-width:992px){
