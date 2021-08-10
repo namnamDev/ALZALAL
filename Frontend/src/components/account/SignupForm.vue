@@ -139,14 +139,10 @@ export default{
 
           })
           .then(res => {
-            console.log(res);
-            alert(res.data.msg)
+            this.$swal(res.data.msg)
             this.$router.push({ name: 'login' })
-            
-        
           })
           .catch(err => {
-            alert("이미 등록된 계정입니다.")
             console.log(err)
           })
         }

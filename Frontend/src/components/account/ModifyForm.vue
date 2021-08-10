@@ -172,13 +172,12 @@ export default{
             data: this.form,
             headers: this.getToken
           })
-          .then(res => {
-            console.log(res);
+          .then(() => {
+
             this.$router.push({ name: 'profilePage' })
           })
           .catch(err => {
             alert(err)
-            console.log(err)
           })
         }
       })
@@ -200,16 +199,14 @@ export default{
             url: `${SERVER_URL}/member/modify`,
             headers: this.getToken
           })
-          .then(res => {
-            console.log(res);
-            alert(res.data.msg)
+          .then(() => {
+
             localStorage.removeItem("jwt")
             localStorage.removeItem("vuex")
             this.$router.push({ name: 'login' })
           })
           .catch(err => {
             alert(err)
-            console.log(err)
           })
         }
       })

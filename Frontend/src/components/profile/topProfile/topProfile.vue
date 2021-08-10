@@ -95,10 +95,11 @@ export default {
             isLogin: '',
             myPage: '',
             followState: '',
+            flag: false,
         }
     },
     created: function() {
-        console.log("target",this.userPk)
+        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
         // console.log(userPk)
         let pk = ''
@@ -112,21 +113,6 @@ export default {
             pk = userpk
             this.myPage = true
         }
-        axios({
-            method: 'get',
-            url: `${SERVER_URL}/profile/img/${this.no}`
-        })
-        .then(res => {
-            this.flag = true
-            this.imgsrc = res.data
-            console.log(res)
-        })
-        .catch(() => {
-            this.flag= false
-            console.log('1231241241441')
-            this.imgsrc = 'profile'
-            // console.log(err)
-        })
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
@@ -149,7 +135,20 @@ export default {
         .catch(err => {
             console.log(err);
         })
-
+        axios({
+            method: 'get',
+            url: `${SERVER_URL}/profile/img/${pk}`
+        })
+        .then(res => {
+            console.log(pk)
+            this.flag = true
+            this.imgsrc = res.data
+        })
+        .catch(() => {
+            this.flag= false
+            this.imgsrc = 'profile'
+            // console.log(err)
+        })
        
     },
     computed:{
