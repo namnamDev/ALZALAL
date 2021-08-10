@@ -234,14 +234,15 @@ public class AdminServiceImpl implements AdminService {
 								yearOne + date[dateOne] + " " + time,
 								DateTimeFormatter
 										.ofPattern("yyyyMMdd HH:mm:ss"));
-						Discuss ds = new Discuss();
-						ds.setDiscussCompHostNo(inserted);
-						ds.setDiscussCompName(
-								hostOne + " " + yearOne + " " + typeOne);
-						ds.setDiscussDate(d);
 						for (int ii = 1; ii < 6; ii++) {
+							Discuss ds = new Discuss();
+							ds.setDiscussCompHostNo(inserted);
+							ds.setDiscussCompName(
+									hostOne + " " + yearOne + " " + typeOne);
+							ds.setDiscussDate(d);
 							ds.setDiscussCompProblem(ii + "번");
 							disRepo.save(ds);
+							disRepo.flush();
 						}
 //						Discuss insertedDiscuss = disRepo.save(ds);
 
