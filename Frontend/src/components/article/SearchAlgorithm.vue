@@ -12,6 +12,8 @@
             <div v-if="isOneAlgo">
               <div v-if="articleList"> 
                 # {{this.includeAlgo[0]}}
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-else>팔로우</span>
               </div>
             </div>
           </div>
@@ -80,7 +82,7 @@
       </div>
 
     </div>
-  <infinite-loading @infinite="infiniteHandler" spinner="sprial">
+  <infinite-loading @infinite="infiniteHandlerDate" spinner="sprial" v-if="isDate">
     <div
       slot="no-more"
       style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
@@ -88,6 +90,15 @@
       목록의 끝입니다 :)
     </div>
   </infinite-loading>
+  <infinite-loading @infinite="infiniteHandlerLike" spinner="sprial" v-else>
+    <div
+      slot="no-more"
+      style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+    >
+      목록의 끝입니다 :)
+    </div>
+  </infinite-loading>
+
 
   </div>
 </template>
@@ -119,6 +130,8 @@ export default {
       params: '',
       articleCount: 0 ,
       problem: '',
+      followingState: false, 
+      isDate: false,
     }
   },
   computed: {
@@ -173,6 +186,32 @@ export default {
   },
 
   methods: {
+    follow() {
+      this.followingState = !this.followingState
+      if(this.followingState){
+        this.followingNumber += 1
+        this.$swal(`'${this.includeAlgo[0]}' 알고리즘을 팔로우 하셨습니다.`)
+      }
+      else{
+        this.followingNumber -= 1
+        this.$swal(`'${this.includeAlgo[0]}' 알고리즘을 팔로우 취소 하셨습니다.`)
+      }
+      const data = {
+        algorithm: this.includeAlgo[0]
+      }
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/follow/algorithm`,
+        headers: this.getToken(),
+        data: data
+      })
+      .then(()=>{
+        
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
     clickOrderByLike() {
       this.articleList = this.articleLikeList
       const like = document.querySelector('.order-by-like')
@@ -181,6 +220,7 @@ export default {
       like.style.fontSize = '18px'
       date.style.color = 'lightgray'
       date.style.fontSize = '16px'
+      this.isDate = false
 
     },
     clickOrderByNew() {
@@ -191,6 +231,7 @@ export default {
       like.style.fontSize = '16px'
       date.style.color = 'black'
       date.style.fontSize = '18px'
+      this.isDate = true
     },
     getToken(){
       const token = localStorage.getItem('jwt')
@@ -200,8 +241,7 @@ export default {
       return config
     },
 
-    infiniteHandler($state) {
-      
+    infiniteHandlerDate($state) {
       //최신순으로 요청
       axios({
         method: "get",
@@ -211,11 +251,12 @@ export default {
       })
         .then((res) => {
           this.articleCount = res.data.articleSearchCount
-
+          if(this.isOneAlgo){
+            this.followingState = res.data.followInfo.followingState
+          }
           setTimeout(() => {
             if (res.data.articleList.length) {
-              //console.log(res.data.article.length)      
-              console.log(res.data)   
+
               this.articleDateList = this.articleDateList.concat(res.data.articleList);
               this.articleList = this.articleDateList
               if (this.isOneAlgo){
@@ -224,8 +265,7 @@ export default {
               }              
               $state.loaded();
               this.page += 1;
-              //console.log("after", this.page)
-              // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면
+              
               if (res.data.articleList.length / 10 < 1) {
                 $state.complete();
               }
@@ -237,10 +277,12 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-        });
+        });       
+        
+    },
 
-        //좋아요 순으로 요청
-        this.params.sort = 'like'
+    infiniteHandlerLike($state){
+      this.params.sort = 'like'
         axios({
           method: "get",
           url: `${SERVER_URL}/search/article/algorithm` + "?page=" + this.page,
@@ -255,6 +297,7 @@ export default {
                 //console.log(res.data.article.length)      
                 console.log(res.data)   
                 this.articleLikeList = this.articleLikeList.concat(res.data.articleList);
+                this.articleList = this.articleLikeList
                 if (this.isOneAlgo){
                   this.followingNumber = res.data.followInfo.followingNumber;
                   this.articleNumber = res.data.followInfo.articleNumber;
@@ -369,5 +412,32 @@ export default {
 }
 .has-algo{
   background-color: rgba(186,184,189,1);
+}
+.follow-btn{
+  font-size:20px;
+  background-color: rgb(0, 153, 255);
+  padding:4px 12px;
+  border-radius: 4px;
+  color:white;
+  cursor: pointer;
+}
+.follow-btn:hover{
+  background-color: rgb(0, 89, 255);
+  padding:5px 16px;
+  font-size:22px
+}
+.follow-cancel-btn{
+  font-size:20px;
+  background-color: white;
+  border: 1px solid blue;
+  padding:3px 12px;
+  border-radius: 4px;
+  color:rgb(59, 121, 223);
+  cursor: pointer;
+}
+.follow-cancel-btn:hover{
+  /* background-color: rgb(0, 89, 255); */
+  font-size:22px;
+  padding:5px 16px;
 }
 </style>

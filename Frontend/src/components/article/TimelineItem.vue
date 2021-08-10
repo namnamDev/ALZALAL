@@ -9,9 +9,9 @@
         <div class="col">
           <div class="row name" @click="clickName">
             <div class="col">
-              {{ this.memberName }}
+              <span class="member-name">{{ this.memberName }}</span>
             </div>
-            <div class="col text-end">
+            <div class="col text-end pe-4">
               {{date}}
             </div>
           </div>
@@ -115,24 +115,18 @@ export default {
         this.algoList = detail.algo
 
         const date = res.data.articleDetail.articleDate
-        const year = date.substr(0,4)
-        const month = date.substr(5,2)
-        const day = date.substr(8,2)
-        const hour = date.substr(11,2)
-        const min = date.substr(14,2)
-        const sec = date.substr(17,2)
 
-        this.date = this.getDate(year,month,day,hour,min,sec)
+        this.date = this.getDate(date)
       })
       .catch(err =>{  
         console.log(err)
       })
   },
   methods: {    
-    getDate: function(year,month,day,hour,min,sec) {
+    // 몇 분전 표기   
+    getDate: function(date) {
       const today  = new Date()
-      const timeValue  = new Date(year,month,day,hour,min,sec)
-      timeValue.setHours(timeValue.getHours() - 9);
+      const timeValue  = new Date(date)
 
       const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
       if (betweenTime < 1) return '방금전';
@@ -246,6 +240,12 @@ export default {
 }
 .has-algo{
   background-color: rgba(186,184,189,1);
+}
+.member-name{
+  cursor: pointer;
+}
+.member-name:hover{
+  font-size:18px;
 }
 
 
