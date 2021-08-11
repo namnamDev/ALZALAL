@@ -219,12 +219,6 @@ export default{
 	justify-content: space-between;
 }
 }
-.form input.valid {
-
-}
-.form input.invalid {
-
-}
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
 }

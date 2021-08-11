@@ -8,7 +8,7 @@
         </div>
       </div>     
     </div>
-    <Modal />
+    <Modal />   
   </div>
 </template>
 

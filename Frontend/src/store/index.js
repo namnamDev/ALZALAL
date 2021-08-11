@@ -20,6 +20,9 @@ export default new Vuex.Store({
     helpComments: null,
     debateComments: null,
     debateDetail: null,
+    notify: false,
+    notificationList: [],
+    params: null,
   },
 
   mutations: {
@@ -60,6 +63,21 @@ export default new Vuex.Store({
     },
     DELETE_COMMENT: function(state, index){
       state.articleComments.splice(index,1)
+    },
+    CREATE_NOTIFY:function(state){
+      state.notify = true
+    },
+    DELETE_NOTIFY: function(state){
+      state.notify = false
+    },
+    CREATE_NOTIFICATION_LIST: function(state,notificationList){
+      state.notificationList = state.notificationList.concat(notificationList)
+    },
+    DELETE_NOTIFICATION_LIST: function(state){
+      state.notificationList = []
+    },
+    CREATE_SEARCH_PARAMS: function(state, params){
+      state.params = params
     }
 
   },
@@ -102,8 +120,22 @@ export default new Vuex.Store({
     deleteComment: function(context, comment){
       const index = context.state.articleComments.indexOf(comment)
       context.commit('DELETE_COMMENT',index)
+    },
+    createNotify: function({commit}){
+      commit("CREATE_NOTIFY")
+    },
+    deleteNotify: function({commit}){
+      commit("DELETE_NOTIFY")
+    },
+    createNoticationList: function({commit}, notificationList){
+      commit("CREATE_NOTIFICATION_LIST",notificationList)
+    },
+    deleteNotificationList:function({commit}){
+      commit("DELETE_NOTIFICATION_LIST")
+    },
+    createSearchParams: function({commit}, params){
+      commit("CREATE_SEARCH_PARAMS", params)
     }
-
 
 
   },
@@ -139,6 +171,15 @@ export default new Vuex.Store({
     },
     getHelpmeComments: function(state){
       return state.helpComments
+    },
+    getNotify: function(state){
+      return state.notify
+    },
+    getNotificationList: function(state){
+      return state.notificationList
+    },
+    getSearchParams: function(state) {
+      return state.params
     }
   },
 

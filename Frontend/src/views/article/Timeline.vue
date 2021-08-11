@@ -67,7 +67,6 @@ export default {
         .then((res) => {
           setTimeout(() => {
             if (res.data.article.length) {
-              console.log(res.data)
               this.articleItems = this.articleItems.concat(res.data.article);
               $state.loaded();
               this.page += 1;

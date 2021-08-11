@@ -7,26 +7,54 @@
 
       <!-- 로그인 했을 때 -->
       <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
-        <li class="nav-item dropdown" @click="click">
-          <a
-            class="nav-link"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <span class="username">{{userEmail}}</span>
-            <span class="imageSection">
-              <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+        <div class="row">
+          <div class="col-1 me-3 pt-3">
+            <span class="notifi-btn" @click="clickAlarm">
+              <i class="fas fa-bell" v-if="getNotify"></i>
+              <i class="far fa-bell" v-else></i>
             </span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
-            <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
-            <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
-          </ul>
-        </li>
+            <div class="notify-table container" @scroll="handleNotificationListScroll">
+              <div class="row">
+                <div class="col py-2 ps-1" style="font-size:27px; font-weight:bold;">알림</div>
+              </div>
+              <div v-for="item,idx in getNotificationList" :key="idx">
+                <NotificationList :item="item"/>
+              </div>
+              <!-- <infinite-loading @infinite="infiniteHandler" spinner="sprial">
+                <div
+                  slot="no-more"
+                  style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
+                >
+                  목록의 끝입니다 :)
+                </div>
+              </infinite-loading> -->
+            </div>
+
+          </div>
+          <div class="col">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="imageSection">
+                  <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+                </span>
+                <span class="username">{{userEmail}}</span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
+                <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
+                <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
+              </ul>
+            </li>
+
+          </div>
+        </div>
       </ul>
 
 <!-- 로그인 안했을 때 -->
@@ -41,11 +69,15 @@
         <li><a class="" @click="signup">Sign Up</a></li>
       </ul> -->
     </div>
+    
   </div>
 </template>
 
 <script>
+import NotificationList from '@/components/navBar/NotificationList.vue'
+import axios from 'axios'
 import jwt_decode from 'jwt-decode'
+import $ from 'jquery'
 const token = sessionStorage.getItem('jwt')
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 let username = '';
@@ -59,14 +91,115 @@ if (token) {
 //let userpk = '';
 
 export default {
+  components: {
+    NotificationList,
+    // InfiniteLoading,
+  },
   data(){
     return{
       imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
       imageError: false,
-      defaultImage: require("@/assets/images/profileImg.png")
+      defaultImage: require("@/assets/images/profileImg.png"),
+      page: 0,
+      flag : true
     }
   },
   methods: {
+    handleNotificationListScroll(e) {
+      this.flag = true
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight < scrollTop + clientHeight + 2;
+        // 일정 한도 밑으로 내려오면 함수 실행
+      if (isAtTheBottom && this.flag) {
+          setTimeout(() => {
+            this.handleLoadMore();          
+          }, 500);
+        }              
+    },
+
+    handleLoadMore() {
+      this.flag = false
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/notilist` + "?page=" + this.page,
+        headers: this.getToken()
+      })
+      .then(res=>{
+        this.page += 1
+        this.$store.dispatch('createNoticationList', res.data.notificationList)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    // infiniteHandler($state) {
+    //   axios({
+    //     method: "get",
+    //     url: `${SERVER_URL}/notilist` + "?page=" + this.page,
+    //     headers: this.getToken(),
+    //   })
+    //     .then((res) => {         
+    //       console.log('asldjfas;ldf') 
+    //       setTimeout(() => {
+    //         if (res.data.notificationList.length) {
+    //           // this.NotificationList = this.NotificationList.concat(res.data.notificationList)
+    //           this.$store.dispatch('createNoticationList', res.data.notificationList)
+    //           $state.loaded();
+    //           this.page += 1;
+    //           //console.log("after", this.page)
+    //           // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
+    //           if(res.data.notificationList.length / 10 < 1) {
+    //             $state.complete()
+    //           }
+    //         } else {
+    //           // 끝 지정(No more data)
+    //           $state.complete();
+    //         }
+    //       }, 1000);
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // },
+    
+    getToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      return config
+    },
+
+    clickAlarm: function() {
+      this.page = 0
+      // this.infiniteHandler()
+
+      this.$store.dispatch('deleteNotify')
+      this.$store.dispatch('deleteNotificationList')
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/notilist?page=0`,
+        headers: this.getToken()
+      })
+      .then(res=>{
+        console.log(res.data.notificationList)
+        this.page += 1
+        this.$store.dispatch('createNoticationList', res.data.notificationList)
+        // console.log(res.data.notificationList)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+      // this.$store.dispatch('deleteNotify')
+      var div = $('.notify-table')
+      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+      if( div.is(":visible") ){
+          div.slideUp(700);
+      }else{
+          div.slideDown(1000);
+      }
+    }, 
     logout: function(){
       this.$store.dispatch('logout')
       sessionStorage.removeItem("jwt");
@@ -92,11 +225,14 @@ export default {
     signup: function() {
       this.$router.push({'name':'signup'})
     },
-    click: function() {
-      console.log('click')
-    },
   },
   computed: {
+    getNotify() {
+      return this.$store.getters.getNotify
+    },
+    getNotificationList() {
+      return this.$store.getters.getNotificationList
+    },
     isLogin(){
       //console.log(this.$store.getters.isLogin)
       return this.$store.getters.isLogin
@@ -116,7 +252,10 @@ export default {
 </script>
 
 <style scoped>
-
+.notifi-btn{
+  font-size:40px;
+  cursor:pointer;
+}
 .top{
   position:fixed;
   background-color: white;
@@ -137,8 +276,9 @@ export default {
   /* border: 10px solid blanchedalmond; */
   font-size:20px;
   position: absolute;
-  right: 7%;
+  right: 0;
   top: 20px;
+  width:400px;
 }
 
 .nav-link{
@@ -173,6 +313,35 @@ export default {
 .username {
   margin-right: 15px;
 }
+.profileImg {
+    width: 70px;
+    height: 70px;
+    border-radius: 75%;
+}
+.show{
+  display: block;
+}
+.notify-table{
+  /* border:1px solid black; */
+  width: 380px;
+  height:80vh;
+  display:none;
+  overflow: auto;
+  background-color: white;  
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+}
+
+.fas{
+  color:rgb(60, 195, 139);
+  text-shadow: 0px 0px 8px rgb(102, 219, 81);
+  animation-name: tada;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;   
+}
+
+
 
 @media (max-width: 576px){
     .login-signup{
@@ -203,12 +372,5 @@ export default {
   }
 }
 
-.imageSection{
-}
-.profileImg {
-    width: 70px;
-    height: 70px;
-    border-radius: 75%;
-}
 
 </style>
