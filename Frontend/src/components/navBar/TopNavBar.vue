@@ -9,7 +9,7 @@
       <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
         <div class="row">
           <div class="col-1 me-3 pt-3">
-            <span class="notifi-btn" @click="clickAlarm">
+            <span class="notifi-btn" @click="clickAlarm">              
               <i class="fas fa-bell" v-if="getNotify"></i>
               <i class="far fa-bell" v-else></i>
             </span>
