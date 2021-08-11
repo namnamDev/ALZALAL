@@ -66,7 +66,7 @@ export default {
       return this.getDate(this.comment.articleCommentDate)
     },
     isMine: function() {
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       let username = '';
       if (token) {
         const decoded = jwt_decode(token)
@@ -107,7 +107,7 @@ export default {
 
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

@@ -105,7 +105,7 @@ export default{
 		};
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(!token){
       this.$router.push({name:'login'})
     }
@@ -134,7 +134,7 @@ export default{
       return validatePassword(this.form.password, this.passwordConfirm);
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -201,7 +201,7 @@ export default{
           })
           .then(() => {
 
-            localStorage.removeItem("jwt")
+            sessionStorage.removeItem("jwt")
             localStorage.removeItem("vuex")
             this.$router.push({ name: 'login' })
           })

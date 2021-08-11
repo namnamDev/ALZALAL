@@ -13,7 +13,7 @@ import followerListImg from '@/components/profile/topProfile/follower/followerLi
 import InfiniteLoading from 'vue-infinite-loading';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

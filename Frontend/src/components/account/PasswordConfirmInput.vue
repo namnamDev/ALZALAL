@@ -34,14 +34,14 @@ export default {
 		};
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(!token){
       this.$router.push({name:'login'})
     }
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

@@ -124,7 +124,7 @@ export default{
     },
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(token){
       this.$router.push({name:'login'})
     }

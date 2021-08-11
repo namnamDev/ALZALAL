@@ -68,7 +68,7 @@
 import jwt_decode from 'jwt-decode'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
@@ -154,7 +154,7 @@ export default {
     },
     computed:{
         getToken(){
-        const token = localStorage.getItem('jwt')
+        const token = sessionStorage.getItem('jwt')
         const config = {
             Authorization: `Bearer ${token}`
         }
@@ -179,7 +179,7 @@ export default {
             this.$router.push({'name':'followPage'})
         },
         clickRequest: function(){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
@@ -187,7 +187,7 @@ export default {
             this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
-                const token = localStorage.getItem('jwt')
+                const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})

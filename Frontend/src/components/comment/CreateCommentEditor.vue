@@ -30,7 +30,7 @@ import axios from 'axios';
 import $ from 'jquery'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL 
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 
 export default {
   components: {
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

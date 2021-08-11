@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [
-    createPersistedState(),
+    createPersistedState({ storage: window.sessionStorage }),
   ],
   state: {
     userEmail: '',

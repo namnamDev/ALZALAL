@@ -35,8 +35,9 @@ export default {
   },
 
   created(){
-    if(localStorage.getItem("jwt")){
-      let tmp=localStorage.getItem("jwt");
+    //document.addEventListener('beforeunload', this.removeVuex())
+    if(sessionStorage.getItem("jwt")){
+      let tmp=sessionStorage.getItem("jwt");
       // memberPK 받아옴
       this.userpk=jwt_decode(tmp).sub;
       this.headers.Authorization= "Bearer "+ tmp;
@@ -44,6 +45,9 @@ export default {
     }
   },
   methods: {
+    // removeVuex: function() {
+    //   localStorage.removeItem('vuex')
+    // },
     connect: function () {
       let socket = new SockJS(`${SERVER_URL}/connectNotification`);
       this.stompClient = Stomp.over(socket);

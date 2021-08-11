@@ -177,7 +177,7 @@ export default {
 
     //댓글 작성하기
     clickCreateComment() {
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       if(!token){
         this.$swal.fire({          
           text: "로그인 후 이용해주세요.",
@@ -205,7 +205,7 @@ export default {
     },
 
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
