@@ -63,7 +63,7 @@ export default {
 
   computed: {
     date: function() {
-      return this.getDate(this.comment.articleCommentDate)
+      return this.getDate(this.comment.helpmeCommentDate)
     },
     isMine: function() {
       const token = sessionStorage.getItem('jwt')
@@ -117,7 +117,7 @@ export default {
       const commentNo = this.comment.articleCommentNo
       axios({
         method: 'post',
-        url: `${SERVER_URL}/like/article/comment/${commentNo}`,
+        url: `${SERVER_URL}/like/helpme/comment/${commentNo}`,
         headers: this.getToken(),
         data :{}
       })

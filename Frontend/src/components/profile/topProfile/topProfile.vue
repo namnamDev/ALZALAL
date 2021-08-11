@@ -6,8 +6,8 @@
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
-                        <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
-                        <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
+                        <img class="profileImg"  :src="imgsrc">
+                        <!-- <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else> -->
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -68,7 +68,7 @@
 import jwt_decode from 'jwt-decode'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
@@ -80,8 +80,8 @@ export default {
     },
     data(){
         return{
+            //imgsrc: `${SERVER_URL}/profile/img/1004`,
             imgsrc: '',
-            // imgsrc: `${SERVER_URL}/profile/img/${localStorage.getItem('userPk')}`,
             no: '',
             follower: '',
             language: [],
@@ -95,24 +95,26 @@ export default {
             isLogin: '',
             myPage: '',
             followState: '',
-            flag: false,
         }
     },
     created: function() {
         // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        // console.log(userPk)
+         console.log(userPk)
         let pk = ''
         if(userPk){
             pk = userPk
             this.myPage = false
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             if(pk==userpk){
                 this.myPage = true
             }
         }else{
             pk = userpk
             this.myPage = true
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
         }
+        console.log(this.pk)
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
@@ -135,25 +137,24 @@ export default {
         .catch(err => {
             console.log(err);
         })
-        axios({
-            method: 'get',
-            url: `${SERVER_URL}/profile/img/${pk}`
-        })
-        .then(res => {
-            console.log(pk)
-            this.flag = true
-            this.imgsrc = res.data
-        })
-        .catch(() => {
-            this.flag= false
-            this.imgsrc = 'profile'
-            // console.log(err)
-        })
+        // axios({
+        //     method: 'get',
+        //     url: `${SERVER_URL}/profile/img/${this.pk}`
+        // })
+        // .then(res => {
+        //     this.flag = true
+        //     this.imgsrc = res.data
+        // })
+        // .catch(() => {
+        //     this.flag= false
+        //     this.imgsrc = 'profile'
+        //     // console.log(err)
+        // })
        
     },
     computed:{
         getToken(){
-        const token = localStorage.getItem('jwt')
+        const token = sessionStorage.getItem('jwt')
         const config = {
             Authorization: `Bearer ${token}`
         }
@@ -178,7 +179,7 @@ export default {
             this.$router.push({'name':'followPage'})
         },
         clickRequest: function(){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
@@ -186,7 +187,7 @@ export default {
             this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
-                const token = localStorage.getItem('jwt')
+                const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})

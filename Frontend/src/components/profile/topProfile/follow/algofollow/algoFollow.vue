@@ -21,7 +21,7 @@ import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/alg
 import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
 //import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);

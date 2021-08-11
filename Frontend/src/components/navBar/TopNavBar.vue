@@ -76,13 +76,9 @@
 <script>
 import NotificationList from '@/components/navBar/NotificationList.vue'
 import axios from 'axios'
-// import InfiniteLoading from "vue-infinite-loading";
-
 import jwt_decode from 'jwt-decode'
 import $ from 'jquery'
-
-
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 let username = '';
 let userpk = '';
@@ -206,9 +202,10 @@ export default {
     }, 
     logout: function(){
       this.$store.dispatch('logout')
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("refresh");
+      sessionStorage.removeItem("jwt");
+      sessionStorage.removeItem("refresh");
       localStorage.removeItem("vuex")
+      localStorage.removeItem("userPk")
       this.$router.push({name: 'login'})
     },
     modifyUser: function() {

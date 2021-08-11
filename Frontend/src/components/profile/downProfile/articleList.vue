@@ -20,7 +20,7 @@ import articleItem from '@/components/profile/downProfile/articleItem.vue'
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);

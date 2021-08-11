@@ -18,6 +18,8 @@ export default new Vuex.Store({
     searchArticle: null,
     helpmeDetail: null,
     helpComments: null,
+    debateComments: null,
+    debateDetail: null,
     notify: false,
     notificationList: [],
     params: null,
@@ -38,8 +40,14 @@ export default new Vuex.Store({
     CREATE_HELPME_DETAIL: function(state, item) {
       state.helpmeDetail = item
     },
+    CREATE_DEBATE_DETAIL: function(state, item) {
+      state.debateDetail = item
+    },
     CREATE_ARTICLE_COMMENT: function(state, comments){
       state.articleComments = comments
+    },
+    CREATE_DEBATE_COMMENT: function(state, comments){
+      state.debateComments = comments
     },
     CREATE_QNA_LIST: function(state, qnalist){
       state.qnaList = qnalist
@@ -88,6 +96,9 @@ export default new Vuex.Store({
     createArticleComment: function({commit}, comments) {
       commit("CREATE_ARTICLE_COMMENT", comments)
     },
+    createDebateComment: function({commit}, comments) {
+      commit("CREATE_DEBATE_COMMENT", comments)
+    },
     createQnaList: function({commit}, qnalist){
       commit('CREATE_QNA_LIST', qnalist)
     },
@@ -96,6 +107,9 @@ export default new Vuex.Store({
     },
     createHelpmeDetail: function({commit}, item) {
       commit("CREATE_HELPME_DETAIL", item)
+    },
+    createDebateDetail: function({commit}, item) {
+      commit("CREATE_DEBATE_DETAIL", item)
     },
     createHelpmeComment: function({commit}, item){
       commit("CREATE_HELPME_COMMENTS",item)
@@ -140,8 +154,14 @@ export default new Vuex.Store({
     getHelpmeDetail: function(state){
       return state.helpmeDetail
     },
+    getDebateDetail: function(state){
+      return state.debateDetail
+    },
     getArticleComments: function(state) {
       return state.articleComments
+    },
+    getDebateComments: function(state) {
+      return state.debateComments
     },
     getQnaList: function(state){
       return state.qnaList

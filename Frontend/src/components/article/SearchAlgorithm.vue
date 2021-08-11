@@ -184,7 +184,7 @@ export default {
       date.style.fontSize = '18px'
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

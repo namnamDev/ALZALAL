@@ -104,7 +104,7 @@ export default {
       return this.$store.getters.getArticleComments
     },
     isMine: function() {
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       let username = '';
       if (token) {
         const decoded = jwt_decode(token)
@@ -211,7 +211,7 @@ export default {
     },
 
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -220,7 +220,7 @@ export default {
 
     //댓글 작성하기
     clickCreateComment() {
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       if(!token){
         this.$swal.fire({          
           text: "로그인 후 이용해주세요.",

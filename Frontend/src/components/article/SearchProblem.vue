@@ -197,7 +197,7 @@ export default {
       this.like = false
     },
     getToken() {
-      const token = localStorage.getItem("jwt");
+      const token = sessionStorage.getItem("jwt");
       const config = {
         Authorization: `Bearer ${token}`,
       };
