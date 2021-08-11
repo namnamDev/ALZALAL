@@ -1,6 +1,6 @@
 <template>
  <div class="animate__animated animate__fadeInUp my-4 main">
-    <div class="article-box col-lg-6 col-md-8 col-sm-7 col-8 ">
+    <div class="article-box col-lg-6 col-md-8 col-sm-7 col-8 " v-if="isLogin">
       <div class="row">
         <div class="col-2 image">
           <img class="profileImg" :src="imgsrc" @error="imageError = true" alt="프로필사진">
