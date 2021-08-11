@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [
-    createPersistedState(),
+    createPersistedState({ storage: window.sessionStorage }),
   ],
   state: {
     userEmail: '',
@@ -19,6 +19,8 @@ export default new Vuex.Store({
     helpmeDetail: null,
     helpComments: null,
     notify: false,
+    notificationList: [],
+    params: null,
   },
 
   mutations: {
@@ -59,6 +61,15 @@ export default new Vuex.Store({
     },
     DELETE_NOTIFY: function(state){
       state.notify = false
+    },
+    CREATE_NOTIFICATION_LIST: function(state,notificationList){
+      state.notificationList = state.notificationList.concat(notificationList)
+    },
+    DELETE_NOTIFICATION_LIST: function(state){
+      state.notificationList = []
+    },
+    CREATE_SEARCH_PARAMS: function(state, params){
+      state.params = params
     }
 
   },
@@ -101,6 +112,15 @@ export default new Vuex.Store({
     },
     deleteNotify: function({commit}){
       commit("DELETE_NOTIFY")
+    },
+    createNoticationList: function({commit}, notificationList){
+      commit("CREATE_NOTIFICATION_LIST",notificationList)
+    },
+    deleteNotificationList:function({commit}){
+      commit("DELETE_NOTIFICATION_LIST")
+    },
+    createSearchParams: function({commit}, params){
+      commit("CREATE_SEARCH_PARAMS", params)
     }
 
 
@@ -134,6 +154,12 @@ export default new Vuex.Store({
     },
     getNotify: function(state){
       return state.notify
+    },
+    getNotificationList: function(state){
+      return state.notificationList
+    },
+    getSearchParams: function(state) {
+      return state.params
     }
   },
 
