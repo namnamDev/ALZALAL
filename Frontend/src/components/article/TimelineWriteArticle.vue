@@ -16,7 +16,7 @@
 
 <script>
 import jwt_decode from 'jwt-decode'
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // let username = '';
 let userpk = '';
