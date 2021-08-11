@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="container" v-for="(item, idx) in articleItems" :key="idx">
+    <div v-for="(item, idx) in articleItems" :key="idx">
       <TimelineItem
         :articleNo="item.articleNo"
         :content="item.articleContent"

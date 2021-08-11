@@ -1,19 +1,19 @@
 <template>
 
   <div class="container" v-if="articleDetail">
-    <div class="row my-5">
+    <div class="row my-3">
       <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="col-lg-6 col-md-10 col-sm-9 col-11 content">
+      <div class="article_box col-lg-6 col-md-10 col-sm-9 col-11">
 
-        <div class="row top mb-3">
+        <div class="row">
           <div class="row title">
             {{articleDetail.articleTitle}}
           </div>
           <div class="row">
-            <div class="col clickName"  >
+            <div class="col clickName pl-1"  >
               <span @click="clickName" class="member-name">{{articleDetail.member.name}}</span>
             </div>
-            <div class="col text-end">
+            <div class="col text-end text-secondary">
              {{articleDetail.articleDate | moment("YYYY-MM-DD HH:mm:ss")}}
             </div>
           </div>
@@ -25,7 +25,7 @@
               <span style="cursor:pointer">수정</span> | 
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
-            <div>
+            <div class="viewer">
               <Viewer :viewerText="articleDetail.articleContent"/>  
             </div>
 
@@ -284,6 +284,14 @@ export default {
 #create-comment{
   display: none;
 }
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+}
 .show{
   display: block !important;
 }
@@ -333,7 +341,7 @@ button{
   cursor: pointer;
 }
 .create-comment-btn{
-  background-color: rgb(86, 149, 233);
+  background-color: rgba(62 ,171 ,111 , 1);
   border-style: none;
   border-radius: 3px;
   color:rgb(255, 255, 255);
