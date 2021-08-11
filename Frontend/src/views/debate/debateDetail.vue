@@ -22,13 +22,22 @@
 
         <div class="row bottom my-3">
           <div class="row">
-            <button class="mb-4" @click="clickAlgoInput">댓글쓰기</button>
+            <button class="create-comment-btn mb-4" @click="clickAlgoInput">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="this.discussionNo"/>
             </div>
           </div>
           <div class="row my-3" v-for="comment,idx in getComments" :key="idx">
             <Comment :comment="comment"/>
+          </div>
+          <div class="row mb-5 py-5">
+            <div class="col text-center">
+              <span class="previous-btn" @click="clickPreviousBtn">previous</span>
+              <!-- <span class="mx-4" @click="click1">1</span>/ -->
+              <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
+              /<span class="mx-4">{{commentCount}}</span>
+              <span class="next-btn" @click="clickNextBtn">next</span>
+            </div>
           </div>
         </div>
       </div>
@@ -38,7 +47,9 @@
 </template>
 
 <script>
-import Comment from '@/components/comment/CommentItem.vue'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios';
+import Comment from '@/components/comment/CommentDiscussionItem.vue'
 import CreateComment from '@/views/debate/createDebateComment.vue'
 import $ from 'jquery';
 import Vue from "vue";
@@ -47,7 +58,8 @@ Vue.use(vueMoment);
 export default {
   name: 'debateDetail',
   props:{
-    discussionNo: Number
+    discussionNo: Number,
+    Page: String,
   },
 
   components:{
@@ -64,11 +76,13 @@ export default {
         discussCompName:'',
         discussDate:'',
         disscussCompProblem:'',
+        currentPage: Number(this.Page)+1,
     }
   },
   computed: {
 
     getComments: function() {
+      console.log(this.$store.getters.getDebateComments)
       return this.$store.getters.getDebateComments
     },
   },
@@ -85,6 +99,37 @@ export default {
     this.disscussCompProblem = debate.disscussCompProblem
   },
   methods: {
+    clickNextBtn: function() {
+      if (Number(this.Page) < this.commentCount -1){
+        const page = String(Number(this.Page) + 1)
+        location.href=`/debateDetail/${page}`  
+      }
+    },
+    clickPreviousBtn: function() {
+      if (Number(this.Page) > 0){
+        const page = String(Number(this.Page) - 1)
+        location.href=`/debateDetail/${page}`  
+      }
+    },
+    goPage: function() {
+      location.href=`/debateDetail/${this.currentPage-1}`
+    },
+    //댓글 리스트 불러오기
+    getCommentList:function() {
+      this.$store.dispatch('deleteArticleComment')
+      const articleNo = localStorage.getItem('articleNo')
+      axios({
+          method: 'get',
+          url: `${SERVER_URL}/comment/discussion/${articleNo}?page=${this.Page}`,
+          headers: this.getToken(),
+        })   
+        .then(res =>{
+          this.$store.dispatch('createDebateComment',res.data.articleComments)
+        })
+        .catch(err =>{  
+          console.log(err)
+        }) 
+    },
     getToken(){
       const token = localStorage.getItem('jwt')
       const config = {
@@ -159,31 +204,11 @@ export default {
   border-bottom: 1px solid grey;
   padding-bottom: 20px;
 }
-.user-info, .content {
-  width: calc(100% - 50px);
-  float: right; 
-}
-.user-name {
-  float: left;
-}
-.user-name button {
-  font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
+
 .date {
   float: right;
 }
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
-}
+
 @media (max-width:577px) {
   .feed{
     margin-left:0;
@@ -200,4 +225,37 @@ export default {
   
   white-space:normal;
   }
+button{
+  width: 120px;
+  height: 30px;
+}
+.clickName{
+  cursor: pointer;
+}
+.create-comment-btn{
+  background-color: rgb(86, 149, 233);
+  border-style: none;
+  border-radius: 3px;
+  color:rgb(255, 255, 255);
+  font-weight: bold;
+}
+.current-page{
+  width: 30px;
+  height:23px;
+  margin-left:10px;
+  margin-right:15px;
+  text-align: center;
+}
+.previous-btn{
+  cursor: pointer;
+}
+.next-btn{
+  cursor: pointer;
+}
+.member-name{
+  cursor:pointer;
+}
+.member-name:hover{
+  font-size:18px;
+}
 </style>
