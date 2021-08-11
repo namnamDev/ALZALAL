@@ -1,37 +1,37 @@
 <template>
-  <div class="row my-5">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
-      <div class="row top mt-2">
-        <div class="col-3 image mt-2">
-          <i class="fas fa-user" style="font-size: 60px"></i>
+  <div class="animate__animated animate__fadeInUp my-4 main">
+
+    <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickArticle">
+      <div class="row">
+        <div class="col-2 image">
+          <img class="profileImg" :src="getImgSrc" @error="imageError = true" alt="프로필사진">
         </div>
         <div class="col">
-          <div class="row name" @click="clickName">
-            <div class="col">
+          <div class="row" >
+            <div class="col fs-6 fw-bold">
               <span class="member-name">{{ this.memberName }}</span>
             </div>
-            <div class="col text-end pe-4">
-              {{date}}
+            <div class="col text-end">
+              <span class="text-secondary">{{date}}</span>
             </div>
           </div>
-          <div class="row mt-2">
+          <div class="row">
             <div>
-              <div class="title mb-1">{{ this.articleTitle }}</div>
-              <div class="hashtag">
+              <div class="fs-5">{{ this.articleTitle }}</div>
+              <div class="hashtag d-flex align-items-center">
                 <span v-if="articleClass=='A01'" class="has-category">문제풀이</span>
                 <span v-else class="has-category">QnA</span>
                 <span class="has-problem">{{ this.problemSite }} {{ problemNo }}</span>
                 <span class="has-language">{{ this.language }}</span>
-                <span class='mt-2 has-algo' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
+                <span class='has-algo ' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row middle" @click="clickArticle">
-        <div class="col content">
+      <div class="row">
+        <div class="col content ">
           <Viewer id="viewer" :viewerText="content" />
         </div>
       </div>
@@ -74,6 +74,9 @@ export default {
       }
       return config
     },
+    getImgSrc(){
+      return `${SERVER_URL}/profile/img/${this.memberNo}`;
+    }
   },
   data: function() {
     return{
@@ -148,14 +151,15 @@ export default {
 
     },
     // 게시글 상세 정보 페이지로 이동
-    clickArticle: function() {
-      localStorage.setItem('articleNo', this.articleNo)
-      this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
-    },
-    clickName: function(){
-      localStorage.setItem('userPk',this.memberNo)
-      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
-    }   
+    clickArticle: function(clickObject) {
+      if(clickObject.target.getAttribute("class")=="profileImg" ||  clickObject.target.getAttribute("class")=="member-name"){
+        localStorage.setItem('userPk',this.memberNo)
+        this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+      }else{
+        localStorage.setItem('articleNo', this.articleNo)
+        this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
+      }
+    }
     
   },
 };
@@ -163,7 +167,10 @@ export default {
 
 <style scoped>
 .fa-heart {
-  color: red;
+  color: black;
+}
+.fa-comment-dots{
+  color:black
 }
 #viewer {
   height: 100%;
@@ -173,16 +180,15 @@ export default {
 }
 .article-box {
   background: white;
-  -webkit-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.12);
+
+  box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;
   /* height: 400px; */
+  cursor: pointer;
 }
 .article-box:hover {
-  -webkit-box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
-  box-shadow: 0 0 10px rgba(161, 212, 226, 0.6);
-  transform: scale(1.05);
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 }
 
 .image {
@@ -214,7 +220,7 @@ export default {
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   height: 100%;
-  cursor:pointer;
+  margin: 0 1rem 0 1rem;
 }
 
 .like-comment {
@@ -224,11 +230,13 @@ export default {
   font-size: 13px;
   border-radius: 3px;
   /* background-color: rgba(221, 223, 230, 1); */
-  padding:0px 8px;
+  padding:4px 8px;
   margin-right: 6px;
   display:inline-block;
 }
 .has-category{
+  padding-top: 2px;
+  padding-bottom: 2px;
   background-color:rgba(170, 224, 217) ;
   font-weight: bold;
 }
@@ -247,7 +255,11 @@ export default {
 .member-name:hover{
   font-size:18px;
 }
-
+.profileImg {
+    width: 75px;
+    height: 75px;
+    border-radius: 75%;
+}
 
 @media (max-width: 767px) {
   .top {

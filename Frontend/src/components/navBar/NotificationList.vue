@@ -117,7 +117,6 @@ export default {
       const data = {
         notiNo : this.item.notiNo
       }
-      console.log(this.item)
       axios({
         method: 'post',
         url: `${SERVER_URL}/notiRead`,

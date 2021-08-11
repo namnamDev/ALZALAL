@@ -8,45 +8,50 @@
         </div>
       </div>     
     </div>
-    <Modal />   
   </div>
 </template>
 
 <script>
-import Modal from '@/components/search/SearchModal.vue'
+
 
 export default {
   components: {
-    Modal
+
   },  
 }
 </script>
 
 <style scoped>
 #search{
-  height: 100vh;
-  width: 280px;
-  right: 70px;
+  
+  width: 310px;
+  /* right: 70px;
   top: 170px;
-  position:fixed;
+  position:fixed; */
   /* border-left: 1px solid black;   */
   /* display: none; */
-  display: block;
+  /* display: block; */
 }
 #search-bar{
-  position: absolute;
-  z-index:-2;
+  /* position: absolute; */
+  /* z-index:-2; */
 }
 .fas{
   font-size: 20px;
   margin-right:10px;
 }
 .search-box{
-  border:1px solid black;
-  width: 230px;
+  background-color: white;
+  text-align: center;
+  border:1px solid white;
+  font-size: 1.4rem;
+  font-weight: bold ;
+  color: rgb(62, 171, 111);
+  width: 100%;
   border-radius: 5px;
   padding:4px 7px;  
   cursor: pointer;
+  line-height: 1.5;
 }
 
 #category{
