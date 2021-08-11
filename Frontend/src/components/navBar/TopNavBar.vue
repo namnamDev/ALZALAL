@@ -1,51 +1,81 @@
 <template>
   <div class="top">
-    <div class="logo" onclick="window.scrollTo(0,0)">
-      <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
-    </div>
-    <div class="user">      
-
-      <!-- 로그인 했을 때 -->
-      <ul class="navbar-nav me-sm-4 me-1" v-if="isLogin">
-        <li class="nav-item dropdown" @click="click">
-          <a
-            class="nav-link"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <span class="username">{{userEmail}}</span>
-            <span class="imageSection">
-              <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
-            </span>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
-            <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
-            <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
-          </ul>
-        </li>
-      </ul>
-
-<!-- 로그인 안했을 때 -->
-      <div class="login-signup mt-4" v-if="!isLogin">
-        <span @click="login" class="loginBtn">Log in </span>
-        <span @click="signup" class="signupBtn"> Sign Up</span>
+    <div class="main">
+      <!-- <div class="logo" onclick="window.scrollTo(0,0)">
+        <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
+      </div> -->
+      
+      <div class="main-left">
+        <!-- 로고 -->
+        <div class="logo" @click="clickTimeline">
+           <img src="@/assets/images/logo1.jpg" height="60px" alt="Logo">
+        </div>
       </div>
-      <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
-        <li class="nav-item dropdown">
-          <a class="" @click="login">Log in </a>
-        </li>
-        <li><a class="" @click="signup">Sign Up</a></li>
-      </ul> -->
+      <div class="main-middle">
+        <!-- 검색 -->
+        <div class="search">
+          <SearchBar />
+        </div>
+      </div>
+    
+      <div class="main-right">
+        <!-- 탐색 -->
+        <TimelineIcon/>
+        <QnaIcon/>
+        <DebateIcon/>   
+        <NotificationIcon/>
+        <!-- 유저 -->
+        <div class="user">      
+          <!-- 로그인 했을 때 -->
+          <ul class="navbar-nav" v-if="isLogin">
+            <li class="nav-item dropdown" @click="click">
+              <a
+                class="nav-link"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <!-- <span class="username">{{userEmail}}</span> -->
+                <span class="imageSection">
+                  <img class="profileImg" v-if="imgsrc" :src="imgsrc" @error="imageError = true" alt="프로필사진">
+                </span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" @click="modifyUser">정보수정</a></li>
+                <li><a class="dropdown-item" @click="goProfile">프로필페이지</a></li>
+                <li><a class="dropdown-item" v-on:click="logout">로그아웃</a></li>
+              </ul>
+            </li>
+          </ul>
+
+    <!-- 로그인 안했을 때 -->
+          <div class="login-signup" v-if="!isLogin">
+            <span @click="login" class="loginBtn">Log in </span>
+            <span @click="signup" class="signupBtn"> Sign Up</span>
+          </div>
+          <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
+            <li class="nav-item dropdown">
+              <a class="" @click="login">Log in </a>
+            </li>
+            <li><a class="" @click="signup">Sign Up</a></li>
+          </ul> -->
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import jwt_decode from 'jwt-decode'
+import TimelineIcon from './icon/TimelineIcon.vue'
+import QnaIcon from './icon/QnaIcon.vue'
+import NotificationIcon from './icon/NotificationIcon.vue'
+import DebateIcon from './icon/DebateIcon.vue'
+import SearchBar from "@/components/search/SearchBar.vue";
+
+    
 const token = localStorage.getItem('jwt')
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 let username = '';
@@ -59,6 +89,13 @@ if (token) {
 //let userpk = '';
 
 export default {
+  components:{
+    TimelineIcon,
+    QnaIcon,
+    DebateIcon,
+    NotificationIcon,
+    SearchBar
+  },
   data(){
     return{
       imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
@@ -94,6 +131,9 @@ export default {
     click: function() {
       console.log('click')
     },
+    clickTimeline: function() {
+     this.$router.push({'name':'timeline'})
+    },
   },
   computed: {
     isLogin(){
@@ -117,27 +157,32 @@ export default {
 <style scoped>
 
 .top{
-  position:fixed;
-  background-color: white;
+  position:sticky;
+  top: 0px;
+  /* sticky가 fixed랑 비슷한효과 그런데 flex의 적용을 받음 */
+  background-color: rgb(62, 171, 111);
   z-index:4;
   width: 100%;
   height:70px;
   /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .logo{
-  position: absolute;
+  /* position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  z-index:2;  
+  z-index:2;   */
   cursor: pointer;
 }
 .user{
   /* border: 10px solid blanchedalmond; */
   font-size:20px;
-  position: absolute;
+  /* position: absolute;
   right: 7%;
-  top: 20px;
+  top: 20px; */
 }
 
 .nav-link{
@@ -148,9 +193,8 @@ export default {
 }
 .dropdown-item {
   cursor: pointer;
-      font-size: 1.0rem;
-    font-weight: 600;
-    line-height: 1.0;
+  font-size: 1.0rem;
+  line-height: 1.3;
 }
 .login-signup{
   /* margin-top: */
@@ -205,9 +249,35 @@ export default {
 .imageSection{
 }
 .profileImg {
-    width: 70px;
-    height: 70px;
+    width: 45px;
+    height: 45px;
     border-radius: 75%;
 }
+.main{
+  width: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5% 0 5%;
+}
 
+i {
+  color: white;
+   cursor: pointer;
+  font-size: 30px;
+}
+.main-left{
+  flex-basis: 20%;
+}
+.main-middle{
+  flex-basis: 30%;
+  display: flex;
+  justify-content: center;
+}
+.main-right{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: 20%;
+}
 </style>

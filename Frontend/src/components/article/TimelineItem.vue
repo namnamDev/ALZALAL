@@ -1,13 +1,13 @@
 <template>
-  <div class="animate__animated animate__fadeInUp row my-4 ">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10 ">
+  <div class="animate__animated animate__fadeInUp my-4 main">
+
+    <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickArticle">
       <div class="row">
         <div class="col-2 image">
-          <i class="fas fa-user" style="font-size: 60px"></i>
+          <img class="profileImg" :src="getImgSrc" @error="imageError = true" alt="프로필사진">
         </div>
         <div class="col">
-          <div class="row" @click="clickName">
+          <div class="row" >
             <div class="col fs-6 fw-bold">
               <span class="member-name">{{ this.memberName }}</span>
             </div>
@@ -30,8 +30,8 @@
         </div>
       </div>
 
-      <div class="row" @click="clickArticle">
-        <div class="col content">
+      <div class="row">
+        <div class="col content ">
           <Viewer id="viewer" :viewerText="content" />
         </div>
       </div>
@@ -74,6 +74,9 @@ export default {
       }
       return config
     },
+    getImgSrc(){
+      return `${SERVER_URL}/profile/img/${this.memberNo}`;
+    }
   },
   data: function() {
     return{
@@ -148,14 +151,18 @@ export default {
 
     },
     // 게시글 상세 정보 페이지로 이동
-    clickArticle: function() {
-      localStorage.setItem('articleNo', this.articleNo)
-      this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
-    },
-    clickName: function(){
-      localStorage.setItem('userPk',this.memberNo)
-      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
-    }   
+    clickArticle: function(clickObject) {
+      console.log("tmpasdf ",clickObject)
+      console.log("tmpasdfsad ",clickObject.target)      
+      console.log("tmpasdfsadasdf ",clickObject.target.getAttribute("class"))
+      if(clickObject.target.getAttribute("class")=="profileImg" ||  clickObject.target.getAttribute("class")=="member-name"){
+        localStorage.setItem('userPk',this.memberNo)
+        this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+      }else{
+        localStorage.setItem('articleNo', this.articleNo)
+        this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
+      }
+    }
     
   },
 };
@@ -181,6 +188,7 @@ export default {
   border-radius: 5px;
   padding: 15px 15px;
   /* height: 400px; */
+  cursor: pointer;
 }
 .article-box:hover {
   box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
@@ -215,7 +223,7 @@ export default {
   -webkit-box-orient: vertical;
   word-wrap: break-word;
   height: 100%;
-  cursor:pointer;
+  margin: 0 1rem 0 1rem;
 }
 
 .like-comment {
@@ -250,7 +258,11 @@ export default {
 .member-name:hover{
   font-size:18px;
 }
-
+.profileImg {
+    width: 75px;
+    height: 75px;
+    border-radius: 75%;
+}
 
 @media (max-width: 767px) {
   .top {

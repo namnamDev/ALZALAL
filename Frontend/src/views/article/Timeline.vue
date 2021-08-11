@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <TimelineWriteArticle/>
     <div v-for="(item, idx) in articleItems" :key="idx">
       <TimelineItem
         :articleNo="item.articleNo"
@@ -19,12 +20,13 @@
 
 <script>
 import TimelineItem from "@/components/article/TimelineItem.vue";
+import TimelineWriteArticle from "@/components/article/TimelineWriteArticle.vue";
 import axios from "axios";
 import InfiniteLoading from "vue-infinite-loading";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 export default {
-  components: { TimelineItem, InfiniteLoading },
+  components: { TimelineItem, InfiniteLoading ,TimelineWriteArticle},
   data: function () {
     return {
       articleItems: [],
@@ -92,11 +94,11 @@ export default {
 
 <style scoped>
 .container {
-  margin-top: 110px;
+  /* margin-top: 110px; */
 }
 @media (max-width: 576px) {
   .container {
-    margin-top: 60px;
+    /* margin-top: 60px; */
   }
 }
 </style>

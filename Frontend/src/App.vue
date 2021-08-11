@@ -1,16 +1,21 @@
 <template>
   <div id="app" @click="clickApp">
-    <SideMenuBar />
-    <SearchBar />
-    <TopMenuBar />
-    <router-view />
+
+    <div id="main">
+        <TopMenuBar />
+        <router-view class="mycol2"/>
+    </div>
+        <!-- <SideMenuBar class="mycol1"/> -->
+        <!-- <SearchBar class="mycol1" /> -->
+    <Modal />
   </div>
 </template>
 
 <script>
-import SideMenuBar from "@/components/navBar/SideMenuBar.vue";
+// import SideMenuBar from "@/components/navBar/SideMenuBar.vue";
 import TopMenuBar from "@/components/navBar/TopNavBar.vue";
-import SearchBar from "@/components/search/SearchBar.vue";
+// import SearchBar from "@/components/search/SearchBar.vue";
+import Modal from '@/components/search/SearchModal.vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import jwt_decode from 'jwt-decode'
@@ -29,9 +34,10 @@ export default {
     }
   },
   components: {
-    SideMenuBar,
+    // SideMenuBar,
     TopMenuBar,
-    SearchBar,
+    // SearchBar,
+    Modal
   },
 
   created(){
@@ -95,6 +101,13 @@ export default {
   position: relative;
   display: flex;  
 }
+</style>
 
+<style>
+#main{
+  display: flex;
+  flex-direction: column;
+  width: inherit;
+}
 
 </style>
