@@ -30,7 +30,6 @@ import axios from 'axios';
 import $ from 'jquery'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL 
-const token = sessionStorage.getItem('jwt')
 
 export default {
   components: {
@@ -70,20 +69,11 @@ export default {
     },
     //댓글 작성버튼 클릭
     submit() {
-      if (!token){
-        this.$swal('로그인후 이용해 주세요.');
-        return
-      }
-      if (!this.$refs.toastEditor.invoke('getMarkdown')){
-        this.$swal('내용을 입력해주세요.');
-        return
-      }
       this.$swal('댓글을 작성하였습니다.');
-
-      const articleNo = localStorage.getItem('articleNo')
+      const discussionNo = localStorage.getItem('discussionNo')
       axios({
         method: 'post',
-        url: `${SERVER_URL}/comment/article/${articleNo}`,
+        url: `${SERVER_URL}/comment/discussion/${discussionNo}`,
         headers: this.getToken(),
         data:{
           'commentContent' : this.getContent()
@@ -93,10 +83,11 @@ export default {
         this.setContent('')
         axios({
           method: 'get',
-          url: `${SERVER_URL}/comment/article/${articleNo}`,
+          url: `${SERVER_URL}/comment/discussion/${discussionNo}`,
         })   
-        .then((res) =>{    
-          this.$store.dispatch('createArticleComment',res.data.articleComments)
+        .then(res =>{
+          console.log(res)
+          this.$store.dispatch('createDebateComment',res.data.articleComments)
         })
         .catch(err =>{  
           console.log(err)

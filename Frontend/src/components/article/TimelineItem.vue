@@ -68,7 +68,7 @@ export default {
       return this.content
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -152,9 +152,6 @@ export default {
     },
     // 게시글 상세 정보 페이지로 이동
     clickArticle: function(clickObject) {
-      console.log("tmpasdf ",clickObject)
-      console.log("tmpasdfsad ",clickObject.target)      
-      console.log("tmpasdfsadasdf ",clickObject.target.getAttribute("class"))
       if(clickObject.target.getAttribute("class")=="profileImg" ||  clickObject.target.getAttribute("class")=="member-name"){
         localStorage.setItem('userPk',this.memberNo)
         this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})

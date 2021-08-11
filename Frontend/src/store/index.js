@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [
-    createPersistedState(),
+    createPersistedState({ storage: window.sessionStorage }),
   ],
   state: {
     userEmail: '',
@@ -18,6 +18,11 @@ export default new Vuex.Store({
     searchArticle: null,
     helpmeDetail: null,
     helpComments: null,
+    debateComments: null,
+    debateDetail: null,
+    notify: false,
+    notificationList: [],
+    params: null,
   },
 
   mutations: {
@@ -35,8 +40,14 @@ export default new Vuex.Store({
     CREATE_HELPME_DETAIL: function(state, item) {
       state.helpmeDetail = item
     },
+    CREATE_DEBATE_DETAIL: function(state, item) {
+      state.debateDetail = item
+    },
     CREATE_ARTICLE_COMMENT: function(state, comments){
       state.articleComments = comments
+    },
+    CREATE_DEBATE_COMMENT: function(state, comments){
+      state.debateComments = comments
     },
     CREATE_QNA_LIST: function(state, qnalist){
       state.qnaList = qnalist
@@ -52,6 +63,21 @@ export default new Vuex.Store({
     },
     DELETE_COMMENT: function(state, index){
       state.articleComments.splice(index,1)
+    },
+    CREATE_NOTIFY:function(state){
+      state.notify = true
+    },
+    DELETE_NOTIFY: function(state){
+      state.notify = false
+    },
+    CREATE_NOTIFICATION_LIST: function(state,notificationList){
+      state.notificationList = state.notificationList.concat(notificationList)
+    },
+    DELETE_NOTIFICATION_LIST: function(state){
+      state.notificationList = []
+    },
+    CREATE_SEARCH_PARAMS: function(state, params){
+      state.params = params
     }
 
   },
@@ -70,6 +96,9 @@ export default new Vuex.Store({
     createArticleComment: function({commit}, comments) {
       commit("CREATE_ARTICLE_COMMENT", comments)
     },
+    createDebateComment: function({commit}, comments) {
+      commit("CREATE_DEBATE_COMMENT", comments)
+    },
     createQnaList: function({commit}, qnalist){
       commit('CREATE_QNA_LIST', qnalist)
     },
@@ -78,6 +107,9 @@ export default new Vuex.Store({
     },
     createHelpmeDetail: function({commit}, item) {
       commit("CREATE_HELPME_DETAIL", item)
+    },
+    createDebateDetail: function({commit}, item) {
+      commit("CREATE_DEBATE_DETAIL", item)
     },
     createHelpmeComment: function({commit}, item){
       commit("CREATE_HELPME_COMMENTS",item)
@@ -88,8 +120,22 @@ export default new Vuex.Store({
     deleteComment: function(context, comment){
       const index = context.state.articleComments.indexOf(comment)
       context.commit('DELETE_COMMENT',index)
+    },
+    createNotify: function({commit}){
+      commit("CREATE_NOTIFY")
+    },
+    deleteNotify: function({commit}){
+      commit("DELETE_NOTIFY")
+    },
+    createNoticationList: function({commit}, notificationList){
+      commit("CREATE_NOTIFICATION_LIST",notificationList)
+    },
+    deleteNotificationList:function({commit}){
+      commit("DELETE_NOTIFICATION_LIST")
+    },
+    createSearchParams: function({commit}, params){
+      commit("CREATE_SEARCH_PARAMS", params)
     }
-
 
 
   },
@@ -108,8 +154,14 @@ export default new Vuex.Store({
     getHelpmeDetail: function(state){
       return state.helpmeDetail
     },
+    getDebateDetail: function(state){
+      return state.debateDetail
+    },
     getArticleComments: function(state) {
       return state.articleComments
+    },
+    getDebateComments: function(state) {
+      return state.debateComments
     },
     getQnaList: function(state){
       return state.qnaList
@@ -119,6 +171,15 @@ export default new Vuex.Store({
     },
     getHelpmeComments: function(state){
       return state.helpComments
+    },
+    getNotify: function(state){
+      return state.notify
+    },
+    getNotificationList: function(state){
+      return state.notificationList
+    },
+    getSearchParams: function(state) {
+      return state.params
     }
   },
 

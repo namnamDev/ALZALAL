@@ -36,7 +36,7 @@ export default {
       return this.content
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -79,13 +79,10 @@ export default {
         headers: this.getToken,
       })   
       .then(res =>{
-          console.log(res.data)
         const detail = res.data.helpme
          this.item = res.data
-         console.log(this.item)
         this.helpmeSenderNo= detail.helpmeSenderNo.no,
         this.helpmeSenderName= detail.helpmeSenderNo.name,
-        this.helpmeDate= detail.helpmeDate,
         this.commentCount= detail.commentCount,
         this.likeCount= detail.likeCount,
         this.likeState= detail.likeState,
@@ -94,13 +91,37 @@ export default {
         this.helpmeReceptorNo= detail.helpmeReceptorNo.no,
         this.helpmeReceptorName= detail.helpmeReceptorNo.name,
         this.helpmeStatus= detail.helpmeStatus
-        
+        const date = res.data.helpme.helpmeDate
+        this.helpmeDate = this.getDate(date)
       })
       .catch(err =>{  
         console.log(err)
       })
   },
     methods: {    
+      getDate: function(date) {
+        const today  = new Date()
+        const timeValue  = new Date(date)
+
+        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        if (betweenTime < 1) return '방금전';
+        if (betweenTime < 60) {
+            return `${betweenTime}분전`;
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        if (betweenTimeHour < 24) {
+            return `${betweenTimeHour}시간전`;
+        }
+
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return `${betweenTimeDay}일전`;
+        }
+
+        return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+      },
     // 게시글 상세 정보 페이지로 이동
     clickHelpmeName: function() {
       localStorage.setItem('helpmeNo', this.helpmeNo)
@@ -132,7 +153,7 @@ export default {
         console.log(err)
       })
 
-      this.$router.push({name : 'helpmeDetail', params:{helpmeNo:this.helpmeNo}})
+      this.$router.push({name : 'helpmeDetail', params:{'Page':'0', helpmeNo:this.helpmeNo}})
     },   
     
   },

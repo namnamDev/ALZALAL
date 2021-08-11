@@ -27,7 +27,7 @@ import articleList from '@/components/profile/downProfile/articleList'
 import helpmeList from '@/components/profile/downProfile/helpmeList'
 import receptList from '@/components/profile/downProfile/receptList'
 import jwt_decode from 'jwt-decode'
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)

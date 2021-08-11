@@ -58,7 +58,7 @@ export default {
 
   methods: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -112,7 +112,7 @@ export default {
   width: 450px;
   height:140px;
   margin:0 auto;
-  padding: 25px 30px;
+  padding: 25px 20px;
 }
 .profile-card:hover{
   -webkit-box-shadow: 0 0px 20px rgba(161, 212, 226, 0.6);

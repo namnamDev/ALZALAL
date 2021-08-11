@@ -1,5 +1,5 @@
 <template>
-  <div class="animate__animated animate__fadeInUp comment mb-2">
+  <div class="comment mb-2">
     <div class="user">
       <div class="row">
         <div class="col">
@@ -63,7 +63,7 @@ export default {
 
   computed: {
     date: function() {
-      return this.getDate(this.comment.articleCommentDate)
+      return this.getDate(this.comment.helpmeCommentDate)
     },
     isMine: function() {
       const token = sessionStorage.getItem('jwt')
@@ -117,7 +117,7 @@ export default {
       const commentNo = this.comment.articleCommentNo
       axios({
         method: 'post',
-        url: `${SERVER_URL}/like/article/comment/${commentNo}`,
+        url: `${SERVER_URL}/like/helpme/comment/${commentNo}`,
         headers: this.getToken(),
         data :{}
       })
@@ -168,10 +168,10 @@ export default {
 
 <style scoped>
 .content{
-  background: white;
-  box-shadow: 0 0 0px 0.7px gray;
-  border-radius: 5px;
-  padding: 15px 15px;
+  /* border: 1px solid black; */
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
 }
 .inline{
   display:inline;
@@ -184,7 +184,7 @@ export default {
   color:rgb(70, 172, 235);
 }
 .like-btn:hover{
-  /* font-size:17px; */
+  font-size:17px;
   color:rgb(56, 74, 245);
 }
 .delete{

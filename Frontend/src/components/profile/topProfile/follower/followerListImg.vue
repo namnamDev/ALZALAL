@@ -84,7 +84,7 @@ export default {
     },
     computed: {
         getToken(){
-          const token = localStorage.getItem('jwt')
+          const token = sessionStorage.getItem('jwt')
           const config = {
               Authorization: `Bearer ${token}`
           }
@@ -97,7 +97,7 @@ export default {
         console.log(this.imgsrc)
       },
         clickFollow: function(event){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})

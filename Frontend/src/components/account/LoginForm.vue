@@ -64,7 +64,7 @@ export default {
 		},
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(token){
       this.$router.push({name:'timeline'})
     }
@@ -78,8 +78,8 @@ export default {
         data: this.form
       })   // back 에 로그인 요청
       .then(res =>{                  
-        localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
-        localStorage.setItem('refresh', res.data.token.refreshToken);
+        sessionStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
+        sessionStorage.setItem('refresh', res.data.token.refreshToken);
         const payload = {
           email: this.form.email,
           isLogin: true

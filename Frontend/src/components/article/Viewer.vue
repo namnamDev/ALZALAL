@@ -1,7 +1,7 @@
 <template>
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
-    <div>
+    <div style=" overflow-wrap: break-word;">
       <Viewer     
       height="500px" 
       :initialValue="viewerContent"

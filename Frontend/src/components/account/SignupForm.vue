@@ -124,7 +124,7 @@ export default{
     },
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(token){
       this.$router.push({name:'login'})
     }
@@ -218,12 +218,6 @@ export default{
 	flex-direction: row-reverse;
 	justify-content: space-between;
 }
-}
-.form input.valid {
-
-}
-.form input.invalid {
-
 }
 .form div:nth-last-child(2) {
   margin-bottom: 0.5rem;
