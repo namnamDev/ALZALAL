@@ -194,9 +194,7 @@ export default {
   text-align: center;
   align-self: center;
 }
-.top {
-  /* height: 140px; */
-}
+
 .name {
   height: 25px;
   margin-top: 10px;

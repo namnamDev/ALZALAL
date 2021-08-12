@@ -9,10 +9,11 @@
             <div class="col clickName"  @click="clickName">   
             {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}   
              <div><p class="status">{{getStatus}}</p></div>     
+              <p class="probleminfo">{{this.problemSiteName}} {{this.problemNo}}번 문제</p>
               <div class="fromto">
                 <span class="username">{{this.helpmeSenderName}}</span>님이 <span class="username">{{this.helpmeReceptorName}}</span>님에게 요청한 문제
               </div>
-               {{this.problemSiteName}} {{this.problemNo}}번 문제
+               
             </div>
           </div>
         </div>
@@ -36,7 +37,7 @@
 
         <div class="row bottom my-3">
           <div class="row">
-            <button class="mb-4" @click="clickAlgoInput">댓글쓰기</button>
+            <button class="mb-4 wrtieComment" @click="clickAlgoInput">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :helpmeNo="this.helpmeNo"/>
             </div>
@@ -254,6 +255,14 @@ export default {
 </script>
 
 <style scoped>
+.wrtieComment{
+  background-color: rgb(62, 171, 111);
+  color: white;
+  border: none;
+  font-size: 18px;
+  
+  border-radius: 10%;
+}
 #create-comment{
   display: none;
 }
@@ -277,6 +286,10 @@ export default {
   height:100px;
   /* border:1px solid black; */
   position: relative;
+}
+.probleminfo{
+  font-size: 30px;
+   font-weight: 550;
 }
 .title{
   font-size:40px;
@@ -327,10 +340,10 @@ button{
   font-size:18px;
 }
 .fromto{
-  font-size: 20px;
+  font-size: 18px;
 }
 .username{
-  font-weight: 550;
+  font-weight: 500;
 }
 .status{
   font-weight: 550;

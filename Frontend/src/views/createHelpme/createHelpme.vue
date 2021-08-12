@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="row submit">
-        <button type="submit" :disabled="!pNum" class="requestBtn">제출하기</button>
+        <button type="submit" :disabled="!pNum || !pSite || !content" class="requestBtn">제출하기</button>
       </div>
       </form>
     </div>

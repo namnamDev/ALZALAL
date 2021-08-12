@@ -1,27 +1,30 @@
 <template>
-  <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz">
-    <div class="feed-card col-12 col-lg-12 col-ml-12">
-      <div class="contentsWrap" @click="clickHelpmeName">
-        <span>{{this.problemSiteName}}  </span>
-        <span>{{this.problemNo}}번 문제</span>
-        <span>  {{getStatus}}</span>
-        
-        <div>
-          <p class="helpmeContent">{{this.helpmeContent}}</p>
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div class="article-box col-12 col-ml-12 col-lg-12" id="sendQuiz">
+      <div class="feed-card col-12 col-lg-12 col-ml-12">
+        <span class="status">{{getStatus}}</span>
+        <div class="contentsWrap" @click="clickHelpmeName">
+          <span class="probleminfo">{{this.problemSiteName}}  </span>
+          <span class="probleminfo">{{this.problemNo}}번 문제</span>
+          
+          
+          <div>
+            <p class="helpmeContent">{{this.helpmeContent}}</p>
+          </div>
+          <div class="btn-group wrap">
+              <div class="col box1 like-comment">
+                <i class="fas fa-heart me-2" v-if="this.likeState"></i>
+                <i class="far fa-heart me-2" v-else></i>
+                <span>{{this.likeCount}}</span>
+                <i class="far fa-comment-dots mx-2"></i>
+                <span >{{this.commentCount}}</span>
+                <!-- <div><p class="date">{{this.helpmeDate}}</p></div> -->
+              </div>
+          </div>
+          
         </div>
-        <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
-            <div class="col box1 like-comment">
-              <i class="fas fa-heart me-2" v-if="this.likeState"></i>
-              <i class="far fa-heart me-2" v-else></i>
-              <span>{{this.likeCount}}</span>
-              <i class="far fa-comment-dots mx-2"></i>
-              <span >{{this.commentCount}}</span>
-              <!-- <div><p class="date">{{this.helpmeDate}}</p></div> -->
-            </div>
-        </div>
-        
+        <div><p class="date">{{this.helpmeDate}}</p></div>
       </div>
-      <div><p class="date">{{this.helpmeDate}}</p></div>
     </div>
   </div>
 </template>
@@ -164,14 +167,11 @@ export default {
 </script>
 
 <style scoped>
-.fa-heart {
-  color: red;
-}
 .feed-card {
     box-sizing: content-box;
     /* box-shadow: 0 0 0 1px #ddd; */
     color: #000;
-    float: left;
+    
     border-radius: 5px;
     overflow: hidden;
     
@@ -179,24 +179,51 @@ export default {
  .contentsWrap {
         box-sizing: border-box;
         padding: 12px;
-        float: left;
+
         cursor:pointer
  }
- .title {
-    color:#000;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap:break-word; 
-    line-height: 1.5em;
-    font-size: 15px;
-    margin: 0 0 8px;
-    white-space: normal;
-}
+ .probleminfo{
+   font-size: 20px;
+   font-weight: 500;
+ }
+ .status{
+   font-weight: 550;
+ }
 .date {
   float: right;
   font-size: 10px;
   color:rgba(0, 0, 0, .5);
+}
+.feed-item {
+    margin-bottom: 30px;
+    border-bottom: 1px solid grey;
+    padding-bottom: 20px;
+}
+.date {
+  float: right;
+  font-size: 15px;
+  font-weight: 550;
+}
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+#clickBoard:hover {
+  background-color:#a1d4e2;
+}
+#clickRequest:hover{
+  background-color: #a1d4e2;
+}
+#clickSend:hover{
+  background-color: #a1d4e2;
 }
 @media (max-width:577px) {
   .feed{

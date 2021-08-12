@@ -1,29 +1,36 @@
 <template>
-  <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz">
-    <div class="feed-card col-12 col-lg-12 col-ml-12">
-      <div class="contentsWrap">
-        <span @click="clickHelpmeName">{{this.problemSiteName}}  </span>
-        <span @click="clickHelpmeName">{{this.problemNo}}번 문제</span>
-        <span>  {{getStatus}}</span>
-        <div>
-          <p @click="clickHelpmeName" class="helpmeContent">{{this.helpmeContent}}</p>
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div class="article-box col-12 col-ml-12 col-lg-12" id="sendQuiz">
+      <div class="feed-card col-12 col-lg-12 col-ml-12">
+        <span class="status">  {{getStatus}}</span>
+        <div class="contentsWrap">
+          <span class="probleminfo" @click="clickHelpmeName">{{this.problemSiteName}}  </span>
+          <span class="probleminfo" @click="clickHelpmeName">{{this.problemNo}}번 문제</span>
+          
+          <div>
+            <p @click="clickHelpmeName" class="helpmeContent">{{this.helpmeContent}}</p>
+          </div>
+          <div>
+              <button v-if="clickok" @click="clickOk" class="btn">수락하기</button>
+              <button v-if="clickno" @click="clickNo" class="btn">거절하기</button>
+          </div>
+          
+          <div class="btn-group wrap">
+              <div class="col box1 like-comment">
+                <i class="fas fa-heart me-2" v-if="this.likeState"></i>
+                <i class="far fa-heart me-2" v-else></i>
+                <span>{{this.likeCount}}</span>
+                <i class="far fa-comment-dots mx-2"></i>
+                <span >{{this.commentCount}}</span>
+                
+              </div>
+          </div>
         </div>
         <div>
-            <button v-if="clickok" @click="clickOk" class="btn">수락하기</button>
-            <button v-if="clickno" @click="clickNo" class="btn">거절하기</button>
-        </div>
-        <div v-if="clickanswer">
-           <button @click="sendAnswer" class="btn">답변하기</button>
-        </div>
-        <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
-            <div class="col box1 like-comment">
-              <i class="fas fa-heart me-2" v-if="this.likeState"></i>
-              <i class="far fa-heart me-2" v-else></i>
-              <span>{{this.likeCount}}</span>
-              <i class="far fa-comment-dots mx-2"></i>
-              <span >{{this.commentCount}}</span>
-              <div><p class="date">{{this.helpmeDate}}</p></div>
-            </div>
+          <div v-if="clickanswer">
+            <button @click="sendAnswer" class="answer">답변하기</button>
+          </div>
+          <p class="date">{{this.helpmeDate}}</p>
         </div>
       </div>
     </div>
@@ -222,10 +229,6 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  cursor: pointer;
-}
-
 .feed-card {
     box-sizing: content-box;
     /* box-shadow: 0 0 0 1px #ddd; */
@@ -233,61 +236,52 @@ export default {
     float: left;
     border-radius: 5px;
     overflow: hidden;
-    
 }
  .contentsWrap {
         box-sizing: border-box;
         padding: 12px;
-        float: left;
+        
         cursor:pointer
  }
- .title {
-    color:#000;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    word-wrap:break-word; 
-    line-height: 1.5em;
-    font-size: 15px;
-    margin: 0 0 8px;
-    white-space: normal;
-}
+ .probleminfo{
+   font-size: 20px;
+   font-weight: 500;
+ }
+ .status{
+   font-weight: 550;
+ }
 .date {
   float: right;
-  font-size: 10px;
-  color:rgba(0, 0, 0, .5);
+  font-size: 15px;
+  font-weight: 50;
 }
 .feed-item {
     margin-bottom: 30px;
     border-bottom: 1px solid grey;
     padding-bottom: 20px;
 }
-.profile-image {
-    float: left;
-}
-.user-info, .content {
-    width: calc(100% - 50px);
-    float: right; 
-}
-.user-name {
-    float: left;
-}
-.user-name button {
-   font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
 .date {
   float: right;
 }
-.profileImg{
-  width: 100px;
-  height: 100%;
-  box-sizing: border-box;
-  float:left;
-  border:1px solid grey;
-  border-radius: 3px;
+.answer{
+  background-color: rgb(62, 171, 111);
+  color: white;
+  border: none;
+  font-size: 18px;
+  
+  border-radius: 10%;
+}
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 }
 #clickBoard:hover {
   background-color:#a1d4e2;

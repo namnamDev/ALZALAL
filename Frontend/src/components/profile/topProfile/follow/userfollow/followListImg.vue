@@ -165,18 +165,16 @@ export default {
   background-color: white;
   color: black;
   border: 1px solid rgb(62, 171, 111);
-
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
   color: white;
-
 }
 .btn{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   font-size: 15px;
-  border-radius: 11%;
+  border-radius: 5%;
 }
 
 
