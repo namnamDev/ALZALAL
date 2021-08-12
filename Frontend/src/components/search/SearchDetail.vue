@@ -52,9 +52,10 @@
             v-model="algo"
             id="search-algo-input-1"
             type="text"
-            placeholder="알고리즘을 입력해주세요(필수X)"                  
+            :placeholder="placeholder1" 
             @click="clickAlgoInput" 
             @keyup="filterFunction"  
+            @blur="blur"
           >
           <span class="btn-include span-include" @click="include">포함</span>
           <span class="btn-exclude span-exclude" @click="exclude">제외</span>
@@ -90,13 +91,12 @@
 
     <div class="footer mb-2">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="button" class="btn" id="submit" data-bs-dismiss="modal" @click="submit">검색하기</button>
+      <button type="button" class="btn" id="submit" @click="submit">검색하기</button>
     </div>
   </div>
 </template>
 
 <script>
-import $ from 'jquery'
 import axios from 'axios';
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -114,12 +114,14 @@ export default {
       algoList: [],
       algo:'',
       inputData: '',
+      placeholder1: "알고리즘을 입력해주세요(필수X)"  
     }
   },
   watch: {
     category: function() {
       if (this.category == 'solution'){
         this.placeholder = '문제번호를 입력해주세요'
+        this.placeholder1 = '알고리즘을 입력해 주세요(필수X)'
         document.querySelector('#placeholder').style.display = 'block'
         document.querySelector('#language').style.display = 'block'
         document.querySelector('#pSite').style.visibility = 'visible'
@@ -144,6 +146,7 @@ export default {
         
       }
       else{
+        this.placeholder1 = '알고리즘을 입력해 주세요(필수O)'
         document.querySelector('#placeholder').style.display = 'none'
         document.querySelector('#language').style.display = 'block'
         document.querySelector('#pSite').style.visibility = 'hidden'
@@ -197,37 +200,98 @@ export default {
       const searchData = this.getData()
       const category = searchData.category
       let data = {}
+
       // 문제풀이, qna인 경우
       if (category == 'solution') {
+        if(!this.inputData || isNaN(this.inputData/1)){
+          this.$swal.fire({
+            text: !this.inputData?"문제 번호를 입력해주세요":"숫자만 입력해 주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".placeholder");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+      else{
         data.category = searchData.category
         data.language = searchData.language
         data.includeAlgo = searchData.includeData,
         data.excludeAlgo = searchData.excludeData
         data.problem = searchData.pSite + searchData.inputData
+        data.problemSite = searchData.pSite
+        data.problemNo = searchData.inputData
         this.$store.dispatch('createSearchArticle',data)        
-        this.$router.push({name : 'searchProblem'})
+        // this.$router.push({name : 'searchProblem'})
+        location.href="/searchProblem"
+      }
+
       }
       // 알고리즘인 경우
       else if (category == 'algorithm'){
-        data.category = searchData.category
-        data.language = searchData.language
-        data.includeAlgo = searchData.includeData,
-        data.excludeAlgo = searchData.excludeData
-        this.$store.dispatch('createSearchArticle',data)
-        this.$router.push({name : 'searchAlgorithm'})
+        if(searchData.includeData.length == 0){
+          this.$swal.fire({
+            text: "검색할 알고리즘을 입력해주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".search-algo-li");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+        else{
+          data.category = searchData.category
+          data.language = searchData.language
+          data.includeAlgo = searchData.includeData,
+          data.excludeAlgo = searchData.excludeData
+          this.$store.dispatch('createSearchArticle',data)
+          // this.$router.push({name : 'searchAlgorithm'})
+          location.href="/searchAlgorithm"
+        }
       }
       // 유저인 경우
       else if (category == 'user'){
-        data.user = searchData.inputData
-        this.$store.dispatch('createSearchArticle',data)
-        this.$router.push({name : 'searchUser', params:{user:searchData.inputData}})
+        if(!this.inputData){
+          this.$swal.fire({
+            text: "사용자 이름을 입력해주세요",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          }).then(() => {          
+            var input = document.querySelector(".placeholder");
+            window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+          })  
+        }
+        else{
+          data.user = searchData.inputData
+          this.$store.dispatch('createSearchArticle',data)
+          // this.$router.push({name : 'searchUser', params:{user:searchData.inputData}})
+          location.href=`/searchUser/${searchData.inputData}`
+        }
       }
     },
 
-    // blur() {
-    //   const ul = document.querySelector('#search-algo-ul')
-    //   ul.style.display = 'none'
-    // },
+    blur() {
+      console.log('1234')
+
+      const ul = document.querySelector('#search-algo-ul')
+      setTimeout(() => {
+        if (ul.style.display == 'block'){
+          ul.style.display = 'none'        
+        }
+      }, 100);
+    },
     clickAlgoInput() {      
       // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
       const ul = document.querySelector('#search-algo-ul')
@@ -260,17 +324,6 @@ export default {
       }
     },
 
-    clickSearch: function() {
-      var commentForm = $('.search-detail')
- 
-      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-      if( commentForm.is(":visible") ){
-          commentForm.slideUp(500);
-      }else{
-          commentForm.slideDown(500);
-      }
-    },
-
     include: function(){
       // console.log($(event.target).parent('li')[0].innerText[1])
       const algoHastag = document.createElement("span")
@@ -278,8 +331,9 @@ export default {
       algoHastag.innerText = this.algo;
       algoHastag.style.display = "inline-block";
       algoHastag.style.fontSize = "14px";
+      algoHastag.style.fontWeight = "bold";
       algoHastag.style.borderRadius = "3px";
-      algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+      algoHastag.style.backgroundColor = "rgba(161,212,226,1)";
       algoHastag.style.padding = "4px 8px";
       algoHastag.style.marginBottom = "4px";
       algoHastag.classList.add("me-3");
@@ -302,8 +356,9 @@ export default {
       algoHastag.innerText = this.algo;
       algoHastag.style.display = "inline-block";
       algoHastag.style.fontSize = "14px";
+      algoHastag.style.fontWeight = "bold";
       algoHastag.style.borderRadius = "3px";
-      algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+      algoHastag.style.backgroundColor = "rgba(246, 163, 142,1)";
       algoHastag.style.padding = "4px 8px";
       algoHastag.style.marginBottom = "4px";
       algoHastag.classList.add("me-3");

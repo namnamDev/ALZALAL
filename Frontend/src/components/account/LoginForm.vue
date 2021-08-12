@@ -1,8 +1,8 @@
 <template>
-  <div class="row">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="col-lg-6 col-md-10 col-sm-9 col-10">
-      <div class="row top mt-2 form-wrapper form-wrapper-sm">
+  <div class="row main">
+
+      <div class="row top mt-2 form-wrapper form-wrapper-sm content">
+      <span class="header">로그인</span>
       <form @submit.prevent="submitForm" class="form">
         <div class="row">
           <label align="left" for="email">E-mail</label>
@@ -18,8 +18,7 @@
           <input id="password" type="password" v-model="form.password" />
         </div>
         <div class="row btnclass">
-          <div class="btn-login col-7 col-ml-7 col-lg-7"></div>
-          <div class="btn-login col-5 col-ml-5 col-lg-5"> 
+            <div class="button-area">
             <button
                     :disabled="!isEmailValid && form.password"
               type="submit"
@@ -30,7 +29,7 @@
             <span>
               <router-link to="/signup"><button class="btn btn-user">회원가입</button></router-link>
             </span> 
-          </div>
+            </div>
         </div>
         <!-- <div class='snsLogin'>
           <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
@@ -39,7 +38,7 @@
         </div> -->
       </form>
       </div>
-    </div>
+    
   </div>
 </template>
 
@@ -64,7 +63,7 @@ export default {
 		},
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(token){
       this.$router.push({name:'timeline'})
     }
@@ -77,10 +76,9 @@ export default {
         url: `${SERVER_URL}/member/login`,
         data: this.form
       })   // back 에 로그인 요청
-      .then(res =>{
-        console.log(res.data.token);                    
-        localStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
-        localStorage.setItem('refresh', res.data.token.refreshToken);
+      .then(res =>{                  
+        sessionStorage.setItem('jwt', res.data.token.accessToken); // vuex actions로 보냄
+        sessionStorage.setItem('refresh', res.data.token.refreshToken);
         const payload = {
           email: this.form.email,
           isLogin: true
@@ -94,9 +92,8 @@ export default {
           alert(res.data.msg)
         }
       })
-      .catch(err =>{  // 실패하면 error
-        console.log(err)
-        alert("ID 또는 비밀번호가 틀렸습니다.")
+      .catch(()=>{  // 실패하면 error
+        this.$swal('ID 혹은 비밀번호가 틀렸습니다');
       })
     }
   }
@@ -106,25 +103,32 @@ export default {
 
 <style scoped>
 /*--- LAYOUT ---*/
-.row {
-  margin-top: 40px;
-} 
+.header{
+  margin-top: 15px;
+  margin-right: 25px;
+  font-size: 30px;
+  font-weight: 550;
+  text-align: right;
+}
 .form-wrapper {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
-  padding: 15px 15px;
+  padding: 20px 20px;
 }
 .form-wrapper.form-wrapper-sm {
-  max-width: 700px;
+  max-width: 620px;
 }
 .form-wrapper-sm .page-header {
   padding: 0px 0 20px;
 }
 .form {
-	width: 460px;
+	width: 520px;
 	height: 100%;
+}
+.form>div:not(:first-child){
+  margin-top: 25px;
 }
 .form .validation-text {
 	margin-top: -0.5rem;
@@ -192,9 +196,9 @@ export default {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.btn-login{
+/* .btn-login{
   float: right;
-}
+} */
 .btn-user{
     opacity: 0.8;
 }
@@ -205,5 +209,21 @@ export default {
 .btnclass{
   margin-top: 10px;
   margin-left: 30px;
+}
+.main{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height: 90%;
+}
+.main .content{
+  display:flex;
+  justify-content:center;
+}
+.button-area{
+  width: 100%;;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 </style>

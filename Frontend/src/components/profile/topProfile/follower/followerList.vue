@@ -13,7 +13,7 @@ import followerListImg from '@/components/profile/topProfile/follower/followerLi
 import InfiniteLoading from 'vue-infinite-loading';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -73,7 +73,7 @@ export default {
               this.page += 1
               //console.log("after", this.follower.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(res.data.length / 20 < 1) {
+              if(res.data.length / 10 < 1) {
                 $state.complete()
               }
             } else {

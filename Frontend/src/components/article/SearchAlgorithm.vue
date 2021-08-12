@@ -10,14 +10,16 @@
         <div class="row top">
           <div class="col">
             <div v-if="isOneAlgo">
-              <div v-if="articleList"> 
-                #{{articleList[0].algo[0]}}
+              <div> 
+                # {{this.includeAlgo[0]}}
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-else>팔로우</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row middle mb-5">
+        <div class="row middle mb-5" v-if="isOneAlgo">
           <div class="col">
             <div style="display:inline;" class="me-3" v-if="followingNumber">
               팔로잉  {{followingNumber}}
@@ -34,61 +36,54 @@
           </div>
         </div>
 
-        <div class="row bottom my-3" v-for="item,idx in articleList" :key="idx">
-          <div class="col-2 pt-4 member-name">
-            {{item.member.name}}
+        <div class="row">
+          <div class="col">
+            총 {{articleCount}}개의 게시글이 검색되었습니다.
           </div>
-          <div class="col article-content" @click="articleDetail(item.articleNo)">
-            <div class="row article-title">
-              {{item.articleTitle}}
-            </div>
-            <div class="row">
-              <div class="col p-0">
-                <span class="hashtag" v-if="item.articleClass=='A01'">문제풀이</span>
-                <span class="hashtag" v-else>QnA</span>
-                <span class="hashtag" v-for="alg,idx in item.algo" :key="idx">{{alg}}</span>
-                <span class="hashtag">{{item.useLanguage}}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col p-0">
-                {{item.articleDate}}                
-              </div>
-              <div class="col text-end">
-                <i class="fas fa-heart me-2" v-if="item.likeState"></i>
-                <i class="far fa-heart me-2" v-else></i>
-                <span>{{item.likeCount}}</span>
-                <i class="far fa-comment-dots mx-2"></i>
-                <span >{{item.commentCount}}</span>
-              </div>
-            </div>
-          </div>
-
+          <div class="col text-end">
+            <span class="order-by-new" @click="clickOrderByNew">최신순</span> | 
+            <span class="order-by-like" @click="clickOrderByLike">좋아요순</span>
+          </div>          
         </div>
 
+        <div v-if="like">
+          <SearchAlgorithmLike />
+        </div>
+        <div v-else>
+          <SearchAlgorithmDate />
+        </div>        
       </div>
-
     </div>
-
 
   </div>
 </template>
 
 // <script>
+import SearchAlgorithmDate from "@/components/article/SearchAlgorithmDate.vue"
+import SearchAlgorithmLike from "@/components/article/SearchAlgorithmLike.vue"
 import axios from 'axios';
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
+  components: {
+    SearchAlgorithmDate,
+    SearchAlgorithmLike
+  },
   data() {
     return{
-      isOneAlgo: true,
+      isOneAlgo: false,
       includeAlgo: '',
       excludeAlgo: '',
       language: '',
       followingNumber: '',
       articleNumber: '',
-      articleList: '',
+      page: 0,
+      params: '',
+      articleCount: 0 ,
+      problem: '',
+      followingState: false, 
+      like: true,
     }
   },
   computed: {
@@ -98,70 +93,123 @@ export default {
   },
 
   created() {
-    console.log('1234')
     const data = this.getArticle
 
     this.language = data.language
     this.includeAlgo = data.includeAlgo
     this.excludeAlgo = data.excludeAlgo
 
-    axios({
-      method: 'get',
-      url: `${SERVER_URL}/search/article/algorithm`,
-      headers: this.getToken(),
-      params: {
-        language: this.language,
-        and: this.includeAlgo[0]
-      }
+    if (this.includeAlgo.length == 1 && this.excludeAlgo.length==0){
+      this.isOneAlgo = true
+    }
+
+    let and = ''
+    data.includeAlgo.forEach(element => {
+      and += element+','
+    });
+    
+    let not = ''
+    data.excludeAlgo.forEach(element => {
+      not += element+','
     })
-    .then(res=>{
-      this.articleList = res.data.aricleList
-      this.followingNumber = res.data.followInfo.followingNumber
-      this.articleNumber = res.data.followInfo.articleNumber
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+
+    and = and.substring(0,and.length-1)
+    not = not.substring(0,not.length-1)
+
+    let params = {
+      language: this.language,
+      and: and,
+      not: not,      
+    }
+
+    if (not == ''){
+      delete params.not
+    }
+    if (and == ''){
+      delete params.and
+    }
+    if (params.language == 'null'){
+      delete params.language
+    }
+
+    this.$store.dispatch('createSearchParams', params)
+    this.params = params
+    this.requestProblem(params)
   },
 
   methods: {
+    follow() {
+      this.followingState = !this.followingState
+      if(this.followingState){
+        this.followingNumber += 1
+        this.$swal(`'${this.includeAlgo[0]}' 알고리즘을 팔로우 하셨습니다.`)
+      }
+      else{
+        this.followingNumber -= 1
+        this.$swal(`'${this.includeAlgo[0]}' 알고리즘을 팔로우 취소 하셨습니다.`)
+      }
+      const data = {
+        algorithm: this.includeAlgo[0]
+      }
+      axios({
+        method: 'post',
+        url: `${SERVER_URL}/follow/algorithm`,
+        headers: this.getToken(),
+        data: data
+      })
+      .then(()=>{
+        
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
+    clickOrderByLike() {
+      this.like = true
+      const like = document.querySelector('.order-by-like')
+      const date = document.querySelector('.order-by-new')
+      like.style.color = 'black'
+      like.style.fontSize = '18px'
+      date.style.color = 'lightgray'
+      date.style.fontSize = '16px'
+
+    },
+    clickOrderByNew() {
+      this.like = false
+      const like = document.querySelector('.order-by-like')
+      const date = document.querySelector('.order-by-new')
+      like.style.color = 'lightgray'
+      like.style.fontSize = '16px'
+      date.style.color = 'black'
+      date.style.fontSize = '18px'
+    },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
       return config
     },
-    articleDetail(articleNo){
-      localStorage.setItem('articleNo', articleNo)
+    requestProblem(params) {
       axios({
-        method: 'get',
-        url: `${SERVER_URL}/article/article/${articleNo}`,
-        headers: this.getToken,
+        method: "get",
+        url: `${SERVER_URL}/search/article/algorithm` + "?page=" + this.page,
+        headers: this.getToken(),
+        params: params,
       })
-      .then(res=>{
-        const data = res.data.articleDetail
-        this.$store.dispatch('createArticleDetail',data)
-        console.log(res)
+      .then((res) => {
+        this.articleCount = res.data.articleSearchCount
+        if(this.isOneAlgo){
+          this.followingState = res.data.followInfo.followingState
+          this.followingNumber = res.data.followInfo.followingNumber;
+          this.articleNumber = res.data.followInfo.articleNumber;
+        }        
       })
-      .then(err=>{
-        console.log(err)
-      })
-
-      // // 댓글 정보 요청후 store에 저장
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/comment/article/${articleNo}`,
-      })   
-      .then(res =>{
-        this.$store.dispatch('createArticleComment',res.data.articleComments)
-        this.$router.push({name : 'articleDetail'})
-        // location.href = 'articleDetail'
-      })
-      .catch(err =>{  
-        console.log(err)
-      })
-    }
+      .catch((err) => {
+        console.log(err);
+      });        
+    },
+    
   }
 }
 </script>
@@ -195,12 +243,61 @@ export default {
   display: inline-block;
   font-size: 13px;
   border-radius: 3px;
-  background-color: rgba(221,223,230,1);
+  /* background-color: rgba(221,223,230,1); */
   margin-right:3px;
   padding: 1px 3px;
   margin-bottom: 4px;
 }
 .fa-heart{
   color: red;
+}
+.order-by-new{
+  cursor: pointer;
+  color: black;
+  font-size:18px;
+}
+.order-by-like{
+  cursor: pointer;
+  color: lightgray;
+}
+.has-category{
+  background-color:rgba(170, 224, 217) ;
+  font-weight: bold;
+}
+.has-problem{
+  background-color:rgb(97, 209, 209) ;
+}
+.has-language{
+  background-color:rgb(126, 208, 233) ; 
+}
+.has-algo{
+  background-color: rgba(186,184,189,1);
+}
+.follow-btn{
+  font-size:20px;
+  background-color: rgb(0, 153, 255);
+  padding:4px 12px;
+  border-radius: 4px;
+  color:white;
+  cursor: pointer;
+}
+.follow-btn:hover{
+  background-color: rgb(0, 89, 255);
+  padding:5px 16px;
+  font-size:22px
+}
+.follow-cancel-btn{
+  font-size:20px;
+  background-color: white;
+  border: 1px solid blue;
+  padding:3px 12px;
+  border-radius: 4px;
+  color:rgb(59, 121, 223);
+  cursor: pointer;
+}
+.follow-cancel-btn:hover{
+  /* background-color: rgb(0, 89, 255); */
+  font-size:22px;
+  padding:5px 16px;
 }
 </style>

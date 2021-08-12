@@ -27,7 +27,7 @@ import articleList from '@/components/profile/downProfile/articleList'
 import helpmeList from '@/components/profile/downProfile/helpmeList'
 import receptList from '@/components/profile/downProfile/receptList'
 import jwt_decode from 'jwt-decode'
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
@@ -43,18 +43,19 @@ export default {
       return { comp: 'articleList', myPage: '', }
   },
   created: function() {
-        console.log("target",this.userPk)
+        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
         console.log(userPk)
-        let pk = ''
-        console.log(pk)
-        if(userPk){
-            pk = userPk
+        // let pk = ''
+        // console.log(pk)
+        if(userpk != userPk){
+            // pk = userPk
             this.myPage = false
         }else{
-            pk = userpk
+            // pk = userpk
             this.myPage = true
         }
+        console.log(this.myPage)
   },
   methods: {
       changeComponent: function(componentName) {

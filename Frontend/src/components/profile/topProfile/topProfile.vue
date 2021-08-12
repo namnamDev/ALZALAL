@@ -6,7 +6,8 @@
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
-                        <img class="profileImg" v-if="imgsrc" :src="imgsrc" alt="프로필사진">
+                        <img class="profileImg"  :src="imgsrc">
+                        <!-- <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else> -->
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -55,7 +56,7 @@
                     </p>
                 </div>
                 <div v-if="!myPage">
-                    <button @click="clickRequest" class="btn btn-request">문제풀이 요청하기</button>
+                    <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
 	    </div>
@@ -67,7 +68,7 @@
 import jwt_decode from 'jwt-decode'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
@@ -79,8 +80,8 @@ export default {
     },
     data(){
         return{
-            defaultImg: '@/assets/images/profileImg.png',
-            imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
+            //imgsrc: `${SERVER_URL}/profile/img/1004`,
+            imgsrc: '',
             no: '',
             follower: '',
             language: [],
@@ -97,24 +98,30 @@ export default {
         }
     },
     created: function() {
-        console.log("target",this.userPk)
+        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
+         console.log(userPk)
         let pk = ''
         if(userPk){
             pk = userPk
             this.myPage = false
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
+            if(pk==userpk){
+                this.myPage = true
+            }
         }else{
             pk = userpk
             this.myPage = true
+            this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
         }
+        console.log(this.pk)
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
             headers: this.getToken
         })
         .then(res =>{   
-            console.log(res.data)   
+            // console.log(res.data)   
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following
@@ -130,17 +137,30 @@ export default {
         .catch(err => {
             console.log(err);
         })
-
+        // axios({
+        //     method: 'get',
+        //     url: `${SERVER_URL}/profile/img/${this.pk}`
+        // })
+        // .then(res => {
+        //     this.flag = true
+        //     this.imgsrc = res.data
+        // })
+        // .catch(() => {
+        //     this.flag= false
+        //     this.imgsrc = 'profile'
+        //     // console.log(err)
+        // })
        
     },
     computed:{
         getToken(){
-        const token = localStorage.getItem('jwt')
+        const token = sessionStorage.getItem('jwt')
         const config = {
             Authorization: `Bearer ${token}`
         }
         return config
-        }
+        },
+
     },
     methods: {
         clickIntro: function() {
@@ -159,14 +179,15 @@ export default {
             this.$router.push({'name':'followPage'})
         },
         clickRequest: function(){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
                 }
+            this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
-                const token = localStorage.getItem('jwt')
+                const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
@@ -177,8 +198,8 @@ export default {
                     data: {"memberNo": this.no},
                     headers: this.getToken,
                 })
-                .then(res=>{
-                    console.log(res)
+                .then(()=>{
+                    // console.log(res)
                 })
                 .catch({
                     // console.log(this.no)
@@ -324,6 +345,16 @@ i {
     border-radius: 75%;
     
 }
+}
+@media (max-width:1200px),(min-width: 992px){
+    .profile-stats{
+        margin-left: 20px;
+    }
+}
+@media (min-width:992px){
+    .profile-bio{
+        margin-left: 40px;
+    }
 }
 .btn-follow{
       background-color: blue;

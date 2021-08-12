@@ -8,9 +8,9 @@ import PasswordConfirm from '@/views/account/PasswordConfirm.vue'
 import ProfilePage from '@/views/profile/ProfilePage.vue'
 import UserModify from '@/views/account/modify.vue'
 import followPage from '@/views/profile/followPage.vue'
-import TargetProfilePage from '@/views/profile/targetProfilePage'
 import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
+import createHelpmeAnswer from '@/views/createHelpme/createHelpmeAnswer.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
 import introduce from '@/views/profile/introduce.vue'
@@ -21,6 +21,8 @@ import ArticleDetail from '@/components/article/ArticleDetail.vue'
 import SearchProblem from '@/components/article/SearchProblem.vue'
 import SearchAlgorithm from '@/components/article/SearchAlgorithm.vue'
 import SearchUser from '@/components/article/SearchUser.vue'
+import createHelpme from '@/views/createHelpme/createHelpme.vue'
+import helpmeDetail from '@/views/createHelpme/helpmeDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -63,11 +65,6 @@ const routes = [
     props:true
   },
   {
-    path: '/targetProfilePage',
-    name: 'targetProfilePage',
-    component: TargetProfilePage
-  },
-  {
     path: '/profilePage/followPage',
     name: 'followPage',
     component: followPage
@@ -98,17 +95,19 @@ const routes = [
     component: createDebate
   },
   {
-    path: '/debate/debateDetail',
+    path: '/debate/debateDetail/:disscussionNo',
     name: 'debateDetail',
-    component: debateDetail
+    component: debateDetail,
+    props: true
   },
   {
     path: '/createArticle',
     name: 'createArticle',
-    component: CreateArticle
+    component: CreateArticle,
+    props:true
   },
   {
-    path: '/articleDetail/:articleno',
+    path: '/articleDetail/:Page',
     name: 'articleDetail',
     component: ArticleDetail,
     props: true
@@ -126,9 +125,27 @@ const routes = [
     props: true
   },
   {
-    path: '/searchUser',
+    path: '/searchUser/:userno',
     name: 'searchUser',
     component: SearchUser,
+    props: true
+  },
+  {
+    path: '/createHelpme',
+    name: 'createHelpme',
+    component: createHelpme,
+    props: true
+  },
+  {
+    path: '/createHelpmeAnswer/:helpmeNo',
+    name: 'createHelpmeAnswer',
+    component: createHelpmeAnswer,
+    props: true
+  },
+  {
+    path: '/helpmeDetail/:helpmeNo',
+    name: 'helpmeDetail',
+    component: helpmeDetail,
     props: true
   },
   {

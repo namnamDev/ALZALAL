@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="container" v-for="item,idx in article" :key="idx">
+    <TimelineWriteArticle/>
+    <div v-for="item,idx in article" :key="idx">
       <QnAItem :item="item"/>
     </div>
     <infinite-loading @infinite="infiniteHandler" spinner="sprial">
@@ -11,12 +12,15 @@
 
 <script>
 import QnAItem from '@/components/article/QnAItem.vue'
+import TimelineWriteArticle from "@/components/article/TimelineWriteArticle.vue";
+
 import axios from 'axios';
 import InfiniteLoading from 'vue-infinite-loading';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default { 
   components: {
+    TimelineWriteArticle,
     QnAItem,
     InfiniteLoading
   },
@@ -33,7 +37,7 @@ export default {
   //     return this.$store.getters.getQnaList
   //   }
         getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -56,7 +60,7 @@ export default {
               this.page += 1
               console.log("after", this.article.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(res.data.length / 20 < 1) {
+              if(res.data.length / 10 < 1) {
                 $state.complete()
               }
             } else {
@@ -69,10 +73,7 @@ export default {
         })
        },
    },
-  mounted() {
-    const search = document.querySelector('#search')
-    search.style.display = 'block'
-  },
+
   // created() {
   //   axios({
   //       method: 'get',
@@ -94,11 +95,11 @@ export default {
 
 <style scoped>
 .container{
-  margin-top: 110px;
+  /* margin-top: 110px; */
 }
 @media (max-width:576px){
   .container{
-    margin-top: 60px;
+    /* margin-top: 60px; */
   }
 }
 </style>

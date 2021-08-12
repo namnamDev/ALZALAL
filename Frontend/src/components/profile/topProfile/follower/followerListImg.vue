@@ -2,7 +2,8 @@
   <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
       <div class="userImg col-2 col-sm-2 col-lg-2">
-          <img class="profileImg"  :src="imgsrc" alt="Img">
+          <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
+          <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
       </div>
       <div class="user col-10 col-sm-10 col-lg-10">
           <span class="userName">
@@ -35,10 +36,12 @@ export default {
     },
     data(){
         return{
-            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+            // imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+            imgsrc: '',
             myPage: '',
             isLogin: '',
             me: '',
+            flag: false,
         }
     },
     created: function() {
@@ -62,11 +65,26 @@ export default {
       }else{
         this.me=false
       }
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/profile/img/${this.no}`
+      })
+      .then(res => {
+        this.flag = true
+        this.imgsrc = res.data
+        console.log(res)
+      })
+      .catch(() => {
+        this.flag= false
+        console.log('1231241241441')
+        this.imgsrc = 'profile'
+        // console.log(err)
+      })
 
     },
     computed: {
         getToken(){
-          const token = localStorage.getItem('jwt')
+          const token = sessionStorage.getItem('jwt')
           const config = {
               Authorization: `Bearer ${token}`
           }
@@ -75,8 +93,11 @@ export default {
 
 	},
     methods:{
+      click() {
+        console.log(this.imgsrc)
+      },
         clickFollow: function(event){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
@@ -111,7 +132,7 @@ export default {
             }
         },
         clickName: function(){
-           localStorage.setItem('userPk', this.no)
+          localStorage.setItem('userPk', this.no)
           this.$router.push({'name':'profilePage', params:{ userPk:this.no }})
         }
 
