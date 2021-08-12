@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="container" v-for="item,idx in article" :key="idx">
+    <TimelineWriteArticle/>
+    <div v-for="item,idx in article" :key="idx">
       <QnAItem :item="item"/>
     </div>
     <infinite-loading @infinite="infiniteHandler" spinner="sprial">
@@ -11,12 +12,15 @@
 
 <script>
 import QnAItem from '@/components/article/QnAItem.vue'
+import TimelineWriteArticle from "@/components/article/TimelineWriteArticle.vue";
+
 import axios from 'axios';
 import InfiniteLoading from 'vue-infinite-loading';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default { 
   components: {
+    TimelineWriteArticle,
     QnAItem,
     InfiniteLoading
   },
@@ -91,11 +95,11 @@ export default {
 
 <style scoped>
 .container{
-  margin-top: 110px;
+  /* margin-top: 110px; */
 }
 @media (max-width:576px){
   .container{
-    margin-top: 60px;
+    /* margin-top: 60px; */
   }
 }
 </style>

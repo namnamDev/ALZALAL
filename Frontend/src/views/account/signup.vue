@@ -1,6 +1,6 @@
 <template>
  	<div class="container">
-     <SignupForm></SignupForm>
+     <SignupForm/>
    </div>
 </template>
 
@@ -15,11 +15,6 @@ export default{
 
 <style scoped>
 .container{
-  margin-top: 110px;
-}
-@media (max-width:576px){
-  .container{
-    margin-top: 60px;
-  }
+  height: 90vh;
 }
 </style>

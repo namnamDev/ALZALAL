@@ -203,9 +203,9 @@ export default {
 
       // 문제풀이, qna인 경우
       if (category == 'solution') {
-        if(!this.inputData){
+        if(!this.inputData || isNaN(this.inputData/1)){
           this.$swal.fire({
-            text: "문제 번호를 입력해주세요",
+            text: !this.inputData?"문제 번호를 입력해주세요":"숫자만 입력해 주세요",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
