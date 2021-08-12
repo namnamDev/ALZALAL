@@ -20,7 +20,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import jwt_decode from 'jwt-decode'
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 
 
 export default {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {    
     connect: function () {
-      let socket = new SockJS(`${SERVER_URL}/connectNotification`);
+      let socket = new SockJS(`http://i5d205.p.ssafy.io:8080/connectNotification`);
       this.stompClient = Stomp.over(socket);
       this.stompClient.debug = () => {};
       this.stompClient.connect(this.headers, this.onConnected, this.onError);
