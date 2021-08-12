@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/profile")
+@RequestMapping("/api/profile")
 public class ProfileController {
 
 	@Autowired

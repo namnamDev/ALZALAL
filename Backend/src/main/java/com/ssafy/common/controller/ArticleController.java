@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/api/article")
 public class ArticleController {
   @Autowired
   ArticleService as;

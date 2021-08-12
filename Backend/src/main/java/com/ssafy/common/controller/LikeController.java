@@ -14,7 +14,7 @@ import com.ssafy.common.service.CommentService;
 import com.ssafy.common.service.NotificationService;
 
 @RestController
-@RequestMapping("/like")
+@RequestMapping("/api/like")
 public class LikeController {
 	@Autowired
 	ArticleService as;

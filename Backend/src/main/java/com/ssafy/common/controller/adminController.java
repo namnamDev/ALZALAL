@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.common.service.AdminService;
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class adminController {
 
 
