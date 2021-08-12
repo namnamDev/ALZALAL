@@ -1,20 +1,21 @@
 <template>
-
-    <div class="contents">
+  <div class="contents">
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label align="left" for="introduce">한 줄 소개를 입력해주세요</label>
 					<input id="introduce" type="text" v-model="introduce" />
+          <p class="validation-text">
+              <span class='warning' v-if="!introLength">
+                한줄소개는 40자 이하로 입력해주세요
+              </span>
+            </p>     
 				</div>
-			    <button :disabled="!introduce" type="submit" class="btn" align="right">
+			    <button :disabled="!introLength" type="submit" class="btn" align="right">
 					                                    확인
 				  </button>
-        
 			</form>
-		
-		</div>
-       
+		</div> 
 	</div>
 </template>
 
@@ -41,7 +42,13 @@ export default {
         Authorization: `Bearer ${token}`
       }
       return config
-    }
+    },
+    introLength(){
+      if(this.introduce.length<41){
+        return true;
+      }
+      return false
+    },
   },
   methods: {
     // getToken(){

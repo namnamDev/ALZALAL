@@ -161,10 +161,9 @@ export default {
 </script>
 
 <style scoped>
-.nav-link {
-  cursor: pointer;
+.fa-heart {
+  color: red;
 }
-
 .feed-card {
     box-sizing: content-box;
     /* box-shadow: 0 0 0 1px #ddd; */
@@ -195,47 +194,6 @@ export default {
   float: right;
   font-size: 10px;
   color:rgba(0, 0, 0, .5);
-}
-.feed-item {
-    margin-bottom: 30px;
-    border-bottom: 1px solid grey;
-    padding-bottom: 20px;
-}
-.profile-image {
-    float: left;
-}
-.user-info, .content {
-    width: calc(100% - 50px);
-    float: right; 
-}
-.user-name {
-    float: left;
-}
-.user-name button {
-   font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
-.date {
-  float: right;
-}
-.profileImg{
-  width: 100px;
-  height: 100%;
-  box-sizing: border-box;
-  float:left;
-  border:1px solid grey;
-  border-radius: 3px;
-}
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
 }
 @media (max-width:577px) {
   .feed{

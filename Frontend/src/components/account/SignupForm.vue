@@ -117,7 +117,7 @@ export default{
       return false
     },
     nameLength(){
-      if(this.form.name.length > 2 && this.form.name.length<10){
+      if(this.form.name.length >= 2 && this.form.name.length<10){
         return true;
       }
       return false
@@ -154,7 +154,7 @@ export default{
 <style scoped>
 /*--- LAYOUT ---*/
 .row {
-  margin-top: 40px;
+  margin-top: 0px;
 } 
 .form-wrapper {
   background: white;

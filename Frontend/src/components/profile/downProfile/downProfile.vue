@@ -4,13 +4,13 @@
   <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
      <div class="row">
           <div class="col-4 col-lg-4">
-            <button class="btn" @click="changeComponent('articleList')">게시글</button>
+            <button class="btn" id="articleList" @click="changeComponent1('articleList')">게시글</button>
           </div>
           <div class="col-4 col-lg-4" v-if="this.myPage">
-            <button class="btn" @click="changeComponent('helpmeList')">내가요청한 문제</button>
+            <button class="btn" id="helpmeList" @click="changeComponent2('helpmeList')">내가요청한 문제</button>
           </div>
           <div class="col-4 col-lg-4">
-            <button class="btn" @click="changeComponent('receptList')">요청받은 문제</button>
+            <button class="btn" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
           </div>
         </div>
         <div class="tab-item">
@@ -58,9 +58,33 @@ export default {
         console.log(this.myPage)
   },
   methods: {
-      changeComponent: function(componentName) {
-          this.comp = componentName
-      }
+      changeComponent1: function(componentName) {
+        this.comp = componentName
+        document.getElementById('articleList').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('articleList').style.color = 'white'
+        document.getElementById('helpmeList').style.backgroundColor = 'white'
+        document.getElementById('helpmeList').style.color = 'black'
+        document.getElementById('receptList').style.backgroundColor = 'white'
+        document.getElementById('receptList').style.color = 'black'
+      },
+      changeComponent2: function(componentName){
+        this.comp = componentName
+        document.getElementById('articleList').style.backgroundColor = 'white'
+        document.getElementById('articleList').style.color = 'black'
+        document.getElementById('helpmeList').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('helpmeList').style.color = 'white'
+        document.getElementById('receptList').style.backgroundColor = 'white'
+        document.getElementById('receptList').style.color = 'black'
+      },
+      changeComponent3: function(componentName) {
+        this.comp = componentName
+        document.getElementById('articleList').style.backgroundColor = 'white'
+        document.getElementById('articleList').style.color = 'black'
+        document.getElementById('helpmeList').style.backgroundColor = 'white'
+        document.getElementById('helpmeList').style.color = 'black'
+        document.getElementById('receptList').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('receptList').style.color = 'white'
+      },
   }
 }
 </script>
@@ -81,5 +105,8 @@ export default {
 .btn:hover{
   background-color: antiquewhite;
 }
-
+#articleList{
+  background-color: rgb(62, 171, 111);
+  color: white;
+}
 </style>

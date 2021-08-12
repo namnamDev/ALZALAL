@@ -16,7 +16,7 @@
                     </div>
                 </div>
                     <!-- 프로필 이름, 수정버튼 -->
-                <div class="col-lg-7">
+                <div class="col-lg-8">
                     <div class="row">
                         <div class="profile-user-settings row-lg-8">
                             <h1 class="profile-user-name">{{name}}
@@ -36,6 +36,7 @@
                     </div>
                     
                     <div class="profile-bio row-lg-4">
+
                         <p align="left" class="downInfo">Main :
                             <span v-for="item,index in language" :key="index">{{item}}</span>
                         </p>
@@ -46,14 +47,18 @@
                   
                 </div>
             </div>
-            <div class="row">
+            <div class="row status-intro">
                 <div>
                     <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
-                <div class="introduceline">
-                    <p class="introtext" align="left">{{introduce}}
-                        <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
-                    </p>
+                <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2">
+                    <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                </div>
+                <div class="introduceline col-lg-7 col-md-7 col-sm-7 col-7 col-xl-7">
+                    <p class="introtext" align="left">{{introduce}}</p>
+                </div>
+                <div class="introduceline col-lg-3 col-md-3 col-sm-3 col-3 col-xl-3">
+
                 </div>
                 <div v-if="!myPage">
                     <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
@@ -226,16 +231,19 @@ export default {
 </script>
 
 <style scoped>
+.fa{
+    color: rgb(62, 171, 111) ;
+}
 .top {
-    margin-top: 120px;
+    margin-top: 20px;
 }
 
 .profile-image {
     float: left;
     width: 170px;
     height: auto;
-    margin-right: 20px;
     
+margin-left: -40px;
 }
 
 .profileImg {
@@ -262,7 +270,7 @@ i {
     margin-left: 2rem;
 }
 .profile-user-name {
-    font-size: 50px;
+    font-size: 45px;
     font-weight: 600;
     margin-left: 5vw;
 }
@@ -315,8 +323,9 @@ i {
     font-size: 10px;
 }
 .introtext{
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
+    word-wrap: break-word;
 }
 .clickIntro{
     width: 1%;
@@ -327,8 +336,12 @@ i {
     margin-left: -70px;
 }
 .clickImg{
-    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 30px;
+    font-size: 13px;
     font-weight: 550;
+    background-color: rgb(62, 171, 111);
+  color: white;
 }
 @media (max-width:576px) {
 .profile-image {
@@ -364,5 +377,8 @@ i {
   background-color: white;
   color: black;
   border: 1px solid blue;
+}
+.status-intro{
+    margin-top: 20px;
 }
 </style>

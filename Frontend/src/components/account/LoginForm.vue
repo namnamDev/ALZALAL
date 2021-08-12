@@ -105,7 +105,7 @@ export default {
 <style scoped>
 /*--- LAYOUT ---*/
 .row {
-  margin-top: 40px;
+  margin-top: 0px;
 } 
 .form-wrapper {
   background: white;
