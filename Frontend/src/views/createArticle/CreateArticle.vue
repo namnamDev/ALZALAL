@@ -412,6 +412,7 @@ li:hover {
   width: 70%;
   transform: translateX(-11px);
   margin-top: 20px;
+  overflow-wrap: break-word;
 }
 button {
   width: 110px;
