@@ -55,9 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/member/refresh").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/articlelist/*").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/article/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/profile/**").permitAll()//프로필 이미지, 내용, 팔로잉,팔로워, 문제풀이요청리스트, 문제폴이 상세보기, 게시판 리스트 가져오기 API			
-				.antMatchers(HttpMethod.GET,"/search/**").permitAll()//게시글 검색 관련 API	
-				.antMatchers(HttpMethod.GET,"/helpme/**").permitAll()//프로필 해당유저 작성글 리스트 가져오기 API, helpme게시글 상세보기
+				.antMatchers(HttpMethod.GET,"/api/profile/**").permitAll()//프로필 이미지, 내용, 팔로잉,팔로워, 문제풀이요청리스트, 문제폴이 상세보기, 게시판 리스트 가져오기 API			
+				.antMatchers(HttpMethod.GET,"/api/search/**").permitAll()//게시글 검색 관련 API	
+				.antMatchers(HttpMethod.GET,"/api/helpme/**").permitAll()//프로필 해당유저 작성글 리스트 가져오기 API, helpme게시글 상세보기
 				.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 				.antMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/algorithmList").permitAll()//알고리즘 리스트 가져오기				

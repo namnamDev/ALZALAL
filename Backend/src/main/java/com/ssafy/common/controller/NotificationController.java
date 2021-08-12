@@ -34,7 +34,7 @@ public class NotificationController {
 
 	// 유저가 소켓서버에 연결되었을때 연결을 알리기위해 보낸 메세지에 매핑되는 곳으로
 	// 유저의 sessionID를 디비에 저장시켜줌
-	@MessageMapping("/api/connect")
+	@MessageMapping("/connect")
 	public void socketConnect(@Payload MemberDTO member,Principal principal) throws Exception {
 		NotificationSocketDTO socketDTO = new NotificationSocketDTO();
 
