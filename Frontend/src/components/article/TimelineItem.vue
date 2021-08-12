@@ -1,6 +1,5 @@
 <template>
   <div class="animate__animated animate__fadeInUp my-4 main">
-
     <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickArticle">
       <div class="row">
         <div class="col-2 image">

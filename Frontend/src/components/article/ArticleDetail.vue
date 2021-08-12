@@ -1,16 +1,12 @@
 <template>
-
-  <div class="container" v-if="articleDetail">
-    <div class="row my-3">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="article_box col-lg-6 col-md-10 col-sm-9 col-11">
-
-        <div class="row">
-          <div class="row title">
+  <div class="animate__animated animate__fadeInUp my-4 main" v-if="articleDetail">
+      <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
+        <div>
+          <div class="title">
             {{articleDetail.articleTitle}}
           </div>
           <div class="row">
-            <div class="col clickName pl-1"  >
+            <div class="col clickName"  >
               <span @click="clickName" class="member-name">{{articleDetail.member.name}}</span>
             </div>
             <div class="col text-end text-secondary">
@@ -19,8 +15,8 @@
           </div>
         </div>
 
-        <div class="row middle py-4 px-0">
-          <div class="row mb-5">
+        <div class="middle px-0">
+
             <div class="col text-end px-0" v-if="isMine">
               <span style="cursor:pointer">수정</span> | 
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
@@ -28,33 +24,28 @@
             <div class="viewer">
               <Viewer :viewerText="articleDetail.articleContent"/>  
             </div>
+        </div>
 
-            <div class="col thumbs mb-3">
+        <div class="bottom mt-3">
+          <div>
+            <div class="col thumbs">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
               <i class="far fa-heart" @click="clickLike" v-else></i>
-              <span class="ms-2" >
+              <span >
                 {{likeCount}}
               </span>
             </div>
-
-          </div>
-        </div>
-
-        <div class="row bottom my-3">
-          <div class="row">
-            <button class="mb-4 create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
+            <button class="create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="articleDetail.articleNo"/>
             </div>
           </div>
-
-          <div class="row my-3" v-for="comment,idx in getArticleComments" :key="idx">
+          <div class="row" v-for="comment,idx in getArticleComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-          <div class="row mb-5 py-5">
+        <div class="row mb-1 my-1">
             <div class="col text-center">
               <span class="previous-btn" @click="clickPreviousBtn">previous</span>
-              <!-- <span class="mx-4" @click="click1">1</span>/ -->
               <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
               /<span class="mx-4">{{commentCount}}</span>
               <span class="next-btn" @click="clickNextBtn">next</span>
@@ -64,7 +55,6 @@
       </div>
     
     </div>
-  </div>
 </template>
 
 <script>
@@ -308,13 +298,16 @@ export default {
   width:100%;
   /* height:400px; */
   /* border:1px solid black; */
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  /* border-top: 1px solid black;
+  border-bottom: 1px solid black; */
+  /* box-shadow: 0 0 0px 0.7px gray; */
+  /* border-radius: 5px; */
+  /* padding: 15px 15px 15px 15px; */
   position: relative;
 }
 .bottom{
   width:100%;
-  height:100px;
+  /* height:100px; */
   /* border:1px solid black; */
   position: relative;
 }
@@ -325,12 +318,12 @@ export default {
   font-size: 20px;
 }
 .thumbs{
-  position: absolute;
+  /* position: absolute; */
   text-align: end;
   bottom: 0;
 }
 .fa-heart{
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
   cursor: pointer;
 }
 button{
