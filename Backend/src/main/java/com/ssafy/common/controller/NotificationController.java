@@ -34,7 +34,7 @@ public class NotificationController {
 
 	// 유저가 소켓서버에 연결되었을때 연결을 알리기위해 보낸 메세지에 매핑되는 곳으로
 	// 유저의 sessionID를 디비에 저장시켜줌
-	@MessageMapping("/connect")
+	@MessageMapping("/api/connect")
 	public void socketConnect(@Payload MemberDTO member,Principal principal) throws Exception {
 		NotificationSocketDTO socketDTO = new NotificationSocketDTO();
 
@@ -53,12 +53,12 @@ public class NotificationController {
 	
 	//유저의 알림 리스트 가져오기
 	@ResponseBody
-	@GetMapping("/notilist")
+	@GetMapping("/api/notilist")
 	public Map<String, Object> getNotificationList(@RequestParam(defaultValue = "0") int page) {
 		return memSvc.getMemberNoti(page);
 	}
 	@ResponseBody
-	@PostMapping("/notiRead")
+	@PostMapping("/api/notiRead")
 	public Map<String,Object> readNoti(@RequestBody Map<String,Long> req){
 		return notificationService.readNoti(req);
 		

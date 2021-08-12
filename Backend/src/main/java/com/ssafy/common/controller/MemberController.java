@@ -21,7 +21,7 @@ import com.ssafy.common.dto.TokenDto;
 import com.ssafy.common.service.MemberService;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 public class MemberController {
 
 	@Autowired
