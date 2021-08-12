@@ -2,8 +2,8 @@
   <div class="animate__animated animate__fadeInUp comment my-2">
     <div class="user">
       <div class="row">
-        <div class="col">
-          <div class="inline">
+        <div class="col d-flex">
+          <div class="inline me-auto">
             {{this.memberName}}
           </div >
           <div class="inline text-secondary">            

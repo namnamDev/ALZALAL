@@ -1,6 +1,6 @@
 <template>
     <span>
-      <button class="btn" id="fbtn" @click="clickFollow($event)">팔로우</button>
+      <button class="btn" id="fbtn" @click="clickFollow($event)">Unfollow</button>
     </span>
 </template>
 
@@ -32,8 +32,8 @@ export default {
                 },
                 headers: this.getToken,
             })
-            .then({
-                
+            .then(res=>{
+                console.log(res)
             })
             .catch(err => {
                 console.log(this.site)
@@ -43,23 +43,30 @@ export default {
             })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
+              event.target.style.backgroundColor='#FFFFFF'
+              event.target.style.color="black"
             }else{
               event.target.innerText = 'follow'
+              event.target.style.backgroundColor='rgb(62, 171, 111)'
+              event.target.style.color="white"
             }
         },
   },
 }
 </script>
 
-<style>
+<style scoped>
 .btn:focus{
     border:none;
     outline: none;
 }
 .btn{
-  padding: 0.5rem 1.5rem;
   font-weight: 700;
-  border-radius: .1rem;
-  font-size: 15px;
+  font-size: 17px;
+  border-radius: 5%;
+  background-color: white;
+  color: black;
+  border: 1px solid rgb(62, 171, 111);
+  width: 70%;
 }
 </style>

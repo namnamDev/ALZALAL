@@ -1,107 +1,58 @@
 <template>
   <div class="container" >
-    <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
+    <div class="row main">
 
-      <div class="col-lg-6 col-md-10 col-sm-9 col-10">
-        <div class="row top">
-          <div class="col">
-            <div v-if="problem">
-              #{{ problem }} 
-              <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
-              <span class="follow-btn" @click="follow" v-else>팔로우</span>
+      <div class="col-lg-8 col-md-10 col-sm-9 col-10">
+
+        <div class="main">
+        <div class="col-lg-10 col-md-10 col-sm-9 col-10">
+          <div class="row top">
+            <div class="col">
+              <div v-if="problem">
+                #{{ problem }} 
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-else>팔로우</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="row middle mb-2">
-          <div class="col">
-            <div style="display: inline" class="me-3" v-if="followingNumber">
-              팔로잉 {{ followingNumber }}
+          <div class="row middle mb-2">
+            <div class="col">
+              <div style="display: inline" class="me-3" v-if="followingNumber">
+                팔로잉 {{ followingNumber }}
+              </div>
+              <div style="display: inline" class="me-3" v-else>팔로잉 0</div>
+              <div style="display: inline" class="me-3" v-if="articleNumber">
+                게시글 {{ articleNumber }}
+              </div>
+              <div style="display: inline" class="me-3" v-else>게시글 0</div>
             </div>
-            <div style="display: inline" class="me-3" v-else>팔로잉 0</div>
-            <div style="display: inline" class="me-3" v-if="articleNumber">
-              게시글 {{ articleNumber }}
+          </div>
+
+          <div class="row mb-2">
+            <div class="col">
+              <span class="include-algo me-2" v-for="item, idx in includeAlgo" :key="idx">{{item}}</span>
             </div>
-            <div style="display: inline" class="me-3" v-else>게시글 0</div>
           </div>
-        </div>
+          <div class="row mb-4">
+            <div class="col">
+              <span class="exclude-algo me-2" v-for="item, idx in excludeAlgo" :key="idx">{{item}}</span>
+            </div>
+          </div>
 
-        <div class="row mb-2">
-          <div class="col">
-            <span class="include-algo me-2" v-for="item, idx in includeAlgo" :key="idx">{{item}}</span>
+          <div class="row">
+            <div class="col">
+              총 {{articleCount}}개의 게시글이 검색되었습니다.
+            </div>
+            <div class="col text-end">
+              <span class="order-by-new" @click="clickOrderByNew">최신순</span> | 
+              <span class="order-by-like" @click="clickOrderByLike">좋아요순</span>
+            </div>          
           </div>
         </div>
-        <div class="row mb-4">
-          <div class="col">
-            <span class="exclude-algo me-2" v-for="item, idx in excludeAlgo" :key="idx">{{item}}</span>
-          </div>
         </div>
-
-        <div class="row">
-          <div class="col">
-            총 {{articleCount}}개의 게시글이 검색되었습니다.
-          </div>
-          <div class="col text-end">
-            <span class="order-by-new" @click="clickOrderByNew">최신순</span> | 
-            <span class="order-by-like" @click="clickOrderByLike">좋아요순</span>
-          </div>          
-        </div>
-
         <div v-if="!like">
           <SearchProblemDate />
-          <!-- <div                  
-            class="row bottom my-3"
-            v-for="(item, idx) in articleDateList"
-            :key="idx"
-          >
-            <div class="col-2 pt-4 member-name">
-              {{ item.member.name }}
-            </div>
-            <div
-              class="col article-content"
-              @click="articleDetail(item.articleNo)"
-            >
-              <div class="row article-title">
-                {{ item.articleTitle }}
-              </div>
-              <div class="row">
-                <div class="col p-0">
-                  <span class="hashtag has-category" v-if="item.articleClass == 'A01'"
-                    >문제풀이</span
-                  >
-                  <span class="hashtag has-category" v-else>QnA</span>
-                  <span class="hashtag has-language">{{ item.useLanguage }}</span>
-                  <span
-                    class="hashtag has-algo"
-                    v-for="(alg, idx) in item.algo"
-                    :key="idx"
-                    >{{ alg }}</span
-                  >
-                </div>
-              </div>
-              <div class="row">
-                <div class="col p-0">
-                  {{ item.articleDate }}
-                </div>
-                <div class="col text-end">
-                  <i class="fas fa-heart me-2" v-if="item.likeState"></i>
-                  <i class="far fa-heart me-2" v-else></i>
-                  <span>{{ item.likeCount }}</span>
-                  <i class="far fa-comment-dots mx-2"></i>
-                  <span>{{ item.commentCount }}</span>
-                </div>
-              </div>
-            </div>
-          </div>        
-          <infinite-loading @infinite="infiniteHandler" spinner="sprial">
-            <div
-              slot="no-more"
-              style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px"
-            >
-              No more results.
-            </div>
-          </infinite-loading> -->
         </div>
         <div v-else>
           <SearchProblemLike />
@@ -272,12 +223,10 @@ export default {
 
 <style scoped>
 .top {
-  margin-top: 150px;
+  margin-top: 30px;
   font-size: 50px;
   font-weight: bold;
 }
-
-
 .order-by-new{
   cursor: pointer;
   color: black;
@@ -306,29 +255,34 @@ export default {
 }
 .follow-btn{
   font-size:20px;
-  background-color: rgb(0, 153, 255);
+  background-color: rgb(39, 235, 32);
   padding:4px 12px;
   border-radius: 4px;
   color:white;
   cursor: pointer;
 }
 .follow-btn:hover{
-  background-color: rgb(0, 89, 255);
+  background-color: rgb(11, 209, 44);
   padding:5px 16px;
   font-size:22px
 }
 .follow-cancel-btn{
   font-size:20px;
   background-color: white;
-  border: 1px solid blue;
+  border: 1px solid rgb(0, 189, 25);
   padding:3px 12px;
   border-radius: 4px;
-  color:rgb(59, 121, 223);
+  color:rgb(41, 207, 35);
   cursor: pointer;
 }
 .follow-cancel-btn:hover{
   /* background-color: rgb(0, 89, 255); */
   font-size:22px;
   padding:5px 16px;
+}
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
