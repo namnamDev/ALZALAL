@@ -1,15 +1,15 @@
 <template>
-  <div class="animate__animated animate__fadeInUp comment mb-2">
+  <div class="animate__animated animate__fadeInUp comment my-2">
     <div class="user">
       <div class="row">
-        <div class="col">
-          <div class="inline">
+        <div class="col d-flex">
+          <div class="inline me-auto">
             {{this.memberName}}
           </div >
-          <div class="inline">            
-            | {{this.date}}
+          <div class="inline text-secondary">            
+             {{this.date}}
           </div>
-          <div class="inline">
+          <div class="inline" @click="clickLike">
             <i class="fas fa-heart ms-2" v-if="likeState"></i>
             <i class="far fa-heart ms-2" v-else></i>
             <span class="" >
@@ -17,9 +17,9 @@
             </span>
           </div>
         </div>
-        <div class="col text-end pe-3" @click="clickLike">
+        <!-- <div class="col text-end pe-3" @click="clickLike">
           <span class="like-btn">좋아요</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="content">
@@ -177,7 +177,8 @@ export default {
   display:inline;
 }
 .fa-heart{
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
+  cursor: pointer;
 }
 .like-btn{
   cursor: pointer;

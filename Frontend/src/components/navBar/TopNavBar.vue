@@ -149,7 +149,7 @@ export default {
     },
     
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -362,8 +362,6 @@ export default {
   }
 }
 
-.imageSection{
-}
 .profileImg {
     width: 45px;
     height: 45px;
@@ -401,5 +399,8 @@ i {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+.isLogin >:nth-last-child(n){
+  margin:0 5px;
 }
 </style>
