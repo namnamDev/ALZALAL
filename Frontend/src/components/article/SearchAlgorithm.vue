@@ -58,7 +58,7 @@
   </div>
 </template>
 
-// <script>
+<script>
 import SearchAlgorithmDate from "@/components/article/SearchAlgorithmDate.vue"
 import SearchAlgorithmLike from "@/components/article/SearchAlgorithmLike.vue"
 import axios from 'axios';
