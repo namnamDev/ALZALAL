@@ -227,8 +227,6 @@ export default {
   font-size: 50px;
   font-weight: bold;
 }
-
-
 .order-by-new{
   cursor: pointer;
   color: black;
@@ -257,24 +255,24 @@ export default {
 }
 .follow-btn{
   font-size:20px;
-  background-color: rgb(0, 153, 255);
+  background-color: rgb(39, 235, 32);
   padding:4px 12px;
   border-radius: 4px;
   color:white;
   cursor: pointer;
 }
 .follow-btn:hover{
-  background-color: rgb(0, 89, 255);
+  background-color: rgb(11, 209, 44);
   padding:5px 16px;
   font-size:22px
 }
 .follow-cancel-btn{
   font-size:20px;
   background-color: white;
-  border: 1px solid blue;
+  border: 1px solid rgb(0, 189, 25);
   padding:3px 12px;
   border-radius: 4px;
-  color:rgb(59, 121, 223);
+  color:rgb(41, 207, 35);
   cursor: pointer;
 }
 .follow-cancel-btn:hover{

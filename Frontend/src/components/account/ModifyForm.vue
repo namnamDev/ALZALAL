@@ -202,7 +202,6 @@ export default{
           .then(() => {
 
             sessionStorage.removeItem("jwt")
-            localStorage.removeItem("vuex")
             this.$router.push({ name: 'login' })
           })
           .catch(err => {

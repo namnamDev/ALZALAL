@@ -50,8 +50,6 @@
         목록의 끝입니다 :)
       </div>
     </infinite-loading>
-    
-
   </div>
 </template>
 
@@ -69,24 +67,24 @@ export default {
     return {
       articleDateList: [],
       page: 0,
-    }
+    };
   },
   computed: {
-    params: function() {
-      const params =  this.$store.getters.getSearchParams
-      params.sort = 'like'
-      return params
-    }
+    params: function () {
+      const params = this.$store.getters.getSearchParams;
+      params.sort = "like";
+      return params;
+    },
   },
   methods: {
     getToken() {
-      const token = localStorage.getItem("jwt");
+      const token = sessionStorage.getItem("jwt");
       const config = {
         Authorization: `Bearer ${token}`,
       };
       return config;
     },
-    
+
     infiniteHandlerDate($state) {
       //최신순으로 요청
       axios({
@@ -95,14 +93,16 @@ export default {
         headers: this.getToken(),
         params: this.params,
       })
-        .then((res) => { 
+        .then((res) => {
           setTimeout(() => {
             if (res.data.articleList.length) {
-              this.articleDateList = this.articleDateList.concat(res.data.articleList);
-         
+              this.articleDateList = this.articleDateList.concat(
+                res.data.articleList
+              );
+
               $state.loaded();
               this.page += 1;
-              
+
               if (res.data.articleList.length / 10 < 1) {
                 $state.complete();
               }
@@ -114,7 +114,7 @@ export default {
         })
         .catch((err) => {
           console.error(err);
-        });               
+        });
     },
     articleDetail(articleNo) {
       localStorage.setItem("articleNo", articleNo);
@@ -142,7 +142,7 @@ export default {
             "createArticleComment",
             res.data.articleComments
           );
-          this.$router.push({ name: "articleDetail", params:{'Page':'0'} });
+          this.$router.push({ name: "articleDetail", params: { Page: "0" } });
           // location.href = 'articleDetail'
         })
         .catch((err) => {
@@ -209,14 +209,14 @@ export default {
   background-color:rgba(170, 224, 217) ;
   font-weight: bold;
 }
-.has-problem{
-  background-color:rgb(97, 209, 209) ;
+.has-problem {
+  background-color: rgb(97, 209, 209);
 }
-.has-language{
-  background-color:rgb(126, 208, 233) ; 
+.has-language {
+  background-color: rgb(126, 208, 233);
 }
-.has-algo{
-  background-color: rgba(186,184,189,1);
+.has-algo {
+  background-color: rgba(186, 184, 189, 1);
 }
 .member-name{
   cursor: pointer;
