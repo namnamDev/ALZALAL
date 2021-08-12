@@ -31,7 +31,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //connection을 맺을때 CORS 허용합니다.
     //클라이언트에서 소켓을 처음 연결할때 사용
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-    	registry.addEndpoint("/api/connectNotification").setAllowedOriginPatterns("*").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
+    	registry.addEndpoint("/connectNotification").setAllowedOriginPatterns("*").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
     }
 
 
