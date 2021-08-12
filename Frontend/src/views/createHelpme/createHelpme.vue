@@ -1,10 +1,11 @@
 <template clsas="temp">
   <div class="create-form">
     <div class="container">
+      <form @submit.prevent="submit">
       <div class="row justify-content-start mb-3">
 
 
-      
+        
         <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
         <select
           id="select"
@@ -36,8 +37,9 @@
         </div>
       </div>
       <div class="row submit">
-        <button @click="submit">제출하기</button>
+        <button type="submit" :disabled="!pNum" class="requestBtn">제출하기</button>
       </div>
+      </form>
     </div>
     
   </div>
@@ -173,13 +175,18 @@ export default {
   width: 70%;
   border-radius: 3px;
 }
-button {
+.requestBtn {
   width: 110px;
   height: 40px;
   border-radius: 4px;
   border-style: none;
+  font-weight: 550;
+  color: white;
+  background-color: rgb(62, 171, 111);
+}
+.requestBtn.disabled{
   color: black;
-  background-color: rgb(176, 218, 230);
+  background-color: rgb(172, 196, 182);
 }
 .m-size{
   margin-right:8px;
