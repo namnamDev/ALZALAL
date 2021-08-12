@@ -149,7 +149,7 @@ export default {
     },
     
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -200,7 +200,7 @@ export default {
       localStorage.setItem("userPk",userpk)
       // if(!localStorage.getItem('userPk')){
       // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
-      location.href=`http://localhost:8080/profilePage/${userpk}`
+      location.href=`/profilePage/${userpk}`
       
     },
     login: function() {
