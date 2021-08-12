@@ -26,7 +26,7 @@ import com.ssafy.common.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/helpme")
+@RequestMapping("/api/helpme")
 @RequiredArgsConstructor
 public class HelpmeContoller {
 

@@ -13,7 +13,7 @@ import com.ssafy.common.service.FollowService;
 import com.ssafy.common.service.NotificationService;
 
 @RestController
-@RequestMapping("/follow")
+@RequestMapping("/api/follow")
 public class FollowController {
 
 	@Autowired

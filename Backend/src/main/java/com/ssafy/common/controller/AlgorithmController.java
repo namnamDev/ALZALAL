@@ -18,7 +18,7 @@ public class AlgorithmController {
 
 	private final AlgorithmService algorithmService;
 	
-	@GetMapping("/algorithmList")
+	@GetMapping("/api/algorithmList")
 	public Map<String, List<String>> getAlgorithmList() {
 		Map<String, List<String>> ret=new HashMap<>();
 		

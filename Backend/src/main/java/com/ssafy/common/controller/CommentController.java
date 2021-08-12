@@ -17,7 +17,7 @@ import com.ssafy.common.service.CommentService;
 import com.ssafy.common.service.NotificationService;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 public class CommentController {
 	@Autowired
 	CommentService cs;

@@ -50,18 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				// 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
 				.and().authorizeRequests()
-				.antMatchers("/member/login").permitAll()
-				.antMatchers("/member/signup").permitAll()
-				.antMatchers("/member/refresh").permitAll()
-				.antMatchers("/articlelist/*").permitAll()
-				.antMatchers("/article/**").permitAll()
+				.antMatchers("/api/member/login").permitAll()
+				.antMatchers("/api/member/signup").permitAll()
+				.antMatchers("/api/member/refresh").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/articlelist/*").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/article/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/profile/**").permitAll()//프로필 이미지, 내용, 팔로잉,팔로워, 문제풀이요청리스트, 문제폴이 상세보기, 게시판 리스트 가져오기 API			
 				.antMatchers(HttpMethod.GET,"/search/**").permitAll()//게시글 검색 관련 API	
 				.antMatchers(HttpMethod.GET,"/helpme/**").permitAll()//프로필 해당유저 작성글 리스트 가져오기 API, helpme게시글 상세보기
-				.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-				.antMatchers(HttpMethod.GET,"/comment/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/algorithmList").permitAll()//알고리즘 리스트 가져오기				
-				.antMatchers("/connectNotification/**").permitAll()// 소켓통신 연결			
+				.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+				.antMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/algorithmList").permitAll()//알고리즘 리스트 가져오기				
+				.antMatchers("/api/connectNotification/**").permitAll()// 소켓통신 연결			
 				
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요
