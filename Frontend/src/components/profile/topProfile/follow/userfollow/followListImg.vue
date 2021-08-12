@@ -150,13 +150,7 @@ export default {
   font-weight: 550;
   margin-top: 10px;
 }
-.followBtn {
-  border-radius: 10%;
-  border: solid 1px skyblue;
-  
-  width: 30%;
-  
-}
+
 @media (max-width:768px) {
 .user{
   margin-top: 5px;

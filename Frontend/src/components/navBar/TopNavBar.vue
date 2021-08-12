@@ -199,8 +199,8 @@ export default {
       // localStorage.removeItem("userPk")
       localStorage.setItem("userPk",userpk)
       // if(!localStorage.getItem('userPk')){
-      this.$router.push({'name':'profilePage', params:{userPk:userpk}})
-      //this.$router.push({'name':'profilePage'})
+      // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
+      location.href=`/profilePage/${userpk}`
       
     },
     login: function() {

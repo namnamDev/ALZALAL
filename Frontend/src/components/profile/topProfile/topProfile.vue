@@ -36,13 +36,20 @@
                     </div>
                     
                     <div class="profile-bio row-lg-4">
-
-                        <p align="left" class="downInfo">Main :
+                        <details>
+                            <summary>Main Language</summary>
+                            <p v-for="item,index in language" :key="index">{{item}}</p>    
+                        </details>
+                        <details>
+                            <summary>Problem Site</summary>
+                            <p v-for="item,index in problemsite" :key="index">{{item}}</p> 
+                        </details>
+                        <!-- <p align="left" class="downInfo">Main :
                             <span v-for="item,index in language" :key="index">{{item}}</span>
-                        </p>
-                        <p align="left" class="downInfo">Site : 
+                        </p> -->
+                        <!-- <p align="left" class="downInfo">Site : 
                             <span v-for="item,index in problemsite" :key="index">{{item}}</span>
-                        </p>                           
+                        </p>                            -->
                     </div>
                   
                 </div>
@@ -380,5 +387,10 @@ i {
 }
 .status-intro{
     margin-top: 20px;
+}
+details{
+}
+summary {
+
 }
 </style>

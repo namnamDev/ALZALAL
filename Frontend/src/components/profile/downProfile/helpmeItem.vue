@@ -5,6 +5,7 @@
         <span>{{this.problemSiteName}}  </span>
         <span>{{this.problemNo}}번 문제</span>
         <span>  {{getStatus}}</span>
+        
         <div>
           <p class="helpmeContent">{{this.helpmeContent}}</p>
         </div>
@@ -15,10 +16,12 @@
               <span>{{this.likeCount}}</span>
               <i class="far fa-comment-dots mx-2"></i>
               <span >{{this.commentCount}}</span>
-              <div><p class="date">{{this.helpmeDate}}</p></div>
+              <!-- <div><p class="date">{{this.helpmeDate}}</p></div> -->
             </div>
         </div>
+        
       </div>
+      <div><p class="date">{{this.helpmeDate}}</p></div>
     </div>
   </div>
 </template>

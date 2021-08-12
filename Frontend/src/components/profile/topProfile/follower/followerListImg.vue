@@ -153,13 +153,13 @@ export default {
   font-weight: 550;
 }
 
-.followBtn {
+/* .followBtn {
   border-radius: 10%;
   border: solid 0.5px rgb(27, 218, 43);
   
   width: 30%;
   margin-left: -80px;
-}
+} */
 @media (max-width:576px) {
 .user{
   margin-top: 5px;
