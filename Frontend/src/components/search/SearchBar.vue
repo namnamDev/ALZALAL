@@ -133,9 +133,9 @@ export default {
   animation-iteration-count: infinite; 
 }
 
-@media (max-width:992px){
+/* @media (max-width:992px){
   #search{
     display:none; 
   }
-}
+} */
 </style>
