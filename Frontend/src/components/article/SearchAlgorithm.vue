@@ -1,12 +1,12 @@
 <template>
   <div class="container">
 
-    <div class="row">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1">        
-      </div>
+    <div class="row main">
 
-      <div class="col-lg-6 col-md-10 col-sm-9 col-10">
-
+      <div class="col-lg-8 col-md-10 col-sm-9 col-10">
+        <div class="main">
+        <div class="col-lg-10 col-md-10 col-sm-9 col-10">
+        
         <div class="row top">
           <div class="col">
             <div v-if="isOneAlgo">
@@ -45,7 +45,8 @@
             <span class="order-by-like" @click="clickOrderByLike">좋아요순</span>
           </div>          
         </div>
-
+      </div>
+    </div>
         <div v-if="like">
           <SearchAlgorithmLike />
         </div>
@@ -58,7 +59,7 @@
   </div>
 </template>
 
-// <script>
+<script>
 import SearchAlgorithmDate from "@/components/article/SearchAlgorithmDate.vue"
 import SearchAlgorithmLike from "@/components/article/SearchAlgorithmLike.vue"
 import axios from 'axios';
@@ -83,7 +84,7 @@ export default {
       articleCount: 0 ,
       problem: '',
       followingState: false, 
-      like: true,
+      like: false,
     }
   },
   computed: {
@@ -216,7 +217,7 @@ export default {
 
 <style scoped>
 .top{
-  margin-top: 150px;
+  margin-top: 30px;
   font-size: 50px;
   font-weight: bold;
 }
