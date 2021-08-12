@@ -167,7 +167,7 @@ export default {
 
 <style scoped>
 .fa-heart {
-  color: black;
+  color: rgba(62 ,171 ,111 , 1);
 }
 .fa-comment-dots{
   color:black
