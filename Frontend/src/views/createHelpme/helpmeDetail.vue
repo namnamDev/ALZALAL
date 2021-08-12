@@ -6,25 +6,23 @@
        
         <div class="row top mb-5">
           <div class="row mt-5">
-            <div class="col clickName"  @click="clickName">
-             {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}
-              
+            <div class="col clickName"  @click="clickName">   
+            {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}   
+             <div><p class="status">{{getStatus}}</p></div>     
+              <div class="fromto">
+                <span class="username">{{this.helpmeSenderName}}</span>님이 <span class="username">{{this.helpmeReceptorName}}</span>님에게 요청한 문제
+              </div>
+               {{this.problemSiteName}} {{this.problemNo}}번 문제
             </div>
           </div>
         </div>
 
         <div class="row middle py-4 px-0">
-           {{this.problemSiteName}} {{this.problemNo}}번 문제
           <div class="row mb-5">
             <div>
                 {{this.helpmeContent}}
             </div>
-            <div>
-              {{this.helpmeSenderName}}님이 {{this.helpmeReceptorName}}에게 요청한 문제
-            </div>
-            <div>
-              {{getStatus}}
-            </div>
+            
             <div class="col thumbs mb-3">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
               <i class="far fa-heart" @click="clickLike" v-else></i>
@@ -262,13 +260,8 @@ export default {
 .show{
   display: block !important;
 }
-
-.container{
-  margin-top: 100px;
-}
 .top{
   width:100%;
-  height:100px;
   /* border:1px solid black; */
 }
 .middle{
@@ -332,5 +325,14 @@ button{
 }
 .member-name:hover{
   font-size:18px;
+}
+.fromto{
+  font-size: 20px;
+}
+.username{
+  font-weight: 550;
+}
+.status{
+  font-weight: 550;
 }
 </style>

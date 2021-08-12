@@ -1,9 +1,10 @@
 <template>
   <div @click="clickArticle" class="boardList col-12 col-ml-12 col-lg-12" id="boardList">
         <div class="feed-card col-12 col-lg-12 col-ml-12">
+            <p>{{this.problemSite}} {{this.problemNo}}번 문제</p>
             <div class="contentsWrap">
-                <p class="title">{{this.articleTitle}}     <span>{{this.algoList}}</span></p>
-                <p>{{this.problemSite}} {{this.problemNo}}</p>                
+                <p class="title">{{this.articleTitle}}     <span class="algoList">{{this.algoList}}</span></p>
+                           
                 <div class="articleContent">{{this.articleContent}}</div>
             </div>
         </div>
@@ -173,6 +174,9 @@ export default {
   font-weight: 550;
   margin: 0 0 8px;
   white-space: normal;
+}
+.algoList{
+  font-size: 20px
 }
 .date {
   float: right;
