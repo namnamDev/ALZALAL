@@ -18,7 +18,7 @@
         <div class="middle px-0">
 
             <div class="col text-end px-0" v-if="isMine">
-              <span style="cursor:pointer">수정</span> | 
+              <span style="cursor:pointer">수정</span>  
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
             <div class="viewer">

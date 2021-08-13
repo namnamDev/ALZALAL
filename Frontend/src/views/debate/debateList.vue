@@ -1,5 +1,5 @@
 <template>
-  <div class="container feed">
+  <div class="container">
       <debateItem v-for="item,index in discussion" :key="index"
         :discussionHostName="item.discussCompHostNo.name"
         :discussionHostNo="item.discussCompHostNo.no"

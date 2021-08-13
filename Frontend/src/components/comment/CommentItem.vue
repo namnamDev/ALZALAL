@@ -17,9 +17,7 @@
             </span>
           </div>
         </div>
-        <!-- <div class="col text-end pe-3" @click="clickLike">
-          <span class="like-btn">좋아요</span>
-        </div> -->
+
       </div>
     </div>
     <div class="content">
