@@ -60,7 +60,8 @@ public class FollowServiceImpl implements FollowService{
 		Member followerMember = memberRepository.findByNo(SecurityUtil.getCurrentMemberId())
 				.orElseThrow(() -> new IllegalStateException("로그인 유저정보가 없습니다"));
 		
-		if(memberNo==followerMember.getNo()) {
+		
+		if(memberNo.equals(followerMember.getNo())) {
 			throw new IllegalStateException("자기 자신을 팔로우 할 수 없습니다");
 		}
 
