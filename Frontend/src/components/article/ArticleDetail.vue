@@ -18,7 +18,7 @@
         <div class="middle px-0">
 
             <div class="col text-end px-0" v-if="isMine">
-              <span style="cursor:pointer">수정</span> | 
+              <span @click="modifyArticle" style="cursor:pointer">수정</span> | 
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
             <div class="viewer">
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="bottom mt-3">
+        <div class="bottom my-3">
           <div>
             <div class="col thumbs">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
@@ -35,7 +35,7 @@
                 {{likeCount}}
               </span>
             </div>
-            <button class="create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
+            <button class="my-3 create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="articleDetail.articleNo"/>
             </div>
@@ -85,6 +85,14 @@ export default {
       likeState:'',
       commentCount: 0,
       currentPage: Number(this.Page)+1,
+      articleClassNo:'',
+      articleContent:'',
+      articleTitle:'',
+      articleNo:'',
+      algo:'',
+      problemSiteName:'',
+      problemSiteNo:'',
+      useLanguage:'',
     }
   },
 
@@ -171,17 +179,26 @@ export default {
           url: `${SERVER_URL}/article/article/${articleNo}`,
           headers: this.getToken(),
         })   
-        .then(res =>{          
-
+        .then(res =>{         
           this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
+          console.log(this.articleDetail)
         })
         .catch(err =>{  
           console.log(err)
         })     
     },
+
+    // 게시글 수정
+    modifyArticle(){
+      const articleNo = localStorage.getItem('articleNo')
+      this.$router.push({name: 'modifyArticle', params:{
+        articleNo: articleNo,
+        }})
+    },
+
 
     //댓글 리스트 불러오기
     getCommentList:function() {
@@ -260,8 +277,8 @@ export default {
       }
     },
     clickName: function(){
-      localStorage.setItem('userPk',this.memberNo)
-      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+      localStorage.setItem('userPk',this.articleDetail.member.no)
+      this.$router.push({'name':'profilePage', params:{userPk:this.articleDetail.member.no}})
     }
 
   }

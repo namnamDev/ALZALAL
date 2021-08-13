@@ -1,39 +1,32 @@
 <template>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
-      <div class="col-lg-6 col-md-10 col-sm-9 col-6 content">
-       
-        <div class="row top mb-5">
-          <div class="row mt-5">
-            <div class="col clickName"  @click="clickName">
-             {{discussDate | moment("YYYY-MM-DD HH:mm:ss")}}
-              
-            </div>
-          </div>
-        </div>
-
-        <div class="row middle py-4 px-0">
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
+      <div>
+        <div class="title">
            {{this.discussCompName}} {{this.disscussCompProblem}} 문제
-          <div class="row mb-5">
-              {{discussCompHostName}}
-          </div>
         </div>
-
-        <div class="row bottom my-3">
-          <div class="row">
-            <button class="create-comment-btn mb-4" @click="clickAlgoInput">댓글쓰기</button>
+        <div class="text-end">
+          {{discussCompHostName}}
+        </div>
+        <div class="row top mb-5 text-end text-secondary">
+            <div class="col clickName"  @click="clickName">
+              {{discussDate | moment("YYYY-MM-DD HH:mm:ss")}}
+            </div>
+        </div>
+      </div>
+        <div class="bottom my-3">
+          <div class="">
+            <button class="my-3 create-comment-btn" @click="clickAlgoInput">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="this.discussionNo"/>
             </div>
           </div>
-          <div class="row my-3" v-for="comment,idx in getComments" :key="idx">
+          <div class="row" v-for="comment,idx in getComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-          <div class="row mb-5 py-5">
+        <div class="row mb-1 my-1">
             <div class="col text-center">
               <span class="previous-btn" @click="clickPreviousBtn">previous</span>
-              <!-- <span class="mx-4" @click="click1">1</span>/ -->
               <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
               /<span class="mx-4">{{commentCount}}</span>
               <span class="next-btn" @click="clickNextBtn">next</span>
@@ -42,7 +35,7 @@
         </div>
       </div>
     
-    </div>
+
   </div>
 </template>
 
@@ -181,17 +174,8 @@ export default {
   padding: 12px;
   float: left;
 }
-.title {
-  color:#000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-wrap:break-word; 
-  line-height: 1.5em;
-  font-size: 25px;
-  font-weight: 550;
-  margin: 0 0 8px;
-  white-space: normal;
+.title{
+  font-size:40px;
 }
 .date {
   float: right;
@@ -233,7 +217,7 @@ button{
   cursor: pointer;
 }
 .create-comment-btn{
-  background-color: rgb(86, 149, 233);
+  background-color: rgba(62 ,171 ,111 , 1);
   border-style: none;
   border-radius: 3px;
   color:rgb(255, 255, 255);
@@ -257,5 +241,14 @@ button{
 }
 .member-name:hover{
   font-size:18px;
+}
+
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
 }
 </style>

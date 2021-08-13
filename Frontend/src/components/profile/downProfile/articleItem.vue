@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickArticle" class="boardList col-12 col-ml-12 col-lg-12" id="boardList">
+  <!-- <div @click="clickArticle" class="boardList col-12 col-ml-12 col-lg-12" id="boardList">
         <div class="feed-card col-12 col-lg-12 col-ml-12">
             <p>{{this.problemSite}} {{this.problemNo}}번 문제</p>
             <div class="contentsWrap">
@@ -20,15 +20,62 @@
             </div>
         </div>
         
+    </div> -->
+    <div class="animate__animated animate__fadeInUp my-4 main">
+    <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickArticle">
+      <div class="row">
+        <div class="col">
+          <div class="row" >
+            <div class="col fs-6 fw-bold">
+              <span class="member-name">{{ this.memberName }}</span>
+            </div>
+            <div class="col text-end">
+              <span class="text-secondary">{{date}}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="fs-5">{{ this.articleTitle }}</div>
+              <div class="hashtag d-flex align-items-center">
+                <span v-if="articleClass=='A01'" class="has-category">문제풀이</span>
+                <span v-else class="has-category">QnA</span>
+                <span class="has-problem">{{ this.problemSite }} {{ problemNo }}</span>
+           
+              
+                <span class="has-language">{{ this.language }}</span>
+                <span class='has-algo ' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col content ">
+          <Viewer id="viewer" :viewerText="articleContent" />
+        </div>
+      </div>
+
+      <div class="row bottom mt-0 mt-sm-4">
+        <div class="col like-comment">
+          <i class="fas fa-heart me-2" v-if="likeState"></i>
+          <i class="far fa-heart me-2" v-else></i>
+          <span>{{this.likeCount}}</span>
+          <i class="far fa-comment-dots mx-2"></i>
+          <span >{{this.commentCount}}</span>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+import Viewer from '@/components/article/ThumbnailViewer.vue'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-      
+      Viewer,
   },
   props:{
       articleContent: String,
@@ -84,7 +131,7 @@ export default {
         this.memberNo= detail.member.no,
         this.problemSite= detail.problemSite.problemSiteName,
         this.problemNo= detail.problemSite.problemNo,
-        this.language= detail.useLanguag
+        this.language= detail.useLanguage
         this.algoList = detail.algo
         const date = res.data.articleDetail.articleDate
         this.date = this.getDate(date)
@@ -144,90 +191,116 @@ export default {
 
 <style scoped>
 .fa-heart {
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
 }
-.boardList{
-  margin-left: 30px;
+.fa-comment-dots{
+  color:black
 }
-.feed-card {
-  box-sizing: content-box;
-  /* box-shadow: 0 0 0 1px #ddd; */
-  color: #000;
-  float: left;
+#viewer {
+  height: 100%;
+}
+.feed {
+  margin-top: 13vw;
+}
+.article-box {
+  background: white;
+  width: 700px;
+  box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
-  overflow: hidden;
-  
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
 }
-.contentsWrap {
-  box-sizing: border-box;
-  padding: 12px;
-  float: left;
+@media (max-width:692px) {
+  .article-box {
+  background: white;
+  width: 400px;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+
+.image {
+  text-align: center;
+  align-self: center;
+}
+.top {
+  /* height: 140px; */
+}
+.name {
+  height: 25px;
+  margin-top: 10px;
 }
 .title {
-  color:#000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-wrap:break-word; 
-  line-height: 1.5em;
+  height: 30px;
   font-size: 25px;
-  font-weight: 550;
-  margin: 0 0 8px;
-  white-space: normal;
+  margin-bottom: 0;
 }
-.algoList{
-  font-size: 20px
+.middle {
+  margin-top: 10px;
+  padding: 0 20px;  
+  /* height: 210px; */
 }
-.date {
-  float: right;
-  font-size: 15px;
-  color:rgba(0, 0, 0, .5);
-  
-}
-.feed-item {
-  margin-bottom: 30px;
-  border-bottom: 1px solid grey;
-  padding-bottom: 20px;
-}
-.user-info, .content {
-  width: calc(100% - 50px);
-  float: right; 
-}
-.user-name {
-  float: left;
-}
-.user-name button {
-  font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
-.date {
-  float: right;
-}
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
-}
-@media (max-width:577px) {
-  .feed{
-    margin-left:0;
-  }
-}
-.comment{
-  margin-right: 30px;
-}
-.articleContent {
-  overflow:hidden;
+.content {
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 6; /* 라인수 */
   -webkit-box-orient: vertical;
-  
-  white-space:normal;
+  word-wrap: break-word;
+  height: 100%;
+  margin: 0 1rem 0 1rem;
+}
+
+.like-comment {
+  text-align: end;
+}
+.hashtag > span {
+  font-size: 13px;
+  border-radius: 3px;
+  /* background-color: rgba(221, 223, 230, 1); */
+  padding:4px 8px;
+  margin-right: 6px;
+  display:inline-block;
+}
+.has-category{
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color:rgba(170, 224, 217) ;
+  font-weight: bold;
+}
+.has-problem{
+  background-color:rgb(97, 209, 209) ;
+}
+.has-language{
+  background-color:rgb(126, 208, 233) ; 
+}
+.has-algo{
+  background-color: rgba(186,184,189,1);
+}
+.member-name{
+  cursor: pointer;
+}
+.member-name:hover{
+  font-size:18px;
+}
+.profileImg {
+    width: 75px;
+    height: 75px;
+    border-radius: 75%;
+}
+
+@media (max-width: 767px) {
+  .top {
+    margin-bottom: 30px;
   }
+
+}
 </style>
+
