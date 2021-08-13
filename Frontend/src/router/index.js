@@ -10,6 +10,7 @@ import UserModify from '@/views/account/modify.vue'
 import followPage from '@/views/profile/followPage.vue'
 import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
+import modifyArticle from '@/views/createArticle/modifyArticle.vue'
 import createHelpmeAnswer from '@/views/createHelpme/createHelpmeAnswer.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
@@ -23,6 +24,7 @@ import SearchAlgorithm from '@/components/article/SearchAlgorithm.vue'
 import SearchUser from '@/components/article/SearchUser.vue'
 import createHelpme from '@/views/createHelpme/createHelpme.vue'
 import helpmeDetail from '@/views/createHelpme/helpmeDetail.vue'
+import modifyHelpme from '@/views/createHelpme/modifyHelpme.vue'
 
 Vue.use(VueRouter)
 
@@ -107,6 +109,12 @@ const routes = [
     props:true
   },
   {
+    path: '/modifyArticle/:articleNo',
+    name: 'modifyArticle',
+    component: modifyArticle,
+    props: true
+  },
+  {
     path: '/articleDetail/:Page',
     name: 'articleDetail',
     component: ArticleDetail,
@@ -146,6 +154,12 @@ const routes = [
     path: '/helpmeDetail/:helpmeNo',
     name: 'helpmeDetail',
     component: helpmeDetail,
+    props: true
+  },
+  {
+    path: '/modifyHelpme/:helpmeNo',
+    name: 'modifyHelpme',
+    component: modifyHelpme,
     props: true
   },
   {

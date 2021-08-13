@@ -8,6 +8,7 @@
         
         <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
         <select
+            disabled
           id="select"
           name="problem-site"
           class="col-sm-2 m-size mb-2"
@@ -23,7 +24,7 @@
         </select>
 
         <div class="box col-sm-2 mb-2">문제번호</div>
-        <input v-model="pNum" id="problem-input" type="text" class="m-size col-sm-2 mb-2" />
+        <input disabled v-model="pNum" id="problem-input" type="text" class="m-size col-sm-2 mb-2" />
       </div>
 
       <div class="row">
@@ -51,6 +52,9 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
+  props:{
+      helpmeNo: Number
+  },
   data() {
     return {
       pSite: '',
@@ -70,10 +74,25 @@ export default {
       this.$router.push({name:'login'})
     } 
     const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
-        if(userPk){
-            this.targetPK = userPk
-        }
+    console.log(userPk)
+    if(userPk){
+        this.targetPK = userPk
+    }
+    const helpmeNo = localStorage.getItem('helpmeNo')
+    axios({
+          method: 'get',
+          url: `${SERVER_URL}/helpme/${helpmeNo}`,
+          headers: this.getToken(),
+        })   
+        .then(res =>{
+            console.log(res.data)
+          this.pSite = res.data.helpme.problemSite.problemSiteName
+          this.pNum = res.data.helpme.problemSite.problemNo
+          this.content = res.data.helpme.helpmeContent
+        })
+        .catch(err =>{  
+          console.log(err)
+        }) 
   },
 
   methods: {
@@ -98,14 +117,14 @@ export default {
       }
       console.log(data)
       axios({
-        method: 'post',
-        url: `${SERVER_URL}/helpme`,
+        method: 'put',
+        url: `${SERVER_URL}/helpme/${this.helpmeNo}`,
         data: data,
         headers: this.getToken(),
       })   
       .then(res =>{
         console.log(res);
-        alert("작성 완료!")
+        alert("수정 완료!")
         this.$router.push({ name: 'profilePage' })       
       })
       .catch(err =>{  

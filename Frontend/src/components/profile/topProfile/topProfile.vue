@@ -22,8 +22,8 @@
                             <h1 class="profile-user-name">{{name}}
                                 <button v-if="this.myPage" class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
                             </h1>
-                            <button class="btn btn-follow" v-if="!this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
-                            <button class="btn btn-unfollow" v-if="!this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
+                            <button class="btn-follow" v-if="!this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
+                            <button class="btn-unfollow" v-if="!this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
                         </div>
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
@@ -226,7 +226,7 @@ export default {
             }else{
               event.target.innerText = 'follow'
               
-              event.target.style.backgroundColor='blue'
+              event.target.style.backgroundColor='rgb(62, 171, 111)'
               event.target.style.color="white"
             }
 
@@ -284,7 +284,19 @@ i {
 .profile-settings-btn {
     font-size: 10px;
 }
-
+.btn-unfollow {
+  background-color: white;
+  color: black;
+  border: 1px solid rgb(62, 171, 111);
+  width: 150px;
+  margin-left: 100px;
+}
+.btn-follow{
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width: 150px;
+  margin-left: 100px;
+}
 .profile-stats {
     margin-top: 1rem;
     display: inline-block;
@@ -311,6 +323,11 @@ i {
     font-size: 20px;
     font-weight: 600;
     line-height: 1.0;
+}
+.btn-request{
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width: 160px;    
 }
 .profile-real-name,
 .profile-stat-count,
@@ -376,14 +393,16 @@ i {
         margin-left: 40px;
     }
 }
-.btn-follow{
-      background-color: blue;
-  color: white;
-}
 .btn-unfollow {
   background-color: white;
   color: black;
-  border: 1px solid blue;
+  border: 1px solid rgb(62, 171, 111);
+  width: 150px;
+}
+.btn-follow{
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width: 150px;
 }
 .status-intro{
     margin-top: 20px;

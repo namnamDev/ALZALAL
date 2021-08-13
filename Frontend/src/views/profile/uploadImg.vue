@@ -105,7 +105,7 @@ export default {
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   padding: 15px 15px;
-  height: 300px;
+  height: 360px;
 }
 .form-wrapper.form-wrapper-sm {
   max-width: 500px;
@@ -126,14 +126,8 @@ export default {
   flex-direction: row-reverse;
   justify-content: space-between;
 }
-.form label {
-  width: 100%;
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 90%;
-}
-.form input,
-.form textarea {
+
+.form input {
   font-family: inherit;
   font-size: 100%;
   width: 100%;
@@ -143,9 +137,7 @@ export default {
   margin-bottom: 1rem;
 }
 
-.form div:nth-last-child(2) {
-  margin-bottom: 0.5rem;
-}
+
 .btn {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
@@ -173,5 +165,10 @@ export default {
 }
 .btn-submit {
   display: inline;
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width:250px;
+  margin-top: 100px;
+
 }
 </style>
