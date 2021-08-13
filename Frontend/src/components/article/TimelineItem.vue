@@ -74,7 +74,12 @@ export default {
       return config
     },
     getImgSrc(){
-      return `${SERVER_URL}/profile/img/${this.memberNo}`;
+      if (this.memberNo) {
+        return `${SERVER_URL}/profile/img/${this.memberNo}`;
+      }
+      else {
+        return ''
+      }
     }
   },
   data: function() {
@@ -258,11 +263,6 @@ export default {
     border-radius: 75%;
 }
 
-@media (max-width: 767px) {
-  .top {
-    margin-bottom: 30px;
-  }
 
-}
 </style>
 

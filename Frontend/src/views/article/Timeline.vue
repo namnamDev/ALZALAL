@@ -63,7 +63,7 @@ export default {
     infiniteHandler($state) {
       axios({
         method: "get",
-        url: `${SERVER_URL}/articlelist/article` + "?page=" + this.page,
+        url: `${SERVER_URL}/main` + "?page=" + this.page,
         headers: this.getToken,
       })
         .then((res) => {

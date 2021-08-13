@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="click">
 
     <div id="main">
         <TopMenuBar />
@@ -19,9 +19,9 @@ import Modal from '@/components/search/SearchModal.vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import jwt_decode from 'jwt-decode'
+import $ from 'jquery'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-
 
 export default {
   name: "App",
@@ -53,6 +53,15 @@ export default {
     }
   },
   methods: {    
+    click: function() {
+      var div = $('.notify-table')
+      if (event.target != event.currentTarget.querySelector('.fa-bell')){
+        if( div.is(":visible") ){
+            div.slideUp(400);
+        }
+      }
+
+    },
     connect: function () {
       let socket = new SockJS(`${SERVER_URL}/connectNotification`);
       this.stompClient = Stomp.over(socket);
@@ -67,7 +76,7 @@ export default {
     },
     onMessageReceived:function (payload) {
       let message = JSON.parse(payload.body);
-
+      console.log(message)
       if (message.new){
         this.$store.dispatch('createNotify')
       }

@@ -17,9 +17,7 @@
             </span>
           </div>
         </div>
-        <!-- <div class="col text-end pe-3" @click="clickLike">
-          <span class="like-btn">좋아요</span>
-        </div> -->
+
       </div>
     </div>
     <div class="content">
@@ -121,8 +119,7 @@ export default {
         headers: this.getToken(),
         data :{}
       })
-      .then(res=> {
-        console.log(res)
+      .then(()=> {
       })
       .catch(err => {
         console.log(err)
