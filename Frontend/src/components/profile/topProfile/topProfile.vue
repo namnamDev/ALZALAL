@@ -1,7 +1,7 @@
 <template>
     <div class="row top">
         <div class="col-lg-3 col-md-2 col-sm-3 col-3 col-xl-3"></div>
-        <div class="col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
+        <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
             <div class="row">
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
@@ -28,7 +28,7 @@
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
-                                <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
+                                <li class="countc">{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
                                 <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
                                 <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
@@ -56,7 +56,7 @@
             </div>
             <div class="row status-intro">
                 <div>
-                    <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
+                    <p align="right" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
                 <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2">
                     <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
@@ -238,6 +238,9 @@ export default {
 </script>
 
 <style scoped>
+.feed-item{
+    
+}
 .fa{
     color: rgb(62, 171, 111) ;
 }

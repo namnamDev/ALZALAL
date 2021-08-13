@@ -12,7 +12,7 @@
             </p>
           </div>
           <div class="checkBtn">
-            <button :disabled="!password" type="submit" class="btn">
+            <button :disabled="!password" v-on:keyup.enter="submit" type="submit" class="btn">
               확인
             </button>
           </div>

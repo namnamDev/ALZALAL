@@ -5,7 +5,7 @@
           <img class="profileImg"  :src="imgsrc" alt="Img">
           
       </div>
-      <div class="user col-7 col-sm-7 col-lg-7">
+      <div class="user col-6 col-sm-6 col-lg-6">
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
@@ -16,6 +16,9 @@
             <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
       </div>      
+      <div class="user col-1 col-sm-1 col-lg-1">
+
+      </div>
   </div>
 </template>
 
@@ -38,7 +41,7 @@ export default {
     data(){
         return{
             // imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
-            imgsrc: '',
+            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
             myPage: '',
             isLogin: '',
             me: '',
@@ -46,17 +49,17 @@ export default {
         }
     },
     created: function() {
-      console.log("target",this.userPk)
+      
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
+      
       let pk = ''
       if(userPk){
           this.pk = userPk
           this.myPage = false
-           this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
+           //this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             if(pk==userpk){
                 this.myPage = true
-                this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
+                //this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             }
       }else{
           this.pk = userpk
@@ -134,13 +137,19 @@ export default {
 </script>
 
 <style scoped>
+.row:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+.row{
+  margin-bottom: 20px;
+}
 .userImg {
     width: 75px;
     height: 75px; 
     border-radius: 75%;
     overflow: hidden;
     display: flex;
-    margin: 20px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 .profileImg{
     width: 100%;
@@ -153,13 +162,13 @@ export default {
   font-weight: 550;
 }
 
-/* .followBtn {
+.followBtn {
   border-radius: 10%;
   border: solid 0.5px rgb(27, 218, 43);
   
   width: 30%;
-  margin-left: -80px;
-} */
+  margin-left: 0px;
+}
 @media (max-width:576px) {
 .user{
   margin-top: 5px;
@@ -179,12 +188,12 @@ export default {
   background-color: white;
   color: black;
   border: 1px solid rgb(62, 171, 111);
-  width: 150px;
+  width: 120px;
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
   color: white;
-  width: 150px;
+  width: 120px;
 }
 
 .row{

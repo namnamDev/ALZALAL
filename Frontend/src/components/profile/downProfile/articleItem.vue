@@ -1,28 +1,6 @@
 <template>
-  <!-- <div @click="clickArticle" class="boardList col-12 col-ml-12 col-lg-12" id="boardList">
-        <div class="feed-card col-12 col-lg-12 col-ml-12">
-            <p>{{this.problemSite}} {{this.problemNo}}번 문제</p>
-            <div class="contentsWrap">
-                <p class="title">{{this.articleTitle}}     <span class="algoList">{{this.algoList}}</span></p>
-                           
-                <div class="articleContent">{{this.articleContent}}</div>
-            </div>
-        </div>
-    
-        <div class="btn-group wrap col-12 col-lg-12 col-ml-12">
-            <div class="col box1 like-comment">
-              <i class="fas fa-heart me-2" v-if="this.likeState"></i>
-              <i class="far fa-heart me-2" v-else></i>
-              <span>{{this.likeCount}}</span>
-              <i class="far fa-comment-dots mx-2"></i>
-              <span >{{this.commentCount}}</span>
-              <div><p class="date">{{this.date}}</p></div>
-            </div>
-        </div>
-        
-    </div> -->
     <div class="animate__animated animate__fadeInUp my-4 main">
-    <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickArticle">
+    <div class="article-box col-lg-8 col-md-6 col-sm-9 col-10" @click="clickArticle">
       <div class="row">
         <div class="col">
           <div class="row" >
@@ -202,9 +180,20 @@ export default {
 .feed {
   margin-top: 13vw;
 }
+@media (min-width:892px),(max-width:1200px) {
+  .article-box {
+  background: white;
+  width: 300px;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+}
 .article-box {
   background: white;
-  width: 700px;
+  width: 620px;
   box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;

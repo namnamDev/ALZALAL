@@ -22,6 +22,7 @@
             <button
                     :disabled="!isEmailValid && form.password"
               type="submit"
+              v-on:keyup.enter="submit"
               class="btn"
                     >
               Login

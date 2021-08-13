@@ -2,15 +2,15 @@
   <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
       <div class="userImg col-3 col-sm-3 col-lg-3">
-          <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
-          <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
+          <img class="profileImg"  :src="imgsrc" alt="Img">
+          
       </div>
-      <div class="user col-6 col-sm-6 col-lg-6">
+      <div class="user col-7 col-sm-7 col-lg-7">
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-3 col-sm-3 col-lg-3">
+      <div class="user col-2 col-sm-2 col-lg-2">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
           <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
@@ -37,7 +37,7 @@ export default {
     },
     data(){
         return{
-          imgsrc: '',
+          imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
           myPage: '',
           isLogin: '', 
           me: '',
@@ -64,21 +64,6 @@ export default {
       }else{
         this.me=false
       }
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/profile/img/${this.no}`
-      })
-      .then(res => {
-        this.flag = true
-        this.imgsrc = res.data
-        console.log(res)
-      })
-      .catch(() => {
-        this.flag= false
-        console.log('1231241241441')
-        this.imgsrc = 'profile'
-        // console.log(err)
-      })
     },
     computed: {
         getToken(){
@@ -130,14 +115,19 @@ export default {
 </script>
 
 <style scoped>
-
+.row:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+.row{
+  margin-bottom: 20px;
+}
 .userImg {
     width: 70px;
     height: 70px; 
     border-radius: 75%;
     overflow: hidden;
     display: flex;
-    margin: 20px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 .profileImg{
     width: 100%;
@@ -163,6 +153,7 @@ export default {
 }
 .btn-unfollow {
   background-color: white;
+  width:110px;
   color: black;
   border: 1px solid rgb(62, 171, 111);
 }
@@ -172,6 +163,7 @@ export default {
 }
 .btn{
   padding: 0.5rem 1.5rem;
+  width:110px;
   font-weight: 700;
   font-size: 15px;
   border-radius: 5%;
