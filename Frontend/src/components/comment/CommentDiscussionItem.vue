@@ -1,15 +1,15 @@
 <template>
-  <div class="comment mb-2">
+  <div class="animate__animated animate__fadeInUp comment my-2">
     <div class="user">
       <div class="row">
-        <div class="col">
-          <div class="inline">
+        <div class="col d-flex">
+          <div class="inline me-auto">
             {{this.memberName}}
           </div >
-          <div class="inline">            
-            | {{this.date}}
+          <div class="inline text-secondary">            
+            {{this.date}}
           </div>
-          <div class="inline">
+          <div class="inline" @click="clickLike">
             <i class="fas fa-heart ms-2" v-if="likeState"></i>
             <i class="far fa-heart ms-2" v-else></i>
             <span class="" >
@@ -17,9 +17,7 @@
             </span>
           </div>
         </div>
-        <div class="col text-end pe-3" @click="clickLike">
-          <span class="like-btn">좋아요</span>
-        </div>
+
       </div>
     </div>
     <div class="content">
@@ -168,23 +166,24 @@ export default {
 
 <style scoped>
 .content{
-  /* border: 1px solid black; */
-  padding: 10px;
-  border-radius: 6px;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
+  background: white;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
 }
 .inline{
   display:inline;
 }
 .fa-heart{
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
+  cursor: pointer;
 }
 .like-btn{
   cursor: pointer;
   color:rgb(70, 172, 235);
 }
 .like-btn:hover{
-  font-size:17px;
+  /* font-size:17px; */
   color:rgb(56, 74, 245);
 }
 .delete{

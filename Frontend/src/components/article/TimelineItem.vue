@@ -74,7 +74,12 @@ export default {
       return config
     },
     getImgSrc(){
-      return `${SERVER_URL}/profile/img/${this.memberNo}`;
+      if (this.memberNo) {
+        return `${SERVER_URL}/profile/img/${this.memberNo}`;
+      }
+      else {
+        return ''
+      }
     }
   },
   data: function() {
