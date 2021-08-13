@@ -33,7 +33,7 @@ public class StompHandler implements ChannelInterceptor {
        	log.info("jwt boolean "+tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7)));
             
         	if(!tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7))) {
-                log.info("aaaaa토큰이 유효하지 않습니다")
+                log.info("aaaaa토큰이 유효하지 않습니다");
         		throw new IllegalStateException("토큰이 유효하지 않습니다");        
         	}
         		
