@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="row mt-2 user">
+    <div class="row mt-2 user-search">
       <div class="col">
         <div class="search-algo-input-div">
           <input 
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <div class="row mt-2 user">
+    <div class="row mt-2 user-search">
       <div class="col">
         <p class="mb-0">포함</p>          
         <div class="include p-2">
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <div class="row mt-2 user">
+    <div class="row mt-2 user-search">
       <div class="col">
         <p class="mb-0">제외</p>            
         <div class="exclude p-2 mb-5">
@@ -125,7 +125,7 @@ export default {
         document.querySelector('#placeholder').style.display = 'block'
         document.querySelector('#language').style.display = 'block'
         document.querySelector('#pSite').style.visibility = 'visible'
-        const user = document.getElementsByClassName('user')
+        const user = document.getElementsByClassName('user-search')
         user.forEach(element => {
           element.style.display = 'block'
         });
@@ -137,7 +137,7 @@ export default {
         document.querySelector('#placeholder').style.display = 'block'
         document.querySelector('#language').style.display = 'none'
         document.querySelector('#pSite').style.visibility = 'hidden'
-        const user = document.getElementsByClassName('user')
+        const user = document.getElementsByClassName('user-search')
         user.forEach(element => {
           element.style.display = 'none'
         });
@@ -150,7 +150,7 @@ export default {
         document.querySelector('#placeholder').style.display = 'none'
         document.querySelector('#language').style.display = 'block'
         document.querySelector('#pSite').style.visibility = 'hidden'
-        const user = document.getElementsByClassName('user')
+        const user = document.getElementsByClassName('user-search')
         user.forEach(element => {
           element.style.display = 'block'
         });
@@ -475,7 +475,7 @@ export default {
     cursor:pointer;
     /* display:none; */
   }
-  .user{
+  .user-search{
     margin-bottom: 20px;
   }
   #placeholder{
