@@ -331,7 +331,7 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 80%;
+  width: 60%;
   height: 500px;
   left: 50%;
   transform: translateX(-50%);
@@ -384,9 +384,10 @@ li:hover {
   background-color: antiquewhite;
 }
 .box-algo {
-  /* border: 1px solid black; */
-  height: 30px;
-  width: 800px;
+  border: 1px solid black;
+  /* height: 70px; */
+  width: 70%;
+  display: inline;
   text-align: start;
   align-items: center;
   border-radius: 3px;
@@ -409,8 +410,11 @@ li:hover {
   width: 68%;
   border-radius: 3px;
 }
+#title{
+  width: 100%;
+}
 .editor {
-  width: 70%;
+  width: 100%;
   transform: translateX(-11px);
   margin-top: 20px;
   overflow-wrap: break-word;
@@ -426,18 +430,14 @@ button {
 .m-size{
   margin-right:8px;
 }
-.litags:hover {
-  background-color: yellow;
-}
-select:focus > option:checked { 
-    background: #000 !important;
-}
+
 
 
 @media (max-width: 576px) {
   .create-form {
-    left: 5%;
+    /* left: 5%; */
     width: 100%;
+    margin-left:25px;
   }
   .site-div {
     top: 130px;

@@ -20,7 +20,6 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import jwt_decode from 'jwt-decode'
 import $ from 'jquery'
-
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
@@ -49,6 +48,7 @@ export default {
       // memberPK 받아옴
       this.userpk=jwt_decode(tmp).sub;
       this.headers.Authorization= "Bearer "+ tmp;
+      console.log(this.headers.Authorization)
       this.connect();
     }
   },
