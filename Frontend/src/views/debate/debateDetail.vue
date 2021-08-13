@@ -14,9 +14,9 @@
             </div>
         </div>
       </div>
-        <div class="bottom mt-3">
+        <div class="bottom my-3">
           <div class="">
-            <button class="create-comment-btn" @click="clickAlgoInput">댓글쓰기</button>
+            <button class="my-3 create-comment-btn" @click="clickAlgoInput">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="this.discussionNo"/>
             </div>
