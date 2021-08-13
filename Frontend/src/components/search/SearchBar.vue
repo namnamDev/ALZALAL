@@ -4,7 +4,7 @@
       <div id="search-bar">
         <div class="search-box " data-bs-toggle="modal" data-bs-target="#exampleModal">
           <i class="fas fa-search"></i>
-          검색해주세요.
+          <span class="serch-content">검색해주세요.</span>
         </div>
       </div>     
     </div>
@@ -23,22 +23,11 @@ export default {
 
 <style scoped>
 #search{
-  
-  width: 310px;
-  /* right: 70px;
-  top: 170px;
-  position:fixed; */
-  /* border-left: 1px solid black;   */
-  /* display: none; */
-  /* display: block; */
-}
-#search-bar{
-  /* position: absolute; */
-  /* z-index:-2; */
+  width:30vw;
+  max-width: 310px;
 }
 .fas{
   font-size: 20px;
-  margin-right:10px;
 }
 .search-box{
   background-color: white;
@@ -133,9 +122,16 @@ export default {
   animation-iteration-count: infinite; 
 }
 
-/* @media (max-width:992px){
-  #search{
+@media (max-width:640px){
+  .serch-content{
     display:none; 
   }
-} */
+  #search{
+    width: 43px;
+    /* width:30vw; */
+  }
+  .search-box{
+    border-radius: 75%;
+  }
+}
 </style>

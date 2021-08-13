@@ -8,7 +8,8 @@
       <div class="main-left">
         <!-- 로고 -->
         <div class="logo" @click="clickTimeline">
-           <img src="@/assets/images/logo1.jpg" height="60px" alt="Logo">
+           <img class="logo1" src="@/assets/images/logo1.jpg" alt="Logo">
+           <img class="logo2" src="@/assets/images/logo2.jpg" height="60px" alt="Logo">
         </div>
       </div>
       <div class="main-middle">
@@ -241,6 +242,8 @@ export default {
 
 <style scoped>
 .notifi-btn{
+  display: flex;
+  align-items: center;
   font-size:40px;
   cursor:pointer;
 }
@@ -259,14 +262,19 @@ export default {
 }
 
 .logo{
-  /* position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index:2;   */
   cursor: pointer;
 }
+.logo1{
+  width: 100%;
+  max-width: 192px;
+  max-height: 60px;
+}
+.logo2{
+  display: none;
+}
+
 .user{
-  width:100%;
+  /* width:100%; */
   font-size:20px;
 
 }
@@ -283,23 +291,22 @@ export default {
   line-height: 1.3;
 }
 .login-signup{
-  /* margin-top: */
   color:white;
   cursor: pointer;
   font-weight: 550;
+  font-size: min(2.9vw,25px);
+  
 }
 .loginBtn{
-    font-size: 25px;
     margin-right: 10px;
   }
 .signupBtn{
-    font-size: 25px;
     margin-right: 10px;
 }
-.login-signup span:hover{
-  /* transform: scale(1.2); */
+/* .login-signup span:hover{
+  transform: scale(1.2);
   font-size: 25px;
-}
+} */
 .username {
   margin-right: 15px;
 }
@@ -333,36 +340,42 @@ export default {
   animation-iteration-count: infinite;   
 }
 
-
-
-@media (max-width: 576px){
-    .login-signup{
+@media (max-width:640px){
+  .logo1{
+    display: none;
+  }
+  .logo2{
+    display: inline;
+  }
+  .login-signup{
     font-weight: 550;
-    font-size: 20px;
+    /* font-size: 20px; */
+    font-size: min(4.2vw,25px);
   }
   .loginBtn{
-    display: block;
-    font-size: 25px;
     margin-right: 10px;
   }
   .signupBtn{
-    font-size: 25px;
     margin-right: 10px;
   }
-  .user{
-      right: 0;    
-  }
   .profileImg {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       border-radius: 75%;
   }
-}
-@media (max-width: 768px){
-  .username {
-    display: none;
+  .main-left{
+    flex-basis: 40% !important;
+  }
+  .main-middle{
+    flex-basis: 10% !important;
+  }
+  .main-right{
+    flex-basis: 40% !important;
   }
 }
+
+
+
 
 .profileImg {
     width: 45px;
@@ -380,10 +393,11 @@ export default {
 i {
   color: white;
   cursor: pointer;
+  /* font-size: min(max(3.5vw,10px),30px); */
   font-size: 30px;
 }
 .main-left{
-  flex-basis: 20%;
+  flex-basis: 30%;
 }
 .main-middle{
   flex-basis: 30%;
@@ -393,8 +407,8 @@ i {
 .main-right{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-basis: 20%;
+  justify-content: flex-end;
+  flex-basis: 30%;
 }
 .isLogin{
   width: inherit;
@@ -403,6 +417,6 @@ i {
   align-items: center;
 }
 .isLogin >:nth-last-child(n){
-  margin:0 5px;
+  margin-left:min(1.8vw, 20px);
 }
 </style>

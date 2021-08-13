@@ -260,11 +260,6 @@ export default {
     border-radius: 75%;
 }
 
-@media (max-width: 767px) {
-  .top {
-    margin-bottom: 30px;
-  }
 
-}
 </style>
 
