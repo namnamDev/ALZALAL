@@ -47,7 +47,7 @@ export default {
       let tmp=sessionStorage.getItem("jwt");
       // memberPK 받아옴
       this.userpk=jwt_decode(tmp).sub;
-      this.headers.Authorization= "Bearer "+ tmp;
+      this.headers.Authorization= "Bearer "+ tmp;      
       this.connect();
     }
   },
@@ -65,6 +65,7 @@ export default {
       let socket = new SockJS(`https://i5d205.p.ssafy.io/api/connectNotification`);
       this.stompClient = Stomp.over(socket);
       this.stompClient.debug = () => {};
+      console.log(this.headers)
       this.stompClient.connect(this.headers, this.onConnected, this.onError);
     },
     onConnected: function () {
