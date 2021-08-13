@@ -61,8 +61,6 @@ public class FileServiceImpl implements FileService {
 		String fileName = Long.toString(member.getNo())+"."+tmpstr[tmpstr.length-1];
 		
 		Path location = this.dirLocation.resolve(fileName);
-		System.out.println("fileServiceImp fileSaveLocaionExceptFilname: "+this.dirLocation);
-		System.out.println("fileServiceImp fileSaveLocaion: "+location);
 		try {
 			/* 실제 파일이 upload 되는 부분 */
 			Files.copy(multipartFile.getInputStream(), location, StandardCopyOption.REPLACE_EXISTING);
