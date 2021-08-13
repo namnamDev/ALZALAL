@@ -47,8 +47,7 @@ export default {
       let tmp=sessionStorage.getItem("jwt");
       // memberPK 받아옴
       this.userpk=jwt_decode(tmp).sub;
-      this.headers.Authorization= "Bearer "+ tmp;
-      console.log(this.headers.Authorization)
+      this.headers.Authorization= "Bearer "+ tmp;      
       this.connect();
     }
   },
