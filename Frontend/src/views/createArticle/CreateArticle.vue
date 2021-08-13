@@ -38,8 +38,8 @@
         <select
           id="select"
           name="problem-site"
-          class="col-sm-2 m-size mb-2"
-          v-model="pSite"
+          class="col-sm-2 m-size mb-2 decorated"
+          v-model="pSite"          
         >
           <option value="boj">백준</option>
           <option value="swea">SWEA</option>
@@ -60,7 +60,7 @@
           v-model="language"
           class="col-sm-2 mb-2 m-size"
         >
-          <option value="Java">Java</option>
+          <option value="Java" class="litags">Java</option>
           <option value="C">C</option>
           <option value="C++">C++</option>
           <option value="Python">python</option>
@@ -139,7 +139,7 @@ export default {
       .catch(err =>{  
         console.log(err)
       })
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(!token){
       this.$router.push({name:'login'})
     } 
@@ -160,7 +160,7 @@ export default {
     },
     // token 값 가져오기
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -168,40 +168,89 @@ export default {
     },
     // 글 작성하기
     submit() {
-      this.$swal('Complete', '새 글이 작성되었습니다.', 'OK');
-      let algoList = [];
-      const boxAlgo = document.querySelectorAll(".box-algo span");
-      boxAlgo.forEach((element) => {
-        console.log(element.textContent);
-        algoList.push(element.innerText);
-      });
-
-      const data = {
-        category: this.articleClass,
-        title: this.title,
-        content: this.getContent(),
-        pNum: this.pNum,
-        pSite: this.pSite,
-        language: this.language,
-        algo: algoList,
+      if (!this.pNum){
+        this.$swal.fire({
+        text: "문제 번호를 입력해주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector("#problem-input");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })     
       }
-      console.log(data)
-
-
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/article/article`,
-        data: data,
-        headers: this.getToken(),
-      })   
-      .then(() =>{
-        setTimeout(() => {
-          this.$router.push({ name: 'timeline' })       
-        }, 1000);         
-      })
-      .catch(err =>{  
-        console.log(err)
-      })
+      else if(!this.title){
+        this.$swal.fire({
+        text: "제목을 입력해 주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector("#title");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })   
+      }
+      else if(!this.getContent()){
+        this.$swal.fire({
+        text: "내용을 입력해 주세요",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        }).then(() => {          
+          var input = document.querySelector(".editor");
+          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
+        })   
+      }
+      else{
+        let algoList = [];
+        const boxAlgo = document.querySelectorAll(".box-algo span");
+        boxAlgo.forEach((element) => {
+          algoList.push(element.innerText);
+        });
+  
+        const data = {
+          category: this.articleClass,
+          title: this.title,
+          content: this.getContent(),
+          pNum: this.pNum,
+          pSite: this.pSite,
+          language: this.language,
+          algo: algoList,
+        }
+  
+        this.$swal.fire({
+          text: "글을 작성하시겠습니까?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인',
+          cancelButtonText: '취소'
+          }).then(() => {          
+            axios({
+              method: 'post',
+              url: `${SERVER_URL}/article/article`,
+              data: data,
+              headers: this.getToken(),
+            })   
+            .then(() =>{
+              this.$swal('글을 작성하였습니다.');
+              this.$router.push({ name: 'timeline' })                         
+            })
+            .catch(err =>{  
+              console.log(err)
+            })               
+          })   
+      }      
     },
 
     
@@ -282,9 +331,10 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 100%;
+  width: 80%;
   height: 500px;
-  left: 23%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   background-color: white;
 }
@@ -363,6 +413,7 @@ li:hover {
   width: 70%;
   transform: translateX(-11px);
   margin-top: 20px;
+  overflow-wrap: break-word;
 }
 button {
   width: 110px;
@@ -374,6 +425,12 @@ button {
 }
 .m-size{
   margin-right:8px;
+}
+.litags:hover {
+  background-color: yellow;
+}
+select:focus > option:checked { 
+    background: #000 !important;
 }
 
 

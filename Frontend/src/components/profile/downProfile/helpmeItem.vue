@@ -2,9 +2,10 @@
   <div class="sendQuiz col-12 col-ml-12 col-lg-12" id="sendQuiz">
     <div class="feed-card col-12 col-lg-12 col-ml-12">
       <div class="contentsWrap" @click="clickHelpmeName">
-        <span>{{this.item.problemSiteName}}  </span>
+        <span>{{this.problemSiteName}}  </span>
         <span>{{this.problemNo}}번 문제</span>
         <span>  {{getStatus}}</span>
+        
         <div>
           <p class="helpmeContent">{{this.helpmeContent}}</p>
         </div>
@@ -15,10 +16,12 @@
               <span>{{this.likeCount}}</span>
               <i class="far fa-comment-dots mx-2"></i>
               <span >{{this.commentCount}}</span>
-              <div><p class="date">{{this.helpmeDate}}</p></div>
+              <!-- <div><p class="date">{{this.helpmeDate}}</p></div> -->
             </div>
         </div>
+        
       </div>
+      <div><p class="date">{{this.helpmeDate}}</p></div>
     </div>
   </div>
 </template>
@@ -36,7 +39,7 @@ export default {
       return this.content
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -79,13 +82,10 @@ export default {
         headers: this.getToken,
       })   
       .then(res =>{
-          console.log(res.data)
         const detail = res.data.helpme
          this.item = res.data
-         console.log(this.item)
         this.helpmeSenderNo= detail.helpmeSenderNo.no,
         this.helpmeSenderName= detail.helpmeSenderNo.name,
-        this.helpmeDate= detail.helpmeDate,
         this.commentCount= detail.commentCount,
         this.likeCount= detail.likeCount,
         this.likeState= detail.likeState,
@@ -94,13 +94,37 @@ export default {
         this.helpmeReceptorNo= detail.helpmeReceptorNo.no,
         this.helpmeReceptorName= detail.helpmeReceptorNo.name,
         this.helpmeStatus= detail.helpmeStatus
-        
+        const date = res.data.helpme.helpmeDate
+        this.helpmeDate = this.getDate(date)
       })
       .catch(err =>{  
         console.log(err)
       })
   },
     methods: {    
+      getDate: function(date) {
+        const today  = new Date()
+        const timeValue  = new Date(date)
+
+        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        if (betweenTime < 1) return '방금전';
+        if (betweenTime < 60) {
+            return `${betweenTime}분전`;
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        if (betweenTimeHour < 24) {
+            return `${betweenTimeHour}시간전`;
+        }
+
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return `${betweenTimeDay}일전`;
+        }
+
+        return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+      },
     // 게시글 상세 정보 페이지로 이동
     clickHelpmeName: function() {
       localStorage.setItem('helpmeNo', this.helpmeNo)
@@ -119,18 +143,30 @@ export default {
         console.log(err)
       })
 
-      this.$router.push({name : 'helpmeDetail', params:{helpmeNo:this.helpmeNo}})
+      // 댓글 리스트 불러오기
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/comment/helpme/${this.helpmeNo}`,
+      })   
+      .then(res =>{
+        console.log(res)
+        this.$store.dispatch('createHelpmeComment',res.data.articleComments)
+      })
+      .catch(err =>{  
+        console.log(err)
+      })
+
+      this.$router.push({name : 'helpmeDetail', params:{'Page':'0', helpmeNo:this.helpmeNo}})
     },   
     
   },
 }
 </script>
 
-<style>
-.nav-link {
-  cursor: pointer;
+<style scoped>
+.fa-heart {
+  color: red;
 }
-
 .feed-card {
     box-sizing: content-box;
     /* box-shadow: 0 0 0 1px #ddd; */
@@ -161,47 +197,6 @@ export default {
   float: right;
   font-size: 10px;
   color:rgba(0, 0, 0, .5);
-}
-.feed-item {
-    margin-bottom: 30px;
-    border-bottom: 1px solid grey;
-    padding-bottom: 20px;
-}
-.profile-image {
-    float: left;
-}
-.user-info, .content {
-    width: calc(100% - 50px);
-    float: right; 
-}
-.user-name {
-    float: left;
-}
-.user-name button {
-   font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
-.date {
-  float: right;
-}
-.profileImg{
-  width: 100px;
-  height: 100%;
-  box-sizing: border-box;
-  float:left;
-  border:1px solid grey;
-  border-radius: 3px;
-}
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
 }
 @media (max-width:577px) {
   .feed{

@@ -4,29 +4,25 @@
       <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
       <div class="col-lg-6 col-md-10 col-sm-9 col-6 content">
        
-        <div class="row top mb-3">
-          <div class="row">
-            <div class="col clickName"  @click="clickName">
-              
-            </div>
-            <div class="col text-end">
-             {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}
+        <div class="row top mb-5">
+          <div class="row mt-5">
+            <div class="col clickName"  @click="clickName">   
+            {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}   
+             <div><p class="status">{{getStatus}}</p></div>     
+              <div class="fromto">
+                <span class="username">{{this.helpmeSenderName}}</span>님이 <span class="username">{{this.helpmeReceptorName}}</span>님에게 요청한 문제
+              </div>
+               {{this.problemSiteName}} {{this.problemNo}}번 문제
             </div>
           </div>
         </div>
 
         <div class="row middle py-4 px-0">
-           {{this.problemSiteName}} {{this.problemNo}}번 문제
           <div class="row mb-5">
             <div>
                 {{this.helpmeContent}}
             </div>
-            <div>
-              {{this.helpmeSenderName}}님이 {{this.helpmeReceptorName}}에게 요청한 문제
-            </div>
-            <div>
-              {{getStatus}}
-            </div>
+            
             <div class="col thumbs mb-3">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
               <i class="far fa-heart" @click="clickLike" v-else></i>
@@ -48,6 +44,15 @@
           <div class="row my-3" v-for="comment,idx in getComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
+          <div class="row mb-5 py-5">
+            <div class="col text-center">
+              <span class="previous-btn" @click="clickPreviousBtn">previous</span>
+              <!-- <span class="mx-4" @click="click1">1</span>/ -->
+              <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
+              /<span class="mx-4">{{commentCount}}</span>
+              <span class="next-btn" @click="clickNextBtn">next</span>
+            </div>
+          </div>
         </div>
       </div>
     
@@ -56,15 +61,21 @@
 </template>
 
 <script>
-import Comment from '@/components/comment/CommentItem.vue'
-import CreateComment from '@/components/comment/CreateCommentEditor.vue'
+import Comment from '@/components/comment/CommentHelpmeItem.vue'
+import CreateComment from '@/views/createHelpme/createHelpmeComment.vue'
+
+import Vue from "vue";
+import vueMoment from "vue-moment";
 import axios from 'axios';
 import $ from 'jquery';
+Vue.use(vueMoment);
+
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'helpmeDetail',
   props:{
     // articleno: Number
+    Page: String,
   },
 
   components:{
@@ -89,12 +100,13 @@ export default {
       helpmeSenderNo: '',
       helpmeSenderName: '',
       helpmeStatus:'',
+      currentPage: Number(this.Page)+1,
     }
   },
   computed: {
 
     getComments: function() {
-      return this.$store.getters.getArticleComments
+      return this.$store.getters.getHelpmeComments
     },
     getStatus: function(){
       let status = ''
@@ -109,27 +121,10 @@ export default {
       }
       return status
     }
-    // getTime: function() {
-    //   const milliSeconds = new Date() - this.date
-    //   const seconds = milliSeconds / 1000
-    //   if (seconds < 60) return `방금 전`
-    //   const minutes = seconds / 60
-    //   if (minutes < 60) return `${Math.floor(minutes)}분 전`
-    //   const hours = minutes / 60
-    //   if (hours < 24) return `${Math.floor(hours)}시간 전`
-    //   const days = hours / 24
-    //   if (days < 7) return `${Math.floor(days)}일 전`
-    //   const weeks = days / 7
-    //   if (weeks < 5) return `${Math.floor(weeks)}주 전`
-    //   const months = days / 30
-    //   if (months < 12) return `${Math.floor(months)}개월 전`
-    //   const years = days / 365
-    //   return `${Math.floor(years)}년 전`
-    // }
+
   },
 
-  created() {    
-    
+  created() {        
     const helpme = this.$store.getters.getHelpmeDetail
     this.helpmeContent = helpme.helpmeContent
     this.helpmeDate = helpme.helpmeDate
@@ -147,8 +142,68 @@ export default {
     this.problemSiteName = helpme.problemSite.problemSiteName
   },
   methods: {
+    clickNextBtn: function() {
+      if (Number(this.Page) < this.commentCount -1){
+        const page = String(Number(this.Page) + 1)
+        location.href=`/helpmeDetail/${page}`  
+      }
+    },
+    clickPreviousBtn: function() {
+      if (Number(this.Page) > 0){
+        const page = String(Number(this.Page) - 1)
+        location.href=`/helpmeDetail/${page}`  
+      }
+    },
+    goPage: function() {
+      location.href=`/helpmeDetail/${this.currentPage-1}`
+    },
+    getCommentList:function() {
+      this.$store.dispatch('deleteArticleComment')
+      const articleNo = localStorage.getItem('articleNo')
+      axios({
+          method: 'get',
+          url: `${SERVER_URL}/comment/helpme/${articleNo}?page=${this.Page}`,
+          headers: this.getToken(),
+        })   
+        .then(res =>{
+          this.$store.dispatch('createHelpmeComment',res.data.articleComments)
+        })
+        .catch(err =>{  
+          console.log(err)
+        }) 
+    },
+
+    //댓글 작성하기
+    clickCreateComment() {
+      const token = sessionStorage.getItem('jwt')
+      if(!token){
+        this.$swal.fire({          
+          text: "로그인 후 이용해주세요.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '로그인',
+          cancelButtonText: '취소'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({'name':'login'})
+          }
+        })
+      }
+
+      var commentForm = $('#create-comment')
+ 
+      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+      if( commentForm.is(":visible") ){
+          commentForm.slideUp(700);
+      }else{
+          commentForm.slideDown(1000);
+      }
+    },
+
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -199,89 +254,85 @@ export default {
 </script>
 
 <style scoped>
-
-.fa-heart {
+#create-comment{
+  display: none;
+}
+.show{
+  display: block !important;
+}
+.top{
+  width:100%;
+  /* border:1px solid black; */
+}
+.middle{
+  width:100%;
+  /* height:400px; */
+  /* border:1px solid black; */
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  position: relative;
+}
+.bottom{
+  width:100%;
+  height:100px;
+  /* border:1px solid black; */
+  position: relative;
+}
+.title{
+  font-size:40px;
+}
+.fa-thumbs-up{
+  font-size: 20px;
+}
+.thumbs{
+  position: absolute;
+  text-align: end;
+  bottom: 0;
+}
+.fa-heart{
   color: red;
+  cursor: pointer;
 }
-.boardList{
-  margin-left: 30px;
+button{
+  width: 120px;
+  height: 30px;
 }
-.feed-card {
-  box-sizing: content-box;
-  /* box-shadow: 0 0 0 1px #ddd; */
-  color: #000;
-  float: left;
-  border-radius: 5px;
-  overflow: hidden;
-  
+.clickName{
+  cursor: pointer;
 }
-.contentsWrap {
-  box-sizing: border-box;
-  padding: 12px;
-  float: left;
+.create-comment-btn{
+  background-color: rgb(86, 149, 233);
+  border-style: none;
+  border-radius: 3px;
+  color:rgb(255, 255, 255);
+  font-weight: bold;
 }
-.title {
-  color:#000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-wrap:break-word; 
-  line-height: 1.5em;
-  font-size: 25px;
+.current-page{
+  width: 30px;
+  height:23px;
+  margin-left:10px;
+  margin-right:15px;
+  text-align: center;
+}
+.previous-btn{
+  cursor: pointer;
+}
+.next-btn{
+  cursor: pointer;
+}
+.member-name{
+  cursor:pointer;
+}
+.member-name:hover{
+  font-size:18px;
+}
+.fromto{
+  font-size: 20px;
+}
+.username{
   font-weight: 550;
-  margin: 0 0 8px;
-  white-space: normal;
 }
-.date {
-  float: right;
-  font-size: 15px;
-  color:rgba(0, 0, 0, .5);
-  
+.status{
+  font-weight: 550;
 }
-.feed-item {
-  margin-bottom: 30px;
-  border-bottom: 1px solid grey;
-  padding-bottom: 20px;
-}
-.user-info, .content {
-  width: calc(100% - 50px);
-  float: right; 
-}
-.user-name {
-  float: left;
-}
-.user-name button {
-  font-weight: 600;
-}
-.user-name span {
-   margin-left: 10px;
-}
-.date {
-  float: right;
-}
-#clickBoard:hover {
-  background-color:#a1d4e2;
-}
-#clickRequest:hover{
-  background-color: #a1d4e2;
-}
-#clickSend:hover{
-  background-color: #a1d4e2;
-}
-@media (max-width:577px) {
-  .feed{
-    margin-left:0;
-  }
-}
-.comment{
-  margin-right: 30px;
-}
-.articleContent {
-  overflow:hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  
-  white-space:normal;
-  }
 </style>

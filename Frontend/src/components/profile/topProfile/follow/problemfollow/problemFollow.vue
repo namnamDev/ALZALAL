@@ -1,13 +1,17 @@
 <template>
     <div>
       <div class="follow" v-for="(item,index) in problems" :key="index">
-        <div class="user col-10">
+        <div class="user col-4 col-sm-4 col-lg-4">
             <span class="problem">
             {{item.site}} 
             </span>
+        </div>
+        <div class="user col-4 col-sm-4 col-lg-4">
             <span class="problem">
              {{item.no}}번
             </span>
+        </div>
+        <div class="user col-4 col-sm-4 col-lg-4">
             <span class="followBtn">
               <problemFollowBtn :site="item.site" :no="item.no"/>
             </span>
@@ -24,7 +28,7 @@ import problemFollowBtn from '@/components/profile/topProfile/follow/problemfoll
 import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
 //import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -49,6 +53,7 @@ export default {
           return resp.json()
         }).then(data => {
           setTimeout(() => {
+            console.log(data)
             if(data.length) {
               this.problems = this.problems.concat(data)
               $state.loaded()
@@ -74,46 +79,28 @@ export default {
 <style scoped>
 .follow {
   display: flex;
+  margin-left: 30px;
 }
 .user{
   margin-top: 30px;
   font-size: 22px;
   font-weight: 700;
-  margin-left: 100px;
   
 }
 .problem{
   font-weight: 550;
   font-size: 22px;
 }
-.followBtn {
-  border-radius: 10%;
-  border: solid 0.5px skyblue;
-  
-  width: 30%;
-  margin-left: 30px;
-}
+
 @media (max-width:768px) {
   .user{
   margin-top: 30px;
   font-size: 15px;
   font-weight: 700;
-  margin-left: 30px;
   
 }
-  .followBtn {
-    border-radius: 10%;
-    border: solid 0.5px skyblue;
-    margin-left: 0;
-    
 
-  }
 }
 
-#clickFollowing:hover {
-  background-color:#a1d4e2;
-}
-#clickFollower:hover{
-  background-color: #a1d4e2;
-}
+
 </style>

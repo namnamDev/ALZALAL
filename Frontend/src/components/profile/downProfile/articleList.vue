@@ -20,7 +20,7 @@ import articleItem from '@/components/profile/downProfile/articleItem.vue'
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 import jwt_decode from "jwt-decode";
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -40,9 +40,9 @@ export default {
     }
   },
   created: function() {
-    console.log("target",this.userPk)
+    // console.log("target",this.userPk)
     const userPk = localStorage.getItem("userPk")
-    console.log(userPk)
+    // console.log(userPk)
     if(userPk){
         this.pk = userPk
         this.myPage = false
@@ -70,7 +70,7 @@ export default {
         url: `${SERVER_URL}/search/article/${this.pk}`+"?page=" + (this.page),
         headers: this.getToken
         }).then(res => {
-          console.log(this.getToken)
+          // console.log(this.getToken)
           setTimeout(() => {
             if(res.data.articleList.length) {
               this.articleList = this.articleList.concat(res.data.articleList)

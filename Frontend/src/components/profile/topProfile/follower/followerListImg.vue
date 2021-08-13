@@ -1,18 +1,20 @@
 <template>
   <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
-      <div class="userImg col-2 col-sm-2 col-lg-2">
+      <div class="userImg col-3 col-sm-3 col-lg-3">
           <img class="profileImg"  :src="imgsrc" alt="Img">
+          
       </div>
-      <div class="user col-10 col-sm-10 col-lg-10">
+      <div class="user col-7 col-sm-7 col-lg-7">
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
+      </div>
+      <div class="user col-2 col-sm-2 col-lg-2">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
             <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
             <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
-          
       </div>      
   </div>
 </template>
@@ -35,19 +37,27 @@ export default {
     },
     data(){
         return{
-            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+            // imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
+            imgsrc: '',
             myPage: '',
             isLogin: '',
             me: '',
+            
         }
     },
     created: function() {
       console.log("target",this.userPk)
       const userPk = localStorage.getItem("userPk")
       console.log(userPk)
+      let pk = ''
       if(userPk){
           this.pk = userPk
           this.myPage = false
+           this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
+            if(pk==userpk){
+                this.myPage = true
+                this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
+            }
       }else{
           this.pk = userpk
           this.myPage = true
@@ -63,10 +73,11 @@ export default {
         this.me=false
       }
 
+
     },
     computed: {
         getToken(){
-          const token = localStorage.getItem('jwt')
+          const token = sessionStorage.getItem('jwt')
           const config = {
               Authorization: `Bearer ${token}`
           }
@@ -75,8 +86,11 @@ export default {
 
 	},
     methods:{
+      click() {
+        console.log(this.imgsrc)
+      },
         clickFollow: function(event){
-            const token = localStorage.getItem('jwt')
+            const token = sessionStorage.getItem('jwt')
                 if(!token){
                     alert("로그인이 필요합니다.")
                 this.$router.push({name:'login'})
@@ -106,7 +120,7 @@ export default {
             }else{
               event.target.innerText = 'follow'
               
-              event.target.style.backgroundColor='blue'
+              event.target.style.backgroundColor='rgb(62, 171, 111)'
               event.target.style.color="white"
             }
         },
@@ -139,13 +153,13 @@ export default {
   font-weight: 550;
 }
 
-.followBtn {
+/* .followBtn {
   border-radius: 10%;
-  border: solid 0.5px skyblue;
+  border: solid 0.5px rgb(27, 218, 43);
   
   width: 30%;
-  margin-left: 30px;
-}
+  margin-left: -80px;
+} */
 @media (max-width:576px) {
 .user{
   margin-top: 5px;
@@ -154,31 +168,27 @@ export default {
   border-radius: 20%;
   margin-left: 0;
 }
-.row{
-  margin-left: 30px;
-}
 }
 .btn{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 17px;
   border-radius: 5%;
 }
 .btn-unfollow {
   background-color: white;
   color: black;
-  border: 1px solid blue;
+  border: 1px solid rgb(62, 171, 111);
+  width: 150px;
 }
 .btn-follow{
-  background-color: blue;
+  background-color: rgb(62, 171, 111);
   color: white;
+  width: 150px;
 }
-.btn:hover {
-  background-color:#a1d4e2;
-}
-@media (min-width:768px) {
-  .row{
-    margin-left: 70px;
-  }
+
+.row{
+  width: 100%;
+  
 }
 </style>

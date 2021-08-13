@@ -1,68 +1,60 @@
 <template>
-
-  <div class="container" v-if="articleDetail">
-    <div class="row my-5">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-      <div class="col-lg-6 col-md-10 col-sm-9 col-11 content">
-
-        <div class="row top mb-3">
-          <div class="row title">
+  <div class="animate__animated animate__fadeInUp my-4 main" v-if="articleDetail">
+      <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
+        <div>
+          <div class="title">
             {{articleDetail.articleTitle}}
           </div>
           <div class="row">
-            <div class="col clickName"  @click="clickName">
-              {{articleDetail.member.name}}
+            <div class="col clickName"  >
+              <span @click="clickName" class="member-name">{{articleDetail.member.name}}</span>
             </div>
-            <div class="col text-end">
+            <div class="col text-end text-secondary">
              {{articleDetail.articleDate | moment("YYYY-MM-DD HH:mm:ss")}}
             </div>
           </div>
         </div>
 
-        <div class="row middle py-4 px-0">
-          <div class="row mb-5">
-            <div>
+        <div class="middle px-0">
+
+            <div class="col text-end px-0" v-if="isMine">
+              <span style="cursor:pointer">수정</span> | 
+              <span @click="deleteArticle" style="cursor:pointer">삭제</span>
+            </div>
+            <div class="viewer">
               <Viewer :viewerText="articleDetail.articleContent"/>  
             </div>
+        </div>
 
-            <div class="col thumbs mb-3">
+        <div class="bottom mt-3">
+          <div>
+            <div class="col thumbs">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
               <i class="far fa-heart" @click="clickLike" v-else></i>
-              <span class="ms-2" >
+              <span >
                 {{likeCount}}
               </span>
             </div>
-
-          </div>
-        </div>
-
-        <div class="row bottom my-3">
-          <div class="row">
-            <button class="mb-4 create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
+            <button class="create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="articleDetail.articleNo"/>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              총 {{commentCount}}개의 댓글이 있습니다.
-            </div>
-          </div>
-          <div class="row my-3" v-for="comment,idx in commentList" :key="idx">
+          <div class="row" v-for="comment,idx in getArticleComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-          <div class="row">
-            <div class="col ">
-              <span class="mx-4" @click="click1">1</span>
-              <span class="mx-4" @click="click2">2</span>
-              <span class="mx-4">3</span>
+        <div class="row mb-1 my-1">
+            <div class="col text-center">
+              <span class="previous-btn" @click="clickPreviousBtn">previous</span>
+              <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
+              /<span class="mx-4">{{commentCount}}</span>
+              <span class="next-btn" @click="clickNextBtn">next</span>
             </div>
           </div>
         </div>
       </div>
     
     </div>
-  </div>
 </template>
 
 <script>
@@ -71,6 +63,8 @@ import Viewer from '@/components/article/Viewer.vue'
 import CreateComment from '@/components/comment/CreateCommentEditor.vue'
 import $ from 'jquery';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode'
+
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -85,46 +79,89 @@ export default {
   props: {
     Page: String,
   },
-
   data: function() {
     return {
       articleDetail: '',
       likeState:'',
       commentCount: 0,
-      commentList: null,
+      currentPage: Number(this.Page)+1,
     }
   },
+
+
+  computed: {
+    getArticleComments: function() {
+      return this.$store.getters.getArticleComments
+    },
+    isMine: function() {
+      const token = sessionStorage.getItem('jwt')
+      let username = '';
+      if (token) {
+        const decoded = jwt_decode(token)
+        username = decoded.name
+        if (username == this.articleDetail.member.name){
+          return true
+        }
+        else{
+          return false
+        }
+      }
+      return false
+    }
+  },
+
 
   mounted() { 
     this.getArticleDetail()       
     this.getCommentList()
-    console.log('this.Page : ',this.Page)
   },
 
   methods: {
-    // 몇시간전, 몇분전 표기
-    getDate: function(year,month,day,hour,min,sec) {
-      const today  = new Date()
-      const timeValue  = new Date(year,month,day,hour,min,sec)
-
-      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-      if (betweenTime < 1) return '방금전';
-      if (betweenTime < 60) {
-          return `${betweenTime}분전`;
+    clickNextBtn: function() {
+      if (Number(this.Page) < this.commentCount -1){
+        const page = String(Number(this.Page) + 1)
+        location.href=`/articleDetail/${page}`  
       }
-
-      const betweenTimeHour = Math.floor(betweenTime / 60);
-      if (betweenTimeHour < 24) {
-          return `${betweenTimeHour}시간전`;
+    },
+    clickPreviousBtn: function() {
+      if (Number(this.Page) > 0){
+        const page = String(Number(this.Page) - 1)
+        location.href=`/articleDetail/${page}`  
       }
+    },
+    goPage: function() {
+      location.href=`/articleDetail/${this.currentPage-1}`
+    },
 
-      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-      if (betweenTimeDay < 365) {
-          return `${betweenTimeDay}일전`;
-      }
 
-      return `${Math.floor(betweenTimeDay / 365)}년전`;
-
+    // 삭제 버튼
+    deleteArticle: function() {
+      const articleNo = localStorage.getItem('articleNo')
+      this.$swal.fire({
+        title: '글을 삭제하시겠습니까?',
+        text: "삭제하시면 다시 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'delete',
+            url: `${SERVER_URL}/article/article/${articleNo}`,
+            headers: this.getToken(),
+          })   
+          .then(() =>{
+            this.$router.push({name: 'timeline'})
+          })
+          .catch(err =>{  
+            console.log(err)
+          }) 
+        }
+      })
+      
     },
     // 게시글 상세정보 불러오기
     getArticleDetail() {
@@ -134,18 +171,9 @@ export default {
           url: `${SERVER_URL}/article/article/${articleNo}`,
           headers: this.getToken(),
         })   
-        .then(res =>{
-          const date = res.data.articleDetail.articleDate
-          const year = date.substr(0,4)
-          const month = date.substr(5,2)
-          const day = date.substr(8,2)
-          const hour = date.substr(11,2)
-          const min = date.substr(14,2)
-          const sec = date.substr(17,2)
-          
-          this.getDate(year,month,day,hour,min,sec)
+        .then(res =>{          
 
-          this.commentCount = res.data.articleDetail.commentCount
+          this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
@@ -157,15 +185,14 @@ export default {
 
     //댓글 리스트 불러오기
     getCommentList:function() {
+      this.$store.dispatch('deleteArticleComment')
       const articleNo = localStorage.getItem('articleNo')
-      console.log('asdfasd',this.Page)
       axios({
           method: 'get',
           url: `${SERVER_URL}/comment/article/${articleNo}?page=${this.Page}`,
           headers: this.getToken(),
         })   
         .then(res =>{
-          this.commentList = res.data.articleComments
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
         .catch(err =>{  
@@ -173,14 +200,8 @@ export default {
         }) 
     },
 
-    click1() {
-      location.href="/articleDetail/0"
-    },
-    click2() {
-      location.href="/articleDetail/1"
-    },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -189,6 +210,22 @@ export default {
 
     //댓글 작성하기
     clickCreateComment() {
+      const token = sessionStorage.getItem('jwt')
+      if(!token){
+        this.$swal.fire({          
+          text: "로그인 후 이용해주세요.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '로그인',
+          cancelButtonText: '취소'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({'name':'login'})
+          }
+        })
+      }
 
       var commentForm = $('#create-comment')
  
@@ -208,8 +245,7 @@ export default {
         headers: this.getToken(),
         data :{}
       })
-      .then(res=> {
-        console.log(res)
+      .then(()=> {
       })
       .catch(err => {
         console.log(err)
@@ -237,6 +273,14 @@ export default {
 #create-comment{
   display: none;
 }
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+}
 .show{
   display: block !important;
 }
@@ -253,13 +297,16 @@ export default {
   width:100%;
   /* height:400px; */
   /* border:1px solid black; */
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  /* border-top: 1px solid black;
+  border-bottom: 1px solid black; */
+  /* box-shadow: 0 0 0px 0.7px gray; */
+  /* border-radius: 5px; */
+  /* padding: 15px 15px 15px 15px; */
   position: relative;
 }
 .bottom{
   width:100%;
-  height:100px;
+  /* height:100px; */
   /* border:1px solid black; */
   position: relative;
 }
@@ -270,12 +317,12 @@ export default {
   font-size: 20px;
 }
 .thumbs{
-  position: absolute;
+  /* position: absolute; */
   text-align: end;
   bottom: 0;
 }
 .fa-heart{
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
   cursor: pointer;
 }
 button{
@@ -286,10 +333,29 @@ button{
   cursor: pointer;
 }
 .create-comment-btn{
-  background-color: rgb(86, 149, 233);
+  background-color: rgba(62 ,171 ,111 , 1);
   border-style: none;
   border-radius: 3px;
   color:rgb(255, 255, 255);
   font-weight: bold;
+}
+.current-page{
+  width: 30px;
+  height:23px;
+  margin-left:10px;
+  margin-right:15px;
+  text-align: center;
+}
+.previous-btn{
+  cursor: pointer;
+}
+.next-btn{
+  cursor: pointer;
+}
+.member-name{
+  cursor:pointer;
+}
+.member-name:hover{
+  font-size:18px;
 }
 </style>

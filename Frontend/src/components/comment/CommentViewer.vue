@@ -2,7 +2,6 @@
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
     <div>    
-      {{viewerContent}}  
       <Viewer  
       class="viewer"      
       height="500px" 
@@ -55,12 +54,12 @@ export default {
 
 <style scoped>
 .viewer{
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 8; /* 라인수 */
+  -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
-  word-wrap:break-word; 
+  word-wrap:break-word;  */
   height:100%;
 }
 </style>

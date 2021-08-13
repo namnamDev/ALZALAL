@@ -1,9 +1,10 @@
 <template>
   <div @click="clickArticle" class="boardList col-12 col-ml-12 col-lg-12" id="boardList">
         <div class="feed-card col-12 col-lg-12 col-ml-12">
+            <p>{{this.problemSite}} {{this.problemNo}}번 문제</p>
             <div class="contentsWrap">
-                <p class="title">{{this.articleTitle}}     <span>{{this.algoList}}</span></p>
-                <p>{{this.problemSite}} {{this.problemNo}}</p>                
+                <p class="title">{{this.articleTitle}}     <span class="algoList">{{this.algoList}}</span></p>
+                           
                 <div class="articleContent">{{this.articleContent}}</div>
             </div>
         </div>
@@ -26,20 +27,20 @@
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    components:{
-        
-    },
-    props:{
-        articleContent: String,
-        articleNo: Number,
-        
-    },
-      computed:{
+  components:{
+      
+  },
+  props:{
+      articleContent: String,
+      articleNo: Number,
+      
+  },
+  computed:{
     Content: function() {
       return this.content
     },
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -75,7 +76,7 @@ export default {
         this.item = res.data
         this.articleClass= detail.articleClass,
         this.articleTitle= detail.articleTitle,
-        this.date= detail.articleDate,
+        
         this.commentCount= detail.commentCount,
         this.likeCount= detail.likeCount,
         this.likeState= detail.likeState,
@@ -83,14 +84,39 @@ export default {
         this.memberNo= detail.member.no,
         this.problemSite= detail.problemSite.problemSiteName,
         this.problemNo= detail.problemSite.problemNo,
-        this.language= detail.useLanguage
+        this.language= detail.useLanguag
         this.algoList = detail.algo
+        const date = res.data.articleDetail.articleDate
+        this.date = this.getDate(date)
       })
       .catch(err =>{  
         console.log(err)
       })
   },
   methods: {    
+    getDate: function(date) {
+      const today  = new Date()
+      const timeValue  = new Date(date)
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금전';
+      if (betweenTime < 60) {
+          return `${betweenTime}분전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+          return `${betweenTimeHour}시간전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+          return `${betweenTimeDay}일전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년전`;
+
+    },
     // 게시글 상세 정보 페이지로 이동
     clickArticle: function() {
       localStorage.setItem('articleNo', this.articleNo)
@@ -109,7 +135,7 @@ export default {
         console.log(err)
       })
 
-      this.$router.push({name : 'articleDetail', params:{articleNo:this.articleNo}})
+      this.$router.push({name : 'articleDetail', params:{'Page':'0', articleNo:this.articleNo}})
     },   
     
   },
@@ -148,6 +174,9 @@ export default {
   font-weight: 550;
   margin: 0 0 8px;
   white-space: normal;
+}
+.algoList{
+  font-size: 20px
 }
 .date {
   float: right;

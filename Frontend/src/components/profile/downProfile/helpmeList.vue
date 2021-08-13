@@ -1,15 +1,15 @@
 <template>
   <div class="row">
   <!-- 보낸요청 시작 -->
-  <helpmeItem v-for="item, index in helpmeSendList" :key="index"
-     :helpmeNo="item.helpmeNo"
-     :helpmeContent="item.helpmeContent"
-    >
-    </helpmeItem>
-  <infinite-loading @infinite="infiniteHandler" spinner="sprial">
-        <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
-    </infinite-loading>
-  <!-- 보낸요청 끝 -->
+    <helpmeItem v-for="item, index in helpmeSendList" :key="index"
+      :helpmeNo="item.helpmeNo"
+      :helpmeContent="item.helpmeContent"
+      >
+      </helpmeItem>
+    <infinite-loading @infinite="infiniteHandler" spinner="sprial">
+          <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+      </infinite-loading>
+    <!-- 보낸요청 끝 -->
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import jwt_decode from "jwt-decode";
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -80,7 +80,7 @@ export default {
   },
 	computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }

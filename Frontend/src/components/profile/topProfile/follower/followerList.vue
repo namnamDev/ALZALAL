@@ -1,6 +1,6 @@
 <template>
   <div>
-      <followerListImg v-for="(item,index) in follower" :key="index"
+      <followerListImg class="followerItem" v-for="(item,index) in follower" :key="index"
        v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
       <infinite-loading @infinite="infiniteHandler" spinner="sprial">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
@@ -13,7 +13,7 @@ import followerListImg from '@/components/profile/topProfile/follower/followerLi
 import InfiniteLoading from 'vue-infinite-loading';
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -90,4 +90,8 @@ export default {
 </script>
 
 <style scoped>
+.followerItem:hover{
+  background-color: rgb(216, 216, 216);
+  border-radius: 2%;
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div class="container" v-for="(item, idx) in articleItems" :key="idx">
+    <TimelineWriteArticle/>
+    <div v-for="(item, idx) in articleItems" :key="idx">
       <TimelineItem
         :articleNo="item.articleNo"
         :content="item.articleContent"
@@ -19,12 +20,13 @@
 
 <script>
 import TimelineItem from "@/components/article/TimelineItem.vue";
+import TimelineWriteArticle from "@/components/article/TimelineWriteArticle.vue";
 import axios from "axios";
 import InfiniteLoading from "vue-infinite-loading";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 export default {
-  components: { TimelineItem, InfiniteLoading },
+  components: { TimelineItem, InfiniteLoading ,TimelineWriteArticle},
   data: function () {
     return {
       articleItems: [],
@@ -33,7 +35,7 @@ export default {
   },
   computed: {
     getToken() {
-      const token = localStorage.getItem("jwt");
+      const token = sessionStorage.getItem("jwt");
       const config = {
         Authorization: `Bearer ${token}`,
       };
@@ -67,7 +69,6 @@ export default {
         .then((res) => {
           setTimeout(() => {
             if (res.data.article.length) {
-              //console.log(res.data.article.length)
               this.articleItems = this.articleItems.concat(res.data.article);
               $state.loaded();
               this.page += 1;
@@ -92,11 +93,11 @@ export default {
 
 <style scoped>
 .container {
-  margin-top: 110px;
+  /* margin-top: 110px; */
 }
 @media (max-width: 576px) {
   .container {
-    margin-top: 60px;
+    /* margin-top: 60px; */
   }
 }
 </style>

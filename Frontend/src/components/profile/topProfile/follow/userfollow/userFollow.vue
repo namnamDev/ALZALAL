@@ -1,6 +1,6 @@
 <template>
-    <div class="followlist">
-      <followListImg v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
+    <div>
+      <followListImg class="followlist" v-for="(item,index) in following" :key="index" v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
       <infinite-loading @infinite="infiniteHandler" spinner="sprial">
         <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
       </infinite-loading>
@@ -12,7 +12,7 @@ import followListImg from '@/components/profile/topProfile/follow/userfollow/fol
 import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -88,5 +88,8 @@ export default {
 </script>
 
 <style scoped>
-
+.followlist:hover{
+  background-color: rgb(216, 216, 216);
+  border-radius: 2%;
+}
 </style>

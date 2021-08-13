@@ -10,6 +10,7 @@ import UserModify from '@/views/account/modify.vue'
 import followPage from '@/views/profile/followPage.vue'
 import debateList from '@/views/debate/debateList.vue'
 import CreateArticle from '@/views/createArticle/CreateArticle.vue'
+import createHelpmeAnswer from '@/views/createHelpme/createHelpmeAnswer.vue'
 import Timeline from '@/views/article/Timeline.vue'
 import QnA from '@/views/article/QnA.vue'
 import introduce from '@/views/profile/introduce.vue'
@@ -94,9 +95,10 @@ const routes = [
     component: createDebate
   },
   {
-    path: '/debate/debateDetail',
+    path: '/debate/debateDetail/:disscussionNo',
     name: 'debateDetail',
-    component: debateDetail
+    component: debateDetail,
+    props: true
   },
   {
     path: '/createArticle',
@@ -132,6 +134,12 @@ const routes = [
     path: '/createHelpme',
     name: 'createHelpme',
     component: createHelpme,
+    props: true
+  },
+  {
+    path: '/createHelpmeAnswer/:helpmeNo',
+    name: 'createHelpmeAnswer',
+    component: createHelpmeAnswer,
     props: true
   },
   {

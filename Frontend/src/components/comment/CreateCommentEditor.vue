@@ -30,6 +30,7 @@ import axios from 'axios';
 import $ from 'jquery'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL 
+const token = sessionStorage.getItem('jwt')
 
 export default {
   components: {
@@ -54,7 +55,7 @@ export default {
   },
   methods: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -69,7 +70,16 @@ export default {
     },
     //댓글 작성버튼 클릭
     submit() {
+      if (!token){
+        this.$swal('로그인후 이용해 주세요.');
+        return
+      }
+      if (!this.$refs.toastEditor.invoke('getMarkdown')){
+        this.$swal('내용을 입력해주세요.');
+        return
+      }
       this.$swal('댓글을 작성하였습니다.');
+
       const articleNo = localStorage.getItem('articleNo')
       axios({
         method: 'post',
@@ -85,7 +95,7 @@ export default {
           method: 'get',
           url: `${SERVER_URL}/comment/article/${articleNo}`,
         })   
-        .then(res =>{
+        .then((res) =>{    
           this.$store.dispatch('createArticleComment',res.data.articleComments)
         })
         .catch(err =>{  
@@ -111,3 +121,13 @@ export default {
   },
 }
 </script>
+<style scoped>
+button{
+  background-color: rgb(86, 149, 233);
+  border-style: none;
+  border-radius: 3px;
+  color:rgb(255, 255, 255);
+  padding:4px 8px;
+  font-weight: bold;
+}
+</style>
