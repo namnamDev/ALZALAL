@@ -1,11 +1,12 @@
 <template>
   <div class="row">
-    <div class="col-2 me-5">
-      <i class="fas fa-user" style="font-size: 80px"></i>
+    <div class="col-2 me-5" >
+      <img class="profileImg" :src="getImgSrc" @error="imageError = true" @click="goProfile" alt="프로필사진">
+      <!-- <i class="fas fa-user" style="font-size: 80px; cursor:pointer;" @click="goProfile"></i> -->
     </div>
     <div class="col ms-4">
 
-      <div class="row">
+      <div class="row" @click="goProfile" style="cursor:pointer;">
         {{member.name}}
       </div>
 
@@ -44,7 +45,16 @@ export default {
   created() {
     this.followState = this.member.followState
   },
+  computed:{
+    getImgSrc(){
+      return `${SERVER_URL}/profile/img/${this.member.no}`;
+    }
+  },
   methods: {
+    goProfile() {
+      localStorage.setItem('userPk',this.member.no)
+      this.$router.push({'name':'profilePage', params:{userPk:this.member.no}})
+    },
     getToken() {
       const token = sessionStorage.getItem("jwt");
       const config = {
@@ -120,5 +130,10 @@ export default {
 .request:hover{
   background-color: rgba(161, 161, 161, 0.514);
   transform: scale(1.1);
+}
+.profileImg {
+    width: 85px;
+    height: 85px;
+    border-radius: 75%;
 }
 </style>

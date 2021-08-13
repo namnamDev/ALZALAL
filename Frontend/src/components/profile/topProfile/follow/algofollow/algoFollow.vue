@@ -1,10 +1,12 @@
 <template>
     <div>
       <div class="follow" v-for="item,index in algo" :key="index">
-        <div class="user col-10">
+        <div class="user col-8 col-sm-8 col-lg-8">
             <span class="problem">
             {{item}}
             </span>
+        </div>
+        <div class="user col-4 col-sm-4 col-lg-4">
             <span class="followBtn">
               <algoFollowBtn :algo="item"/>
             </span>
@@ -80,46 +82,24 @@ export default {
   margin-top: 30px;
   font-size: 22px;
   font-weight: 700;
-  margin-left: 100px;
+  margin-left: 30px;
   
 }
 .problem{
   font-weight: 550;
   font-size: 22px;
 }
-.followBtn {
-  border-radius: 10%;
-  border: solid 0.5px skyblue;
-  
-  width: 30%;
-  margin-left: 30px;
-}
+
 @media (max-width:768px) {
   .user{
-  margin-top: 30px;
-  font-size: 15px;
-  font-weight: 700;
-  margin-left: 30px;
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-left: 30px;
   
-}
-  .followBtn {
-    border-radius: 10%;
-    border: solid 0.5px skyblue;
-    margin-left: 0;
-    
-
   }
 }
-.btn{
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .1rem;
-  font-size: 15px;
-}
-#clickFollowing:hover {
-  background-color:#a1d4e2;
-}
-#clickFollower:hover{
-  background-color: #a1d4e2;
+.followBtn{
+  margin-left: -50px;
 }
 </style>

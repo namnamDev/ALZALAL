@@ -49,7 +49,6 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <!-- <span class="username">{{userEmail}}</span> -->
                 <span class="imageSection">
                   <img class="profileImg" :src="imgsrc" @error="imageError = true" alt="프로필사진">
                 </span>
@@ -112,6 +111,9 @@ export default {
     SearchBar,
     NotificationList,
   },
+  created() {
+    console.log(this.getNotify)
+  },
   data(){
     return{
       imgsrc: `${SERVER_URL}/profile/img/${userpk}`,
@@ -149,7 +151,7 @@ export default {
     },
     
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -200,7 +202,7 @@ export default {
       localStorage.setItem("userPk",userpk)
       // if(!localStorage.getItem('userPk')){
       // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
-      location.href=`http://localhost:8080/profilePage/${userpk}`
+      location.href=`/profilePage/${userpk}`
       
     },
     login: function() {

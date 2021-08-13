@@ -2,13 +2,13 @@
   <div>
     <div class="row">
       <div class="col-4 col-lg-4">
-        <button class="btn" @click="changeComponent('userfollow')">userfollow</button>
+        <button class="btn1" id="userfollow" @click="changeComponent1('userfollow')">User</button>
       </div>
       <div class="col-4 col-lg-4">
-        <button class="btn" @click="changeComponent('problemfollow')">problemfollow</button>
+        <button class="btn1" id="problemfollow" @click="changeComponent2('problemfollow')">Problem</button>
       </div>
       <div class="col-4 col-lg-4">
-        <button class="btn" @click="changeComponent('algofollow')">algofollow</button>
+        <button class="btn1" id="algofollow" @click="changeComponent3('algofollow')">Algo</button>
       </div>
     </div>
     <div class="tab-item">
@@ -33,9 +33,33 @@ export default {
       return { comp: 'userfollow' }
   },
   methods: {
-      changeComponent: function(componentName) {
-          this.comp = componentName
-      }
+      changeComponent1: function(componentName) {
+        this.comp = componentName
+        document.getElementById('userfollow').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('userfollow').style.color = 'white'
+        document.getElementById('problemfollow').style.backgroundColor = 'white'
+        document.getElementById('problemfollow').style.color = 'black'
+        document.getElementById('algofollow').style.backgroundColor = 'white'
+        document.getElementById('algofollow').style.color = 'black'
+      },
+      changeComponent2: function(componentName){
+        this.comp = componentName
+        document.getElementById('userfollow').style.backgroundColor = 'white'
+        document.getElementById('userfollow').style.color = 'black'
+        document.getElementById('problemfollow').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('problemfollow').style.color = 'white'
+        document.getElementById('algofollow').style.backgroundColor = 'white'
+        document.getElementById('algofollow').style.color = 'black'
+      },
+      changeComponent3: function(componentName) {
+        this.comp = componentName
+        document.getElementById('userfollow').style.backgroundColor = 'white'
+        document.getElementById('userfollow').style.color = 'black'
+        document.getElementById('problemfollow').style.backgroundColor = 'white'
+        document.getElementById('problemfollow').style.color = 'black'
+        document.getElementById('algofollow').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('algofollow').style.color = 'white'
+      },
   }
 }
 </script>
@@ -43,17 +67,24 @@ export default {
 <style scoped>
 .row{
   margin-top: 30px;
-  margin-left: -50px;
 }
-.btn{
-  width:200px;
+.btn1{
+  width:150px;
+  height: 40px;
   font-size:15px;
   font-weight: 550;
+  border-radius: 5%;
+  margin-left: -20px;
+  border: none;
 }
 .tab-item {
   margin-top: 20px;
 }
-.btn:hover{
-  background-color: antiquewhite;
+.btn1:hover{
+  background-color: rgb(216, 216, 216);
+}
+#userfollow{
+  background-color: rgb(62, 171, 111);
+  color: white;
 }
 </style>

@@ -1,10 +1,8 @@
 <template>
-  <div class="container py-5">    
-    <div class="row mt-5">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-1">        
-      </div>
+  <div class="container">    
+    <div class="row main">
 
-      <div class="col-lg-6 col-md-10 col-sm-9 col-10 mt-5">   
+      <div class="col-lg-6 col-md-10 col-sm-9 col-10 mt-4">   
         <div class="row ms-5 ps-5">
           총 {{articleCount}}명의 유저가 검색되었습니다.
         </div>    
@@ -109,7 +107,7 @@ export default {
   -webkit-box-shadow : 0 0px 10px rgba(0, 0, 0, 0.08);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.12);
   border-radius: 20px;
-  width: 450px;
+  width: 470px;
   height:140px;
   margin:0 auto;
   padding: 25px 20px;

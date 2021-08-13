@@ -1,15 +1,15 @@
 <template>
   <div class="row">
   <!-- 보낸요청 시작 -->
-  <helpmeItem v-for="item, index in helpmeSendList" :key="index"
-     :helpmeNo="item.helpmeNo"
-     :helpmeContent="item.helpmeContent"
-    >
-    </helpmeItem>
-  <infinite-loading @infinite="infiniteHandler" spinner="sprial">
-        <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
-    </infinite-loading>
-  <!-- 보낸요청 끝 -->
+    <helpmeItem v-for="item, index in helpmeSendList" :key="index"
+      :helpmeNo="item.helpmeNo"
+      :helpmeContent="item.helpmeContent"
+      >
+      </helpmeItem>
+    <infinite-loading @infinite="infiniteHandler" spinner="sprial">
+          <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+      </infinite-loading>
+    <!-- 보낸요청 끝 -->
   </div>
 </template>
 

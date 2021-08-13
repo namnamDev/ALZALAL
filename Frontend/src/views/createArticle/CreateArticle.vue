@@ -38,8 +38,8 @@
         <select
           id="select"
           name="problem-site"
-          class="col-sm-2 m-size mb-2"
-          v-model="pSite"
+          class="col-sm-2 m-size mb-2 decorated"
+          v-model="pSite"          
         >
           <option value="boj">백준</option>
           <option value="swea">SWEA</option>
@@ -60,7 +60,7 @@
           v-model="language"
           class="col-sm-2 mb-2 m-size"
         >
-          <option value="Java">Java</option>
+          <option value="Java" class="litags">Java</option>
           <option value="C">C</option>
           <option value="C++">C++</option>
           <option value="Python">python</option>
@@ -331,9 +331,10 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 100%;
+  width: 80%;
   height: 500px;
-  left: 23%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   background-color: white;
 }
@@ -424,6 +425,12 @@ button {
 }
 .m-size{
   margin-right:8px;
+}
+.litags:hover {
+  background-color: yellow;
+}
+select:focus > option:checked { 
+    background: #000 !important;
 }
 
 
