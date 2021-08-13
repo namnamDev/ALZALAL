@@ -169,7 +169,7 @@ export default {
           
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
-          this.algoList = this.articleDetail.algo
+          //this.algoList = this.articleDetail.algo
 
           this.category = this.articleDetail.articleClass
           this.content = this.articleDetail.articleContent
@@ -270,7 +270,7 @@ export default {
           title: this.title,
           content: this.getContent(),
           category: categoryName,
-          algo: this.algoList,
+          algo: algoList,
         }
   
         this.$swal.fire({
@@ -299,46 +299,7 @@ export default {
             })               
           })   
       }      
-    },
-    // then 안에서 호출하고 아래에서는 내가 선택한 방식으로 코드수정하기
-    algoElementInput(algoList) {
-      // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
-      
-      algoList.forEach((element) => {
-        element(function () {
-          let boxAlgo = document.querySelector(".box-algo");
-          const algoHastag = document.createElement("span");
-
-          algoHastag.innerText = element;
-          algoHastag.style.display = "inline-block";
-          algoHastag.style.fontSize = "14px";
-          algoHastag.style.borderRadius = "3px";
-          algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
-          algoHastag.style.padding = "4px 8px";
-          algoHastag.classList.add("me-3");
-          algoHastag.addEventListener("click", function (event) {
-            event.target.remove();
-          });
-          algoHastag.style.cursor = "pointer";
-
-          // console.log(boxAlgo.childNodes)
-          if (boxAlgo.childElementCount != 4) {
-            let flag = true
-            boxAlgo.childNodes.forEach(element => {
-              if (algoHastag.innerText == element.innerText){
-                flag = false
-                
-              }
-              console.log(element.innerText)
-            });
-            if (flag){
-              boxAlgo.appendChild(algoHastag);
-            }            
-          }
-        });
-      });
-    },
-    
+    },    
     clickAlgoInput() {
       // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
       const liTags = document.querySelectorAll("#algo-li")

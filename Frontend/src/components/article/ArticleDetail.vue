@@ -184,6 +184,7 @@ export default {
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
+          console.log(this.articleDetail)
         })
         .catch(err =>{  
           console.log(err)
@@ -277,8 +278,8 @@ export default {
       }
     },
     clickName: function(){
-      localStorage.setItem('userPk',this.memberNo)
-      this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+      localStorage.setItem('userPk',this.articleDetail.member.no)
+      this.$router.push({'name':'profilePage', params:{userPk:this.articleDetail.member.no}})
     }
 
   }
