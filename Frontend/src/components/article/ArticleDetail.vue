@@ -180,7 +180,6 @@ export default {
           headers: this.getToken(),
         })   
         .then(res =>{         
-          console.log(res.data.articleDetail)
           this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState

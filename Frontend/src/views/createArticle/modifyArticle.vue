@@ -22,6 +22,7 @@
               @click="clickAlgoInput"
               @keyup="filterFunction"
               @blur="blur"
+              
             />
             <ul id="algo-ul">
               <li id="algo-li" v-for="item,idx in algoList" :key="idx">
@@ -165,11 +166,12 @@ export default {
 
           this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
-          console.log(res.data.articleDetail)
+          
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
           this.algoList = this.articleDetail.algo
-          this.articleClassNo = this.articleDetail.articleClass
+
+          this.category = this.articleDetail.articleClass
           this.content = this.articleDetail.articleContent
           this.title = this.articleDetail.articleTitle
           if(this.articleDetail.articleClass=="A00"){
@@ -180,6 +182,7 @@ export default {
           this.language = this.articleDetail.useLanguage
           this.pSite = this.articleDetail.problemSite.problemSiteName
           this.pNum = this.articleDetail.problemSite.problemNo
+          
         })
         .catch(err =>{  
           console.log(err)
@@ -256,11 +259,17 @@ export default {
         boxAlgo.forEach((element) => {
           algoList.push(element.innerText);
         });
+        let categoryName=''
+        if(this.category=='solution'){
+            categoryName='A01'
+        }else{this.category=='QnA'}{
+            categoryName='A00'
+        }
         const articleNo = localStorage.getItem('articleNo')
         const data = {
           title: this.title,
           content: this.getContent(),
-
+          category: categoryName,
           algo: this.algoList,
         }
   
@@ -291,7 +300,44 @@ export default {
           })   
       }      
     },
+    // then 안에서 호출하고 아래에서는 내가 선택한 방식으로 코드수정하기
+    algoElementInput(algoList) {
+      // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
+      
+      algoList.forEach((element) => {
+        element(function () {
+          let boxAlgo = document.querySelector(".box-algo");
+          const algoHastag = document.createElement("span");
 
+          algoHastag.innerText = element;
+          algoHastag.style.display = "inline-block";
+          algoHastag.style.fontSize = "14px";
+          algoHastag.style.borderRadius = "3px";
+          algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+          algoHastag.style.padding = "4px 8px";
+          algoHastag.classList.add("me-3");
+          algoHastag.addEventListener("click", function (event) {
+            event.target.remove();
+          });
+          algoHastag.style.cursor = "pointer";
+
+          // console.log(boxAlgo.childNodes)
+          if (boxAlgo.childElementCount != 4) {
+            let flag = true
+            boxAlgo.childNodes.forEach(element => {
+              if (algoHastag.innerText == element.innerText){
+                flag = false
+                
+              }
+              console.log(element.innerText)
+            });
+            if (flag){
+              boxAlgo.appendChild(algoHastag);
+            }            
+          }
+        });
+      });
+    },
     
     clickAlgoInput() {
       // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
