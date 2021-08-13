@@ -18,7 +18,7 @@
         <div class="middle px-0">
 
             <div class="col text-end px-0" v-if="isMine">
-              <span style="cursor:pointer">수정</span> | 
+              <span style="cursor:pointer">수정</span>  
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
             <div class="viewer">
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="bottom mt-3">
+        <div class="bottom my-3">
           <div>
             <div class="col thumbs">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
@@ -35,7 +35,7 @@
                 {{likeCount}}
               </span>
             </div>
-            <button class="create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
+            <button class="my-3 create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :articleNo="articleDetail.articleNo"/>
             </div>

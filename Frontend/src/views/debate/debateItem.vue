@@ -1,7 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-0"></div>
-    <div class="debate col-lg-6 col-md-10 col-sm-9 col-12">
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div class="article-box col-lg-8 col-md-10 col-sm-9 col-10" @click="clickDebate">
         <div class="contentsWrap" @click="clickDebate">
             <p class="title">{{this.discussCompName}}     <span>{{this.disscussCompProblem}}</span></p>
             <p>{{this.discussCompHostName}}</p>                
@@ -127,7 +126,20 @@ export default {
   color:rgba(0, 0, 0, .5);
   
 }
+
+.like-comment {
+  text-align: end;
+}
 .comment{
   margin-right: 30px;
+}
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
 }
 </style>

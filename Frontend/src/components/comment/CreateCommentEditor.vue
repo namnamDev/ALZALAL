@@ -123,7 +123,7 @@ export default {
 </script>
 <style scoped>
 button{
-  background-color: rgb(86, 149, 233);
+  background-color: rgba(62 ,171 ,111 , 1);
   border-style: none;
   border-radius: 3px;
   color:rgb(255, 255, 255);
