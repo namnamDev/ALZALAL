@@ -22,7 +22,6 @@ import jwt_decode from 'jwt-decode'
 import $ from 'jquery'
 
 
-
 export default {
   name: "App",
   data(){
