@@ -49,7 +49,6 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <!-- <span class="username">{{userEmail}}</span> -->
                 <span class="imageSection">
                   <img class="profileImg" :src="imgsrc" @error="imageError = true" alt="프로필사진">
                 </span>
