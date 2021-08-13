@@ -1,54 +1,49 @@
 <template>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-lg-3 col-md-2 col-sm-3 col-3"></div>
-      <div class="col-lg-6 col-md-10 col-sm-9 col-6 content">
-       
-        <div class="row top mb-5">
-          <div class="row mt-5">
-            <div class="col clickName"  @click="clickName">   
-            {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}   
-             <div><p class="status">{{getStatus}}</p></div>     
-              <p class="probleminfo">{{this.problemSiteName}} {{this.problemNo}}번 문제</p>
-              <div class="fromto">
-                <span class="username">{{this.helpmeSenderName}}</span>님이 <span class="username">{{this.helpmeReceptorName}}</span>님에게 요청한 문제
-              </div>
-               
+  <div class="animate__animated animate__fadeInUp my-4 main">
+      <div class="article-box col-lg-6 col-md-10 col-sm-9 col-10">
+        <div>
+          <div class="title">
+            <span class="username">{{this.helpmeSenderName}}</span>님이 <span class="username">{{this.helpmeReceptorName}}</span>님에게 요청한 문제
+          </div>
+          <div class="row">
+            <div class="col text-end text-secondary">
+             {{helpmeDate | moment("YYYY-MM-DD HH:mm:ss")}}
             </div>
           </div>
         </div>
 
-        <div class="row middle py-4 px-0">
-          <div class="row mb-5">
-            <div>
-                {{this.helpmeContent}}
+        <div class="middle px-0">
+
+            <div class="col text-end px-0" v-if="isSender">
+              <span @click="modifyArticle" style="cursor:pointer">수정</span> | 
+              <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
-            
-            <div class="col thumbs mb-3">
+            <div class="viewer">
+              {{this.helpmeContent}}
+            </div>
+        </div>
+
+        <div class="bottom mt-3">
+          <div>
+            <div class="col thumbs">
               <i class="fas fa-heart" @click="clickLike" v-if="likeState"></i>
               <i class="far fa-heart" @click="clickLike" v-else></i>
-              <span class="ms-2" >
-                {{this.likeCount}}
+              <span >
+                {{likeCount}}
               </span>
             </div>
-
-          </div>
-        </div>
-
-        <div class="row bottom my-3">
-          <div class="row">
-            <button class="mb-4 wrtieComment" @click="clickAlgoInput">댓글쓰기</button>
+            <button class="create-comment-btn" @click="clickCreateComment">댓글쓰기</button>
             <div id="create-comment">
               <CreateComment :helpmeNo="this.helpmeNo"/>
             </div>
           </div>
-          <div class="row my-3" v-for="comment,idx in getComments" :key="idx">
+          <br/>
+          <div class="row" v-for="comment,idx in getComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-          <div class="row mb-5 py-5">
+        <div class="row mb-1 my-1">
             <div class="col text-center">
               <span class="previous-btn" @click="clickPreviousBtn">previous</span>
-              <!-- <span class="mx-4" @click="click1">1</span>/ -->
               <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
               /<span class="mx-4">{{commentCount}}</span>
               <span class="next-btn" @click="clickNextBtn">next</span>
@@ -58,13 +53,12 @@
       </div>
     
     </div>
-  </div>
 </template>
 
 <script>
 import Comment from '@/components/comment/CommentHelpmeItem.vue'
 import CreateComment from '@/views/createHelpme/createHelpmeComment.vue'
-
+import jwt_decode from 'jwt-decode'
 import Vue from "vue";
 import vueMoment from "vue-moment";
 import axios from 'axios';
@@ -121,6 +115,21 @@ export default {
         status =  '답변완료'
       }
       return status
+    },
+    isSender: function() {
+      const token = sessionStorage.getItem('jwt')
+      let username = '';
+      if (token) {
+        const decoded = jwt_decode(token)
+        username = decoded.name
+        if (username == this.helpmeSenderName){
+          return true
+        }
+        else{
+          return false
+        }
+      }
+      return false
     }
 
   },
@@ -143,6 +152,41 @@ export default {
     this.problemSiteName = helpme.problemSite.problemSiteName
   },
   methods: {
+
+    modifyArticle: function(){
+      this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+    },
+
+    deleteArticle: function() {
+      const helpmeNo = localStorage.getItem('helpmeNo')
+      this.$swal.fire({
+        title: '글을 삭제하시겠습니까?',
+        text: "삭제하시면 다시 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소'
+      }).then((result) => {
+        if (result.value) {
+          axios({
+            method: 'delete',
+            url: `${SERVER_URL}/helpme/${helpmeNo}`,
+            headers: this.getToken(),
+          })   
+          .then(() =>{
+            this.$router.push({name: 'profilePage'})
+          })
+          .catch(err =>{  
+            console.log(err)
+          }) 
+        }
+      })
+      
+    },
+
+
     clickNextBtn: function() {
       if (Number(this.Page) < this.commentCount -1){
         const page = String(Number(this.Page) + 1)
@@ -255,55 +299,63 @@ export default {
 </script>
 
 <style scoped>
-.wrtieComment{
-  background-color: rgb(62, 171, 111);
-  color: white;
-  border: none;
-  font-size: 18px;
-  
-  border-radius: 10%;
-}
 #create-comment{
   display: none;
+}
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
 }
 .show{
   display: block !important;
 }
+
+.container{
+  margin-top: 100px;
+}
 .top{
   width:100%;
+  height:100px;
   /* border:1px solid black; */
 }
 .middle{
   width:100%;
   /* height:400px; */
   /* border:1px solid black; */
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  /* border-top: 1px solid black;
+  border-bottom: 1px solid black; */
+  /* box-shadow: 0 0 0px 0.7px gray; */
+  /* border-radius: 5px; */
+  /* padding: 15px 15px 15px 15px; */
   position: relative;
+}
+.viewer{
+  font-size: 20px;
 }
 .bottom{
   width:100%;
-  height:100px;
+  /* height:100px; */
   /* border:1px solid black; */
   position: relative;
 }
-.probleminfo{
-  font-size: 30px;
-   font-weight: 550;
-}
 .title{
-  font-size:40px;
+  font-size:26px;
+  font-weight: 550;
 }
 .fa-thumbs-up{
   font-size: 20px;
 }
 .thumbs{
-  position: absolute;
+  /* position: absolute; */
   text-align: end;
   bottom: 0;
 }
 .fa-heart{
-  color: red;
+  color: rgba(62 ,171 ,111 , 1);
   cursor: pointer;
 }
 button{
@@ -314,7 +366,7 @@ button{
   cursor: pointer;
 }
 .create-comment-btn{
-  background-color: rgb(86, 149, 233);
+  background-color: rgba(62 ,171 ,111 , 1);
   border-style: none;
   border-radius: 3px;
   color:rgb(255, 255, 255);
@@ -338,14 +390,5 @@ button{
 }
 .member-name:hover{
   font-size:18px;
-}
-.fromto{
-  font-size: 18px;
-}
-.username{
-  font-weight: 500;
-}
-.status{
-  font-weight: 550;
 }
 </style>

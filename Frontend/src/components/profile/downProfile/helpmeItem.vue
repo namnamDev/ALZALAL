@@ -176,6 +176,17 @@ export default {
     overflow: hidden;
     
 }
+@media (max-width:692px) {
+  .article-box {
+  background: white;
+  width: 400px;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+}
  .contentsWrap {
         box-sizing: border-box;
         padding: 12px;

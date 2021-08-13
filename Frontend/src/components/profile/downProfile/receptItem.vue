@@ -263,6 +263,17 @@ export default {
 .date {
   float: right;
 }
+@media (max-width:692px) {
+  .article-box {
+  background: white;
+  width: 400px;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+}
 .answer{
   background-color: rgb(62, 171, 111);
   color: white;

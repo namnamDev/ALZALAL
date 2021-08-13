@@ -52,7 +52,7 @@
 
       <div class="row">
         <div class="col content ">
-          <Viewer id="viewer" :viewerText="content" />
+          <Viewer id="viewer" :viewerText="articleContent" />
         </div>
       </div>
 
@@ -70,11 +70,12 @@
 </template>
 
 <script>
+import Viewer from '@/components/article/ThumbnailViewer.vue'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
-      
+      Viewer,
   },
   props:{
       articleContent: String,
@@ -130,7 +131,7 @@ export default {
         this.memberNo= detail.member.no,
         this.problemSite= detail.problemSite.problemSiteName,
         this.problemNo= detail.problemSite.problemNo,
-        this.language= detail.useLanguag
+        this.language= detail.useLanguage
         this.algoList = detail.algo
         const date = res.data.articleDetail.articleDate
         this.date = this.getDate(date)
@@ -209,6 +210,17 @@ export default {
   padding: 15px 15px;
   /* height: 400px; */
   cursor: pointer;
+}
+@media (max-width:692px) {
+  .article-box {
+  background: white;
+  width: 400px;
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
 }
 .article-box:hover {
   box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);

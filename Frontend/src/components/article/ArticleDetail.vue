@@ -18,7 +18,7 @@
         <div class="middle px-0">
 
             <div class="col text-end px-0" v-if="isMine">
-              <span style="cursor:pointer">수정</span> | 
+              <span @click="modifyArticle" style="cursor:pointer">수정</span> | 
               <span @click="deleteArticle" style="cursor:pointer">삭제</span>
             </div>
             <div class="viewer">
@@ -85,6 +85,14 @@ export default {
       likeState:'',
       commentCount: 0,
       currentPage: Number(this.Page)+1,
+      articleClassNo:'',
+      articleContent:'',
+      articleTitle:'',
+      articleNo:'',
+      algo:'',
+      problemSiteName:'',
+      problemSiteNo:'',
+      useLanguage:'',
     }
   },
 
@@ -171,8 +179,8 @@ export default {
           url: `${SERVER_URL}/article/article/${articleNo}`,
           headers: this.getToken(),
         })   
-        .then(res =>{          
-
+        .then(res =>{         
+          console.log(res.data.articleDetail)
           this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
@@ -182,6 +190,15 @@ export default {
           console.log(err)
         })     
     },
+
+    // 게시글 수정
+    modifyArticle(){
+      const articleNo = localStorage.getItem('articleNo')
+      this.$router.push({name: 'modifyArticle', params:{
+        articleNo: articleNo,
+        }})
+    },
+
 
     //댓글 리스트 불러오기
     getCommentList:function() {
