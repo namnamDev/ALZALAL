@@ -136,6 +136,9 @@ public class Member_FollweRepositoryImpl
 											.from(qaf).where(qaf.memberNo.no.eq(nowLoginMemberNo))
 											)))
 						)
+					.or(//자기가 작성한 글도 나오게
+							qa.member.no.eq(nowLoginMemberNo)							
+						)
 					)
 				)
 			
