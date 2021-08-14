@@ -81,6 +81,9 @@ export default {
   display: flex;
   margin-left: 30px;
 }
+.follow:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 .user{
   margin-top: 30px;
   font-size: 22px;

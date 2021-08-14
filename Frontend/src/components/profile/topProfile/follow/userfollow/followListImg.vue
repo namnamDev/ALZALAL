@@ -7,10 +7,10 @@
       </div>
       <div class="user col-7 col-sm-7 col-lg-7">
           <span class="userName">
-          <button class="btn" @click="clickName">{{name}}</button>
+          <button class="btnName" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-2 col-sm-2 col-lg-2">
+      <div class="user col-2 col-sm-2 col-lg-2" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
           <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
@@ -140,7 +140,9 @@ export default {
   font-weight: 550;
   margin-top: 10px;
 }
-
+.followBtn{
+  
+}
 @media (max-width:768px) {
 .user{
   margin-top: 5px;
@@ -163,10 +165,19 @@ export default {
 }
 .btn{
   padding: 0.5rem 1.5rem;
-  width:110px;
+  width:120px;
+  font-weight: 700;
+  font-size: 17px;
+  border-radius: 5%;
+}
+.btnName{
+  padding: 0.5rem 1.5rem;
+  
   font-weight: 700;
   font-size: 15px;
   border-radius: 5%;
+  background-color: white;
+  border:none;
 }
 
 

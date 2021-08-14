@@ -90,8 +90,8 @@ export default {
 </script>
 
 <style scoped>
-.followerItem:hover{
+/* .followerItem:hover{
   background-color: rgb(216, 216, 216);
   border-radius: 2%;
-}
+} */
 </style>

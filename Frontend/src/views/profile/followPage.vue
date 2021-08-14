@@ -72,11 +72,12 @@ export default {
   }
 }
 .btn1{
-  width:200px;
+  width:100%;
   font-size:25px;
   font-weight: 550;
   border-radius: 5%;
   border: none;
+
 }
 .tab-item {
   margin-top: 20px;

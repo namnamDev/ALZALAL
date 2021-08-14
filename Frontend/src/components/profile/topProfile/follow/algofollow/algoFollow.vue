@@ -75,6 +75,9 @@ export default {
 .follow {
   display: flex;
 }
+.follow:hover{
+ box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 .nav-link{
   font-weight: 700;
 }
@@ -100,6 +103,6 @@ export default {
   }
 }
 .followBtn{
-  margin-left: -50px;
+  
 }
 </style>

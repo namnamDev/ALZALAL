@@ -88,8 +88,5 @@ export default {
 </script>
 
 <style scoped>
-.followlist:hover{
-  background-color: rgb(216, 216, 216);
-  border-radius: 2%;
-}
+
 </style>

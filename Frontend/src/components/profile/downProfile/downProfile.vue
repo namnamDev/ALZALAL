@@ -99,7 +99,7 @@ export default {
   box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 }
 .btn{
-  width:180px;
+  width:100%;
   font-size:15px;
   font-weight: 550;
 }

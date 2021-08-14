@@ -5,20 +5,17 @@
           <img class="profileImg"  :src="imgsrc" alt="Img">
           
       </div>
-      <div class="user col-6 col-sm-6 col-lg-6">
+      <div class="user col-7 col-sm-7 col-lg-7">
           <span class="userName">
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-2 col-sm-2 col-lg-2">
+      <div class="user col-2 col-sm-2 col-lg-2" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
             <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
             <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
       </div>      
-      <div class="user col-1 col-sm-1 col-lg-1">
-
-      </div>
   </div>
 </template>
 
