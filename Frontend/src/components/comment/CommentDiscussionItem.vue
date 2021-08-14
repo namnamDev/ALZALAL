@@ -61,7 +61,7 @@ export default {
 
   computed: {
     date: function() {
-      return this.getDate(this.comment.discussionCommentDate)
+      return this.getDate(this.comment.discussCommentDate)
     },
     isMine: function() {
       const token = sessionStorage.getItem('jwt')
