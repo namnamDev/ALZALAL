@@ -116,21 +116,31 @@ export default {
         
       }
       console.log(data)
-      axios({
-        method: 'put',
-        url: `${SERVER_URL}/helpme/${this.helpmeNo}`,
-        data: data,
-        headers: this.getToken(),
-      })   
-      .then(res =>{
-        console.log(res);
-        alert("수정 완료!")
-        this.$router.push({ name: 'profilePage' })       
-      })
-      .catch(err =>{  
-        console.log(err)
-        console.log(this.getToken())
-      })
+       this.$swal.fire({
+          text: "글을 수정하시겠습니까?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인',
+          cancelButtonText: '취소'
+          }).then(() => {          
+            axios({
+              method: 'put',
+              url: `${SERVER_URL}/helpme/${this.helpmeNo}`,
+              data: data,
+              headers: this.getToken(),
+            })   
+            .then(res =>{
+              console.log(res);
+              
+              this.$router.push({ name: 'profilePage' })       
+            })
+            .catch(err =>{  
+              console.log(err)
+              console.log(this.getToken())
+            })
+          })
     },
   },
 };

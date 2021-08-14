@@ -154,7 +154,20 @@ export default {
   methods: {
 
     modifyArticle: function(){
-      this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+      this.$swal.fire({
+        title: '글을 수정하시겠습니까?',
+        text: "글 수정 중에도 취소가 가능합니다",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
+      }).then((result) => {
+        if (result.value) {
+        this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+        }
+      })
     },
 
     deleteArticle: function() {
@@ -166,8 +179,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '삭제',
-        cancelButtonText: '취소'
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
       }).then((result) => {
         if (result.value) {
           axios({

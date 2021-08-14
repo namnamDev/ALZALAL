@@ -11,8 +11,8 @@
             <p @click="clickHelpmeName" class="helpmeContent">{{this.helpmeContent}}</p>
           </div>
           <div>
-              <button v-if="clickok" @click="clickOk" class="btn">수락하기</button>
-              <button v-if="clickno" @click="clickNo" class="btn">거절하기</button>
+              <button v-if="clickok" @click="clickOk" class="responseBtn">수락하기</button>
+              <button v-if="clickno" @click="clickNo" class="refuseBtn">거절하기</button>
           </div>
           
           <div class="btn-group wrap">
@@ -155,38 +155,65 @@ export default {
 
       },    
       clickOk: function(){
-        this.clickanswer = true;
-        this.clickno = false;
-        this.clickok = false;
-        axios({
-          method: 'post',
-          url:`${SERVER_URL}/helpme/state/${this.helpmeNo}`,
-          data: {
-            'answer':'accept'
-          },
-          headers: this.getToken
-        }).then(res =>{
-          console.log(res)
-        }).catch(err =>{
-          console.log(err)
-        })
+        this.$swal.fire({
+        title: '요청을 수락하시겠습니까?',
+        text: "수락한 요청은 이후에 취소가 불가능합니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
+      }).then((result) => {
+          if (result.value) {
+            this.clickanswer = true;
+            this.clickno = false;
+            this.clickok = false;
+            axios({
+              method: 'post',
+              url:`${SERVER_URL}/helpme/state/${this.helpmeNo}`,
+              data: {
+                'answer':'accept'
+              },
+              headers: this.getToken
+            }).then(res =>{
+              this.$swal('답변하기를 통해 풀이해주세요.');
+              console.log(res)
+            }).catch(err =>{
+              console.log(err)
+            })
+          }
+      })
       },
       clickNo: function(){
-        this.clickanswer = false;
-        this.clickok = false;
-        this.clickno = false;
-        axios({
-          method: 'post',
-          url:`${SERVER_URL}/helpme/state/${this.helpmeNo}`,
-          data: {
-            'answer':'reject'
-          },
-          headers: this.getToken
-        }).then(res =>{
-          console.log(res)
-        }).catch(err =>{
-          console.log(err)
-        })
+        this.$swal.fire({
+        title: '요청을 거절하시겠습니까?',
+        text: "한 번 거절한 요청은 다시 답변할 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
+      }).then((result) => {
+          if (result.value) {
+            this.clickanswer = false;
+            this.clickok = false;
+            this.clickno = false;
+            axios({
+              method: 'post',
+              url:`${SERVER_URL}/helpme/state/${this.helpmeNo}`,
+              data: {
+                'answer':'reject'
+              },
+              headers: this.getToken
+            }).then(res =>{
+              console.log(res)
+            }).catch(err =>{
+              console.log(err)
+            })
+          }
+      })
       },
     // 게시글 상세 정보 페이지로 이동
     clickHelpmeName: function() {
@@ -312,5 +339,19 @@ export default {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+}
+.responseBtn{
+  background-color: white;
+  font-weight: 550;
+  color: rgb(62, 171, 111);
+  border: 1px solid rgb(62, 171, 111);
+  border-radius: 10%;
+}
+.refuseBtn{
+  background-color: white;
+  font-weight: 550;
+  color: rgb(202, 52, 26);
+  border: 1px solid rgb(62, 171, 111);
+  border-radius: 10%;
 }
 </style>

@@ -1,8 +1,9 @@
 <template>
   <div class="row">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="col-lg-6 col-md-10 col-sm-9 col-10">
+    <div class="col-lg-6 col-md-10 col-sm-9 col-10 content">
       <div class="form-wrapper form-wrapper-sm">
+        <span class="header">회원정보수정</span>
         <form @submit.prevent="submitForm" class="form">
           <div>
             <label for="email" align="left">E-mail </label>
@@ -217,15 +218,23 @@ export default{
 
 <style scoped>
 /*--- LAYOUT ---*/
-.row {
+.header{
+  margin-top: 15px;
+  margin-right: 25px;
+  font-size: 30px;
+  font-weight: 550;
+  text-align: right;
+}
+/* .row {
   margin-top: 40px;
-} 
+}  */
 .form-wrapper {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3%;
   padding: 15px 15px;
+  height: 100%;
 }
 .form-wrapper.form-wrapper-sm {
   max-width: 700px;
@@ -234,7 +243,7 @@ export default{
   padding: 0px 0 20px;
 }
 .form {
-	width: 460px;
+	width: 100%;
 	height: 100%;
 }
 .form .validation-text {

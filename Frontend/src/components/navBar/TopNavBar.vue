@@ -188,12 +188,24 @@ export default {
       }
     }, 
     logout: function(){
-      this.$store.dispatch('logout')
-      sessionStorage.removeItem("jwt");
-      sessionStorage.removeItem("refresh");
-      localStorage.removeItem("vuex")
-      localStorage.removeItem("userPk")
-      this.$router.push({name: 'login'})
+      this.$swal.fire({
+          text: "로그아웃 하시겠습니까?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '네',
+          cancelButtonText: '아니요'
+           }).then((result) => {
+             if (result.value) {
+              this.$store.dispatch('logout')
+              sessionStorage.removeItem("jwt");
+              sessionStorage.removeItem("refresh");
+              localStorage.removeItem("vuex")
+              localStorage.removeItem("userPk")
+              this.$router.push({name: 'login'})
+             }
+          })
     },
     modifyUser: function() {
       this.$router.push({'name':'passwordConfirm'})
