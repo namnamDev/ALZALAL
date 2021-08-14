@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import webSocketVuex from "./webSocket";
-import mainVuex from "./mainVuex";
+import webSocketVuex from "@/store/webSocket";
+import mainVuex from "@/store/mainVuex";
 
 Vue.use(Vuex);
 
