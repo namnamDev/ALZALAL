@@ -10,7 +10,7 @@
           <div>
             <p @click="clickHelpmeName" class="helpmeContent">{{this.helpmeContent}}</p>
           </div>
-          <div>
+          <div v-if="myPage">
               <button v-if="clickok" @click="clickOk" class="responseBtn">수락하기</button>
               <button v-if="clickno" @click="clickNo" class="refuseBtn">거절하기</button>
           </div>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div>
-          <div v-if="clickanswer">
+          <div v-if="myPage && clickanswer">
             <button @click="sendAnswer" class="answer">답변하기</button>
           </div>
           <p class="date">{{this.helpmeDate}}</p>
@@ -39,6 +39,13 @@
 
 <script>
 import axios from 'axios';
+import jwt_decode from 'jwt-decode'
+const token = sessionStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     props:{
@@ -87,7 +94,23 @@ export default {
       clickok:true,
       clickno:true,
       clickanswer:false,
+      myPage:''
     }
+  },
+  created: function() {
+        // console.log("target",this.userPk)
+        const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        // let pk = ''
+        // console.log(pk)
+        if(userpk != userPk){
+            // pk = userPk
+            this.myPage = false
+        }else{
+            // pk = userpk
+            this.myPage = true
+        }
+        console.log(this.myPage)
   },
    mounted() {
     axios({

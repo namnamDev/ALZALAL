@@ -51,12 +51,14 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
+  props:{
+    targetPK:Number,
+  },
   data() {
     return {
       pSite: '',
       pNum: '',
       content: '',
-      targetPK: '',
     };
   },
 

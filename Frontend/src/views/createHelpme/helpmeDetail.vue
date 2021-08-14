@@ -64,7 +64,12 @@ import vueMoment from "vue-moment";
 import axios from 'axios';
 import $ from 'jquery';
 Vue.use(vueMoment);
-
+const token = sessionStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'helpmeDetail',
@@ -96,8 +101,10 @@ export default {
       helpmeSenderName: '',
       helpmeStatus:'',
       currentPage: Number(this.Page)+1,
+      myPage: '',
     }
   },
+
   computed: {
 
     getComments: function() {
@@ -150,6 +157,18 @@ export default {
     console.log(this.helpmeStatus)
     this.problemNo = helpme.problemSite.problemNo
     this.problemSiteName = helpme.problemSite.problemSiteName
+    const userPk = localStorage.getItem("userPk")
+        console.log(userPk)
+        // let pk = ''
+        // console.log(pk)
+        if(userpk != userPk){
+            // pk = userPk
+            this.myPage = false
+        }else{
+            // pk = userpk
+            this.myPage = true
+        }
+        console.log(this.myPage)
   },
   methods: {
 

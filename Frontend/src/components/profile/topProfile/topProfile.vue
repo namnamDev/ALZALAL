@@ -28,9 +28,9 @@
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
-                                <li class="countc">{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
-                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
+                                <li class="count">{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
+                                <li class="countc">{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
+                                <li class="countc">{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="row status-intro">
                 <div>
-                    <p align="right" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
+                    <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
                 <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2">
                     <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
@@ -238,16 +238,12 @@ export default {
 </script>
 
 <style scoped>
-.feed-item{
-    
-}
 .fa{
     color: rgb(62, 171, 111) ;
 }
 .top {
     margin-top: 20px;
 }
-
 .profile-image {
     float: left;
     width: 170px;
@@ -291,26 +287,35 @@ i {
   background-color: white;
   color: black;
   border: 1px solid rgb(62, 171, 111);
-  width: 150px;
-  margin-left: 100px;
+  font-weight: 550;
+  width: 120px;
+  margin-left: 70px;
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
   color: white;
-  width: 150px;
-  margin-left: 100px;
+  width: 120px;
+  font-weight: 550;
+  margin-left: 70px;
 }
 .profile-stats {
     margin-top: 1rem;
     display: inline-block;
 }
-.profile-stats li {
+.count{
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1.5;
+    margin-right: 1rem;
+}
+.countc {
     display: inline-block;
     font-size: 20px;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;
 }
+
 .profile-bio {
     font-size: 20px;
     font-weight: 550;
@@ -396,17 +401,7 @@ i {
         margin-left: 40px;
     }
 }
-.btn-unfollow {
-  background-color: white;
-  color: black;
-  border: 1px solid rgb(62, 171, 111);
-  width: 150px;
-}
-.btn-follow{
-  background-color: rgb(62, 171, 111);
-  color: white;
-  width: 150px;
-}
+
 .status-intro{
     margin-top: 20px;
 }

@@ -2,14 +2,22 @@
   <div class="row my-5">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div>
     <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
-      <div class="row">
+      <div class="row" v-if="this.myPage">
             <div class="col-6 col-md-4 col-lg-6 col-xl-4">
               <button class="btn" id="articleList" @click="changeComponent1('articleList')">게시글</button>
             </div>
-            <div class="col-6 col-md-4 col-lg-6  col-xl-4" v-if="this.myPage">
+            <div class="col-6 col-md-4 col-lg-6  col-xl-4">
               <button class="btn" id="helpmeList" @click="changeComponent2('helpmeList')">내가요청한 문제</button>
             </div>
             <div class="col-6 col-md-4 col-lg-6  col-xl-4">
+              <button class="btn" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
+            </div>
+      </div>
+      <div class="row" v-if="!this.myPage">
+            <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+              <button class="btn" id="articleList" @click="changeComponent1('articleList')">게시글</button>
+            </div>
+            <div class="col-6 col-md-6 col-lg-6  col-xl-6">
               <button class="btn" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
             </div>
       </div>
