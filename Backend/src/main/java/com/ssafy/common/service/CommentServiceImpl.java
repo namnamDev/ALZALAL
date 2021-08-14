@@ -24,6 +24,7 @@ import com.ssafy.common.dto.ArticleDTO;
 import com.ssafy.common.dto.Article_CommentDTO;
 import com.ssafy.common.dto.Discuss_CommentDTO;
 import com.ssafy.common.dto.Helpme_CommentDTO;
+import com.ssafy.common.dto.MemberDTO;
 import com.ssafy.common.jwt.util.SecurityUtil;
 import com.ssafy.common.repository.HelpmeRepository;
 import com.ssafy.common.repository.Helpme_CommentRepository;
@@ -35,6 +36,7 @@ import com.ssafy.common.repository.discuss.DiscussRepository;
 import com.ssafy.common.repository.discuss.Discuss_CommentRepository;
 import com.ssafy.common.repository.discuss.Discuss_Comment_LikeRepository;
 import com.ssafy.common.repository.member.MemberRepository;
+import com.ssafy.common.websocket.NotificationSender;
 
 @Service
 @Transactional
@@ -59,6 +61,9 @@ public class CommentServiceImpl implements CommentService{
 	  private Discuss_Comment_LikeRepository disComLiRepo;
 	@Autowired
 	  private Helpme_Comment_LikeRepository helpComLiRepo;
+	@Autowired
+	  private NotificationSender notificationSender;
+	
 	
 	@Override
 	public Map<String, Object> sltMultCommentByArticle(String articleClass,long articlePk,int page){
@@ -85,7 +90,7 @@ public class CommentServiceImpl implements CommentService{
 		}else if(articleClass.equals("discussion")){
 			Discuss article = discussRepo.sltOneArticle(articlePk);
 			if (article != null) {
-		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, Common.PAGE)).orElse(null);
+		    	List<Discuss_CommentDTO> comments = disComRepo.artiComments(articlePk,nowLoginMemberNo,PageRequest.of(page, 50)).orElse(null);
 		    	if (comments.size() == 0) {
 		    		msg = "등록된 댓글이 없습니다.";
 		    	}else {
@@ -152,6 +157,18 @@ public class CommentServiceImpl implements CommentService{
 				comment.setMember(member);
 				comment.setDiscussNo(article);
 				disComRepo.save(comment);
+				disComRepo.flush();
+				
+				//해당 게시글 접속중인 유저들에게 소켓알림 전송
+				Discuss_CommentDTO commentDTO=new Discuss_CommentDTO();
+				commentDTO.setDiscussCommentNo(comment.getDiscussCommentNo());
+				commentDTO.setDiscussNo(articlePk);
+				commentDTO.setMember(new MemberDTO(member.getName(),member.getNo()));
+				commentDTO.setContent(content);
+				commentDTO.setLikeCount(0L);
+				commentDTO.setLikeState(false);
+				commentDTO.setDiscussCommentDate(comment.getDiscussCommentDate());
+				notificationSender.sendDisscussComment(articlePk, commentDTO);
 			}else {
 				msg = "토론게시글이 존재하지 않습니다.";
 			}

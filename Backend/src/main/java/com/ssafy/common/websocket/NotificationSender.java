@@ -3,6 +3,7 @@ package com.ssafy.common.websocket;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import com.ssafy.common.dto.Discuss_CommentDTO;
 import com.ssafy.common.dto.NotificationSocketDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -23,4 +24,10 @@ public class NotificationSender {
 		simpMessagingTemplate.convertAndSendToUser(sessionId,
 				"/notification/count", socketDTO);
 	}
+	
+	public void sendDisscussComment(long discussNo, Discuss_CommentDTO discussComentDTO) {
+		System.out.println("discussNo "+discussNo);
+		simpMessagingTemplate.convertAndSend("/discuss/" + discussNo,discussComentDTO);
+	}
+	
 }

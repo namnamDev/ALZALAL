@@ -4,9 +4,11 @@ package com.ssafy.common.dto;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
 public class Discuss_CommentDTO {
 	private Long discussCommentNo;
 	private Long discussNo;
