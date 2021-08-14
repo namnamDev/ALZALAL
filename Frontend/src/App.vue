@@ -48,7 +48,6 @@ export default {
       // memberPK 받아옴
       this.userpk=jwt_decode(tmp).sub;
       this.headers.Authorization= "Bearer "+ tmp;
-      console.log(this.headers.Authorization)
       this.connect();
     }
   },
@@ -67,6 +66,7 @@ export default {
       this.stompClient = Stomp.over(socket);
       this.stompClient.debug = () => {};
       this.stompClient.connect(this.headers, this.onConnected, this.onError);
+      this.$store.dispatch('createSocketConnection',this.stompClient);
     },
     onConnected: function () {
       this.stompClient.subscribe("/user/notification/count", this.onMessageReceived);
