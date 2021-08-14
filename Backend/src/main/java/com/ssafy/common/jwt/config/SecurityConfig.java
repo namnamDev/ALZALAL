@@ -62,6 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/api/comment/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/algorithmList").permitAll()//알고리즘 리스트 가져오기				
 				.antMatchers("/api/connectNotification/**").permitAll()// 소켓통신 연결			
+				.antMatchers(HttpMethod.GET,"/api/main").permitAll()// 메인 타임라인	
+				
 				
 				.anyRequest().authenticated()
 				// 나머지 API 는 전부 인증 필요
