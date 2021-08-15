@@ -5,14 +5,14 @@
           <img class="profileImg"  :src="imgsrc" alt="Img">
           
       </div>
-      <div class="user col-7 col-sm-7 col-lg-7">
+      <div class="user col-6 col-sm-6 col-lg-6">
           <span class="userName">
           <button class="btnName" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-2 col-sm-2 col-lg-2" align="right">
+      <div class="user1 col-3 col-sm-3 col-lg-3" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
-          <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
+          <button class="btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
           <!-- {{followState}} -->
       </div>      
@@ -135,26 +135,29 @@ export default {
     object-fit: cover;
     display: block;
 }
-
+.user1{
+   margin-top: 10px;
+   margin-left: 50px;
+}
 .user{
   font-weight: 550;
   margin-top: 10px;
 }
-.followBtn{
-  
-}
+
 @media (max-width:768px) {
 .user{
   margin-top: 5px;
 }
-.followBtn {
-  border-radius: 20%;
-  margin-left: 0;
 
 }
+.followBtn{
+  
 }
 .btn-unfollow {
   background-color: white;
+  height: 40px;
+  font-size: 17px;
+  font-weight: 550;
   width:110px;
   color: black;
   border: 1px solid rgb(62, 171, 111);
@@ -163,13 +166,7 @@ export default {
   background-color: rgb(62, 171, 111);
   color: white;
 }
-.btn{
-  padding: 0.5rem 1.5rem;
-  width:120px;
-  font-weight: 700;
-  font-size: 17px;
-  border-radius: 5%;
-}
+
 .btnName{
   padding: 0.5rem 1.5rem;
   

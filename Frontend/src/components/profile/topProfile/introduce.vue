@@ -139,13 +139,15 @@ export default {
   margin-bottom: 0.5rem;
 }
 .btn {
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .25rem;
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width: 120px;
 }
 .btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  background-color: white;
+  color: black;
+  border: 1px solid rgb(62, 171, 111);
+  width: 120px;
 }
 .btn-user{
     opacity: 0.8;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="followerList">
       <followerListImg class="followerItem" v-for="(item,index) in follower" :key="index"
        v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
       <infinite-loading @infinite="infiniteHandler" spinner="sprial">
@@ -90,8 +90,7 @@ export default {
 </script>
 
 <style scoped>
-/* .followerItem:hover{
-  background-color: rgb(216, 216, 216);
-  border-radius: 2%;
+/* .followerList{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 } */
 </style>

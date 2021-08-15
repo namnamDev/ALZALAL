@@ -38,11 +38,11 @@
                     <div class="profile-bio row-lg-4">
                         <details>
                             <summary>Main Language</summary>
-                            <p v-for="item,index in language" :key="index">{{item}}</p>    
+                            <p class="summaryList" v-for="item,index in language" :key="index">- {{item}}</p>    
                         </details>
                         <details>
                             <summary>Problem Site</summary>
-                            <p v-for="item,index in problemsite" :key="index">{{item}}</p> 
+                            <p class="summaryList" v-for="item,index in problemsite" :key="index">- {{item}}</p> 
                         </details>
                         <!-- <p align="left" class="downInfo">Main :
                             <span v-for="item,index in language" :key="index">{{item}}</span>
@@ -112,7 +112,7 @@ export default {
     created: function() {
         // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-         console.log(userPk)
+         
         let pk = ''
         if(userPk){
             pk = userPk
@@ -126,7 +126,7 @@ export default {
             this.myPage = true
             this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
         }
-        console.log(this.pk)
+        
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
@@ -238,9 +238,13 @@ export default {
 </script>
 
 <style scoped>
+.feed-item{
+  /* box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);     */
+}
 .fa{
     color: rgb(62, 171, 111) ;
 }
+
 .top {
     margin-top: 20px;
 }
@@ -336,6 +340,7 @@ i {
   background-color: rgb(62, 171, 111);
   color: white;
   width: 160px;    
+  margin-top: -20px;
 }
 .profile-real-name,
 .profile-stat-count,
@@ -358,6 +363,7 @@ i {
     font-size: 20px;
     font-weight: 400;
     word-wrap: break-word;
+    
 }
 .clickIntro{
     width: 1%;
@@ -405,9 +411,8 @@ i {
 .status-intro{
     margin-top: 20px;
 }
-details{
-}
-summary {
-
+.summaryList{
+    margin-left: 20px;
+    font-size: 18px;
 }
 </style>

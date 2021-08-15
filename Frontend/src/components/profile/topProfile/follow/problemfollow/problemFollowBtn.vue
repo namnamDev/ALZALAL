@@ -67,5 +67,7 @@ export default {
   color: black;
   border: 1px solid rgb(62, 171, 111);
   width: 70%;
+  float: right;
+  margin-right: 10px;
 }
 </style>

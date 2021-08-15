@@ -374,7 +374,7 @@ export default {
   position: relative;
 }
 .title{
-  font-size:26px;
+  font-size:23px;
   font-weight: 550;
 }
 .fa-thumbs-up{

@@ -6,12 +6,12 @@
             {{item.site}} 
             </span>
         </div>
-        <div class="user col-4 col-sm-4 col-lg-4">
+        <div class="user col-5 col-sm-5 col-lg-5">
             <span class="problem">
              {{item.no}}번
             </span>
         </div>
-        <div class="user col-4 col-sm-4 col-lg-4">
+        <div class="user col-3 col-sm-3 col-lg-3">
             <span class="followBtn">
               <problemFollowBtn :site="item.site" :no="item.no"/>
             </span>

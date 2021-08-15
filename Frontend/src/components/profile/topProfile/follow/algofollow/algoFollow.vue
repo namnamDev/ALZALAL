@@ -85,7 +85,7 @@ export default {
   margin-top: 30px;
   font-size: 22px;
   font-weight: 700;
-  margin-left: 30px;
+  
   
 }
 .problem{

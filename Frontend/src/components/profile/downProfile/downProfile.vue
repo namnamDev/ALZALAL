@@ -55,7 +55,7 @@ export default {
   created: function() {
         // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
+        // console.log(userPk)
         // let pk = ''
         // console.log(pk)
         if(userpk != userPk){
@@ -65,7 +65,7 @@ export default {
             // pk = userpk
             this.myPage = true
         }
-        console.log(this.myPage)
+        // console.log(this.myPage)
   },
   methods: {
       changeComponent1: function(componentName) {

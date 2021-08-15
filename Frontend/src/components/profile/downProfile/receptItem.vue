@@ -2,7 +2,7 @@
   <div class="animate__animated animate__fadeInUp my-4 main">
     <div class="article-box col-12 col-ml-12 col-lg-12" id="sendQuiz">
       <div class="feed-card col-12 col-lg-12 col-ml-12">
-        <span class="status">  {{getStatus}}</span>
+        <span class="status" id="status">  {{getStatus}}</span>
         <div class="contentsWrap">
           <span class="probleminfo" @click="clickHelpmeName">{{this.problemSiteName}}  </span>
           <span class="probleminfo" @click="clickHelpmeName">{{this.problemNo}}번 문제</span>
@@ -48,11 +48,11 @@ if (token) {
 }
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-    props:{
+  props:{
         helpmeNo:Number,
         helpmeContent:String,
-    },
-    computed:{
+  },
+  computed:{
     Content: function() {
       return this.content
     },
@@ -70,9 +70,10 @@ export default {
       }else if(this.helpmeStatus =='H01'){
         status =  '답변중'
       }else if(this.helpmeStatus =='H02'){
-        status =  '거절됨'
+        status =  '거절함'
       }else if(this.helpmeStatus =='H03'){
         status =  '답변완료'
+        
       }
       return status
     },
@@ -100,7 +101,7 @@ export default {
   created: function() {
         // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
+        
         // let pk = ''
         // console.log(pk)
         if(userpk != userPk){
@@ -110,7 +111,7 @@ export default {
             // pk = userpk
             this.myPage = true
         }
-        console.log(this.myPage)
+
   },
    mounted() {
     axios({
@@ -199,9 +200,9 @@ export default {
                 'answer':'accept'
               },
               headers: this.getToken
-            }).then(res =>{
+            }).then(() =>{
               this.$swal('답변하기를 통해 풀이해주세요.');
-              console.log(res)
+              
             }).catch(err =>{
               console.log(err)
             })
@@ -230,8 +231,8 @@ export default {
                 'answer':'reject'
               },
               headers: this.getToken
-            }).then(res =>{
-              console.log(res)
+            }).then(() =>{
+              
             }).catch(err =>{
               console.log(err)
             })
@@ -299,6 +300,7 @@ export default {
  }
  .status{
    font-weight: 550;
+   float: right;
  }
 .date {
   float: right;
