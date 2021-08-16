@@ -4,21 +4,21 @@
     <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
       <div class="row" v-if="this.myPage">
             <div class="col-6 col-md-4 col-lg-6 col-xl-4">
-              <button class="btn" id="articleList" @click="changeComponent1('articleList')">게시글</button>
+              <button class="btn1" id="articleList" @click="changeComponent1('articleList')">게시글</button>
             </div>
             <div class="col-6 col-md-4 col-lg-6  col-xl-4">
-              <button class="btn" id="helpmeList" @click="changeComponent2('helpmeList')">내가요청한 문제</button>
+              <button class="btn1" id="helpmeList" @click="changeComponent2('helpmeList')">내가요청한 문제</button>
             </div>
             <div class="col-6 col-md-4 col-lg-6  col-xl-4">
-              <button class="btn" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
+              <button class="btn1" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
             </div>
       </div>
       <div class="row" v-if="!this.myPage">
             <div class="col-6 col-md-6 col-lg-6 col-xl-6">
-              <button class="btn" id="articleList" @click="changeComponent1('articleList')">게시글</button>
+              <button class="btn1" id="articleList" @click="changeComponent1('articleList')">게시글</button>
             </div>
             <div class="col-6 col-md-6 col-lg-6  col-xl-6">
-              <button class="btn" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
+              <button class="btn1" id="receptList" @click="changeComponent3('receptList')">요청받은 문제</button>
             </div>
       </div>
       <div class="row">
@@ -78,6 +78,7 @@ export default {
         document.getElementById('receptList').style.color = 'black'
       },
       changeComponent2: function(componentName){
+        if(this.myPage){
         this.comp = componentName
         document.getElementById('articleList').style.backgroundColor = 'white'
         document.getElementById('articleList').style.color = 'black'
@@ -85,6 +86,7 @@ export default {
         document.getElementById('helpmeList').style.color = 'white'
         document.getElementById('receptList').style.backgroundColor = 'white'
         document.getElementById('receptList').style.color = 'black'
+        }
       },
       changeComponent3: function(componentName) {
         this.comp = componentName
@@ -106,10 +108,13 @@ export default {
 .feed-item{
   box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 }
-.btn{
+.btn1{
   width:100%;
   font-size:15px;
   font-weight: 550;
+  border: none;
+  height: 30px;
+  border-radius: 5%;
 }
 .tab-item {
   margin-top: 20px;

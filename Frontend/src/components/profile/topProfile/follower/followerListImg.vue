@@ -12,8 +12,8 @@
       </div>
       <div class="user col-2 col-sm-2 col-lg-2" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
-            <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
-            <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
+            <button class="btn1 btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn1 btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
       </div>      
   </div>
@@ -166,7 +166,7 @@ export default {
 }
 
 }
-.btn{
+.btn1{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   font-size: 17px;

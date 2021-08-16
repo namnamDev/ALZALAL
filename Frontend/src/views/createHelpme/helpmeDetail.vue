@@ -146,7 +146,7 @@ export default {
     this.helpmeContent = helpme.helpmeContent
     this.helpmeDate = helpme.helpmeDate
     this.helpmeNo = helpme.helpmeNo
-    console.log(this.helpmeNo)
+    
     this.helpmeReceptorNo = helpme.helpmeReceptorNo.no
     this.helpmeSenderNo = helpme.helpmeSenderNo.no
     this.helpmeReceptorName = helpme.helpmeReceptorNo.name
@@ -154,11 +154,11 @@ export default {
     this.commentCount = helpme.commentCount  
     this.likeState = helpme.likeState
     this.helpmeStatus = helpme.helpmeStatus
-    console.log(this.helpmeStatus)
+    
     this.problemNo = helpme.problemSite.problemNo
     this.problemSiteName = helpme.problemSite.problemSiteName
     const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
+        
         // let pk = ''
         // console.log(pk)
         if(userpk != userPk){
@@ -168,21 +168,21 @@ export default {
             // pk = userpk
             this.myPage = true
         }
-        console.log(this.myPage)
+        
   },
   methods: {
 
     modifyArticle: function(){
       this.$swal.fire({
         title: '글을 수정하시겠습니까?',
-        text: "글 수정 중에도 취소가 가능합니다",
+        text: "문제사이트, 문제번호는 변경이 불가능합니다.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: '네',
         cancelButtonText: '아니요'
-      }).then((result) => {
+        }).then((result) => {
         if (result.value) {
         this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
         }

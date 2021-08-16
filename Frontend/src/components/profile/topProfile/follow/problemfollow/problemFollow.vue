@@ -53,12 +53,10 @@ export default {
           return resp.json()
         }).then(data => {
           setTimeout(() => {
-            console.log(data)
             if(data.length) {
               this.problems = this.problems.concat(data)
               $state.loaded()
               this.page += 1
-              console.log("after", this.problems.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(data.length / 10 < 1) {
                 $state.complete()
@@ -93,6 +91,7 @@ export default {
 .problem{
   font-weight: 550;
   font-size: 22px;
+  margin-left: 10px;
 }
 
 @media (max-width:768px) {

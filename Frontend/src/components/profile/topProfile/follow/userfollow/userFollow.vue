@@ -34,9 +34,7 @@ export default {
     }
   },
   created: function() {
-      console.log("target",this.userPk)
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
       if(userPk){
           this.pk = userPk
           this.myPage = false

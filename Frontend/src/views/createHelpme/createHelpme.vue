@@ -105,9 +105,8 @@ export default {
         data: data,
         headers: this.getToken(),
       })   
-      .then(res =>{
-        console.log(res);
-        alert("작성 완료!")
+      .then(() =>{
+        this.$swal('요청이 완료되었습니다.')
         this.$router.push({ name: 'profilePage' })       
       })
       .catch(err =>{  

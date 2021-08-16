@@ -113,7 +113,7 @@ export default {
     NotificationList,
   },
   created() {
-    console.log(this.getNotify)
+    
   },
   data(){
     return{

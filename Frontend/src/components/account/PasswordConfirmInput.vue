@@ -26,7 +26,7 @@
 <script>
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-
+let userpk = localStorage.getItem('userPk')
 export default {
   data() {
 		return {
@@ -58,8 +58,7 @@ export default {
     // }
     
     submitForm: function() {
-      console.log(this.password),
-      console.log(this.getToken)
+
       axios({
             method: 'post',
             url: `${SERVER_URL}/member/checkpw`,
@@ -68,9 +67,9 @@ export default {
               },
             headers: this.getToken,
           })
-          .then(res => {
-            console.log(res);
-            this.$router.push({ name: 'usermodify' })
+          .then(() => {
+
+            this.$router.push({ name: 'usermodify', params:userpk })
         
           })
           .catch(err => {

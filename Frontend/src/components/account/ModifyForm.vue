@@ -4,7 +4,7 @@
     <div class="col-lg-6 col-md-10 col-sm-9 col-10 content">
       <div class="form-wrapper form-wrapper-sm">
         <span class="header">회원정보수정</span>
-        <form @submit.prevent="submitForm" class="form">
+        <form class="form">
           <div>
             <label for="email" align="left">E-mail </label>
             <input id="email" type="text" v-model="email" disabled />
@@ -70,16 +70,19 @@
               </details>
           </div>
           <div>    
-            <button
-              :disabled="!passwordLength || !passwordConfirm || !nameLength"
-              type="submit"
-              class="btn">
-                수정
-            </button>
-            <router-link to="/profilePage"><button class="btn">취소</button></router-link>
             <button @click="deleteUser" class="btn">
                 회원탈퇴
             </button>
+            <button
+              :disabled="!passwordLength || !passwordConfirm || !nameLength"
+              @click="submitForm"
+              class="btn">
+                수정
+            </button>
+            <button @click="gotoBack" class="btn">취소</button>
+            <!-- <button @click="deleteUser" class="btn">
+                회원탈퇴
+            </button> -->
           </div>
         </form>
         
@@ -92,6 +95,7 @@
 import { validatePassword } from '@/utils/passwordConfirm.js'
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+let userpk = localStorage.getItem('userPk')
 export default{
 	data() {
 		return {
@@ -116,11 +120,10 @@ export default{
       headers: this.getToken,
     })
     .then(res => {
-      console.log(res)
+
       this.email = res.data.member.email
       this.form.name = res.data.member.name
-      console.log(res.data.member.problemSiteList)
-      console.log(res.data.member.useLanguageLike)
+
       this.form.use_language = res.data.member.useLanguageLike
       this.form.problem_site = res.data.member.problemSiteList
     })
@@ -155,18 +158,9 @@ export default{
     },
 	},
   methods: {
+    
     submitForm: function () {
-      this.$swal.fire({
-        title: '입력한 정보로 수정하시겠습니까?',
-        text: "다시 회원정보를 수정하실 수 있습니다.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '수정',
-        cancelButtonText: '취소'
-      }).then((result) => {
-        if (result.value) {
+          
           axios({
             method: 'put',
             url: `${SERVER_URL}/member/modify`,
@@ -174,25 +168,23 @@ export default{
             headers: this.getToken
           })
           .then(() => {
-
-            this.$router.push({ name: 'profilePage' })
+            this.$swal('수정이 완료되었습니다.')
+            this.$router.push({ name: 'profilePage', params:userpk })
           })
           .catch(err => {
             alert(err)
           })
-        }
-      })
+
     },
     deleteUser: function(){
       this.$swal.fire({
-        title: '탈퇴하시겠습니까?',
-        text: "탈퇴하시면 다시 복구시킬 수 없습니다.",
+        text: "탈퇴하시겠습니까?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '탈퇴',
-        cancelButtonText: '취소'
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
       }).then((result) => {
         if (result.value) {
           axios({
@@ -210,7 +202,11 @@ export default{
           })
         }
       })
+    },
+    gotoBack: function(){
+      this.$router.push({'name':'profilePage'})
     }
+    
   }
 
 }
@@ -276,7 +272,7 @@ export default{
 .form textarea {
   font-family: inherit;
   font-size: 20px;
-  width: 120%;
+  width: 100%;
   border: 1px solid #dae1e7;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   padding: 0.5rem 0.75rem;
