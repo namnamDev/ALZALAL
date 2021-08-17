@@ -31,9 +31,7 @@ export default {
     }
   },
   components: {
-    // SideMenuBar,
     TopMenuBar,
-    // SearchBar,
     Modal
   },
 

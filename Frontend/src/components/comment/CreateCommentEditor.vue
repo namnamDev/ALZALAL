@@ -17,7 +17,6 @@ import { Editor } from '@toast-ui/vue-editor'
 import 'codemirror/lib/codemirror.css' // codemirror style
 import '@toast-ui/editor/dist/toastui-editor.css' // Editor style
 
-// add dependencies related code-syntax-highlight
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';

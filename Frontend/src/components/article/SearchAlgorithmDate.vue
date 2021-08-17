@@ -131,7 +131,6 @@ export default {
         .then((res) => {
           const data = res.data.articleDetail;
           this.$store.dispatch("createArticleDetail", data);
-          console.log(res);
         })
         .then((err) => {
           console.log(err);
@@ -148,7 +147,6 @@ export default {
             res.data.articleComments
           );
           this.$router.push({ name: "articleDetail", params: { Page: "0" } });
-          // location.href = 'articleDetail'
         })
         .catch((err) => {
           console.log(err);
@@ -203,7 +201,6 @@ export default {
 .hashtag > span {
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221, 223, 230, 1); */
   padding:4px 8px;
   margin-right: 6px;
   display:inline-block;

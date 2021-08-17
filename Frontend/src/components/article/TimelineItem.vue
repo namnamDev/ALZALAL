@@ -188,7 +188,6 @@ export default {
   box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;
-  /* height: 400px; */
   cursor: pointer;
 }
 .article-box:hover {
@@ -212,7 +211,6 @@ export default {
 .middle {
   margin-top: 10px;
   padding: 0 20px;  
-  /* height: 210px; */
 }
 .content {
   overflow: hidden;
@@ -231,7 +229,6 @@ export default {
 .hashtag > span {
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221, 223, 230, 1); */
   padding:4px 8px;
   margin-right: 6px;
   display:inline-block;

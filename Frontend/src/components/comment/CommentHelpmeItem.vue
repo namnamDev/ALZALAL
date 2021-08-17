@@ -120,8 +120,7 @@ export default {
         headers: this.getToken(),
         data :{}
       })
-      .then(res=> {
-        console.log(res)
+      .then(()=> {
       })
       .catch(err => {
         console.log(err)
@@ -167,7 +166,6 @@ export default {
 
 <style scoped>
 .content{
-  /* border: 1px solid black; */
   padding: 10px;
   border-radius: 6px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);

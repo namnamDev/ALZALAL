@@ -118,8 +118,7 @@ export default {
         headers: this.getToken(),
         data :{}
       })
-      .then(res=> {
-        console.log(res)
+      .then(()=> {
       })
       .catch(err => {
         console.log(err)
@@ -182,7 +181,6 @@ export default {
   color:rgb(70, 172, 235);
 }
 .like-btn:hover{
-  /* font-size:17px; */
   color:rgb(56, 74, 245);
 }
 .delete{
