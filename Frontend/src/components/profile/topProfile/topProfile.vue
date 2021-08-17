@@ -60,7 +60,7 @@
                 <div class="introduceline col-lg-3 col-md-3 col-sm-3 col-3 col-xl-3">
 
                 </div>
-                <div v-if="!myPage">
+                <div v-if="!myPage" class="text-end">
                     <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
@@ -292,6 +292,7 @@ i {
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
+  border-style: none;
   color: white;
   border:none;
   width: 120px;
@@ -336,7 +337,8 @@ i {
   background-color: rgb(62, 171, 111);
   color: white;
   width: 160px;    
-  margin-top: -20px;
+  margin-top: 20px;
+  padding: 3px 6px;
 }
 .profile-real-name,
 .profile-stat-count,

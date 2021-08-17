@@ -1,5 +1,5 @@
 <template>
-  <div class="row my-5">
+  <div class="row my-3">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div>
     <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
       <div class="row" v-if="this.myPage">
