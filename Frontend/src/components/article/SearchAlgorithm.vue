@@ -12,8 +12,8 @@
             <div v-if="isOneAlgo">
               <div> 
                 # {{this.includeAlgo[0]}}
-                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
-                <span class="follow-btn" @click="follow" v-else>팔로우</span>
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState && isLogin">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-if="!followingState && isLogin">팔로우</span>
               </div>
             </div>
           </div>
@@ -90,6 +90,15 @@ export default {
   computed: {
     getArticle: function() {
       return this.$store.getters.getSearchArticle
+    },
+    isLogin: function() {
+      const token = sessionStorage.getItem('jwt')
+      if (token){
+        return true
+      }
+      else{
+        return false
+      }
     }
   },
 

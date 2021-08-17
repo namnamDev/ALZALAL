@@ -107,7 +107,7 @@ export default {
   -webkit-box-shadow : 0 0px 10px rgba(0, 0, 0, 0.08);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.12);
   border-radius: 20px;
-  width: 470px;
+  width: 480px;
   height:140px;
   margin:0 auto;
   padding: 25px 20px;

@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -113,7 +114,7 @@ export default {
       return config
     },
     clickItem: function() {
-
+      console.log(this.item)
       const data = {
         notiNo : this.item.notiNo
       }
@@ -123,14 +124,19 @@ export default {
         headers: this.getToken(),
         data : data
       })
-      .then(res=>{
+      .then(()=>{
         this.notiReadStatus = true
-        console.log(res.data)
       })
       .catch(err => {
         console.log(err)
       })
-      if (this.item.notiSubTaskClass != 'NMF'){
+      if(this.item.notiSubTaskClass == 'NHS'){
+        const token = sessionStorage.getItem('jwt')
+        const userpk=jwt_decode(token).sub;
+        localStorage.setItem("userPk",userpk)     
+        location.href=`/profilePage/${userpk}`
+      }
+      else if (this.item.notiSubTaskClass != 'NMF' ){
         localStorage.setItem('articleNo', this.item.notiTargetNo)
         this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
       }

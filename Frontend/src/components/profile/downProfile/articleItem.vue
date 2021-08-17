@@ -205,7 +205,7 @@ export default {
 .article-box {
   background: white;
   width: 700px;
-  box-shadow: 0 0 0px 0.7px gray;
+  /* box-shadow: 0 0 0px 0.7px gray; */
   border-radius: 5px;
   padding: 15px 15px;
   /* height: 400px; */
