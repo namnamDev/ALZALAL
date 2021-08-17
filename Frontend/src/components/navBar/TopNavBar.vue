@@ -108,13 +108,10 @@ export default {
     TimelineIcon,
     QnaIcon,
     DebateIcon,
-    // NotificationIcon,
     SearchBar,
     NotificationList,
   },
-  created() {
-    console.log(this.getNotify)
-  },
+
   data(){
     return{
       imgsrc: `${SERVER_URL}/profile/img/${userpk}`,

@@ -103,11 +103,11 @@ export default {
     },
     isMine: function() {
       const token = sessionStorage.getItem('jwt')
-      let username = '';
+      let sub = '';
       if (token) {
         const decoded = jwt_decode(token)
-        username = decoded.name
-        if (username == this.articleDetail.member.name){
+        sub = decoded.sub
+        if (sub == this.articleDetail.member.no){
           return true
         }
         else{
@@ -184,7 +184,6 @@ export default {
           this.articleDetail = res.data.articleDetail
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
-          console.log(this.articleDetail)
         })
         .catch(err =>{  
           console.log(err)
@@ -243,37 +242,57 @@ export default {
           }
         })
       }
-
-      var commentForm = $('#create-comment')
- 
-      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-      if( commentForm.is(":visible") ){
-          commentForm.slideUp(700);
-      }else{
-          commentForm.slideDown(1000);
+      else{
+        var commentForm = $('#create-comment')
+   
+        // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+        if( commentForm.is(":visible") ){
+            commentForm.slideUp(700);
+        }else{
+            commentForm.slideDown(1000);
+        }
       }
+
     },
     // 게시글 좋아요 누르기
     clickLike: function() {
-      const articleNo = localStorage.getItem('articleNo')
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/like/article/article/${articleNo}`,
-        headers: this.getToken(),
-        data :{}
-      })
-      .then(()=> {
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      if (this.likeState) {
-        this.likeState = false
-        this.likeCount -= 1
+      const token = sessionStorage.getItem('jwt')
+      if(token){
+        const articleNo = localStorage.getItem('articleNo')
+        axios({
+          method: 'post',
+          url: `${SERVER_URL}/like/article/article/${articleNo}`,
+          headers: this.getToken(),
+          data :{}
+        })
+        .then(()=> {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        if (this.likeState) {
+          this.likeState = false
+          this.likeCount -= 1
+        }
+        else{
+          this.likeState = true
+          this.likeCount += 1
+        }
       }
       else{
-        this.likeState = true
-        this.likeCount += 1
+       this.$swal.fire({          
+          text: "로그인 후 이용해주세요.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '로그인',
+          cancelButtonText: '취소'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({'name':'login'})
+          }
+        })
       }
     },
     clickName: function(){

@@ -62,7 +62,6 @@ export default {
 }
 .article-box {
   background: white;
-
   box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;

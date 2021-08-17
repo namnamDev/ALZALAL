@@ -234,6 +234,9 @@ export default {
     height: 75px;
     border-radius: 75%;
 }
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 
 @media (max-width: 767px) {
   .top {

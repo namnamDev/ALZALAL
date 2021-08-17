@@ -88,7 +88,7 @@
         <Editor ref="toastEditor" />
       </div>
       <div class="row mt-2 mb-5 pb-5">
-        <button @click="submit">작성하기</button>
+        <button @click="submit">수정하기</button>
         
       </div>
     </div>
@@ -119,6 +119,8 @@ export default {
       pSite: "",
       language: "",
       algoList: [],
+      algo: [],
+      memberNo: "",
     };
   },
 
@@ -169,7 +171,36 @@ export default {
           
           this.likeState = this.articleDetail.likeState
           this.likeCount= this.articleDetail.likeCount
-          //this.algoList = this.articleDetail.algo
+
+          res.data.articleDetail.algo.forEach(element => {
+            let boxAlgo = document.querySelector(".box-algo");
+            const algoHastag = document.createElement("span");
+
+            algoHastag.innerText = element;
+            algoHastag.style.display = "inline-block";
+            algoHastag.style.fontSize = "14px";
+            algoHastag.style.borderRadius = "3px";
+            algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+            algoHastag.style.padding = "4px 8px";
+            algoHastag.classList.add("me-3");
+            algoHastag.addEventListener("click", function (event) {
+              event.target.remove();
+            });
+            algoHastag.style.cursor = "pointer";
+            if (boxAlgo.childElementCount != 4) {
+              let flag = true
+              boxAlgo.childNodes.forEach(element => {
+                if (algoHastag.innerText == element.innerText){
+                  flag = false
+                  
+                }
+                console.log(element.innerText)
+              });
+              if (flag){
+                boxAlgo.appendChild(algoHastag);
+              }            
+            }
+          });
 
           this.category = this.articleDetail.articleClass
           this.content = this.articleDetail.articleContent
@@ -182,6 +213,7 @@ export default {
           this.language = this.articleDetail.useLanguage
           this.pSite = this.articleDetail.problemSite.problemSiteName
           this.pNum = this.articleDetail.problemSite.problemNo
+          console.log(res.data.articleDetail.member.no)
           
         })
         .catch(err =>{  
@@ -281,22 +313,25 @@ export default {
           cancelButtonColor: '#d33',
           confirmButtonText: '확인',
           cancelButtonText: '취소'
-          }).then(() => {          
-            axios({
-              method: 'put',
-              url: `${SERVER_URL}/article/article/${articleNo}`,
-              data: data,
-              headers: this.getToken(),
-            })   
-            .then(() =>{
-              this.$swal('글을 수정하였습니다.');
-              this.$router.push({ name: 'timeline' })                         
-            })
-            .catch(err =>{  
-              console.log(data)
-              console.log(this.getToken())
-              console.log(err)
-            })               
+          }).then((result) => {          
+            if(result.value){
+              axios({
+                method: 'put',
+                url: `${SERVER_URL}/article/article/${articleNo}`,
+                data: data,
+                headers: this.getToken(),
+              })   
+              .then(() =>{
+                this.$swal('글을 수정하였습니다.');
+                localStorage.setItem('userPk',this.memberNo)
+                this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
+              })
+              .catch(err =>{  
+                console.log(data)
+                console.log(this.getToken())
+                console.log(err)
+              })           
+            }
           })   
       }      
     },    
@@ -377,9 +412,10 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 100%;
+  width: 70%;
   height: 500px;
-  left: 23%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   background-color: white;
 }
@@ -444,19 +480,18 @@ li:hover {
   top: 95px;
 }
 .title {
-  width: 80%;
+  width: 100%;
   /* border: 1px solid black; */
   height: 30px;
   margin-top: 100px;
   padding: 0 0;
 }
 .title > input {
-  width: 68%;
+  width: 100%;
   border-radius: 3px;
 }
 .editor {
-  width: 70%;
-  transform: translateX(-11px);
+  width: 100%;
   margin-top: 20px;
   overflow-wrap: break-word;
 }
@@ -471,11 +506,9 @@ button {
 .m-size{
   margin-right:8px;
 }
-.litags:hover {
-  background-color: yellow;
-}
-select:focus > option:checked { 
-    background: #000 !important;
+
+.row{
+  --bs-gutter-x: 0;
 }
 
 

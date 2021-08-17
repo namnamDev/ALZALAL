@@ -42,7 +42,6 @@ export default {
   },
 
   created(){
-    //document.addEventListener('beforeunload', this.removeVuex())
     if(sessionStorage.getItem("jwt")){
       let tmp=sessionStorage.getItem("jwt");
       // memberPK 받아옴
@@ -71,19 +70,15 @@ export default {
     onConnected: function () {
       this.stompClient.subscribe("/user/notification/count", this.onMessageReceived);
       this.stompClient.send("/notification/connect", JSON.stringify({ no: this.userpk }));
-      // console.log("연결완료");
-      // location.href = '/timeline'
     },
     onMessageReceived:function (payload) {
       let message = JSON.parse(payload.body);
-      console.log(message)
       if (message.new){
         this.$store.dispatch('createNotify')
       }
       else{
         this.$store.dispatch('deleteNotify')
       }
-      // this.$store.dispatch('deleteNotificationList')     
       
     },
     onError:function (error) {

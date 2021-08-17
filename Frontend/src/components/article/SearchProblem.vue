@@ -10,8 +10,8 @@
             <div class="col">
               <div v-if="problem">
                 #{{ problem }} 
-                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
-                <span class="follow-btn" @click="follow" v-else>팔로우</span>
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState && isLogin">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-if="!followingState && isLogin">팔로우</span>
               </div>
             </div>
           </div>
@@ -100,6 +100,15 @@ export default {
     getArticle: function () {
       return this.$store.getters.getSearchArticle;
     },
+    isLogin: function() {
+      const token = sessionStorage.getItem('jwt')
+      if (token){
+        return true
+      }
+      else{
+        return false
+      }
+    }
   },
   methods: {
     follow() {
@@ -285,4 +294,5 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 </style>
