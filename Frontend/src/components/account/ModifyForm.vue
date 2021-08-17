@@ -69,7 +69,8 @@
                 </ul>
               </details>
           </div>
-          <div>    
+        </form>
+        <div>    
             <button @click="deleteUser" class="btn">
                 회원탈퇴
             </button>
@@ -84,8 +85,6 @@
                 회원탈퇴
             </button> -->
           </div>
-        </form>
-        
       </div>
     </div>
 	</div>
@@ -167,15 +166,20 @@ export default{
             data: this.form,
             headers: this.getToken
           })
-          .then(() => {
-            this.$swal('수정이 완료되었습니다.')
-            this.$router.push({ name: 'profilePage', params:userpk })
+          .then((res) => {
+            
+            if(res.data.success =='False'){
+              this.$swal('이미 존재하는 닉네임입니다.')
+            }else{
+              this.$swal('수정이 완료되었습니다.')
+              this.$router.push({ name: 'profilePage', params:userpk })
+            }
           })
           .catch(err => {
             alert(err)
           })
-
     },
+
     deleteUser: function(){
       this.$swal.fire({
         text: "탈퇴하시겠습니까?",
@@ -203,6 +207,7 @@ export default{
         }
       })
     },
+
     gotoBack: function(){
       this.$router.push({'name':'profilePage'})
     }
@@ -224,7 +229,7 @@ export default{
 /* .row {
   margin-top: 40px;
 }  */
-.form-wrapper {
+.content {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
@@ -346,6 +351,6 @@ li {
   width:5%;
 }
 button{
-  float: right;
+  /* float: right; */
 }
 </style>
