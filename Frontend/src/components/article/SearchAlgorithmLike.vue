@@ -143,7 +143,6 @@ export default {
             res.data.articleComments
           );
           this.$router.push({ name: "articleDetail", params: { Page: "0" } });
-          // location.href = 'articleDetail'
         })
         .catch((err) => {
           console.log(err);
@@ -179,7 +178,6 @@ export default {
 .middle {
   margin-top: 10px;
   padding: 0 20px;  
-  /* height: 210px; */
 }
 .content {
   overflow: hidden;
@@ -198,7 +196,6 @@ export default {
 .hashtag > span {
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221, 223, 230, 1); */
   padding:4px 8px;
   margin-right: 6px;
   display:inline-block;

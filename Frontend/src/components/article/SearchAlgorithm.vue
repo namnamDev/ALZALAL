@@ -167,8 +167,7 @@ export default {
         headers: this.getToken(),
         data: data
       })
-      .then((res)=>{
-        console.log(res.data)
+      .then(()=>{
       })
       .catch(err=>{
         console.log(err)
@@ -253,7 +252,6 @@ export default {
   display: inline-block;
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221,223,230,1); */
   margin-right:3px;
   padding: 1px 3px;
   margin-bottom: 4px;
@@ -306,7 +304,6 @@ export default {
   cursor: pointer;
 }
 .follow-cancel-btn:hover{
-  /* background-color: rgb(0, 89, 255); */
   font-size:22px;
   padding:5px 16px;
 }

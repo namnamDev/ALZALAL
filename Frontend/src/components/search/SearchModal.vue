@@ -30,7 +30,6 @@ export default {
 
 <style scoped>
   .modal-content{
-    /* height: 600px; */
     position:relative;
   }
   #submit{

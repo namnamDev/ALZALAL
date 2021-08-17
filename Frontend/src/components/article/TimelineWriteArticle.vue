@@ -18,12 +18,9 @@
 import jwt_decode from 'jwt-decode'
 const token = sessionStorage.getItem('jwt')
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-// let username = '';
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
-  //userpk = decoded.sub
-//   username = decoded.name
   userpk = decoded.sub
 }
 export default {
@@ -63,11 +60,9 @@ export default {
 }
 .article-box {
   background: white;
-  /* box-shadow: 0 0 0px 12.0px gray; */
   border: 1px solid rgb(207, 207, 207);
   border-radius: 5px;
   padding: 15px 15px;
-  /* height: 400px; */
 }
 .writeContent{
     color: rgb(0, 0, 0);

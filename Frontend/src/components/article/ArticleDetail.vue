@@ -316,7 +316,6 @@ export default {
   box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;
-  /* height: 400px; */
 }
 .show{
   display: block !important;
@@ -328,23 +327,13 @@ export default {
 .top{
   width:100%;
   height:100px;
-  /* border:1px solid black; */
 }
 .middle{
   width:100%;
-  /* height:400px; */
-  /* border:1px solid black; */
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black; */
-  /* box-shadow: 0 0 0px 0.7px gray; */
-  /* border-radius: 5px; */
-  /* padding: 15px 15px 15px 15px; */
   position: relative;
 }
 .bottom{
   width:100%;
-  /* height:100px; */
-  /* border:1px solid black; */
   position: relative;
 }
 .title{
@@ -354,7 +343,6 @@ export default {
   font-size: 20px;
 }
 .thumbs{
-  /* position: absolute; */
   text-align: end;
   bottom: 0;
 }
