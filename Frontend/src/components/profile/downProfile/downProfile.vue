@@ -1,5 +1,5 @@
 <template>
-  <div class="row my-5">
+  <div class="row my-3">
     <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div>
     <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
       <div class="row" v-if="this.myPage">
@@ -72,13 +72,13 @@ export default {
       },
       changeComponent2: function(componentName){
         if(this.myPage){
-        this.comp = componentName
-        document.getElementById('articleList').style.backgroundColor = 'white'
-        document.getElementById('articleList').style.color = 'black'
-        document.getElementById('helpmeList').style.backgroundColor = 'rgb(62, 171, 111)'
-        document.getElementById('helpmeList').style.color = 'white'
-        document.getElementById('receptList').style.backgroundColor = 'white'
-        document.getElementById('receptList').style.color = 'black'
+          this.comp = componentName
+          document.getElementById('articleList').style.backgroundColor = 'white'
+          document.getElementById('articleList').style.color = 'black'
+          document.getElementById('helpmeList').style.backgroundColor = 'rgb(62, 171, 111)'
+          document.getElementById('helpmeList').style.color = 'white'
+          document.getElementById('receptList').style.backgroundColor = 'white'
+          document.getElementById('receptList').style.color = 'black'
         }
       },
       changeComponent3: function(componentName) {

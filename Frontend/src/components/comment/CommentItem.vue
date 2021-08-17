@@ -111,25 +111,43 @@ export default {
       return config
     },
     clickLike() {     
-      const commentNo = this.comment.articleCommentNo
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/like/article/comment/${commentNo}`,
-        headers: this.getToken(),
-        data :{}
-      })
-      .then(()=> {
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      if (this.likeState) {
-        this.likeState = false
-        this.likeCount -= 1
+      const token = sessionStorage.getItem('jwt')
+      if (!token){
+        this.$swal.fire({          
+          text: "로그인 후 이용해주세요.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '로그인',
+          cancelButtonText: '취소'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({'name':'login'})
+          }
+        })
       }
       else{
-        this.likeState = true
-        this.likeCount += 1
+        const commentNo = this.comment.articleCommentNo
+        axios({
+          method: 'post',
+          url: `${SERVER_URL}/like/article/comment/${commentNo}`,
+          headers: this.getToken(),
+          data :{}
+        })
+        .then(()=> {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        if (this.likeState) {
+          this.likeState = false
+          this.likeCount -= 1
+        }
+        else{
+          this.likeState = true
+          this.likeCount += 1
+        }
       }
     },
     deleteComment: function() {      
