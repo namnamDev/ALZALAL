@@ -39,6 +39,7 @@ export default {
     },
     methods: {
         clickCreate: function() {
+          localStorage.removeItem('articleContent')
             this.$router.push({'name':'createArticle'})      
         },
     },
@@ -62,7 +63,8 @@ export default {
 }
 .article-box {
   background: white;
-  box-shadow: 0 0 0px 0.7px gray;
+  /* box-shadow: 0 0 0px 12.0px gray; */
+  border: 1px solid rgb(207, 207, 207);
   border-radius: 5px;
   padding: 15px 15px;
   /* height: 400px; */
