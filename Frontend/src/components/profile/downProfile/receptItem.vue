@@ -99,16 +99,10 @@ export default {
     }
   },
   created: function() {
-        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        
-        // let pk = ''
-        // console.log(pk)
         if(userpk != userPk){
-            // pk = userPk
             this.myPage = false
         }else{
-            // pk = userpk
             this.myPage = true
         }
 
@@ -121,7 +115,7 @@ export default {
       })   
       .then(res =>{
         const detail = res.data.helpme
-         this.item = res.data
+        this.item = res.data
         this.helpmeSenderNo= detail.helpmeSenderNo.no,
         this.helpmeSenderName= detail.helpmeSenderNo.name,
         this.commentCount= detail.commentCount,

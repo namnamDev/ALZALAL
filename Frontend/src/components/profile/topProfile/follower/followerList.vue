@@ -69,7 +69,6 @@ export default {
               this.follower = this.follower.concat(res.data)
               $state.loaded()
               this.page += 1
-              //console.log("after", this.follower.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.length / 10 < 1) {
                 $state.complete()

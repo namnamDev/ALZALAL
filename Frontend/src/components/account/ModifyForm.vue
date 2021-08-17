@@ -8,11 +8,6 @@
           <div>
             <label for="email" align="left">E-mail </label>
             <input id="email" type="text" v-model="email" disabled />
-            <!-- <p class="validation-text">
-              <span class="warning" v-if="!email">
-                Please enter an email address
-              </span>
-            </p> -->
           </div>
           <div>
             <label for="password" align="left">비밀번호 </label>
@@ -238,18 +233,16 @@ export default {
       url: `${SERVER_URL}/member/modify`,
       headers: this.getToken,
     })
-      .then((res) => {
-        this.email = res.data.member.email;
-        this.form.name = res.data.member.name;
+    .then((res) => {
+      this.email = res.data.member.email;
+      this.form.name = res.data.member.name;
 
-        this.form.use_language = res.data.member.useLanguageLike;
-        this.form.problem_site = res.data.member.problemSiteList;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // this.email = this.$store.getters.getEmail;
-    // console.log(this.$store.getters.getEmail);
+      this.form.use_language = res.data.member.useLanguageLike;
+      this.form.problem_site = res.data.member.problemSiteList;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   },
   computed: {
     isPasswordValid() {
@@ -277,25 +270,24 @@ export default {
   },
   methods: {
     submitForm: function () {
-          
-          axios({
-            method: 'put',
-            url: `${SERVER_URL}/member/modify`,
-            data: this.form,
-            headers: this.getToken
-          })
-          .then((res) => {
-            
-            if(res.data.success =='False'){
-              this.$swal('이미 존재하는 닉네임입니다.')
-            }else{
-              this.$swal('수정이 완료되었습니다.')
-              this.$router.push({ name: 'profilePage', params:userpk })
-            }
-          })
-          .catch(err => {
-            alert(err)
-          })
+      axios({
+        method: 'put',
+        url: `${SERVER_URL}/member/modify`,
+        data: this.form,
+        headers: this.getToken
+      })
+      .then((res) => {
+        
+        if(res.data.success =='False'){
+          this.$swal('이미 존재하는 닉네임입니다.')
+        }else{
+          this.$swal('수정이 완료되었습니다.')
+          this.$router.push({ name: 'profilePage', params:userpk })
+        }
+      })
+      .catch(err => {
+        alert(err)
+      })
     },
 
     deleteUser: function(){
@@ -343,9 +335,6 @@ export default {
   font-weight: 550;
   text-align: right;
 }
-/* .row {
-  margin-top: 40px;
-}  */
 .content {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
@@ -466,7 +455,4 @@ li {
   margin-left: 10px;
   width: 5%;
 }
-/* button {
-  float: right;
-} */
 </style>

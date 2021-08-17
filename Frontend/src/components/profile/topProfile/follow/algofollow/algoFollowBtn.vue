@@ -34,8 +34,6 @@ export default {
                        
             })
             .catch(err => {
-                console.log(this.algo)
-                console.log(this.getToken)
                 console.log(err);
             })
             if(event.target.innerText == 'follow' ){

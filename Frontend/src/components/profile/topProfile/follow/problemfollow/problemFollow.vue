@@ -27,7 +27,6 @@
 import problemFollowBtn from '@/components/profile/topProfile/follow/problemfollow/problemFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
-//import axios from 'axios';
 const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {

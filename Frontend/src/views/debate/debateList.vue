@@ -41,9 +41,7 @@ export default {
         url: `${SERVER_URL}/articlelist/discussion`+"?page=" + (this.page),
         headers: this.getToken,
       })   //토론 불러와
-      .then(res =>{     
-        console.log(res)
-        console.log(res.data.discussion.length)             
+      .then(res =>{                
         setTimeout(() => {
             if(res.data.discussion.length) {
               this.discussion = this.discussion.concat(res.data.discussion)
@@ -88,10 +86,6 @@ export default {
     transform: translateX(0);
   }
 }
-
-
-
-
 .feed-card {
   box-sizing: content-box;
   /* box-shadow: 0 0 0 1px #ddd; */

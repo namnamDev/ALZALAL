@@ -53,10 +53,8 @@ export default {
       if(userPk){
           this.pk = userPk
           this.myPage = false
-           //this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             if(pk==userpk){
                 this.myPage = true
-                //this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             }
       }else{
           this.pk = userpk
@@ -107,9 +105,6 @@ export default {
                 .then({      
                 })
                 .catch({
-                    // console.log(this.no)
-                    // console.log(this.getToken)
-                    // console.log(err);
                 })
                 
             if(event.target.innerText == 'follow' ){

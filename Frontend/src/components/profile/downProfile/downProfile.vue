@@ -53,19 +53,12 @@ export default {
       return { comp: 'articleList', myPage: '', }
   },
   created: function() {
-        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        // console.log(userPk)
-        // let pk = ''
-        // console.log(pk)
         if(userpk != userPk){
-            // pk = userPk
             this.myPage = false
         }else{
-            // pk = userpk
             this.myPage = true
         }
-        // console.log(this.myPage)
   },
   methods: {
       changeComponent1: function(componentName) {

@@ -36,9 +36,6 @@ export default {
                 console.log(res)
             })
             .catch(err => {
-                console.log(this.site)
-                console.log(this.no)
-                console.log(this.getToken)
                 console.log(err);
             })
             if(event.target.innerText == 'follow' ){

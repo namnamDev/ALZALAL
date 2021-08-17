@@ -86,7 +86,6 @@ export default {
           url: `${SERVER_URL}/comment/discussion/${discussionNo}`,
         })   
         .then(res =>{
-          console.log(res)
           this.$store.dispatch('createDebateComment',res.data.articleComments)
         })
         .catch(err =>{  

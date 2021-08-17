@@ -74,11 +74,8 @@
             class="btn"
                   >회원 가입</button>
         </form>
-        <!-- <p class="log">{{ logMessage }}</p> -->
       </div>
-
 	</div>
-  <!-- :disabled="!isEmailValid || member_password || !passwordConfirm || !member_name  || !member_email" -->
 </template>
 
 <script>

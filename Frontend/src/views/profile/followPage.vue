@@ -59,11 +59,6 @@ export default {
         document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
         document.getElementById('following').style.color = 'white'
       }
-
-
-          
-      
-      
   },
 
 }

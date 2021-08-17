@@ -7,9 +7,6 @@
           <div>
             <label align="left" for="password">비밀번호를 입력해주세요</label>
             <input id="password" type="password" v-model="password" />
-                      <p class="validation-text">
-
-            </p>
           </div>
           <div class="checkBtn">
             <button :disabled="!password" v-on:keyup.enter="submit" type="submit" class="btn">
@@ -49,16 +46,7 @@ export default {
     }
   },
   methods: {
-    // getToken(){
-    //   const token = localStorage.getItem('jwt')
-    //   const config = {
-    //     Authroization: `JWT ${token}`
-    //   }
-    //   return config
-    // }
-    
     submitForm: function() {
-
       axios({
             method: 'post',
             url: `${SERVER_URL}/member/checkpw`,

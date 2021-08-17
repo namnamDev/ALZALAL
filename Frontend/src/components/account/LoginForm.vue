@@ -32,11 +32,6 @@
             </span> 
             </div>
         </div>
-        <!-- <div class='snsLogin'>
-          <button class="btn btn-sns"><img src="" alt="kakao login" style=""></button>
-          <button class="btn btn-sns"><img src="" alt="naver login" style=""></button>
-          <button class="btn btn-sns"><img src="" alt="google login" style=""></button>
-        </div> -->
       </form>
       </div>
     
@@ -46,8 +41,6 @@
 <script>
 import { validateEmail } from '@/utils/validation.js';
 import axios from 'axios';
-//import jwt_decode from 'jwt-decode'
-
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   data() {
@@ -71,7 +64,6 @@ export default {
   },
   methods: {
     submitForm: function(){
-      console.log(this.form)
       axios({
         method: 'post',
         url: `${SERVER_URL}/member/login`,
@@ -197,9 +189,6 @@ export default {
   opacity: 0.5;
   cursor: not-allowed;
 }
-/* .btn-login{
-  float: right;
-} */
 .btn-user{
     opacity: 0.8;
 }
