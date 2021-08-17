@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-2 me-5" >
       <img class="profileImg" :src="getImgSrc" @error="imageError = true" @click="goProfile" alt="프로필사진">
-      <!-- <i class="fas fa-user" style="font-size: 80px; cursor:pointer;" @click="goProfile"></i> -->
     </div>
     <div class="col ms-4">
 
@@ -92,8 +91,7 @@ export default {
           headers: this.getToken(),
           data: data
         })
-        .then((res)=>{
-          console.log(res)
+        .then(()=>{
         })
         .catch(err=>{
           console.log(err)

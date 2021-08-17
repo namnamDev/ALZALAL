@@ -109,17 +109,10 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  /* margin-top: 110px; */
-}
 .isNotLogin{
   display: flex;
   justify-content: center;
   font-size: 40px;
 }
-@media (max-width: 576px) {
-  .container {
-    /* margin-top: 60px; */
-  }
-}
+
 </style>

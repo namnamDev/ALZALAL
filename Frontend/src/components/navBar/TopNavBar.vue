@@ -1,10 +1,6 @@
 <template>
   <div class="top">
-    <div class="main">
-      <!-- <div class="logo" onclick="window.scrollTo(0,0)">
-        <img src="@/assets/images/Algorithm_img.png" height="100px" alt="">
-      </div> -->
-      
+    <div class="main">      
       <div class="main-left">
         <!-- 로고 -->
         <div class="logo" @click="clickTimeline">
@@ -67,12 +63,6 @@
             <span @click="login" class="loginBtn">Log in </span>
             <span @click="signup" class="signupBtn"> Sign Up</span>
           </div>
-          <!-- <ul class="navbar-nav me-4" v-if="!isLogin">
-            <li class="nav-item dropdown">
-              <a class="" @click="login">Log in </a>
-            </li>
-            <li><a class="" @click="signup">Sign Up</a></li>
-          </ul> -->
         </div>
       </div>
     </div>
@@ -86,7 +76,6 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import TimelineIcon from './icon/TimelineIcon.vue'
 import QnaIcon from './icon/QnaIcon.vue'
-// import NotificationIcon from './icon/NotificationIcon.vue'
 import DebateIcon from './icon/DebateIcon.vue'
 import SearchBar from "@/components/search/SearchBar.vue";
 
@@ -97,11 +86,9 @@ let username = '';
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
-  //userpk = decoded.sub
   username = decoded.name
   userpk = decoded.sub
 }
-//let userpk = '';
 
 export default {
   components:{
@@ -157,7 +144,6 @@ export default {
 
     clickAlarm: function() {
       this.page = 0
-      // this.infiniteHandler()
 
       this.$store.dispatch('deleteNotify')
       this.$store.dispatch('deleteNotificationList')
@@ -174,9 +160,7 @@ export default {
         console.log(err)
       })
 
-      // this.$store.dispatch('deleteNotify')
       var div = $('.notify-table')
-      // commentForm 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
       if( div.is(":visible") ){
           div.slideUp(700);
       }else{
@@ -207,10 +191,7 @@ export default {
       this.$router.push({'name':'passwordConfirm'})
     },
     goProfile: function() {
-      // localStorage.removeItem("userPk")
       localStorage.setItem("userPk",userpk)
-      // if(!localStorage.getItem('userPk')){
-      // this.$router.push({'name':'profilePage', params:{userPk:userpk}})
       location.href=`/profilePage/${userpk}`
       
     },
@@ -263,7 +244,6 @@ export default {
   z-index:4;
   width: 100%;
   height:70px;
-  /* border: 1px solid black; */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -282,7 +262,6 @@ export default {
 }
 
 .user{
-  /* width:100%; */
   font-size:20px;
 
 }
@@ -311,10 +290,7 @@ export default {
 .signupBtn{
     margin-right: 10px;
 }
-/* .login-signup span:hover{
-  transform: scale(1.2);
-  font-size: 25px;
-} */
+
 .username {
   margin-right: 15px;
 }
@@ -329,7 +305,6 @@ export default {
 .notify-table{
   position: absolute;
   top:70px;
-  /* border:1px solid black; */
   width: 380px;
   height:80vh;
   display:none;

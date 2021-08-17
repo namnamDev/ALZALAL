@@ -285,7 +285,6 @@ export default {
   cursor: pointer;
 }
 .follow-cancel-btn:hover{
-  /* background-color: rgb(0, 89, 255); */
   font-size:22px;
   padding:5px 16px;
 }

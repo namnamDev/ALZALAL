@@ -44,7 +44,6 @@ export default {
 }
 
 #category{
-  /* position: absolute; */
   width: 130px;
   height:30px;
   border-radius: 3px;
@@ -53,12 +52,10 @@ export default {
   width: 130px;
   height:30px;
   border-radius: 3px;
-  /* position:absolute; */
   top: 50px;
 }
 .search-algo-input-div{
   border-radius: 3px;
-  /* position: absolute; */
   top: 100px;
   z-index: 1;
   display: inline;
@@ -87,32 +84,27 @@ export default {
   border: 1px solid black;
   height:140px;
   width: 200px;
-  /* position: absolute; */
   top: 150px;
 }
 .exclude{
   border: 1px solid black;
   height:140px;
   width: 200px;
-  /* position: absolute; */
   top: 320px;
 }
 .btn-include{
-  /* position:absolute; */
   width: 40px;
   top:3px;
   right:-50px;
   cursor: pointer;
 }
 .btn-exclude{
-  /* position:absolute; */
   width:40px;
   top:3px;
   right: -100px;
   cursor: pointer;
 }
 .btn-search{
-  /* position: absolute; */
   width:200px;
   top: 470px;
 }
@@ -128,7 +120,6 @@ export default {
   }
   #search{
     width: 43px;
-    /* width:30vw; */
   }
   .search-box{
     border-radius: 75%;

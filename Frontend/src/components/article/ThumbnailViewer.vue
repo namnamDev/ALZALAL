@@ -1,6 +1,5 @@
 <template>
   <div>   
-    <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
     <div class="viewer">
       <Viewer       
       :initialValue="viewerContent"
@@ -10,11 +9,9 @@
 </template>
 
 <script>
-// Toast UI Editor - viewer
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/vue-editor';
 
-// add dependencies related code-syntax-highlight
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
@@ -57,7 +54,6 @@ export default {
   -webkit-line-clamp: 8; /* 라인수 */
   -webkit-box-orient: vertical;
   word-wrap:break-word; 
-  /* height:294px; */
 }
 
 </style>

@@ -48,7 +48,6 @@ export default {
     if (content){
       this.modifyContent = content
     }
-    console.log(this.modifyContent)
   },
   computed: {
     modify() {
