@@ -189,8 +189,11 @@
               </ul>
             </details>
           </div>
-          <div class="text-end">
-            <span @click="deleteUser" class="btn">회원탈퇴</span>
+        </form>
+        <div>    
+            <button @click="deleteUser" class="btn">
+                회원탈퇴
+            </button>
             <button
               :disabled="!passwordLength || !passwordConfirm || !nameLength"
               @click="submitForm"
@@ -200,7 +203,6 @@
             </button>
             <button @click="gotoBack" class="btn">취소</button>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -275,21 +277,28 @@ export default {
   },
   methods: {
     submitForm: function () {
-      axios({
-        method: "put",
-        url: `${SERVER_URL}/member/modify`,
-        data: this.form,
-        headers: this.getToken,
-      })
-        .then(() => {
-          this.$swal("수정이 완료되었습니다.");
-          this.$router.push({ name: "profilePage", params: userpk });
-        })
-        .catch((err) => {
-          alert(err);
-        });
+          
+          axios({
+            method: 'put',
+            url: `${SERVER_URL}/member/modify`,
+            data: this.form,
+            headers: this.getToken
+          })
+          .then((res) => {
+            
+            if(res.data.success =='False'){
+              this.$swal('이미 존재하는 닉네임입니다.')
+            }else{
+              this.$swal('수정이 완료되었습니다.')
+              this.$router.push({ name: 'profilePage', params:userpk })
+            }
+          })
+          .catch(err => {
+            alert(err)
+          })
     },
-    deleteUser: function () {
+
+    deleteUser: function(){
       this.$swal.fire({
         text: "탈퇴하시겠습니까?",
         icon: 'warning',
@@ -317,11 +326,11 @@ export default {
       })
     },
 
-    gotoBack: function () {
-      this.$router.push({ name: "profilePage" });
-    },
-
-  },
+    gotoBack: function(){
+      this.$router.push({'name':'profilePage'})
+    }
+    
+  }
 };
 </script>
 
@@ -337,7 +346,7 @@ export default {
 /* .row {
   margin-top: 40px;
 }  */
-.form-wrapper {
+.content {
   background: white;
   -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);

@@ -29,12 +29,20 @@ export default {
     followList,
     followerList,
   },
+  props:{
+    compName: String,
+  },
   data() {
       return {
-         comp: 'followerList',
-         isFollower:true,
-         isFollowing:false
-       }
+          comp: '',
+       } 
+  },
+  created:function(){
+    if(this.compName == 'followList'){
+      this.comp = 'followList'
+    }else{
+      this.comp = 'followerList'
+    }
   },
   methods: {
       changeComponent1: function(componentName) {
@@ -77,13 +85,18 @@ export default {
   font-weight: 550;
   border-radius: 5%;
   border: none;
+  background-color: white;
 
 }
 .tab-item {
   margin-top: 20px;
 }
 
-#follower{
+#follower:active{
+  background-color: rgb(62, 171, 111);
+  color: white;
+}
+#following:active{
   background-color: rgb(62, 171, 111);
   color: white;
 }
