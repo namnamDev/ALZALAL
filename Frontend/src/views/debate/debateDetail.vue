@@ -94,7 +94,7 @@ export default {
       let tmp = setInterval(() => {
         this.socketSubscription=stompClient.subscribe("/discuss/"+this.discussionNo, this.onMessageReceived);
         clearInterval(tmp);
-      }, 500); 
+      }, 1000); 
     }
   },
   destroyed(){

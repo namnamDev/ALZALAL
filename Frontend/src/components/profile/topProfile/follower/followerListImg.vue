@@ -23,7 +23,7 @@
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-const token = localStorage.getItem('jwt')
+const token = sessionStorage.getItem('jwt')
 let userpk = '';
 if (token) {
   const decoded = jwt_decode(token)
@@ -48,16 +48,12 @@ export default {
     created: function() {
       
       const userPk = localStorage.getItem("userPk")
-      
-      let pk = ''
       if(userPk){
-          this.pk = userPk
-          this.myPage = false
-            if(pk==userpk){
-                this.myPage = true
-            }
+        this.myPage = false
+          if(userpk==userpk){
+              this.myPage = true
+          }
       }else{
-          this.pk = userpk
           this.myPage = true
       }
       if(this.token){
@@ -90,9 +86,9 @@ export default {
         clickFollow: function(event){
             const token = sessionStorage.getItem('jwt')
                 if(!token){
-                    alert("로그인이 필요합니다.")
-                this.$router.push({name:'login'})
-                }
+                  this.$swal('로그인이 필요합니다.')
+                  this.$router.push({name:'login'})
+                }else{
 
             axios({
                     method: 'post',
@@ -118,6 +114,7 @@ export default {
               event.target.style.backgroundColor='rgb(62, 171, 111)'
               event.target.style.color="white"
             }
+          }
         },
         clickName: function(){
           localStorage.setItem('userPk', this.no)
@@ -166,6 +163,7 @@ export default {
   font-weight: 700;
   font-size: 17px;
   border-radius: 5%;
+  border:none
 }
 .btn-unfollow {
   background-color: white;
