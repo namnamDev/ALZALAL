@@ -22,7 +22,6 @@
 import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/algoFollowBtn.vue'
 import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
-//import axios from 'axios';
 const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
@@ -52,7 +51,6 @@ export default {
               this.algo = this.algo.concat(data)
               $state.loaded()
               this.page += 1
-             // console.log("after", this.algo.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(data.length / 10 < 1) {
                 $state.complete()
@@ -75,6 +73,9 @@ export default {
 .follow {
   display: flex;
 }
+.follow:hover{
+ box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 .nav-link{
   font-weight: 700;
 }
@@ -82,12 +83,13 @@ export default {
   margin-top: 30px;
   font-size: 22px;
   font-weight: 700;
-  margin-left: 30px;
+  
   
 }
 .problem{
   font-weight: 550;
   font-size: 22px;
+  margin-left: 10px;
 }
 
 @media (max-width:768px) {
@@ -98,8 +100,5 @@ export default {
     margin-left: 30px;
   
   }
-}
-.followBtn{
-  margin-left: -50px;
 }
 </style>

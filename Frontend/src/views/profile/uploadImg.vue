@@ -18,7 +18,7 @@
             <img class="profileImg" alt="프로필이미지를 등록해주세요" />
           </div>
 
-          <button type="submit" class="btn btn-submit">
+          <button type="submit" class="btn1 btn-submit">
             프로필이미지로 지정하기
           </button>
         </form>
@@ -73,8 +73,7 @@ export default {
         data: formdata,
         headers: this.getToken,
       })
-        .then((res) => {
-          console.log("img", res);
+        .then(() => {
           this.$router.push({ name: "profilePage" });
         })
         .catch((err) => { 
@@ -138,10 +137,11 @@ export default {
 }
 
 
-.btn {
+.btn1 {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: 0.25rem;
+  border:none
 }
 .btn.disabled {
   opacity: 0.5;

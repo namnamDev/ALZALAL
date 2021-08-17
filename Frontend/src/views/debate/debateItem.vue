@@ -53,7 +53,6 @@ export default {
         headers: this.getToken,
       })   
       .then(res =>{
-          console.log(res)
         const detail = res.data.articleDetail
         this.item = res.data
         this.commentCount = detail.commentCount
@@ -94,33 +93,6 @@ export default {
       },
       clickDebate: function(){
         localStorage.setItem('discussionNo', this.discussionNo)
-
-        // this.$store.dispatch('createDebateDetail',this.item.articleDetail)
-
-        // // 댓글 정보 요청후 store에 저장
-        // axios({
-        //     method: 'get',
-        //     url: `${SERVER_URL}/comment/article/${this.discussionNo}`,
-        // })   
-        // .then(res =>{
-        //     this.$store.dispatch('createArticleComment',res.data.debateComments)
-        // })
-        // .catch(err =>{  
-        //     console.log(err)
-        // })
-        // // 댓글리스트 불러오기
-        // axios({
-        //   method: 'get',
-        //   url: `${SERVER_URL}/comment/discussion/${this.discussionNo}`,
-        // })   
-        // .then(res =>{
-        //   console.log(res)
-        //   this.$store.dispatch('createDebateComment',res.data.articleComments)
-        // })
-        // .catch(err =>{  
-        //   console.log(err)
-        // })
-
         this.$router.push({name : 'debateDetail', params:{'Page':'0'}})
       }
   }
@@ -128,6 +100,19 @@ export default {
 </script>
 
 <style scoped>
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+
 .contentsWrap {
   box-sizing: border-box;
   padding: 12px;

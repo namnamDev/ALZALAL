@@ -6,8 +6,6 @@
         <div class="contentsWrap" @click="clickHelpmeName">
           <span class="probleminfo">{{this.problemSiteName}}  </span>
           <span class="probleminfo">{{this.problemNo}}번 문제</span>
-          
-          
           <div>
             <p class="helpmeContent">{{this.helpmeContent}}</p>
           </div>
@@ -18,7 +16,6 @@
                 <span>{{this.likeCount}}</span>
                 <i class="far fa-comment-dots mx-2"></i>
                 <span >{{this.commentCount}}</span>
-                <!-- <div><p class="date">{{this.helpmeDate}}</p></div> -->
               </div>
           </div>
           
@@ -86,7 +83,7 @@ export default {
       })   
       .then(res =>{
         const detail = res.data.helpme
-         this.item = res.data
+        this.item = res.data
         this.helpmeSenderNo= detail.helpmeSenderNo.no,
         this.helpmeSenderName= detail.helpmeSenderNo.name,
         this.commentCount= detail.commentCount,
@@ -152,7 +149,6 @@ export default {
         url: `${SERVER_URL}/comment/helpme/${this.helpmeNo}`,
       })   
       .then(res =>{
-        console.log(res)
         this.$store.dispatch('createHelpmeComment',res.data.articleComments)
       })
       .catch(err =>{  
@@ -199,6 +195,7 @@ export default {
  }
  .status{
    font-weight: 550;
+   float: right;
  }
 .date {
   float: right;

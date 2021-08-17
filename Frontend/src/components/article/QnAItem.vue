@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row mt-2">
         <div class="col content">
           <Viewer id="viewer" :viewerText="item.articleContent" />
         </div>
@@ -117,12 +117,8 @@ export default {
         })
 
       this.$router.push({name : 'articleDetail',  params:{'Page':'0'}})
-        // this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
       }
-      // localStorage.setItem('articleNo', this.item.articleNo)
-      // this.$store.dispatch('createArticleDetail',this.item)
 
-      // 댓글 정보 요청후 store에 저장
     },   
   }
 };
@@ -141,7 +137,6 @@ export default {
   box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
   border-radius: 1px;
   padding: 15px 15px;
-  /* height: 400px; */
   cursor: pointer;
 }
 
@@ -151,7 +146,6 @@ export default {
   box-shadow: 0 0 0px 0.7px gray;
   border-radius: 5px;
   padding: 15px 15px;
-  /* height: 400px; */
   cursor: pointer;
 }
 .article-box:hover {
@@ -162,9 +156,7 @@ export default {
   text-align: center;
   align-self: center;
 }
-.top{
-  /* height:100px; */
-}
+
 .name{
   height:25px;
   margin-top:10px;
@@ -177,7 +169,6 @@ export default {
 .middle{
   margin-top: 10px;  
   padding: 0 20px;
-  /* height: 210px; */
 }
 .content{
   overflow: hidden;
@@ -197,7 +188,6 @@ export default {
 .hashtag > span{
   font-size: 14px;
   border-radius: 3px;
-  /* background-color : rgba(221,223,230,1); */
   padding:0px 8px;
   margin-right: 6px;
   display:inline-block;

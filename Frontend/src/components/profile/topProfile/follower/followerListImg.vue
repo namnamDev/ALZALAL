@@ -10,10 +10,10 @@
           <button class="btn" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-2 col-sm-2 col-lg-2">
+      <div class="user col-2 col-sm-2 col-lg-2" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
-            <button class="btn btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
-            <button class="btn btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
+            <button class="btn1 btn-unfollow" v-if="this.followState"  @click="clickFollow($event)">unfollow</button>
+            <button class="btn1 btn-follow" v-if="!this.followState"  @click="clickFollow($event)">follow</button>
           </span>
       </div>      
   </div>
@@ -38,7 +38,7 @@ export default {
     data(){
         return{
             // imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
-            imgsrc: '',
+            imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
             myPage: '',
             isLogin: '',
             me: '',
@@ -46,17 +46,15 @@ export default {
         }
     },
     created: function() {
-      console.log("target",this.userPk)
+      
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
+      
       let pk = ''
       if(userPk){
           this.pk = userPk
           this.myPage = false
-           this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             if(pk==userpk){
                 this.myPage = true
-                this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
             }
       }else{
           this.pk = userpk
@@ -107,9 +105,6 @@ export default {
                 .then({      
                 })
                 .catch({
-                    // console.log(this.no)
-                    // console.log(this.getToken)
-                    // console.log(err);
                 })
                 
             if(event.target.innerText == 'follow' ){
@@ -134,13 +129,19 @@ export default {
 </script>
 
 <style scoped>
+.row:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+.row{
+  margin-bottom: 20px;
+}
 .userImg {
     width: 75px;
     height: 75px; 
     border-radius: 75%;
     overflow: hidden;
     display: flex;
-    margin: 20px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 .profileImg{
     width: 100%;
@@ -153,23 +154,14 @@ export default {
   font-weight: 550;
 }
 
-/* .followBtn {
-  border-radius: 10%;
-  border: solid 0.5px rgb(27, 218, 43);
-  
-  width: 30%;
-  margin-left: -80px;
-} */
+
 @media (max-width:576px) {
 .user{
   margin-top: 5px;
 }
-.followBtn {
-  border-radius: 20%;
-  margin-left: 0;
+
 }
-}
-.btn{
+.btn1{
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   font-size: 17px;
@@ -179,12 +171,12 @@ export default {
   background-color: white;
   color: black;
   border: 1px solid rgb(62, 171, 111);
-  width: 150px;
+  width: 120px;
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
   color: white;
-  width: 150px;
+  width: 120px;
 }
 
 .row{

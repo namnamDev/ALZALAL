@@ -74,11 +74,8 @@
             class="btn"
                   >회원 가입</button>
         </form>
-        <!-- <p class="log">{{ logMessage }}</p> -->
       </div>
-
 	</div>
-  <!-- :disabled="!isEmailValid || member_password || !passwordConfirm || !member_name  || !member_email" -->
 </template>
 
 <script>
@@ -116,7 +113,7 @@ export default{
       return false
     },
     nameLength(){
-      if(this.form.name.length > 2 && this.form.name.length<11){
+      if(this.form.name.length >= 2 && this.form.name.length<11){
         return true;
       }
       return false

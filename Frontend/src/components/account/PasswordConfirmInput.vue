@@ -7,12 +7,9 @@
           <div>
             <label align="left" for="password">비밀번호를 입력해주세요</label>
             <input id="password" type="password" v-model="password" />
-                      <p class="validation-text">
-
-            </p>
           </div>
           <div class="checkBtn">
-            <button :disabled="!password" type="submit" class="btn">
+            <button :disabled="!password" v-on:keyup.enter="submit" type="submit" class="btn">
               확인
             </button>
           </div>
@@ -26,7 +23,7 @@
 <script>
 import axios from 'axios';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-
+let userpk = localStorage.getItem('userPk')
 export default {
   data() {
 		return {
@@ -49,17 +46,7 @@ export default {
     }
   },
   methods: {
-    // getToken(){
-    //   const token = localStorage.getItem('jwt')
-    //   const config = {
-    //     Authroization: `JWT ${token}`
-    //   }
-    //   return config
-    // }
-    
     submitForm: function() {
-      console.log(this.password),
-      console.log(this.getToken)
       axios({
             method: 'post',
             url: `${SERVER_URL}/member/checkpw`,
@@ -68,9 +55,9 @@ export default {
               },
             headers: this.getToken,
           })
-          .then(res => {
-            console.log(res);
-            this.$router.push({ name: 'usermodify' })
+          .then(() => {
+
+            this.$router.push({ name: 'usermodify', params:userpk })
         
           })
           .catch(err => {

@@ -75,14 +75,11 @@ export default {
       })
         .then((res) => {
           this.articleCount = res.data.memberSearchCount
-          // this.followState = res.data.
           setTimeout(() => {
             if (res.data.memberList.length) {
-              //console.log(res.data.article.length)         
               this.memberList = this.memberList.concat(res.data.memberList);
               $state.loaded();
               this.page += 1;
-              //console.log("after", this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면
               if (res.data.memberList.length / 10 < 1) {
                 $state.complete();
@@ -107,7 +104,7 @@ export default {
   -webkit-box-shadow : 0 0px 10px rgba(0, 0, 0, 0.08);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.12);
   border-radius: 20px;
-  width: 470px;
+  width: 480px;
   height:140px;
   margin:0 auto;
   padding: 25px 20px;
@@ -115,7 +112,6 @@ export default {
 .profile-card:hover{
   -webkit-box-shadow: 0 0px 20px rgba(161, 212, 226, 0.6);
   box-shadow: 0 0px 20px rgba(161, 212, 226, 0.6);
-  /* transform: scale(1.1); */
 }
 
 </style>

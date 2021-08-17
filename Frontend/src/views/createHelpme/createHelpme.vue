@@ -3,9 +3,6 @@
     <div class="container">
       <form @submit.prevent="submit">
       <div class="row justify-content-start mb-3">
-
-
-        
         <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
         <select
           id="select"
@@ -51,12 +48,14 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
+  props:{
+    targetPK:Number,
+  },
   data() {
     return {
       pSite: '',
       pNum: '',
       content: '',
-      targetPK: '',
     };
   },
 
@@ -70,7 +69,6 @@ export default {
       this.$router.push({name:'login'})
     } 
     const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
         if(userPk){
             this.targetPK = userPk
         }
@@ -96,21 +94,18 @@ export default {
         content: this.content,
         
       }
-      console.log(data)
       axios({
         method: 'post',
         url: `${SERVER_URL}/helpme`,
         data: data,
         headers: this.getToken(),
       })   
-      .then(res =>{
-        console.log(res);
-        alert("작성 완료!")
+      .then(() =>{
+        this.$swal('요청이 완료되었습니다.')
         this.$router.push({ name: 'profilePage' })       
       })
       .catch(err =>{  
         console.log(err)
-        console.log(this.getToken())
       })
     },
   },

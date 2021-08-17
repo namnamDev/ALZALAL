@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="followerList">
       <followerListImg class="followerItem" v-for="(item,index) in follower" :key="index"
        v-bind:name="item.name" v-bind:no="item.no" v-bind:followState="item.followState"/>
       <infinite-loading @infinite="infiniteHandler" spinner="sprial">
@@ -39,9 +39,7 @@ export default {
     }
   },
   created: function() {
-        console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
         if(userPk){
             this.pk = userPk
             this.myPage = false
@@ -64,14 +62,13 @@ export default {
         axios({
           method: 'get',
           url: `${SERVER_URL}/profile/${this.pk}/followers`+"?page=" + (this.page),
-          headers: this.getToken,
+          // headers: this.getToken,
         }).then(res => {
           setTimeout(() => {
             if(res.data.length) {
               this.follower = this.follower.concat(res.data)
               $state.loaded()
               this.page += 1
-              //console.log("after", this.follower.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.length / 10 < 1) {
                 $state.complete()
@@ -90,8 +87,7 @@ export default {
 </script>
 
 <style scoped>
-.followerItem:hover{
-  background-color: rgb(216, 216, 216);
-  border-radius: 2%;
-}
+/* .followerList{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+} */
 </style>

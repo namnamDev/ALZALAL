@@ -103,7 +103,6 @@ export default {
               );
               $state.loaded();
               this.page += 1;
-              //console.log("after", this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면
               if (res.data.articleList.length / 10 < 1) {
                 $state.complete();
@@ -115,7 +114,6 @@ export default {
           }, 1000);
         })
         .catch(() => {
-          // console.error(err);
           $state.complete();
         });
     },
@@ -129,7 +127,6 @@ export default {
         .then((res) => {
           const data = res.data.articleDetail;
           this.$store.dispatch("createArticleDetail", data);
-          console.log(res);
         })
         .then((err) => {
           console.log(err);
@@ -146,7 +143,6 @@ export default {
             res.data.articleComments
           );
           this.$router.push({ name: "articleDetail", params: { Page: "0" } });
-          // location.href = 'articleDetail'
         })
         .catch((err) => {
           console.log(err);
@@ -182,7 +178,6 @@ export default {
 .middle {
   margin-top: 10px;
   padding: 0 20px;  
-  /* height: 210px; */
 }
 .content {
   overflow: hidden;
@@ -201,7 +196,6 @@ export default {
 .hashtag > span {
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221, 223, 230, 1); */
   padding:4px 8px;
   margin-right: 6px;
   display:inline-block;
@@ -231,6 +225,9 @@ export default {
     width: 75px;
     height: 75px;
     border-radius: 75%;
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
 }
 
 @media (max-width: 767px) {

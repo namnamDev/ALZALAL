@@ -29,12 +29,29 @@ export default {
     followList,
     followerList,
   },
+  props:{
+    compName: String,
+  },
   data() {
       return {
-         comp: 'followerList',
-         isFollower:true,
-         isFollowing:false
-       }
+          comp: '',
+       } 
+  },
+  created:function(){
+    if(this.compName == 'followList'){
+      this.comp = 'followList'
+    }else{
+      this.comp = 'followerList'
+    }
+  },
+  mounted:function(){
+    if(this.compName == 'followList'){
+      document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('following').style.color = 'white'
+    }else{
+      document.getElementById('follower').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('follower').style.color = 'white'
+    }
   },
   methods: {
       changeComponent1: function(componentName) {
@@ -51,11 +68,6 @@ export default {
         document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
         document.getElementById('following').style.color = 'white'
       }
-
-
-          
-      
-      
   },
 
 }
@@ -64,6 +76,7 @@ export default {
 <style scoped>
 .container{
   margin-top: 90px;
+  
 }
 @media (max-width:576px){
   .container{
@@ -71,17 +84,23 @@ export default {
   }
 }
 .btn1{
-  width:200px;
+  width:100%;
   font-size:25px;
   font-weight: 550;
   border-radius: 5%;
   border: none;
+  background-color: white;
+
 }
 .tab-item {
   margin-top: 20px;
 }
 
-#follower{
+#follower:active{
+  background-color: rgb(62, 171, 111);
+  color: white;
+}
+#following:active{
   background-color: rgb(62, 171, 111);
   color: white;
 }

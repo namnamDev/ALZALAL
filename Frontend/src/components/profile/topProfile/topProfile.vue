@@ -1,13 +1,12 @@
 <template>
     <div class="row top">
         <div class="col-lg-3 col-md-2 col-sm-3 col-3 col-xl-3"></div>
-        <div class="col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
+        <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-6 col-xl-6">
             <div class="row">
                     <!-- 프로필이미지 -->
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg"  :src="imgsrc">
-                        <!-- <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else> -->
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -28,9 +27,9 @@
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
                             <ul>
-                                <li>{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li>{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
-                                <li>{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
+                                <li class="count">{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
+                                <li class="countc">{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
+                                <li class="countc">{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -38,18 +37,12 @@
                     <div class="profile-bio row-lg-4">
                         <details>
                             <summary>Main Language</summary>
-                            <p v-for="item,index in language" :key="index">{{item}}</p>    
+                            <p class="summaryList" v-for="item,index in language" :key="index">- {{item}}</p>    
                         </details>
                         <details>
                             <summary>Problem Site</summary>
-                            <p v-for="item,index in problemsite" :key="index">{{item}}</p> 
-                        </details>
-                        <!-- <p align="left" class="downInfo">Main :
-                            <span v-for="item,index in language" :key="index">{{item}}</span>
-                        </p> -->
-                        <!-- <p align="left" class="downInfo">Site : 
-                            <span v-for="item,index in problemsite" :key="index">{{item}}</span>
-                        </p>                            -->
+                            <p class="summaryList" v-for="item,index in problemsite" :key="index">- {{item}}</p> 
+                        </details>                          
                     </div>
                   
                 </div>
@@ -58,8 +51,8 @@
                 <div>
                     <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
-                <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2">
-                    <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2"  v-if="this.myPage">
+                    <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
                 </div>
                 <div class="introduceline col-lg-7 col-md-7 col-sm-7 col-7 col-xl-7">
                     <p class="introtext" align="left">{{introduce}}</p>
@@ -67,7 +60,7 @@
                 <div class="introduceline col-lg-3 col-md-3 col-sm-3 col-3 col-xl-3">
 
                 </div>
-                <div v-if="!myPage">
+                <div v-if="!myPage" class="text-end">
                     <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
                 </div>
             </div>
@@ -92,7 +85,6 @@ export default {
     },
     data(){
         return{
-            //imgsrc: `${SERVER_URL}/profile/img/1004`,
             imgsrc: '',
             no: '',
             follower: '',
@@ -110,9 +102,8 @@ export default {
         }
     },
     created: function() {
-        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
-         console.log(userPk)
+         
         let pk = ''
         if(userPk){
             pk = userPk
@@ -126,14 +117,13 @@ export default {
             this.myPage = true
             this.imgsrc=`${SERVER_URL}/profile/img/${pk}`
         }
-        console.log(this.pk)
+        
         axios({
             method: 'get',
             url: `${SERVER_URL}/profile/${pk}`,
             headers: this.getToken
         })
-        .then(res =>{   
-            // console.log(res.data)   
+        .then(res =>{    
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following
@@ -149,19 +139,6 @@ export default {
         .catch(err => {
             console.log(err);
         })
-        // axios({
-        //     method: 'get',
-        //     url: `${SERVER_URL}/profile/img/${this.pk}`
-        // })
-        // .then(res => {
-        //     this.flag = true
-        //     this.imgsrc = res.data
-        // })
-        // .catch(() => {
-        //     this.flag= false
-        //     this.imgsrc = 'profile'
-        //     // console.log(err)
-        // })
        
     },
     computed:{
@@ -185,24 +162,46 @@ export default {
             this.$router.push({'name':'passwordConfirm'})
         },
         clickFollow: function() {
-            this.$router.push({'name':'followPage'})
+            this.$router.push({'name':'followPage', params:{compName:'followList'}})
         },
         clickFollower: function() {
-            this.$router.push({'name':'followPage'})
+            this.$router.push({'name':'followPage', params:{compName:'followerList'}})
         },
         clickRequest: function(){
             const token = sessionStorage.getItem('jwt')
                 if(!token){
-                    alert("로그인이 필요합니다.")
-                this.$router.push({name:'login'})
+                    this.$swal.fire({          
+                        text: "로그인 후 이용해주세요.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '로그인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.value) {
+                            this.$router.push({'name':'login'})
+                        }
+                    })
                 }
             this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
                 const token = sessionStorage.getItem('jwt')
                 if(!token){
-                    alert("로그인이 필요합니다.")
-                this.$router.push({name:'login'})
+                    this.$swal.fire({          
+                        text: "로그인 후 이용해주세요.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '로그인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if(result.value) {
+                            this.$router.push({'name':'login'})
+                        }
+                    })
                 }
             axios({
                     method: 'post',
@@ -211,12 +210,8 @@ export default {
                     headers: this.getToken,
                 })
                 .then(()=>{
-                    // console.log(res)
                 })
                 .catch({
-                    // console.log(this.no)
-                    // console.log(this.getToken)
-                    // console.log(err);
                 })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'
@@ -238,13 +233,16 @@ export default {
 </script>
 
 <style scoped>
+.feed-item{
+  /* box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);     */
+}
 .fa{
     color: rgb(62, 171, 111) ;
 }
+
 .top {
     margin-top: 20px;
 }
-
 .profile-image {
     float: left;
     width: 170px;
@@ -288,26 +286,37 @@ i {
   background-color: white;
   color: black;
   border: 1px solid rgb(62, 171, 111);
-  width: 150px;
-  margin-left: 100px;
+  font-weight: 550;
+  width: 120px;
+  margin-left: 70px;
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);
+  border-style: none;
   color: white;
-  width: 150px;
-  margin-left: 100px;
+  border:none;
+  width: 120px;
+  font-weight: 550;
+  margin-left: 70px;
 }
 .profile-stats {
     margin-top: 1rem;
     display: inline-block;
 }
-.profile-stats li {
+.count{
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1.5;
+    margin-right: 1rem;
+}
+.countc {
     display: inline-block;
     font-size: 20px;
     line-height: 1.5;
     margin-right: 1rem;
     cursor: pointer;
 }
+
 .profile-bio {
     font-size: 20px;
     font-weight: 550;
@@ -328,6 +337,8 @@ i {
   background-color: rgb(62, 171, 111);
   color: white;
   width: 160px;    
+  margin-top: 20px;
+  padding: 3px 6px;
 }
 .profile-real-name,
 .profile-stat-count,
@@ -350,6 +361,7 @@ i {
     font-size: 20px;
     font-weight: 400;
     word-wrap: break-word;
+    
 }
 .clickIntro{
     width: 1%;
@@ -393,23 +405,12 @@ i {
         margin-left: 40px;
     }
 }
-.btn-unfollow {
-  background-color: white;
-  color: black;
-  border: 1px solid rgb(62, 171, 111);
-  width: 150px;
-}
-.btn-follow{
-  background-color: rgb(62, 171, 111);
-  color: white;
-  width: 150px;
-}
+
 .status-intro{
     margin-top: 20px;
 }
-details{
-}
-summary {
-
+.summaryList{
+    margin-left: 20px;
+    font-size: 18px;
 }
 </style>

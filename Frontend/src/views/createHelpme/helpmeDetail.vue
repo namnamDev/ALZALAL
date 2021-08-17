@@ -56,6 +56,7 @@
 </template>
 
 <script>
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import Comment from '@/components/comment/CommentHelpmeItem.vue'
 import CreateComment from '@/views/createHelpme/createHelpmeComment.vue'
 import jwt_decode from 'jwt-decode'
@@ -64,8 +65,12 @@ import vueMoment from "vue-moment";
 import axios from 'axios';
 import $ from 'jquery';
 Vue.use(vueMoment);
-
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const token = sessionStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
   name: 'helpmeDetail',
   props:{
@@ -96,7 +101,12 @@ export default {
       helpmeSenderName: '',
       helpmeStatus:'',
       currentPage: Number(this.Page)+1,
+      myPage: '',
     }
+  },
+  mounted() { 
+    
+    this.getCommentList()
   },
   computed: {
 
@@ -139,7 +149,7 @@ export default {
     this.helpmeContent = helpme.helpmeContent
     this.helpmeDate = helpme.helpmeDate
     this.helpmeNo = helpme.helpmeNo
-    console.log(this.helpmeNo)
+    
     this.helpmeReceptorNo = helpme.helpmeReceptorNo.no
     this.helpmeSenderNo = helpme.helpmeSenderNo.no
     this.helpmeReceptorName = helpme.helpmeReceptorNo.name
@@ -147,14 +157,35 @@ export default {
     this.commentCount = helpme.commentCount  
     this.likeState = helpme.likeState
     this.helpmeStatus = helpme.helpmeStatus
-    console.log(this.helpmeStatus)
+    
     this.problemNo = helpme.problemSite.problemNo
     this.problemSiteName = helpme.problemSite.problemSiteName
+    const userPk = localStorage.getItem("userPk")
+        
+        if(userpk != userPk){
+            this.myPage = false
+        }else{
+            this.myPage = true
+        }
+        
   },
   methods: {
 
     modifyArticle: function(){
-      this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+      this.$swal.fire({
+        title: '글을 수정하시겠습니까?',
+        text: "문제사이트, 문제번호는 변경이 불가능합니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
+        }).then((result) => {
+        if (result.value) {
+        this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+        }
+      })
     },
 
     deleteArticle: function() {
@@ -166,8 +197,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '삭제',
-        cancelButtonText: '취소'
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
       }).then((result) => {
         if (result.value) {
           axios({
@@ -204,10 +235,10 @@ export default {
     },
     getCommentList:function() {
       this.$store.dispatch('deleteArticleComment')
-      const articleNo = localStorage.getItem('articleNo')
+      const helpmeNo = localStorage.getItem('helpmeNo')
       axios({
           method: 'get',
-          url: `${SERVER_URL}/comment/helpme/${articleNo}?page=${this.Page}`,
+          url: `${SERVER_URL}/comment/helpme/${helpmeNo}?page=${this.Page}`,
           headers: this.getToken(),
         })   
         .then(res =>{
@@ -319,17 +350,9 @@ export default {
 .top{
   width:100%;
   height:100px;
-  /* border:1px solid black; */
 }
 .middle{
   width:100%;
-  /* height:400px; */
-  /* border:1px solid black; */
-  /* border-top: 1px solid black;
-  border-bottom: 1px solid black; */
-  /* box-shadow: 0 0 0px 0.7px gray; */
-  /* border-radius: 5px; */
-  /* padding: 15px 15px 15px 15px; */
   position: relative;
 }
 .viewer{
@@ -337,19 +360,16 @@ export default {
 }
 .bottom{
   width:100%;
-  /* height:100px; */
-  /* border:1px solid black; */
   position: relative;
 }
 .title{
-  font-size:26px;
+  font-size:23px;
   font-weight: 550;
 }
 .fa-thumbs-up{
   font-size: 20px;
 }
 .thumbs{
-  /* position: absolute; */
   text-align: end;
   bottom: 0;
 }

@@ -69,13 +69,13 @@ export default {
   margin-top: 30px;
 }
 .btn1{
-  width:150px;
+  width:100%;
   height: 40px;
   font-size:15px;
   font-weight: 550;
   border-radius: 5%;
-  margin-left: -20px;
   border: none;
+  background-color: white;
 }
 .tab-item {
   margin-top: 20px;

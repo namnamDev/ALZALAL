@@ -2,19 +2,18 @@
   <div class="row">
       <!-- props로 상위컴포넌트에서 유저pk 유저이름 받아오기 -->
       <div class="userImg col-3 col-sm-3 col-lg-3">
-          <img class="profileImg"  :src="imgsrc" alt="Img" v-if="flag">
-          <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else>
+          <img class="profileImg"  :src="imgsrc" alt="Img">
+          
       </div>
       <div class="user col-6 col-sm-6 col-lg-6">
           <span class="userName">
-          <button class="btn" @click="clickName">{{name}}</button>
+          <button class="btnName" @click="clickName">{{name}}</button>
           </span>
       </div>
-      <div class="user col-3 col-sm-3 col-lg-3">
+      <div class="user1 col-3 col-sm-3 col-lg-3" align="right">
           <span class="followBtn" v-if="!this.isLogin && !this.me">
-          <button class="btn btn-unfollow" @click="clickFollow($event)">unfollow</button>
+          <button class="btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
-          <!-- {{followState}} -->
       </div>      
   </div>
 </template>
@@ -37,16 +36,14 @@ export default {
     },
     data(){
         return{
-          imgsrc: '',
+          imgsrc: `${SERVER_URL}/profile/img/${this.no}`,
           myPage: '',
           isLogin: '', 
           me: '',
         }
     },
     created: function() {
-      console.log("target",this.userPk)
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
       if(userPk){
           this.pk = userPk
           this.myPage = false
@@ -64,21 +61,6 @@ export default {
       }else{
         this.me=false
       }
-      axios({
-        method: 'get',
-        url: `${SERVER_URL}/profile/img/${this.no}`
-      })
-      .then(res => {
-        this.flag = true
-        this.imgsrc = res.data
-        console.log(res)
-      })
-      .catch(() => {
-        this.flag= false
-        console.log('1231241241441')
-        this.imgsrc = 'profile'
-        // console.log(err)
-      })
     },
     computed: {
         getToken(){
@@ -130,14 +112,19 @@ export default {
 </script>
 
 <style scoped>
-
+.row:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+.row{
+  margin-bottom: 20px;
+}
 .userImg {
     width: 70px;
     height: 70px; 
     border-radius: 75%;
     overflow: hidden;
     display: flex;
-    margin: 20px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 }
 .profileImg{
     width: 100%;
@@ -145,7 +132,10 @@ export default {
     object-fit: cover;
     display: block;
 }
-
+.user1{
+   margin-top: 10px;
+   margin-left: 50px;
+}
 .user{
   font-weight: 550;
   margin-top: 10px;
@@ -155,14 +145,14 @@ export default {
 .user{
   margin-top: 5px;
 }
-.followBtn {
-  border-radius: 20%;
-  margin-left: 0;
 
-}
 }
 .btn-unfollow {
   background-color: white;
+  height: 40px;
+  font-size: 17px;
+  font-weight: 550;
+  width:110px;
   color: black;
   border: 1px solid rgb(62, 171, 111);
 }
@@ -170,11 +160,15 @@ export default {
   background-color: rgb(62, 171, 111);
   color: white;
 }
-.btn{
+
+.btnName{
   padding: 0.5rem 1.5rem;
+  
   font-weight: 700;
   font-size: 15px;
   border-radius: 5%;
+  background-color: white;
+  border:none;
 }
 
 

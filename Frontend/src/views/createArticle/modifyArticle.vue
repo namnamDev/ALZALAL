@@ -1,8 +1,6 @@
 <template>
   <div class="create-form">
-    <!-- <notifications group="notifyApp" position="top center" width="400px"/> -->
-
-    <div >
+    <div>
       <div class="row justify-content-start mb-3">
         <div class="box">카테고리</div>
         <select id="select" name="category" disabled v-model="category">
@@ -22,11 +20,10 @@
               @click="clickAlgoInput"
               @keyup="filterFunction"
               @blur="blur"
-              
             />
             <ul id="algo-ul">
-              <li id="algo-li" v-for="item,idx in algoList" :key="idx">
-                {{item}}
+              <li id="algo-li" v-for="(item, idx) in algoList" :key="idx">
+                {{ item }}
               </li>
             </ul>
           </div>
@@ -41,7 +38,7 @@
           id="select"
           name="problem-site"
           class="col-sm-2 m-size mb-2 decorated"
-          v-model="pSite"          
+          v-model="pSite"
         >
           <option value="boj">백준</option>
           <option value="swea">SWEA</option>
@@ -49,15 +46,21 @@
           <option value="atcoder">atcoder</option>
           <option value="jungol">jungol</option>
           <option value="codeforce">codeforce</option>
-          <option value="programmers">programmers</option>          
+          <option value="programmers">programmers</option>
         </select>
 
         <div class="box col-sm-2 mb-2">문제번호</div>
-        <input disabled v-model="pNum" id="problem-input" type="text" class="m-size col-sm-2 mb-2" />
+        <input
+          disabled
+          v-model="pNum"
+          id="problem-input"
+          type="text"
+          class="m-size col-sm-2 mb-2"
+        />
 
         <div class="box col-sm-2 mb-2">사용언어</div>
         <select
-            disabled
+          disabled
           id="select"
           name="language"
           v-model="language"
@@ -74,7 +77,7 @@
       </div>
 
       <div class="row">
-        <div class="col title ">
+        <div class="col title">
           <input
             v-model="title"
             id="title"
@@ -88,24 +91,22 @@
         <Editor ref="toastEditor" />
       </div>
       <div class="row mt-2 mb-5 pb-5">
-        <button @click="submit">작성하기</button>
-        
+        <button @click="submit">수정하기</button>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import Editor from "@/components/createArticle/Editor";
-import axios from 'axios';
+import axios from "axios";
 
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 
 export default {
   name: "modifyArticle",
-  props:{
-      articleNo:String,
+  props: {
+    articleNo: String,
   },
   components: {
     Editor,
@@ -119,81 +120,110 @@ export default {
       pSite: "",
       language: "",
       algoList: [],
+      algo: [],
+      memberNo: "",
     };
   },
 
   computed: {
     articleClass: function () {
-      if (this.category == 'solution') {
-        return 'A01'
+      if (this.category == "solution") {
+        return "A01";
       } else {
-        return 'A00'
+        return "A00";
       }
-    }
+    },
   },
 
-  created: function() {
+  created: function () {
     axios({
-        method: 'get',
-        url: `${SERVER_URL}/algorithmList`,
-      })   
-      .then(res =>{
-        res.data.algorithmList.forEach(element => {
-          this.algoList.push(element)
-        });   
+      method: "get",
+      url: `${SERVER_URL}/algorithmList`,
+    })
+      .then((res) => {
+        res.data.algorithmList.forEach((element) => {
+          this.algoList.push(element);
+        });
       })
-      .catch(err =>{  
-        console.log(err)
-      })
-    const token = sessionStorage.getItem('jwt')
-    if(!token){
-      this.$router.push({name:'login'})
+      .catch((err) => {
+        console.log(err);
+      });
+    const token = sessionStorage.getItem("jwt");
+    if (!token) {
+      this.$router.push({ name: "login" });
     }
-
   },
-  mounted(){
-      this.getArticleDetail()
+  mounted() {
+    this.getArticleDetail();
   },
   methods: {
     getArticleDetail() {
-      const articleNo = localStorage.getItem('articleNo')
+      const articleNo = localStorage.getItem("articleNo");
       axios({
-          method: 'get',
-          url: `${SERVER_URL}/article/article/${articleNo}`,
-          headers: this.getToken(),
-        })   
-        .then(res =>{          
+        method: "get",
+        url: `${SERVER_URL}/article/article/${articleNo}`,
+        headers: this.getToken(),
+      })
+        .then((res) => {
+          this.commentCount = Math.ceil(
+            res.data.articleDetail.commentCount / 10,
+            1
+          );
+          this.articleDetail = res.data.articleDetail;
 
-          this.commentCount = Math.ceil(res.data.articleDetail.commentCount/10 ,1)
-          this.articleDetail = res.data.articleDetail
-          
-          this.likeState = this.articleDetail.likeState
-          this.likeCount= this.articleDetail.likeCount
-          //this.algoList = this.articleDetail.algo
+          this.likeState = this.articleDetail.likeState;
+          this.likeCount = this.articleDetail.likeCount;
 
-          this.category = this.articleDetail.articleClass
-          this.content = this.articleDetail.articleContent
-          this.title = this.articleDetail.articleTitle
-          if(this.articleDetail.articleClass=="A00"){
-              this.category='QnA'
-          }else{
-              this.category='solution'
+          res.data.articleDetail.algo.forEach((element) => {
+            let boxAlgo = document.querySelector(".box-algo");
+            const algoHastag = document.createElement("span");
+
+            algoHastag.innerText = element;
+            algoHastag.style.display = "inline-block";
+            algoHastag.style.fontSize = "14px";
+            algoHastag.style.borderRadius = "3px";
+            algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+            algoHastag.style.padding = "4px 8px";
+            algoHastag.classList.add("me-3");
+            algoHastag.addEventListener("click", function (event) {
+              event.target.remove();
+            });
+            algoHastag.style.cursor = "pointer";
+            if (boxAlgo.childElementCount != 4) {
+              let flag = true;
+              boxAlgo.childNodes.forEach((element) => {
+                if (algoHastag.innerText == element.innerText) {
+                  flag = false;
+                }
+              });
+              if (flag) {
+                boxAlgo.appendChild(algoHastag);
+              }
+            }
+          });
+
+          this.category = this.articleDetail.articleClass;
+          this.content = this.articleDetail.articleContent;
+          this.title = this.articleDetail.articleTitle;
+          if (this.articleDetail.articleClass == "A00") {
+            this.category = "QnA";
+          } else {
+            this.category = "solution";
           }
-          this.language = this.articleDetail.useLanguage
-          this.pSite = this.articleDetail.problemSite.problemSiteName
-          this.pNum = this.articleDetail.problemSite.problemNo
-          
+          this.language = this.articleDetail.useLanguage;
+          this.pSite = this.articleDetail.problemSite.problemSiteName;
+          this.pNum = this.articleDetail.problemSite.problemNo;
         })
-        .catch(err =>{  
-          console.log(err)
-        })     
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    
+
     blur() {
-      const ul = document.querySelector('#algo-ul')
+      const ul = document.querySelector("#algo-ul");
       setTimeout(() => {
-        if (ul.style.display == 'block'){
-          ul.style.display = 'none'        
+        if (ul.style.display == "block") {
+          ul.style.display = "none";
         }
       }, 100);
     },
@@ -202,107 +232,119 @@ export default {
       return this.$refs.toastEditor.getContent();
     },
     // token 값 가져오기
-    getToken(){
-      const token = sessionStorage.getItem('jwt')
+    getToken() {
+      const token = sessionStorage.getItem("jwt");
       const config = {
-        Authorization: `Bearer ${token}`
-      }
-      return config
+        Authorization: `Bearer ${token}`,
+      };
+      return config;
     },
     // 글 작성하기
     submit() {
-      if (!this.pNum){
-        this.$swal.fire({
-        text: "문제 번호를 입력해주세요",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '확인',
-        cancelButtonText: '취소'
-        }).then(() => {          
-          var input = document.querySelector("#problem-input");
-          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
-        })     
-      }
-      else if(!this.title){
-        this.$swal.fire({
-        text: "제목을 입력해 주세요",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '확인',
-        cancelButtonText: '취소'
-        }).then(() => {          
-          var input = document.querySelector("#title");
-          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
-        })   
-      }
-      else if(!this.getContent()){
-        this.$swal.fire({
-        text: "내용을 입력해 주세요",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '확인',
-        cancelButtonText: '취소'
-        }).then(() => {          
-          var input = document.querySelector(".editor");
-          window.scrollTo({top:input.offsetTop, behavior:'smooth'});      
-        })   
-      }
-      else{
+      if (!this.pNum) {
+        this.$swal
+          .fire({
+            text: "문제 번호를 입력해주세요",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "확인",
+            cancelButtonText: "취소",
+          })
+          .then(() => {
+            var input = document.querySelector("#problem-input");
+            window.scrollTo({ top: input.offsetTop, behavior: "smooth" });
+          });
+      } else if (!this.title) {
+        this.$swal
+          .fire({
+            text: "제목을 입력해 주세요",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "확인",
+            cancelButtonText: "취소",
+          })
+          .then(() => {
+            var input = document.querySelector("#title");
+            window.scrollTo({ top: input.offsetTop, behavior: "smooth" });
+          });
+      } else if (!this.getContent()) {
+        this.$swal
+          .fire({
+            text: "내용을 입력해 주세요",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "확인",
+            cancelButtonText: "취소",
+          })
+          .then(() => {
+            var input = document.querySelector(".editor");
+            window.scrollTo({ top: input.offsetTop, behavior: "smooth" });
+          });
+      } else {
         let algoList = [];
         const boxAlgo = document.querySelectorAll(".box-algo span");
         boxAlgo.forEach((element) => {
           algoList.push(element.innerText);
         });
-        let categoryName=''
-        if(this.category=='solution'){
-            categoryName='A01'
-        }else{this.category=='QnA'}{
-            categoryName='A00'
+        let categoryName = "";
+        if (this.category == "solution") {
+          categoryName = "A01";
+        } else {
+          this.category == "QnA";
         }
-        const articleNo = localStorage.getItem('articleNo')
+        {
+          categoryName = "A00";
+        }
+        const articleNo = localStorage.getItem("articleNo");
         const data = {
           title: this.title,
           content: this.getContent(),
           category: categoryName,
           algo: algoList,
-        }
-  
-        this.$swal.fire({
-          text: "글을 수정하시겠습니까?",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: '확인',
-          cancelButtonText: '취소'
-          }).then(() => {          
-            axios({
-              method: 'put',
-              url: `${SERVER_URL}/article/article/${articleNo}`,
-              data: data,
-              headers: this.getToken(),
-            })   
-            .then(() =>{
-              this.$swal('글을 수정하였습니다.');
-              this.$router.push({ name: 'timeline' })                         
-            })
-            .catch(err =>{  
-              console.log(data)
-              console.log(this.getToken())
-              console.log(err)
-            })               
-          })   
-      }      
-    },    
+        };
+
+        this.$swal
+          .fire({
+            text: "글을 수정하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "확인",
+            cancelButtonText: "취소",
+          })
+          .then((result) => {
+            if (result.value) {
+              axios({
+                method: "put",
+                url: `${SERVER_URL}/article/article/${articleNo}`,
+                data: data,
+                headers: this.getToken(),
+              })
+                .then(() => {
+                  this.$swal("글을 수정하였습니다.");
+                  localStorage.setItem("userPk", this.memberNo);
+                  this.$router.push({
+                    name: "profilePage",
+                    params: { userPk: this.memberNo },
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+          });
+      }
+    },
     clickAlgoInput() {
       // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
-      const liTags = document.querySelectorAll("#algo-li")
+      const liTags = document.querySelectorAll("#algo-li");
       liTags.forEach((element) => {
         element.addEventListener("click", function (event) {
           let boxAlgo = document.querySelector(".box-algo");
@@ -322,27 +364,24 @@ export default {
 
           // console.log(boxAlgo.childNodes)
           if (boxAlgo.childElementCount != 4) {
-            let flag = true
-            boxAlgo.childNodes.forEach(element => {
-              if (algoHastag.innerText == element.innerText){
-                flag = false
-                
+            let flag = true;
+            boxAlgo.childNodes.forEach((element) => {
+              if (algoHastag.innerText == element.innerText) {
+                flag = false;
               }
-              console.log(element.innerText)
             });
-            if (flag){
+            if (flag) {
               boxAlgo.appendChild(algoHastag);
-            }            
+            }
           }
         });
       });
       // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
-      const ul = document.querySelector('#algo-ul')
-      if (ul.style.display == 'block') {
-        ul.style.display = 'none'
-      }
-      else{
-        ul.style.display = 'block'
+      const ul = document.querySelector("#algo-ul");
+      if (ul.style.display == "block") {
+        ul.style.display = "none";
+      } else {
+        ul.style.display = "block";
       }
     },
     // 검색필터 적용
@@ -377,9 +416,10 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 100%;
+  width: 70%;
   height: 500px;
-  left: 23%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   background-color: white;
 }
@@ -444,19 +484,18 @@ li:hover {
   top: 95px;
 }
 .title {
-  width: 80%;
+  width: 100%;
   /* border: 1px solid black; */
   height: 30px;
   margin-top: 100px;
   padding: 0 0;
 }
 .title > input {
-  width: 68%;
+  width: 100%;
   border-radius: 3px;
 }
 .editor {
-  width: 70%;
-  transform: translateX(-11px);
+  width: 100%;
   margin-top: 20px;
   overflow-wrap: break-word;
 }
@@ -468,16 +507,13 @@ button {
   color: black;
   background-color: rgb(176, 218, 230);
 }
-.m-size{
-  margin-right:8px;
-}
-.litags:hover {
-  background-color: yellow;
-}
-select:focus > option:checked { 
-    background: #000 !important;
+.m-size {
+  margin-right: 8px;
 }
 
+.row {
+  --bs-gutter-x: 0;
+}
 
 @media (max-width: 576px) {
   .create-form {
@@ -493,13 +529,13 @@ select:focus > option:checked {
   .editor {
     top: 130px;
   }
-  .m-size{
-    margin-right:250px;
+  .m-size {
+    margin-right: 250px;
   }
-  .algo-input-div{
+  .algo-input-div {
     margin-bottom: 8px;
   }
-  .box-algo{
+  .box-algo {
     padding: 0 0;
   }
   .title {
@@ -507,9 +543,8 @@ select:focus > option:checked {
   }
 }
 @media (max-width: 468px) {
-  .m-size{
-    margin-right:145px;
+  .m-size {
+    margin-right: 145px;
   }
 }
-
 </style>

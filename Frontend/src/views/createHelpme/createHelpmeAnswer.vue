@@ -176,7 +176,6 @@ export default {
       
       const boxAlgo = document.querySelectorAll(".box-algo span");
       boxAlgo.forEach((element) => {
-        console.log(element.textContent);
         algoList.push(element.innerText);
       });
 
@@ -189,7 +188,6 @@ export default {
         language: this.language,
         algo: algoList,
       }
-      console.log(data)
 
 
       axios({
@@ -199,7 +197,6 @@ export default {
         headers: this.getToken(),
       })   
       .then((res) =>{
-        console.log(res.data)
         axios({
             method: 'post',
             url: `${SERVER_URL}/helpme/answer/${this.helpmeNo}`,
@@ -208,7 +205,7 @@ export default {
             },
             headers: this.getToken(),
         }).then(()=>{
-            console.log("성공?")
+            this.$swal('답변 작성완료!')
         }).catch(err=>{
             console.log(err)
         })
@@ -300,9 +297,10 @@ export default {
 .create-form {
   margin-top: 150px;
   margin-bottom: 13vw;
-  width: 100%;
+  width: 70%;
   height: 500px;
-  left: 23%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   background-color: white;
 }
@@ -367,19 +365,18 @@ li:hover {
   top: 95px;
 }
 .title {
-  width: 80%;
+  width: 100%;
   /* border: 1px solid black; */
   height: 30px;
   margin-top: 100px;
   padding: 0 0;
 }
 .title > input {
-  width: 68%;
+  width: 100%;
   border-radius: 3px;
 }
 .editor {
-  width: 70%;
-  transform: translateX(-11px);
+  width: 100%;
   margin-top: 20px;
 }
 button {
@@ -392,6 +389,9 @@ button {
 }
 .m-size{
   margin-right:8px;
+}
+.row{
+  --bs-gutter-x: 0;
 }
 
 

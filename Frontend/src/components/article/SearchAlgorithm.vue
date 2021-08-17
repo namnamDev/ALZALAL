@@ -12,8 +12,8 @@
             <div v-if="isOneAlgo">
               <div> 
                 # {{this.includeAlgo[0]}}
-                <span class="follow-cancel-btn" @click="follow" v-if="followingState">팔로우취소</span>
-                <span class="follow-btn" @click="follow" v-else>팔로우</span>
+                <span class="follow-cancel-btn" @click="follow" v-if="followingState && isLogin">팔로우취소</span>
+                <span class="follow-btn" @click="follow" v-if="!followingState && isLogin">팔로우</span>
               </div>
             </div>
           </div>
@@ -90,6 +90,15 @@ export default {
   computed: {
     getArticle: function() {
       return this.$store.getters.getSearchArticle
+    },
+    isLogin: function() {
+      const token = sessionStorage.getItem('jwt')
+      if (token){
+        return true
+      }
+      else{
+        return false
+      }
     }
   },
 
@@ -159,7 +168,6 @@ export default {
         data: data
       })
       .then(()=>{
-        
       })
       .catch(err=>{
         console.log(err)
@@ -244,7 +252,6 @@ export default {
   display: inline-block;
   font-size: 13px;
   border-radius: 3px;
-  /* background-color: rgba(221,223,230,1); */
   margin-right:3px;
   padding: 1px 3px;
   margin-bottom: 4px;
@@ -276,7 +283,7 @@ export default {
 }
 .follow-btn{
   font-size:20px;
-  background-color: rgb(0, 153, 255);
+  background-color: rgb(39, 235, 32);
   padding:4px 12px;
   border-radius: 4px;
   color:white;
@@ -297,7 +304,6 @@ export default {
   cursor: pointer;
 }
 .follow-cancel-btn:hover{
-  /* background-color: rgb(0, 89, 255); */
   font-size:22px;
   padding:5px 16px;
 }

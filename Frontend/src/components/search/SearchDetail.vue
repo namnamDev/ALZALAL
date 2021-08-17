@@ -65,8 +65,6 @@
               v-for="item,idx in algoList" :key="idx"
               @click="clickAlgo($event)">
               {{item}}
-              <!-- <span class="span-include" @click="include($event)">포함</span>
-              <span class="span-exclude">제외</span> -->
             </li>            
           </ul>
         </div>
@@ -91,7 +89,7 @@
 
     <div class="footer mb-2">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="button" class="btn" id="submit" @click="submit">검색하기</button>
+      <button type="button" class="btn" v-on:keyup.enter="submit" id="submit" @click="submit">검색하기</button>
     </div>
   </div>
 </template>
@@ -439,14 +437,10 @@ export default {
     display: block;
   }
   .include{
-    /* border: 1px solid black; */
-    /* height:40px; */
     width: 450px;
     border-radius: 3px;
   }
   .exclude{
-    /* border: 1px solid black; */
-    /* height:40px; */
     width: 450px;
     border-radius: 3px;
   }
@@ -457,11 +451,7 @@ export default {
     font-size: 15px;
     font-weight: bold;
     margin: 0 5px;
-    /* position: absolute; */
-    /* right: 45px; */
-    /* top:-10px; */
     cursor:pointer;
-    /* display:none; */
   }
   .span-exclude{
     background-color: rgb(246, 163, 142);
@@ -469,11 +459,7 @@ export default {
     padding: 3px;
     font-size: 15px;
     font-weight:bold;
-    /* position: absolute; */
-    /* right: 10px; */
-    /* top:-10px; */
     cursor:pointer;
-    /* display:none; */
   }
   .user-search{
     margin-bottom: 20px;

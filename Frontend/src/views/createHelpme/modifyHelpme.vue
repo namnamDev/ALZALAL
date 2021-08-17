@@ -38,9 +38,11 @@
         </div>
       </div>
       <div class="row submit">
-        <button type="submit" :disabled="!pNum || !pSite || !content" class="requestBtn">제출하기</button>
+        <button type="submit" :disabled="!pNum || !pSite || !content" class="requestBtn">수정</button>
+        
       </div>
       </form>
+      
     </div>
     
   </div>
@@ -74,7 +76,6 @@ export default {
       this.$router.push({name:'login'})
     } 
     const userPk = localStorage.getItem("userPk")
-    console.log(userPk)
     if(userPk){
         this.targetPK = userPk
     }
@@ -85,7 +86,7 @@ export default {
           headers: this.getToken(),
         })   
         .then(res =>{
-            console.log(res.data)
+            
           this.pSite = res.data.helpme.problemSite.problemSiteName
           this.pNum = res.data.helpme.problemSite.problemNo
           this.content = res.data.helpme.helpmeContent
@@ -115,22 +116,20 @@ export default {
         content: this.content,
         
       }
-      console.log(data)
-      axios({
-        method: 'put',
-        url: `${SERVER_URL}/helpme/${this.helpmeNo}`,
-        data: data,
-        headers: this.getToken(),
-      })   
-      .then(res =>{
-        console.log(res);
-        alert("수정 완료!")
-        this.$router.push({ name: 'profilePage' })       
-      })
-      .catch(err =>{  
-        console.log(err)
-        console.log(this.getToken())
-      })
+            axios({
+              method: 'put',
+              url: `${SERVER_URL}/helpme/${this.helpmeNo}`,
+              data: data,
+              headers: this.getToken(),
+            })   
+            .then(() =>{
+              
+              this.$swal('요청글이 수정되었습니다.')
+              this.$router.push({ name: 'profilePage' })       
+            })
+            .catch(err =>{  
+              console.log(err)
+            })
     },
   },
 };
@@ -202,6 +201,16 @@ export default {
   font-weight: 550;
   color: white;
   background-color: rgb(62, 171, 111);
+}
+.cancelBtn{
+  width: 110px;
+  height: 40px;
+  border-radius: 5%;
+  border-style: none;
+  font-weight: 550;
+  color: red;
+  background: white;
+  border: 1px solid red;
 }
 .requestBtn.disabled{
   color: black;

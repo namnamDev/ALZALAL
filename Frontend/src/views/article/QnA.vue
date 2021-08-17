@@ -28,14 +28,10 @@ export default {
   data: function(){
     return {
       article:[],
-      //articleItems: null,
       page: 0
     }
   },
    computed: {
-  //   getQnaList: function() {
-  //     return this.$store.getters.getQnaList
-  //   }
         getToken(){
       const token = sessionStorage.getItem('jwt')
       const config = {
@@ -51,14 +47,12 @@ export default {
           url: `${SERVER_URL}/articlelist/qna`+"?page="+(this.page),
           headers: this.getToken,
         }).then(res => {
-          console.log(res.data.article.length)
           setTimeout(() => {
             if(res.data.article.length) {
               
               this.article = this.article.concat(res.data.article)
               $state.loaded()
               this.page += 1
-              console.log("after", this.article.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(res.data.length / 10 < 1) {
                 $state.complete()
@@ -74,32 +68,10 @@ export default {
        },
    },
 
-  // created() {
-  //   axios({
-  //       method: 'get',
-  //       url: `${SERVER_URL}/articlelist/qna`+"?page="+(this.page),
-  //       headers: this.getToken(),
-  //     })   
-  //     .then(res =>{
-  //       console.log(res.data)
-  //       this.article = res.data
-  //       this.$store.dispatch('createQnaList',res.data.article)
-  //     })
-  //     .catch(err =>{  
-  //       console.log(err)
-  //     })
-  // }
   
 }
 </script>
 
 <style scoped>
-.container{
-  /* margin-top: 110px; */
-}
-@media (max-width:576px){
-  .container{
-    /* margin-top: 60px; */
-  }
-}
+
 </style>

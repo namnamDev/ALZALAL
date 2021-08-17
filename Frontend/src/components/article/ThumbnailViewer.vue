@@ -1,10 +1,7 @@
 <template>
   <div>   
-    <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
-    <div>
-      <Viewer  
-      class="viewer"      
-      height="500px" 
+    <div class="viewer">
+      <Viewer       
       :initialValue="viewerContent"
       :options="viewerOptions"/>
     </div>
@@ -12,11 +9,9 @@
 </template>
 
 <script>
-// Toast UI Editor - viewer
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import { Viewer } from '@toast-ui/vue-editor';
 
-// add dependencies related code-syntax-highlight
 import 'highlight.js/styles/github.css';
 import hljs from 'highlight.js';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
