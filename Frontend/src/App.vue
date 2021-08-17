@@ -5,16 +5,12 @@
         <TopMenuBar />
         <router-view />
     </div>
-        <!-- <SideMenuBar class="mycol1"/> -->
-        <!-- <SearchBar class="mycol1" /> -->
     <Modal />
   </div>
 </template>
 
 <script>
-// import SideMenuBar from "@/components/navBar/SideMenuBar.vue";
 import TopMenuBar from "@/components/navBar/TopNavBar.vue";
-// import SearchBar from "@/components/search/SearchBar.vue";
 import Modal from '@/components/search/SearchModal.vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'

@@ -73,8 +73,7 @@ export default {
         data: formdata,
         headers: this.getToken,
       })
-        .then((res) => {
-          console.log("img", res);
+        .then(() => {
           this.$router.push({ name: "profilePage" });
         })
         .catch((err) => { 

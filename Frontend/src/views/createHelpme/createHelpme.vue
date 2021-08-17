@@ -3,9 +3,6 @@
     <div class="container">
       <form @submit.prevent="submit">
       <div class="row justify-content-start mb-3">
-
-
-        
         <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
         <select
           id="select"
@@ -72,7 +69,6 @@ export default {
       this.$router.push({name:'login'})
     } 
     const userPk = localStorage.getItem("userPk")
-        console.log(userPk)
         if(userPk){
             this.targetPK = userPk
         }
@@ -98,7 +94,6 @@ export default {
         content: this.content,
         
       }
-      console.log(data)
       axios({
         method: 'post',
         url: `${SERVER_URL}/helpme`,
@@ -111,7 +106,6 @@ export default {
       })
       .catch(err =>{  
         console.log(err)
-        console.log(this.getToken())
       })
     },
   },

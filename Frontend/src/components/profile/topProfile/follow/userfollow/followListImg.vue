@@ -14,7 +14,6 @@
           <span class="followBtn" v-if="!this.isLogin && !this.me">
           <button class="btn-unfollow" @click="clickFollow($event)">unfollow</button>
           </span>
-          <!-- {{followState}} -->
       </div>      
   </div>
 </template>
@@ -44,9 +43,7 @@ export default {
         }
     },
     created: function() {
-      console.log("target",this.userPk)
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
       if(userPk){
           this.pk = userPk
           this.myPage = false
@@ -149,9 +146,6 @@ export default {
   margin-top: 5px;
 }
 
-}
-.followBtn{
-  
 }
 .btn-unfollow {
   background-color: white;

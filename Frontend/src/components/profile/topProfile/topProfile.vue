@@ -7,7 +7,6 @@
                 <div class="offset-1 col-lg-3">
                     <div class="profile-image">
                         <img class="profileImg"  :src="imgsrc">
-                        <!-- <img class="profileImg"  :src="require(`@/assets/images/${imgsrc}.png`)" alt="Img" v-else> -->
                         <div class="modifyProfile" v-if="this.myPage">
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
@@ -43,13 +42,7 @@
                         <details>
                             <summary>Problem Site</summary>
                             <p class="summaryList" v-for="item,index in problemsite" :key="index">- {{item}}</p> 
-                        </details>
-                        <!-- <p align="left" class="downInfo">Main :
-                            <span v-for="item,index in language" :key="index">{{item}}</span>
-                        </p> -->
-                        <!-- <p align="left" class="downInfo">Site : 
-                            <span v-for="item,index in problemsite" :key="index">{{item}}</span>
-                        </p>                            -->
+                        </details>                           -->
                     </div>
                   
                 </div>
@@ -92,7 +85,6 @@ export default {
     },
     data(){
         return{
-            //imgsrc: `${SERVER_URL}/profile/img/1004`,
             imgsrc: '',
             no: '',
             follower: '',
@@ -110,7 +102,6 @@ export default {
         }
     },
     created: function() {
-        // console.log("target",this.userPk)
         const userPk = localStorage.getItem("userPk")
          
         let pk = ''
@@ -132,8 +123,7 @@ export default {
             url: `${SERVER_URL}/profile/${pk}`,
             headers: this.getToken
         })
-        .then(res =>{   
-            // console.log(res.data)   
+        .then(res =>{    
             this.no = res.data.no
             this.follower = res.data.follower            
             this.following = res.data.following
@@ -149,19 +139,6 @@ export default {
         .catch(err => {
             console.log(err);
         })
-        // axios({
-        //     method: 'get',
-        //     url: `${SERVER_URL}/profile/img/${this.pk}`
-        // })
-        // .then(res => {
-        //     this.flag = true
-        //     this.imgsrc = res.data
-        // })
-        // .catch(() => {
-        //     this.flag= false
-        //     this.imgsrc = 'profile'
-        //     // console.log(err)
-        // })
        
     },
     computed:{
@@ -211,12 +188,8 @@ export default {
                     headers: this.getToken,
                 })
                 .then(()=>{
-                    // console.log(res)
                 })
                 .catch({
-                    // console.log(this.no)
-                    // console.log(this.getToken)
-                    // console.log(err);
                 })
             if(event.target.innerText == 'follow' ){
               event.target.innerText = 'Unfollow'

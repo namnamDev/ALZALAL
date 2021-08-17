@@ -51,16 +51,8 @@ export default {
     },
   },
   methods: {
-    // getToken(){
-    //   const token = localStorage.getItem('jwt')
-    //   const config = {
-    //     Authroization: `JWT ${token}`
-    //   }
-    //   return config
-    // }
     
     submitForm: function() {
-      // console.log(this.getToken)
       axios({
             method: 'post',
             url: `${SERVER_URL}/profile/introduce`,
@@ -69,13 +61,11 @@ export default {
               },
             headers: this.getToken,
           })
-          .then(res => {
-            console.log(res);
+          .then(() => {
             this.$router.push({ name: 'profilePage' })
         
           })
           .catch(err => {
-            alert(err)
             console.log(err)
           })
     }

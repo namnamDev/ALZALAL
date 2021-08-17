@@ -76,7 +76,6 @@ export default {
       this.$router.push({name:'login'})
     } 
     const userPk = localStorage.getItem("userPk")
-    console.log(userPk)
     if(userPk){
         this.targetPK = userPk
     }
@@ -117,7 +116,6 @@ export default {
         content: this.content,
         
       }
-      console.log(data)
             axios({
               method: 'put',
               url: `${SERVER_URL}/helpme/${this.helpmeNo}`,

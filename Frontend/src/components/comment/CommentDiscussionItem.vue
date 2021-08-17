@@ -52,7 +52,6 @@ export default {
   data() {
     return {
       memberName: this.comment.member.name,
-      // date: this.comment.articleCommentDate,
       likeCount: this.comment.likeCount,
       content: this.comment.content,
       likeState: this.comment.likeState

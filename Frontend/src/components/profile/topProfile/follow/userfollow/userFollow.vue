@@ -62,11 +62,9 @@ export default {
       }).then(res => {
         setTimeout(() => {  
           if(res.data.length) {
-            console.log(res.data.length)
             this.following = this.following.concat(res.data)
             $state.loaded()
             this.page += 1
-            console.log("after", this.following.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
             if(res.data.length / 10 < 1) {
               $state.complete()

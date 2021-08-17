@@ -40,9 +40,7 @@ export default {
     }
   },
   created: function() {
-    // console.log("target",this.userPk)
     const userPk = localStorage.getItem("userPk")
-    // console.log(userPk)
     if(userPk){
         this.pk = userPk
         this.myPage = false
@@ -62,15 +60,11 @@ export default {
 	},
   methods:{
     infiniteHandler($state) {
-      // fetch(`${SERVER_URL}/search/article/${userpk}`+"?page=" + (this.page), {method: "get"
-      //   }).then(resp => {
-      //     return resp.json()
       axios({
         method: 'get',
         url: `${SERVER_URL}/search/article/${this.pk}`+"?page=" + (this.page),
         headers: this.getToken
         }).then(res => {
-          // console.log(this.getToken)
           setTimeout(() => {
             if(res.data.articleList.length) {
               this.articleList = this.articleList.concat(res.data.articleList)

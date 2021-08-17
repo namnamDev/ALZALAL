@@ -176,7 +176,6 @@ export default {
       
       const boxAlgo = document.querySelectorAll(".box-algo span");
       boxAlgo.forEach((element) => {
-        console.log(element.textContent);
         algoList.push(element.innerText);
       });
 
@@ -189,7 +188,6 @@ export default {
         language: this.language,
         algo: algoList,
       }
-      console.log(data)
 
 
       axios({
@@ -199,7 +197,6 @@ export default {
         headers: this.getToken(),
       })   
       .then((res) =>{
-        console.log(res.data)
         axios({
             method: 'post',
             url: `${SERVER_URL}/helpme/answer/${this.helpmeNo}`,
@@ -208,7 +205,7 @@ export default {
             },
             headers: this.getToken(),
         }).then(()=>{
-            console.log("성공?")
+            this.$swal('답변 작성완료!')
         }).catch(err=>{
             console.log(err)
         })
