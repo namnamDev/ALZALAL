@@ -199,6 +199,7 @@ export default {
  }
  .status{
    font-weight: 550;
+   float: right;
  }
 .date {
   float: right;

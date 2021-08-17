@@ -34,9 +34,7 @@ export default {
     }
   },
   created: function() {
-      console.log("target",this.userPk)
       const userPk = localStorage.getItem("userPk")
-      console.log(userPk)
       if(userPk){
           this.pk = userPk
           this.myPage = false
@@ -88,8 +86,5 @@ export default {
 </script>
 
 <style scoped>
-.followlist:hover{
-  background-color: rgb(216, 216, 216);
-  border-radius: 2%;
-}
+
 </style>

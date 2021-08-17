@@ -64,7 +64,12 @@ import vueMoment from "vue-moment";
 import axios from 'axios';
 import $ from 'jquery';
 Vue.use(vueMoment);
-
+const token = sessionStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'helpmeDetail',
@@ -96,8 +101,10 @@ export default {
       helpmeSenderName: '',
       helpmeStatus:'',
       currentPage: Number(this.Page)+1,
+      myPage: '',
     }
   },
+
   computed: {
 
     getComments: function() {
@@ -139,7 +146,7 @@ export default {
     this.helpmeContent = helpme.helpmeContent
     this.helpmeDate = helpme.helpmeDate
     this.helpmeNo = helpme.helpmeNo
-    console.log(this.helpmeNo)
+    
     this.helpmeReceptorNo = helpme.helpmeReceptorNo.no
     this.helpmeSenderNo = helpme.helpmeSenderNo.no
     this.helpmeReceptorName = helpme.helpmeReceptorNo.name
@@ -147,14 +154,39 @@ export default {
     this.commentCount = helpme.commentCount  
     this.likeState = helpme.likeState
     this.helpmeStatus = helpme.helpmeStatus
-    console.log(this.helpmeStatus)
+    
     this.problemNo = helpme.problemSite.problemNo
     this.problemSiteName = helpme.problemSite.problemSiteName
+    const userPk = localStorage.getItem("userPk")
+        
+        // let pk = ''
+        // console.log(pk)
+        if(userpk != userPk){
+            // pk = userPk
+            this.myPage = false
+        }else{
+            // pk = userpk
+            this.myPage = true
+        }
+        
   },
   methods: {
 
     modifyArticle: function(){
-      this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+      this.$swal.fire({
+        title: '글을 수정하시겠습니까?',
+        text: "문제사이트, 문제번호는 변경이 불가능합니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
+        }).then((result) => {
+        if (result.value) {
+        this.$router.push({name: 'modifyHelpme', params:{helpme:this.helpmeNo}})
+        }
+      })
     },
 
     deleteArticle: function() {
@@ -166,8 +198,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: '삭제',
-        cancelButtonText: '취소'
+        confirmButtonText: '네',
+        cancelButtonText: '아니요'
       }).then((result) => {
         if (result.value) {
           axios({
@@ -342,7 +374,7 @@ export default {
   position: relative;
 }
 .title{
-  font-size:26px;
+  font-size:23px;
   font-weight: 550;
 }
 .fa-thumbs-up{

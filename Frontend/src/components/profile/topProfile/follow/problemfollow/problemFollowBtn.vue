@@ -1,6 +1,6 @@
 <template>
     <span>
-      <button class="btn" id="fbtn" @click="clickFollow($event)">Unfollow</button>
+      <button class="btn1" id="fbtn" @click="clickFollow($event)">Unfollow</button>
     </span>
 </template>
 
@@ -56,11 +56,10 @@ export default {
 </script>
 
 <style scoped>
-.btn:focus{
-    border:none;
-    outline: none;
-}
-.btn{
+
+.btn1{
+    margin-bottom: 20px;
+    height: 40px;
   font-weight: 700;
   font-size: 17px;
   border-radius: 5%;
@@ -68,5 +67,7 @@ export default {
   color: black;
   border: 1px solid rgb(62, 171, 111);
   width: 70%;
+  float: right;
+  margin-right: 10px;
 }
 </style>

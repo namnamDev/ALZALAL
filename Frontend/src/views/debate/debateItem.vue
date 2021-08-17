@@ -128,6 +128,19 @@ export default {
 </script>
 
 <style scoped>
+.article-box {
+  background: white;
+
+  box-shadow: 0 0 0px 0.7px gray;
+  border-radius: 5px;
+  padding: 15px 15px;
+  /* height: 400px; */
+  cursor: pointer;
+}
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
+
 .contentsWrap {
   box-sizing: border-box;
   padding: 12px;

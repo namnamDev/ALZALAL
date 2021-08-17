@@ -116,7 +116,7 @@ export default{
       return false
     },
     nameLength(){
-      if(this.form.name.length > 2 && this.form.name.length<11){
+      if(this.form.name.length >= 2 && this.form.name.length<11){
         return true;
       }
       return false

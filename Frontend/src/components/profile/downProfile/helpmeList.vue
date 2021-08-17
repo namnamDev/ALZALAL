@@ -39,9 +39,7 @@ export default {
     }
   },
   created: function() {
-    console.log("target",this.userPk)
     const userPk = localStorage.getItem("userPk")
-    console.log(userPk)
     if(userPk){
         this.pk = userPk
         this.myPage = false
@@ -57,7 +55,7 @@ export default {
         url: `${SERVER_URL}/helpme/sendlist`+"?page=" + (this.page),
         headers: this.getToken
         }).then(res => {
-          console.log(res)
+         
           setTimeout(() => {
             if(res.data.helpmeSendList.length) {
               this.helpmeSendList = this.helpmeSendList.concat(res.data.helpmeSendList)

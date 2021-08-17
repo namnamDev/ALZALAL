@@ -6,12 +6,12 @@
             {{item.site}} 
             </span>
         </div>
-        <div class="user col-4 col-sm-4 col-lg-4">
+        <div class="user col-5 col-sm-5 col-lg-5">
             <span class="problem">
              {{item.no}}번
             </span>
         </div>
-        <div class="user col-4 col-sm-4 col-lg-4">
+        <div class="user col-3 col-sm-3 col-lg-3">
             <span class="followBtn">
               <problemFollowBtn :site="item.site" :no="item.no"/>
             </span>
@@ -53,12 +53,10 @@ export default {
           return resp.json()
         }).then(data => {
           setTimeout(() => {
-            console.log(data)
             if(data.length) {
               this.problems = this.problems.concat(data)
               $state.loaded()
               this.page += 1
-              console.log("after", this.problems.length, this.page)
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
               if(data.length / 10 < 1) {
                 $state.complete()
@@ -81,6 +79,9 @@ export default {
   display: flex;
   margin-left: 30px;
 }
+.follow:hover{
+  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 .user{
   margin-top: 30px;
   font-size: 22px;
@@ -90,6 +91,7 @@ export default {
 .problem{
   font-weight: 550;
   font-size: 22px;
+  margin-left: 10px;
 }
 
 @media (max-width:768px) {

@@ -75,6 +75,9 @@ export default {
 .follow {
   display: flex;
 }
+.follow:hover{
+ box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+}
 .nav-link{
   font-weight: 700;
 }
@@ -82,12 +85,13 @@ export default {
   margin-top: 30px;
   font-size: 22px;
   font-weight: 700;
-  margin-left: 30px;
+  
   
 }
 .problem{
   font-weight: 550;
   font-size: 22px;
+  margin-left: 10px;
 }
 
 @media (max-width:768px) {
@@ -100,6 +104,6 @@ export default {
   }
 }
 .followBtn{
-  margin-left: -50px;
+  
 }
 </style>
