@@ -65,28 +65,32 @@ export default {
         this.comp = componentName
         document.getElementById('articleList').style.backgroundColor = 'rgb(62, 171, 111)'
         document.getElementById('articleList').style.color = 'white'
+        if(this.myPage){
         document.getElementById('helpmeList').style.backgroundColor = 'white'
         document.getElementById('helpmeList').style.color = 'black'
+        }
         document.getElementById('receptList').style.backgroundColor = 'white'
         document.getElementById('receptList').style.color = 'black'
       },
       changeComponent2: function(componentName){
-        if(this.myPage){
         this.comp = componentName
         document.getElementById('articleList').style.backgroundColor = 'white'
         document.getElementById('articleList').style.color = 'black'
+        if(this.myPage){
         document.getElementById('helpmeList').style.backgroundColor = 'rgb(62, 171, 111)'
         document.getElementById('helpmeList').style.color = 'white'
+        }
         document.getElementById('receptList').style.backgroundColor = 'white'
         document.getElementById('receptList').style.color = 'black'
-        }
       },
       changeComponent3: function(componentName) {
         this.comp = componentName
         document.getElementById('articleList').style.backgroundColor = 'white'
         document.getElementById('articleList').style.color = 'black'
+        if(this.myPage){
         document.getElementById('helpmeList').style.backgroundColor = 'white'
         document.getElementById('helpmeList').style.color = 'black'
+        }
         document.getElementById('receptList').style.backgroundColor = 'rgb(62, 171, 111)'
         document.getElementById('receptList').style.color = 'white'
       },

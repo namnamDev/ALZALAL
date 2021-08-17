@@ -75,6 +75,7 @@ export default {
   font-weight: 550;
   border-radius: 5%;
   border: none;
+  background-color: white;
 }
 .tab-item {
   margin-top: 20px;
