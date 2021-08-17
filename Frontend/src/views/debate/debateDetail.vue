@@ -16,21 +16,22 @@
       </div>
         <div class="bottom my-3">
           <div class="">
-            <button class="my-3 create-comment-btn" @click="clickAlgoInput">댓글쓰기</button>
-            <div id="create-comment">
-              <CreateComment :articleNo="this.discussionNo"/>
-            </div>
           </div>
           <div class="row" v-for="comment,idx in getComments" :key="idx">
             <Comment :comment="comment"/>
           </div>
-        <div class="row mb-1 my-1">
+         
+          <div class="row mb-1 my-1">
             <div class="col text-center">
               <span class="previous-btn" @click="clickPreviousBtn">previous</span>
               <input type="text" v-model="currentPage" class="current-page" @keyup.enter="goPage">
               /<span class="mx-4">{{commentCount}}</span>
               <span class="next-btn" @click="clickNextBtn">next</span>
             </div>
+          </div>
+          <button class="my-3 create-comment-btn" @click="clickAlgoInput">댓글쓰기</button>
+          <div id="create-comment">
+            <CreateComment :articleNo="this.discussionNo"/>
           </div>
         </div>
       </div>
@@ -51,7 +52,6 @@ Vue.use(vueMoment);
 export default {
   name: 'debateDetail',
   props:{
-    discussionNo: Number,
     Page: String,
   },
 
@@ -70,54 +70,87 @@ export default {
         discussDate:'',
         disscussCompProblem:'',
         currentPage: Number(this.Page)+1,
+        discussionNo:'',
+        comments:[],
+        socketSubscription:null,
     }
   },
   computed: {
 
     getComments: function() {
-      console.log(this.$store.getters.getDebateComments)
-      return this.$store.getters.getDebateComments
+      return this.comments;
     },
   },
 
-  created() {        
-    const debate = this.$store.getters.getDebateDetail
-    console.log(debate)
-    this.commentCount = debate.commentCount
-    this.discussCompHostNo = debate.discussCompHostNo.no
-    this.discussCompHostName = debate.discussCompHostNo.name
+  created() { 
+    this.getDiscussDetail()       
+    this.getCommentList()
+  },
+  mounted(){
+    let stompClient=this.$store.getters.getSocketConnection;
     
-    this.discussCompName = debate.discussCompName
-    this.discussDate = debate.discussDate
-    this.disscussCompProblem = debate.disscussCompProblem
+    if(stompClient!=null){
+      //app.vue에서 소켓 연결 하기전에 여기서 가져다 쓰면 에러떠서 0.5초 기다려줌
+      let tmp = setInterval(() => {
+        this.socketSubscription=stompClient.subscribe("/discuss/"+this.discussionNo, this.onMessageReceived);
+        clearInterval(tmp);
+      }, 500); 
+    }
+  },
+  destroyed(){
+    this.socketSubscription.unsubscribe();
   },
   methods: {
     clickNextBtn: function() {
       if (Number(this.Page) < this.commentCount -1){
         const page = String(Number(this.Page) + 1)
-        location.href=`/debateDetail/${page}`  
+        location.href=`/debate/debateDetail/${page}`  
       }
     },
     clickPreviousBtn: function() {
       if (Number(this.Page) > 0){
         const page = String(Number(this.Page) - 1)
-        location.href=`/debateDetail/${page}`  
+        location.href=`/debate/debateDetail/${page}`  
       }
     },
     goPage: function() {
-      location.href=`/debateDetail/${this.currentPage-1}`
+      location.href=`/debate/debateDetail/${this.currentPage-1}`
+    },
+    //게시글 상세정보 가져오기
+    getDiscussDetail(){
+      const discussionNo = localStorage.getItem('discussionNo');
+      this.discussionNo=discussionNo;
+      axios({
+        method: 'get',
+        url: `${SERVER_URL}/article/discussion/${discussionNo}`,
+        headers: this.getToken(),
+      })   
+      .then(res =>{
+        const detail = res.data.articleDetail
+        this.commentCount = Math.ceil(detail.commentCount/50 ,1)
+        this.discussCompHostNo = detail.discussCompHostNo.no
+        this.discussCompHostName = detail.discussCompHostNo.name
+        
+        this.discussCompName = detail.discussCompName
+        this.discussDate = detail.discussDate
+        this.disscussCompProblem = detail.disscussCompProblem
+      })
+      .catch(err =>{  
+        console.log(err)
+      })
     },
     //댓글 리스트 불러오기
     getCommentList:function() {
       this.$store.dispatch('deleteArticleComment')
-      const articleNo = localStorage.getItem('articleNo')
+      const discussionNo = localStorage.getItem('discussionNo')
       axios({
           method: 'get',
-          url: `${SERVER_URL}/comment/discussion/${articleNo}?page=${this.Page}`,
+          url: `${SERVER_URL}/comment/discussion/${discussionNo}?page=${this.Page}`,
           headers: this.getToken(),
         })   
         .then(res =>{
-          this.$store.dispatch('createDebateComment',res.data.articleComments)
+          this.comments=res.data.articleComments;
+          // this.$store.dispatch('createDebateComment',res.data.articleComments)
         })
         .catch(err =>{  
           console.log(err)
@@ -146,7 +179,14 @@ export default {
     clickName: function(){
       localStorage.setItem('userPk',this.memberNo)
       this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
-    }
+    },
+    onMessageReceived:function (payload) {
+      let discussComment = JSON.parse(payload.body);
+      //마지막 페이지에서만 댓글 추가되게
+      if(this.Page==this.commentCount-1){
+        this.comments.push(discussComment);
+      }
+    },
 
   }
 }

@@ -48,6 +48,15 @@ export default {
   computed:{
     getImgSrc(){
       return `${SERVER_URL}/profile/img/${this.member.no}`;
+    },
+    isLogin: function() {
+      const token = sessionStorage.getItem('jwt')
+      if (token){
+        return true
+      }
+      else{
+        return false
+      }
     }
   },
   methods: {
@@ -64,34 +73,44 @@ export default {
     },
 
     follow: function() {
-      this.followState = !this.followState
-      if(this.followState){
-        this.member.followerCount += 1
-        this.$swal(`'${this.member.name}'님을 팔로우 하셨습니다.`)
+      if(this.isLogin){
+        this.followState = !this.followState
+        if(this.followState){
+          this.member.followerCount += 1
+          this.$swal(`'${this.member.name}'님을 팔로우 하셨습니다.`)
+        }
+        else{
+          this.member.followerCount -= 1
+          this.$swal(`'${this.member.name}'님을 팔로우 취소 하셨습니다.`)
+        }
+        const data = {
+          memberNo: this.member.no
+        }
+        axios({
+          method: 'post',
+          url: `${SERVER_URL}/follow/member`,
+          headers: this.getToken(),
+          data: data
+        })
+        .then((res)=>{
+          console.log(res)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
       }
       else{
-        this.member.followerCount -= 1
-        this.$swal(`'${this.member.name}'님을 팔로우 취소 하셨습니다.`)
+        this.$swal(`로그인이 필요합니다.`)
       }
-      const data = {
-        memberNo: this.member.no
-      }
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/follow/member`,
-        headers: this.getToken(),
-        data: data
-      })
-      .then((res)=>{
-        console.log(res)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
     },
 
     request: function() {
-      this.$router.push({name:'createHelpme', params:{ targetPK:this.member.no }})
+      if(this.isLogin){
+        this.$router.push({name:'createHelpme', params:{ targetPK:this.member.no }})
+      }
+      else{
+        this.$swal(`로그인이 필요합니다.`)
+      }
     }
   }
 }

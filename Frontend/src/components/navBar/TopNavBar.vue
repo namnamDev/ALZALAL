@@ -108,12 +108,8 @@ export default {
     TimelineIcon,
     QnaIcon,
     DebateIcon,
-    // NotificationIcon,
     SearchBar,
     NotificationList,
-  },
-  created() {
-    
   },
   data(){
     return{

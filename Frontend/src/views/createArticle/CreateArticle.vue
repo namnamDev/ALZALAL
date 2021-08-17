@@ -1,64 +1,62 @@
 <template>
-  <div class="create-form">
-    <!-- <notifications group="notifyApp" position="top center" width="400px"/> -->
+  <div class="container py-5 px-5">
 
-    <div >
-      <div class="row justify-content-start mb-3">
-        <div class="box">카테고리</div>
-        <select id="select" name="category" v-model="category">
-          <option value="solution">문제풀이</option>
-          <option value="QnA">Q&A</option>
-          >
-        </select>
-      </div>
-
-      <div class="row select-div">
-        <div class="row mb-3 text-center algo-div">
-          <div class="algo-input-div me-2">
-            <input
-              id="algo-input-1"
-              type="text"
-              placeholder="알고리즘을 입력해주세요"
-              @click="clickAlgoInput"
-              @keyup="filterFunction"
-              @blur="blur"
-            />
-            <ul id="algo-ul">
-              <li id="algo-li" v-for="item,idx in algoList" :key="idx">
-                {{item}}
-              </li>
-            </ul>
-          </div>
-          <div class="box-algo"></div>
-        </div>
-      </div>
-
-      <div class="row justify-content-start mb-3 site-div">
-        <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
-        <select
-          id="select"
-          name="problem-site"
-          class="col-sm-2 m-size mb-2 decorated"
-          v-model="pSite"          
+    <div class="row mt-5">
+      <div class="box">카테고리</div>
+      <select id="select" name="category" v-model="category">
+        <option value="solution">문제풀이</option>
+        <option value="QnA">Q&A</option>
         >
-          <option value="boj">백준</option>
-          <option value="swea">SWEA</option>
-          <option value="algopost">algopost</option>
-          <option value="atcoder">atcoder</option>
-          <option value="jungol">jungol</option>
-          <option value="codeforce">codeforce</option>
-          <option value="programmers">programmers</option>          
-        </select>
+      </select>
+    </div>
 
-        <div class="box col-sm-2 mb-2">문제번호</div>
-        <input v-model="pNum" id="problem-input" type="text" class="m-size col-sm-2 mb-2" />
+    <div class="row select-div mt-3">
+      <div class="row algo-div">
+        <div class="algo-input-div me-2">
+          <input
+            id="algo-input-1"
+            type="text"
+            placeholder="알고리즘을 입력해주세요"
+            @click="clickAlgoInput"
+            @keyup="filterFunction"
+            @blur="blur"
+          />
+          <ul id="algo-ul">
+            <li id="algo-li" v-for="item,idx in algoList" :key="idx">
+              {{item}}
+            </li>
+          </ul>
+        </div>
+        <div class="box-algo"></div>
+      </div>
+    </div>
 
-        <div class="box col-sm-2 mb-2">사용언어</div>
+    <div class="row mt-3">
+      <div id="psite" class="box">문제사이트</div>
+      <select
+        id="select"
+        name="problem-site"
+        class="decorated"
+        v-model="pSite"          
+      >
+        <option value="boj">백준</option>
+        <option value="swea">SWEA</option>
+        <option value="algopost">algopost</option>
+        <option value="atcoder">atcoder</option>
+        <option value="jungol">jungol</option>
+        <option value="codeforce">codeforce</option>
+        <option value="programmers">programmers</option> 
+        >
+      </select>
+
+      <div class="box ms-2">문제번호</div>
+      <input v-model="pNum" id="problem-input" type="text"/>
+
+      <div class="box ms-2">사용언어</div>
         <select
           id="select"
           name="language"
           v-model="language"
-          class="col-sm-2 mb-2 m-size"
         >
           <option value="Java" class="litags">Java</option>
           <option value="C">C</option>
@@ -68,29 +66,27 @@
           <option value="JavaScript">JavaScript</option>
           <option value="Go">Go</option>
         </select>
-      </div>
-
-      <div class="row">
-        <div class="col title ">
-          <input
-            v-model="title"
-            id="title"
-            type="text"
-            placeholder="제목을 입력해주세요."
-          />
-        </div>
-      </div>
-
-      <div class="row editor">
-        <Editor ref="toastEditor" />
-      </div>
-      <div class="row mt-2 mb-5 pb-5">
-        <button @click="submit">작성하기</button>
-        
-      </div>
     </div>
-    
+
+    <div class="row title mt-3">
+      <input
+        v-model="title"
+        id="title"
+        type="text"
+        placeholder="제목을 입력해주세요."
+      />
+    </div>
+
+    <div class="row editor mt-3">
+      <Editor ref="toastEditor" />
+    </div>
+    <div class="row mt-2 mb-5 pb-5">
+      <button @click="submit">작성하기</button>
+      
+    </div>
+
   </div>
+
 </template>
 
 <script>
@@ -105,7 +101,7 @@ export default {
     Editor,
   },
   data() {
-    return {
+    return{
       category: "solution",
       title: "",
       content: "",
@@ -113,7 +109,7 @@ export default {
       pSite: "boj",
       language: "Java",
       algoList: [],
-    };
+    }
   },
 
   computed: {
@@ -235,20 +231,22 @@ export default {
           cancelButtonColor: '#d33',
           confirmButtonText: '확인',
           cancelButtonText: '취소'
-          }).then(() => {          
-            axios({
-              method: 'post',
-              url: `${SERVER_URL}/article/article`,
-              data: data,
-              headers: this.getToken(),
-            })   
-            .then(() =>{
-              this.$swal('글을 작성하였습니다.');
-              this.$router.push({ name: 'timeline' })                         
-            })
-            .catch(err =>{  
-              console.log(err)
-            })               
+          }).then((result) => {
+            if(result.value){
+              axios({
+                method: 'post',
+                url: `${SERVER_URL}/article/article`,
+                data: data,
+                headers: this.getToken(),
+              })   
+              .then(() =>{
+                this.$swal('글을 작성하였습니다.');
+                this.$router.push({ name: 'timeline' })                         
+              })
+              .catch(err =>{  
+                console.log(err)
+              })            
+            }          
           })   
       }      
     },
@@ -316,58 +314,48 @@ export default {
       }
     },
   },
-};
+
+}
 </script>
 
 <style scoped>
+.row{
+  --bs-gutter-x: 0;
+}
 .box {
   border: 1px solid black;
+  border-right-style:none;
   height: 30px;
   width: 110px;
-  border-radius: 3px;
+  /* border-radius: 3px; */
   text-align: center;
 }
-
-.create-form {
-  margin-top: 150px;
-  margin-bottom: 13vw;
-  width: 60%;
-  height: 500px;
-  left: 50%;
-  transform: translateX(-50%);
-  position: absolute;
-  background-color: white;
-}
-
-.container {
-  position: absolute;
-  background-color: white;
-  width: 100%;
-  height: 60vw;
-  z-index: 1;
-  /* border: 1px solid black; */
-}
-
 #select {
   width: 120px;
-  border-radius: 3px;
+  padding: 0 5px;
+  /* border-radius: 3px; */
 }
 .select-div {
+  height:30px;
   position: relative;
 }
 .algo-div {
   position: absolute;
 }
-.algo-input-div {
-  padding: 0;
+.algo-input-div{
+  padding: 0px;
   width: 230px;
   z-index: 1;
 }
-#algo-input-1 {
-  width: 100%;
+.box-algo {
+  width: calc(100% - 240px);
+  text-align: start;
+  align-items: center;
+  border-radius: 3px;
 }
-.show {
-  display: block;
+#algo-input-1{
+  width: 100%;
+  padding: 0 5px;
 }
 ul {
   padding-left: 3px;
@@ -379,44 +367,21 @@ ul {
   overflow: auto;
   height: 200px;
   box-shadow: 0 20px 20px rgba(39, 40, 41, 0.2);
+  z-index: 1;
 }
 li:hover {
   background-color: antiquewhite;
+  cursor: default;
 }
-.box-algo {
-  border: 1px solid black;
-  /* height: 70px; */
-  width: 70%;
-  display: inline;
-  text-align: start;
-  align-items: center;
-  border-radius: 3px;
-}
-#problem-input {
+#problem-input{
   width: 120px;
-}
-.site-div {
-  position: absolute;
-  top: 95px;
-}
-.title {
-  width: 80%;
-  /* border: 1px solid black; */
-  height: 30px;
-  margin-top: 100px;
-  padding: 0 0;
-}
-.title > input {
-  width: 68%;
-  border-radius: 3px;
+  padding: 0 5px;
 }
 #title{
   width: 100%;
+  padding: 0 5px;
 }
 .editor {
-  width: 100%;
-  transform: translateX(-11px);
-  margin-top: 20px;
   overflow-wrap: break-word;
 }
 button {
@@ -427,44 +392,8 @@ button {
   color: black;
   background-color: rgb(176, 218, 230);
 }
-.m-size{
-  margin-right:8px;
-}
-
-
-
-@media (max-width: 576px) {
-  .create-form {
-    /* left: 5%; */
-    width: 100%;
-    margin-left:25px;
-  }
-  .site-div {
-    top: 130px;
-  }
-  .title {
-    margin-top: 190px;
-  }
-  .editor {
-    top: 130px;
-  }
-  .m-size{
-    margin-right:250px;
-  }
-  .algo-input-div{
-    margin-bottom: 8px;
-  }
-  .box-algo{
-    padding: 0 0;
-  }
-  .title {
-    margin-top: 210px;
-  }
-}
-@media (max-width: 468px) {
-  .m-size{
-    margin-right:145px;
-  }
+button:hover{
+  background-color: rgb(129, 198, 218);
 }
 
 </style>
