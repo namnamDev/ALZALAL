@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-5 px-5">
+  <div class="container1 py-5" @click="hideAlgoList">
 
     <div class="row mt-5">
       <div class="box">카테고리</div>
@@ -16,12 +16,10 @@
           <input
             id="algo-input-1"
             type="text"
-            placeholder="알고리즘을 입력해주세요"
-            @click="clickAlgoInput"
+            placeholder="알고리즘 입력(최대4개)"
             @keyup="filterFunction"
-            @blur="blur"
           />
-          <ul id="algo-ul">
+          <ul id="algo-ul" @click="clickAlgoUl">
             <li id="algo-li" v-for="item,idx in algoList" :key="idx">
               {{item}}
             </li>
@@ -142,14 +140,21 @@ export default {
   },
 
   methods: {
-    blur() {
-      const ul = document.querySelector('#algo-ul')
-      setTimeout(() => {
-        if (ul.style.display == 'block'){
-          ul.style.display = 'none'        
+    hideAlgoList(event){
+      const ultag = document.querySelector('#algo-ul')
+      if (event.target.id == "algo-input-1"){
+        if (ultag.style.display == 'block'){
+          ultag.style.display = 'none'
         }
-      }, 100);
+        else{
+          ultag.style.display = 'block'
+        }
+      }
+      else if (ultag.style.display == 'block'){
+        ultag.style.display = 'none'
+      }
     },
+
     // toast editor에서 작성된 내용 가져오기
     getContent() {
       return this.$refs.toastEditor.getContent();
@@ -250,53 +255,40 @@ export default {
           })   
       }      
     },
-
     
-    clickAlgoInput() {
-      // 각 li태그를 선택할때마다 span태그를 추가(hastag 추가)
-      const liTags = document.querySelectorAll("#algo-li")
-      liTags.forEach((element) => {
-        element.addEventListener("click", function (event) {
-          let boxAlgo = document.querySelector(".box-algo");
-          const algoHastag = document.createElement("span");
 
-          algoHastag.innerText = event.target.innerText;
-          algoHastag.style.display = "inline-block";
-          algoHastag.style.fontSize = "14px";
-          algoHastag.style.borderRadius = "3px";
-          algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
-          algoHastag.style.padding = "4px 8px";
-          algoHastag.classList.add("me-3");
-          algoHastag.addEventListener("click", function (event) {
-            event.target.remove();
-          });
-          algoHastag.style.cursor = "pointer";
+    clickAlgoUl(event){
+      let boxAlgo = document.querySelector(".box-algo");
+      const algoHastag = document.createElement("span");
 
-          // console.log(boxAlgo.childNodes)
-          if (boxAlgo.childElementCount != 4) {
-            let flag = true
-            boxAlgo.childNodes.forEach(element => {
-              if (algoHastag.innerText == element.innerText){
-                flag = false
-                
-              }
-              console.log(element.innerText)
-            });
-            if (flag){
-              boxAlgo.appendChild(algoHastag);
-            }            
+      algoHastag.innerText = event.target.innerText;
+      algoHastag.style.display = "inline-block";
+      algoHastag.style.fontSize = "14px";
+      algoHastag.style.borderRadius = "3px";
+      algoHastag.style.backgroundColor = "rgba(221,223,230,1)";
+      algoHastag.style.padding = "4px 8px";
+      algoHastag.classList.add("me-3");
+      algoHastag.addEventListener("click", function (event) {
+        event.target.remove();
+      });
+      algoHastag.style.cursor = "pointer";
+      if (boxAlgo.childElementCount != 4) {
+        let flag = true
+
+        boxAlgo.childNodes.forEach(element => {
+          if (algoHastag.innerText === element.innerText){
+            flag = false                
           }
         });
-      });
-      // input(알고리즘을 입력해주세요) 클릭시 ul태그 보이게
-      const ul = document.querySelector('#algo-ul')
-      if (ul.style.display == 'block') {
-        ul.style.display = 'none'
-      }
-      else{
-        ul.style.display = 'block'
-      }
+        if (flag){
+          boxAlgo.appendChild(algoHastag);
+        }     
+
+        const ul = document.querySelector('#algo-ul')
+        ul.style.display = 'none'       
+      }    
     },
+
     // 검색필터 적용
     filterFunction() {
       var input = document.getElementById("algo-input-1");
@@ -319,6 +311,10 @@ export default {
 </script>
 
 <style scoped>
+.container1{
+  width: 100%;
+  padding: 0 150px;
+}
 .row{
   --bs-gutter-x: 0;
 }

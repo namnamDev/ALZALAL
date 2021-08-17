@@ -25,9 +25,9 @@
           <!-- 로그인 했을 때 -->
           <div class="isLogin" v-if="isLogin">
           <!-- 탐색 -->
-          <TimelineIcon/>
-          <QnaIcon/>
-          <DebateIcon/>   
+          <TimelineIcon title="Main"/>
+          <QnaIcon title="QnA"/>
+          <DebateIcon title="Discuss"/>   
           <span class="notifi-btn" @click="clickAlarm">
             <i class="fas fa-bell fas-bell" v-if="getNotify"></i>
             <i class="far fa-bell" v-else></i>

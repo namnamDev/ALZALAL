@@ -167,8 +167,8 @@ export default {
         headers: this.getToken(),
         data: data
       })
-      .then(()=>{
-        
+      .then((res)=>{
+        console.log(res.data)
       })
       .catch(err=>{
         console.log(err)
@@ -285,7 +285,7 @@ export default {
 }
 .follow-btn{
   font-size:20px;
-  background-color: rgb(0, 153, 255);
+  background-color: rgb(39, 235, 32);
   padding:4px 12px;
   border-radius: 4px;
   color:white;
