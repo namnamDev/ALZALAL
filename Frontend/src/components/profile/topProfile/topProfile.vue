@@ -42,7 +42,7 @@
                         <details>
                             <summary>Problem Site</summary>
                             <p class="summaryList" v-for="item,index in problemsite" :key="index">- {{item}}</p> 
-                        </details>                           -->
+                        </details>                          
                     </div>
                   
                 </div>
@@ -170,16 +170,38 @@ export default {
         clickRequest: function(){
             const token = sessionStorage.getItem('jwt')
                 if(!token){
-                    alert("로그인이 필요합니다.")
-                this.$router.push({name:'login'})
+                    this.$swal.fire({          
+                        text: "로그인 후 이용해주세요.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '로그인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if (result.value) {
+                            this.$router.push({'name':'login'})
+                        }
+                    })
                 }
             this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
         },
         clickFollowBtn: function(event){
                 const token = sessionStorage.getItem('jwt')
                 if(!token){
-                    alert("로그인이 필요합니다.")
-                this.$router.push({name:'login'})
+                    this.$swal.fire({          
+                        text: "로그인 후 이용해주세요.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '로그인',
+                        cancelButtonText: '취소'
+                    }).then((result) => {
+                        if(result.value) {
+                            this.$router.push({'name':'login'})
+                        }
+                    })
                 }
             axios({
                     method: 'post',
@@ -272,6 +294,7 @@ i {
   background-color: rgb(62, 171, 111);
   border-style: none;
   color: white;
+  border:none;
   width: 120px;
   font-weight: 550;
   margin-left: 70px;

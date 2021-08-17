@@ -44,6 +44,15 @@ export default {
       this.comp = 'followerList'
     }
   },
+  mounted:function(){
+    if(this.compName == 'followList'){
+      document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('following').style.color = 'white'
+    }else{
+      document.getElementById('follower').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('follower').style.color = 'white'
+    }
+  },
   methods: {
       changeComponent1: function(componentName) {
         this.comp = componentName
