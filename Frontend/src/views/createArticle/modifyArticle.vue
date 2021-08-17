@@ -327,8 +327,6 @@ export default {
                 this.$router.push({'name':'profilePage', params:{userPk:this.memberNo}})
               })
               .catch(err =>{  
-                console.log(data)
-                console.log(this.getToken())
                 console.log(err)
               })           
             }

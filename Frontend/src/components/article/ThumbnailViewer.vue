@@ -1,10 +1,8 @@
 <template>
   <div>   
     <!-- <div style="margin-top: 600px" v-if="viewerText"  > -->
-    <div>
-      <Viewer  
-      class="viewer"      
-      height="500px" 
+    <div class="viewer">
+      <Viewer       
       :initialValue="viewerContent"
       :options="viewerOptions"/>
     </div>
@@ -59,6 +57,7 @@ export default {
   -webkit-line-clamp: 8; /* 라인수 */
   -webkit-box-orient: vertical;
   word-wrap:break-word; 
+  /* height:294px; */
 }
 
 </style>

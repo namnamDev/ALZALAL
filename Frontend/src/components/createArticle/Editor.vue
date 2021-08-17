@@ -5,6 +5,7 @@
       height="600px"
       previewStyle="vertical"
       :options="editorOptions"
+      :initialValue="modify"
      />
   </div>
 </template>
@@ -29,6 +30,7 @@ export default {
   },
   data() {
     return {
+      modifyContent: '',
       editorText: '',
       editorOptions: {
         minHeight: '300px',
@@ -41,8 +43,17 @@ export default {
       },
     }
   },
+  mounted() {
+    const content = localStorage.getItem('articleContent')
+    if (content){
+      this.modifyContent = content
+    }
+    console.log(this.modifyContent)
+  },
   computed: {
-
+    modify() {
+      return localStorage.getItem('articleContent')
+    }
   },
   methods: {
     // 마크다운 에디터 내용 가져오기

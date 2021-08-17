@@ -193,6 +193,7 @@ export default {
     // 게시글 수정
     modifyArticle(){
       const articleNo = localStorage.getItem('articleNo')
+      localStorage.setItem('articleContent',this.articleDetail.articleContent)
       this.$router.push({name: 'modifyArticle', params:{
         articleNo: articleNo,
         }})

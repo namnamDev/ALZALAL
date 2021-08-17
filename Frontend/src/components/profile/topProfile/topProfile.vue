@@ -58,8 +58,8 @@
                 <div>
                     <p align="left" class="downInfo1">{{helpmeSuccessCount}}개의 게시글에 답변완료.</p>
                 </div>
-                <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2">
-                    <button v-if="this.myPage" @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
+                <div class="introduceline col-lg-2 col-md-2 col-sm-2 col-2 col-xl-2"  v-if="this.myPage">
+                    <button @click="clickIntro" class="btn clickIntro"><i class="fad fa-pencil"></i></button>
                 </div>
                 <div class="introduceline col-lg-7 col-md-7 col-sm-7 col-7 col-xl-7">
                     <p class="introtext" align="left">{{introduce}}</p>

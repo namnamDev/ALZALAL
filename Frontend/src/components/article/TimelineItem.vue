@@ -14,7 +14,7 @@
               <span class="text-secondary">{{date}}</span>
             </div>
           </div>
-          <div class="row">
+          <div class="row mb-2">
             <div>
               <div class="fs-5">{{ this.articleTitle }}</div>
               <div class="hashtag d-flex align-items-center">
