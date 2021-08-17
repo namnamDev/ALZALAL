@@ -66,8 +66,9 @@ const routes = [
     props: true,
   },
   {
-    path: "/profilePage/followPage",
+    path: "/profilePage/followPage/:compName",
     name: "followPage",
+    props:true,
     component: followPage,
   },
   {

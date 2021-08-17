@@ -29,8 +29,8 @@
                         <div class="profile-stats">
                             <ul>
                                 <li class="count">{{articleCount}}<span class="profile-stat-count"> 게시글</span></li>
-                                <li class="countc">{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로워</span></li>
-                                <li class="countc">{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로잉</span></li>
+                                <li class="countc">{{follower}}<span @click="clickFollower" class="profile-stat-count"> 팔로워</span></li>
+                                <li class="countc">{{following}}<span @click="clickFollow" class="profile-stat-count"> 팔로잉</span></li>
                             </ul>
                         </div>
                     </div>
@@ -185,10 +185,10 @@ export default {
             this.$router.push({'name':'passwordConfirm'})
         },
         clickFollow: function() {
-            this.$router.push({'name':'followPage'})
+            this.$router.push({'name':'followPage', params:{compName:'followList'}})
         },
         clickFollower: function() {
-            this.$router.push({'name':'followPage'})
+            this.$router.push({'name':'followPage', params:{compName:'followerList'}})
         },
         clickRequest: function(){
             const token = sessionStorage.getItem('jwt')

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import Comment from '@/components/comment/CommentHelpmeItem.vue'
 import CreateComment from '@/views/createHelpme/createHelpmeComment.vue'
 import jwt_decode from 'jwt-decode'
@@ -70,7 +71,6 @@ if (token) {
   const decoded = jwt_decode(token)
   userpk = decoded.sub
 }
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'helpmeDetail',
   props:{
@@ -104,7 +104,10 @@ export default {
       myPage: '',
     }
   },
-
+  mounted() { 
+    
+    this.getCommentList()
+  },
   computed: {
 
     getComments: function() {
@@ -236,13 +239,15 @@ export default {
     },
     getCommentList:function() {
       this.$store.dispatch('deleteArticleComment')
-      const articleNo = localStorage.getItem('articleNo')
+      const helpmeNo = localStorage.getItem('helpmeNo')
+      console.log(helpmeNo)
       axios({
           method: 'get',
-          url: `${SERVER_URL}/comment/helpme/${articleNo}?page=${this.Page}`,
+          url: `${SERVER_URL}/comment/helpme/${helpmeNo}?page=${this.Page}`,
           headers: this.getToken(),
         })   
         .then(res =>{
+          console.log(res)
           this.$store.dispatch('createHelpmeComment',res.data.articleComments)
         })
         .catch(err =>{  
