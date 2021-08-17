@@ -69,7 +69,7 @@ export default {
     },
     //댓글 작성버튼 클릭
     submit() {
-      this.$swal('댓글을 작성하였습니다.');
+      // this.$swal('댓글을 작성하였습니다.');
       const discussionNo = localStorage.getItem('discussionNo')
       axios({
         method: 'post',
