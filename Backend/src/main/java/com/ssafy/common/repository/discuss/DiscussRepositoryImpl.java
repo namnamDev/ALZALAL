@@ -46,8 +46,8 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 			                "commentCount")									
 							))
 			.from(qd)
-			.orderBy(qd.discussDate.desc())
-			.orderBy(qd.discussNo.asc())
+			.orderBy(qd.discussDate.desc(), qd.discussNo.asc())
+			// .orderBy(qd.discussNo.asc())
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
 			.fetch();
