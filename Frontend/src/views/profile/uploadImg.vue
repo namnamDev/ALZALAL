@@ -3,24 +3,30 @@
     <div class="contents">
       <div class="form-wrapper form-wrapper-sm">
         <form @submit.prevent="uploadImage">
-          <input
-            type="file"
-            @change="onFileChange"
-            ref="image"
-            name="image"
-            id="image"
-            class="btn-file"
-          />
+          <div class="filebox">
+            <label for="image">
+              <span>프로필 이미지 선택하기</span> 
+            </label>
+            <button :disabled="!url" type="submit" class="btn1 btn-submit">
+            프로필이미지로 지정하기
+            </button>
+            <input
+              type="file"
+              @change="onFileChange"
+              ref="image"
+              name="image"
+              id="image"
+              class="btn-file"
+            />
+          </div>
           <div id="preview" class="profile-image" v-if="url">
             <img class="profileImg" :src="url" />
           </div>
-          <div id="preview" class="profile-image" v-if="!url">
+          <!-- <div id="preview" class="profile-image" v-if="!url">
             <img class="profileImg" alt="프로필이미지를 등록해주세요" />
-          </div>
+          </div> -->
 
-          <button type="submit" class="btn1 btn-submit">
-            프로필이미지로 지정하기
-          </button>
+          
         </form>
       </div>
     </div>
@@ -90,6 +96,29 @@ export default {
 </script>
 
 <style scoped>
+label{
+  height: 45px;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: rgb(62, 171, 111);
+  font-weight: 550;
+  font-size: inherit;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 3px solid rgb(62, 171, 111);
+  border-radius: 5%;
+  margin-left: 5px;
+}
+.filebox input[type="file"]{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 /*--- LAYOUT ---*/
 .contents {
   position: absolute;
@@ -100,9 +129,9 @@ export default {
 }
 .form-wrapper {
   background: white;
-  -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 3px;
+  border: 4px solid rgb(62, 171, 111);
+  
+  border-radius: 7%;
   padding: 15px 15px;
   height: 360px;
 }
@@ -143,6 +172,7 @@ export default {
   border-radius: 0.25rem;
   border:none
 }
+
 .btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -156,6 +186,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-right: 3rem;
+  margin-left: 128px;
+  margin-top: 30px;
 }
 
 .profileImg {
@@ -164,11 +196,13 @@ export default {
   border-radius: 75%;
 }
 .btn-submit {
+  height: 45px;
+  margin-left: 20px;
   display: inline;
   background-color: rgb(62, 171, 111);
   color: white;
-  width:250px;
-  margin-top: 100px;
+  width:230px;
 
 }
+
 </style>

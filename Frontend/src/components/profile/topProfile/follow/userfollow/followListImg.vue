@@ -43,12 +43,11 @@ export default {
         }
     },
     created: function() {
+      console.log(this.no)
       const userPk = localStorage.getItem("userPk")
       if(userPk){
-          this.pk = userPk
           this.myPage = false
       }else{
-          this.pk = userpk
           this.myPage = true
       }
       if(this.token){
@@ -73,6 +72,12 @@ export default {
 	},
     methods:{
         clickFollow: function(event){
+            const token = sessionStorage.getItem('jwt')
+                if(!token){
+                  this.$swal('로그인이 필요합니다.')
+                  this.$router.push({name:'login'})
+                }else{
+
             axios({
                     method: 'post',
                     url: `${SERVER_URL}/follow/member`,
@@ -97,6 +102,7 @@ export default {
               
               event.target.style.backgroundColor='rgb(62, 171, 111)'
               event.target.style.color="white"
+            }
             }
 
 
