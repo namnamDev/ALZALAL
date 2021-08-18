@@ -202,7 +202,12 @@ export default {
       this.$router.push({'name':'signup'})
     },
     clickTimeline: function() {
-     this.$router.push({'name':'timeline'})
+      if (document.location.href == `${SERVER_URL}/timeline`){
+        location.reload()
+      }
+      else{
+        this.$router.push({'name':'timeline'})
+      }
     },
   },
   computed: {
