@@ -24,15 +24,16 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-//        log.info("message:" + message);
-//        log.info("헤더 : " + message.getHeaders());
-//        log.info("토큰" + accessor.getNativeHeader("Authorization")+"\n");
+    //    log.info("message:" + message);
+    //    log.info("헤더 : " + message.getHeaders());
+    //    log.info("토큰" + accessor.getNativeHeader("Authorization")+"\n");
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-//        	log.info("jwt "+accessor.getFirstNativeHeader("Authorization").substring(7));
-//        	log.info("jwt boolean "+tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7)));
+       	// log.info("jwt "+accessor.getFirstNativeHeader("Authorization").substring(7));
+       	// log.info("jwt boolean "+tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7)));
             
         	if(!tokenProvider.validateToken(Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7))) {
+                // log.info("aaaaa토큰이 유효하지 않습니다");
         		throw new IllegalStateException("토큰이 유효하지 않습니다");        
         	}
         		

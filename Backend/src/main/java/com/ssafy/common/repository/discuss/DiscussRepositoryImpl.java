@@ -47,6 +47,7 @@ public class DiscussRepositoryImpl implements DiscussRepositoryCustom{
 							))
 			.from(qd)
 			.orderBy(qd.discussDate.desc(), qd.discussNo.asc())
+			// .orderBy(qd.discussNo.asc())
 			.offset(page.getOffset())
 			.limit(page.getPageSize())
 			.fetch();

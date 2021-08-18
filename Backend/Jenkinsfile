@@ -69,7 +69,7 @@ pipeline {
                             color: "#2A42EE", 
                             message: "Run STARTED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
                         )                   
-                        sh 'docker run -d -p 8080:8080 --name backend backend'
+                        sh 'docker run -d -v /home/ubuntu/CommonProfileImg:/home/ubuntu/CommonProfileImg -p 8080:8080  --name backend  backend '
                     } catch(e) {
                         currentBuild.result = "FAILURE"
                     } finally {
