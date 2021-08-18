@@ -1,27 +1,38 @@
 <template>
-    <div class="animate__animated animate__fadeInUp my-4 main">
-    <div class="article-box col-lg-8 col-md-6 col-sm-9 col-10" @click="clickArticle">
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div
+      class="article-box col-lg-8 col-md-6 col-sm-9 col-10"
+      @click="clickArticle"
+    >
       <div class="row">
         <div class="col">
-          <div class="row" >
+          <div class="row">
             <div class="col fs-6 fw-bold">
               <span class="member-name">{{ this.memberName }}</span>
             </div>
             <div class="col text-end">
-              <span class="text-secondary">{{date}}</span>
+              <span class="text-secondary">{{ date }}</span>
             </div>
           </div>
           <div class="row">
             <div>
               <div class="fs-5">{{ this.articleTitle }}</div>
               <div class="hashtag d-flex align-items-center">
-                <span v-if="articleClass=='A01'" class="has-category">문제풀이</span>
+                <span v-if="articleClass == 'A01'" class="has-category"
+                  >문제풀이</span
+                >
                 <span v-else class="has-category">QnA</span>
-                <span class="has-problem">{{ this.problemSite }} {{ problemNo }}</span>
-           
-              
+                <span class="has-problem"
+                  >{{ this.problemSite }} {{ problemNo }}</span
+                >
+
                 <span class="has-language">{{ this.language }}</span>
-                <span class='has-algo ' v-for="algo,idx in algoList" :key="idx">{{algo}}</span>
+                <span
+                  class="has-algo"
+                  v-for="(algo, idx) in algoList"
+                  :key="idx"
+                  >{{ algo }}</span
+                >
               </div>
             </div>
           </div>
@@ -29,7 +40,7 @@
       </div>
 
       <div class="row">
-        <div class="col content ">
+        <div class="col content">
           <Viewer id="viewer" :viewerText="articleContent" />
         </div>
       </div>
@@ -38,9 +49,9 @@
         <div class="col like-comment">
           <i class="fas fa-heart me-2" v-if="likeState"></i>
           <i class="far fa-heart me-2" v-else></i>
-          <span>{{this.likeCount}}</span>
+          <span>{{ this.likeCount }}</span>
           <i class="far fa-comment-dots mx-2"></i>
-          <span >{{this.commentCount}}</span>
+          <span>{{ this.commentCount }}</span>
         </div>
       </div>
     </div>
@@ -48,131 +59,135 @@
 </template>
 
 <script>
-import Viewer from '@/components/article/ThumbnailViewer.vue'
-import axios from 'axios';
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import Viewer from "@/components/article/ThumbnailViewer.vue";
+import axios from "axios";
+const SERVER_URL = process.env.VUE_APP_SERVER_URL;
 export default {
-  components:{
-      Viewer,
+  components: {
+    Viewer,
   },
-  props:{
-      articleContent: String,
-      articleNo: Number,
-      
+  props: {
+    articleContent: String,
+    articleNo: Number,
   },
-  computed:{
-    Content: function() {
-      return this.content
+  computed: {
+    Content: function () {
+      return this.content;
     },
-    getToken(){
-      const token = sessionStorage.getItem('jwt')
+    getToken() {
+      const token = sessionStorage.getItem("jwt");
       const config = {
-        Authorization: `Bearer ${token}`
-      }
-      return config
+        Authorization: `Bearer ${token}`,
+      };
+      return config;
     },
   },
-  data: function() {
-    return{
-      articleClass: '',
-      articleTitle: '',
-      date: '',
-      commentCount: '',
-      likeCount: '',
-      likeState: '',
-      memberName: '',
-      memberNo: '',
-      problemSite: '',
-      problemNo: '',
-      language: '',
+  data: function () {
+    return {
+      articleClass: "",
+      articleTitle: "",
+      date: "",
+      commentCount: "",
+      likeCount: "",
+      likeState: "",
+      memberName: "",
+      memberNo: "",
+      problemSite: "",
+      problemNo: "",
+      language: "",
       item: null,
       algoList: null,
-    }
+    };
   },
 
   mounted() {
     axios({
-        method: 'get',
-        url: `${SERVER_URL}/article/article/${this.articleNo}`,
-        headers: this.getToken,
-      })   
-      .then(res =>{
-        const detail = res.data.articleDetail
-        this.item = res.data
-        this.articleClass= detail.articleClass,
-        this.articleTitle= detail.articleTitle,
-        
-        this.commentCount= detail.commentCount,
-        this.likeCount= detail.likeCount,
-        this.likeState= detail.likeState,
-        this.memberName= detail.member.name,
-        this.memberNo= detail.member.no,
-        this.problemSite= detail.problemSite.problemSiteName,
-        this.problemNo= detail.problemSite.problemNo,
-        this.language= detail.useLanguage
-        this.algoList = detail.algo
-        const date = res.data.articleDetail.articleDate
-        this.date = this.getDate(date)
+      method: "get",
+      url: `${SERVER_URL}/article/article/${this.articleNo}`,
+      headers: this.getToken,
+    })
+      .then((res) => {
+        const detail = res.data.articleDetail;
+        this.item = res.data;
+        (this.articleClass = detail.articleClass),
+          (this.articleTitle = detail.articleTitle),
+          (this.commentCount = detail.commentCount),
+          (this.likeCount = detail.likeCount),
+          (this.likeState = detail.likeState),
+          (this.memberName = detail.member.name),
+          (this.memberNo = detail.member.no),
+          (this.problemSite = detail.problemSite.problemSiteName),
+          (this.problemNo = detail.problemSite.problemNo),
+          (this.language = detail.useLanguage);
+        this.algoList = detail.algo;
+        const date = res.data.articleDetail.articleDate;
+        this.date = this.getDate(date);
       })
-      .catch(err =>{  
-        console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
-  methods: {    
-    getDate: function(date) {
-      const today  = new Date()
-      const timeValue  = new Date(date)
+  methods: {
+    getDate: function (date) {
+      const today = new Date();
+      const timeValue = new Date(date);
 
-      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
-      if (betweenTime < 1) return '방금전';
+      const betweenTime = Math.floor(
+        (today.getTime() - timeValue.getTime()) / 1000 / 60
+      );
+      if (betweenTime < 1) return "방금전";
       if (betweenTime < 60) {
-          return `${betweenTime}분전`;
+        return `${betweenTime}분전`;
       }
 
       const betweenTimeHour = Math.floor(betweenTime / 60);
       if (betweenTimeHour < 24) {
-          return `${betweenTimeHour}시간전`;
+        return `${betweenTimeHour}시간전`;
       }
 
       const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
       if (betweenTimeDay < 365) {
-          return `${betweenTimeDay}일전`;
+        return `${betweenTimeDay}일전`;
       }
 
       return `${Math.floor(betweenTimeDay / 365)}년전`;
-
     },
     // 게시글 상세 정보 페이지로 이동
-    clickArticle: function() {
-      localStorage.setItem('articleNo', this.articleNo)
+    clickArticle: function () {
+      localStorage.setItem("articleNo", this.articleNo);
 
-      this.$store.dispatch('createArticleDetail',this.item.articleDetail)
+      this.$store.dispatch("createArticleDetail", this.item.articleDetail);
 
       // 댓글 정보 요청후 store에 저장
       axios({
-        method: 'get',
+        method: "get",
         url: `${SERVER_URL}/comment/article/${this.articleNo}`,
-      })   
-      .then(res =>{
-        this.$store.dispatch('createArticleComment',res.data.articleComments)
       })
-      .catch(err =>{  
-        console.log(err)
-      })
+        .then((res) => {
+          this.$store.dispatch(
+            "createArticleComment",
+            res.data.articleComments
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-      this.$router.push({name : 'articleDetail', params:{'Page':'0', articleNo:this.articleNo}})
-    },   
-    
+      this.$router.push({
+        name: "articleDetail",
+        params: { Page: "0", articleNo: this.articleNo },
+      });
+    },
   },
-}
+};
 </script>
 
 <style scoped>
 .fa-heart {
-  color: rgba(62 ,171 ,111 , 1);
+  color: rgba(62, 171, 111, 1);
 }
-.fa-comment-dots{
-  color:black
+.fa-comment-dots {
+  color: black;
 }
 #viewer {
   height: 100%;
@@ -180,39 +195,39 @@ export default {
 .feed {
   margin-top: 13vw;
 }
-@media (min-width:892px),(max-width:1200px) {
+@media (min-width: 892px), (max-width: 1200px) {
   .article-box {
-  background: white;
-  width: 300px;
-  box-shadow: 0 0 0px 0.7px gray;
-  border-radius: 5px;
-  padding: 15px 15px;
-  /* height: 400px; */
-  cursor: pointer;
-}
+    background: white;
+    width: 300px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    padding: 15px 15px;
+    /* height: 400px; */
+    cursor: pointer;
+  }
 }
 .article-box {
   background: white;
   width: 620px;
-  /* box-shadow: 0 0 0px 0.7px gray; */
+  /* border: 1px solid rgb(207, 207, 207); */
   border-radius: 5px;
   padding: 15px 15px;
   /* height: 400px; */
   cursor: pointer;
 }
-@media (max-width:692px) {
+@media (max-width: 692px) {
   .article-box {
-  background: white;
-  width: 400px;
-  box-shadow: 0 0 0px 0.7px gray;
-  border-radius: 5px;
-  padding: 15px 15px;
-  /* height: 400px; */
-  cursor: pointer;
-}
+    background: white;
+    width: 400px;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 5px;
+    padding: 15px 15px;
+    /* height: 400px; */
+    cursor: pointer;
+  }
 }
 .article-box:hover {
-  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+  box-shadow: 0 0 0px 5px rgba(62, 171, 111, 1);
 }
 
 .image {
@@ -233,7 +248,7 @@ export default {
 }
 .middle {
   margin-top: 10px;
-  padding: 0 20px;  
+  padding: 0 20px;
   /* height: 210px; */
 }
 .content {
@@ -254,42 +269,41 @@ export default {
   font-size: 13px;
   border-radius: 3px;
   /* background-color: rgba(221, 223, 230, 1); */
-  padding:4px 8px;
+  padding: 4px 8px;
   margin-right: 6px;
-  display:inline-block;
+  display: inline-block;
 }
-.has-category{
+.has-category {
   padding-top: 2px;
   padding-bottom: 2px;
-  background-color:rgba(170, 224, 217) ;
+  background-color: rgba(170, 224, 217);
   font-weight: bold;
 }
-.has-problem{
-  background-color:rgb(97, 209, 209) ;
+.has-problem {
+  background-color: rgb(97, 209, 209);
 }
-.has-language{
-  background-color:rgb(126, 208, 233) ; 
+.has-language {
+  background-color: rgb(126, 208, 233);
 }
-.has-algo{
-  background-color: rgba(186,184,189,1);
+.has-algo {
+  background-color: rgba(186, 184, 189, 1);
 }
-.member-name{
+.member-name {
   cursor: pointer;
 }
-.member-name:hover{
-  font-size:18px;
+.member-name:hover {
+  font-size: 18px;
 }
 .profileImg {
-    width: 75px;
-    height: 75px;
-    border-radius: 75%;
+  width: 75px;
+  height: 75px;
+  border-radius: 75%;
 }
 
 @media (max-width: 767px) {
   .top {
     margin-bottom: 30px;
   }
-
 }
 </style>
 
