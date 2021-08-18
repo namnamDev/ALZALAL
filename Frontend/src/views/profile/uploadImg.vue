@@ -7,7 +7,7 @@
             <label for="image">
               <span>프로필 이미지 선택하기</span> 
             </label>
-            <button type="submit" class="btn1 btn-submit">
+            <button :disabled="!url" type="submit" class="btn1 btn-submit">
             프로필이미지로 지정하기
             </button>
             <input
@@ -107,6 +107,7 @@ label{
   cursor: pointer;
   border: 3px solid rgb(62, 171, 111);
   border-radius: 5%;
+  margin-left: 5px;
 }
 .filebox input[type="file"]{
   position: absolute;
@@ -171,6 +172,7 @@ label{
   border-radius: 0.25rem;
   border:none
 }
+
 .btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -202,4 +204,5 @@ label{
   width:230px;
 
 }
+
 </style>
