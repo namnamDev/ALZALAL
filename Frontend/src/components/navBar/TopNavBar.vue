@@ -202,7 +202,7 @@ export default {
       this.$router.push({'name':'signup'})
     },
     clickTimeline: function() {
-      if (document.location.href == `${SERVER_URL}/timeline`){
+      if (document.location.href == `https://i5d205.p.ssafy.io/timeline`){
         location.reload()
       }
       else{
