@@ -52,7 +52,10 @@ public class MemberController {
 	}
 
 	@PostMapping("/login")
-	public Map<String, Object> login(@RequestBody Member member) {
+	public Map<String, Object> login(@RequestBody Map<String, String> req) {
+		Member member=new Member();
+		member.setEmail(req.get("email"));
+		member.setPassword(req.get("password"));
 		Map<String, Object> ret = new HashMap<>();
 		TokenDto token;
 		try {
