@@ -161,6 +161,7 @@ export default {
   width:110px;
   color: black;
   border: 1px solid rgb(62, 171, 111);
+  border-radius: 5%;
 }
 .btn-follow{
   background-color: rgb(62, 171, 111);

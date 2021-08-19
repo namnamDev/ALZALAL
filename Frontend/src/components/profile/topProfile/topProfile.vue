@@ -21,8 +21,8 @@
                             <h1 class="profile-user-name">{{name}}
                                 <button v-if="this.myPage" class="btn clickSetting" @click="clickSetting"><i class="fa">&#xf013;</i></button>
                             </h1>
-                            <button class="btn-follow" v-if="!this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
-                            <button class="btn-unfollow" v-if="!this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
+                            <button class="btn-follow" v-if="isLogin && !this.myPage && !this.followState" @click="clickFollowBtn($event)">follow</button>
+                            <button class="btn-unfollow" v-if="isLogin && !this.myPage && this.followState" @click="clickFollowBtn($event)">Unfollow</button>
                         </div>
                                 <!-- 게시글 팔로워 팔로잉 -->
                         <div class="profile-stats">
@@ -103,7 +103,11 @@ export default {
     },
     created: function() {
         const userPk = localStorage.getItem("userPk")
-         
+        if(!token){
+            this.isLogin = false;
+        }else{
+            this.isLogin = true;
+        }
         let pk = ''
         if(userPk){
             pk = userPk
@@ -183,8 +187,10 @@ export default {
                             this.$router.push({'name':'login'})
                         }
                     })
+                }else{
+                    this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
                 }
-            this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+            
         },
         clickFollowBtn: function(event){
                 const token = sessionStorage.getItem('jwt')
@@ -233,9 +239,6 @@ export default {
 </script>
 
 <style scoped>
-.feed-item{
-  /* box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);     */
-}
 .fa{
     color: rgb(62, 171, 111) ;
 }

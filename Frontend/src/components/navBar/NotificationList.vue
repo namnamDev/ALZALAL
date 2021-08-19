@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+// import jwt_decode from 'jwt-decode'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -130,21 +130,56 @@ export default {
       .catch(err => {
         console.log(err)
       })
-      if(this.item.notiSubTaskClass == 'NHS'){
-        const token = sessionStorage.getItem('jwt')
-        const userpk=jwt_decode(token).sub;
-        localStorage.setItem("userPk",userpk)     
-        location.href=`/profilePage/${userpk}`
+
+      if(this.item.notiSubTaskClass == 'NHC' || this.item.notiSubTaskClass == 'NHE'){
+        this.clickHelpme()
+
       }
+      else if(this.item.notiTaskClass == 'HLP'){
+        localStorage.setItem('userPk',this.item.notiSender)
+        this.$router.push({'name':'profilePage', params:{userPk:this.item.notiSender}})
+      }      
       else if (this.item.notiSubTaskClass != 'NMF' ){
         localStorage.setItem('articleNo', this.item.notiTargetNo)
         this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
       }
-      else{
+      else if (this.item.notiSubTaskClass == 'NMF'){
         localStorage.setItem('userPk',this.item.notiSender)
-        this.$router.push({'name':'profilePage', params:{userPk:this.no}})
+        this.$router.push({'name':'profilePage', params:{userPk:this.item.notiSender}})
       }
     }, 
+    clickHelpme: function () {
+      localStorage.setItem("helpmeNo", this.item.notiTargetNo );
+
+      axios({
+        method: "get",
+        url: `${SERVER_URL}/helpme/${this.item.notiTargetNo}`,
+        headers: this.getToken(),
+      })
+        .then((res) => {
+          this.$store.dispatch("createHelpmeDetail", res.data.helpme);          
+        })
+        .catch((err) => {
+          console.log(err);
+        }); 
+
+      // 댓글 리스트 불러오기
+      axios({
+        method: "get",
+        url: `${SERVER_URL}/comment/helpme/${this.item.notiTargetNo }`,
+      })
+        .then((res) => {
+          this.$store.dispatch("createHelpmeComment", res.data.articleComments);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      this.$router.push({
+        name: "helpmeDetail",
+        params: { Page: "0", helpmeNo: this.item.notiTargetNo  },
+      });
+    },
 
     getDate: function(date) {
       const today  = new Date()
