@@ -1,7 +1,7 @@
 <template>
   <div class="row my-3">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div>
-    <div class="feed-item col-lg-6 col-md-10 col-sm-9 col-10 col-xl-6">
+    <!-- <div class="col-lg-3 col-md-2 col-sm-3 col-1 col-xl-3"></div> -->
+    <div class="feed-item col-9">
       <div class="row" v-if="this.myPage">
             <div class="col-6 col-md-4 col-lg-6 col-xl-4">
               <button class="btn1" id="articleList" @click="changeComponent1('articleList')">게시글</button>
@@ -100,11 +100,14 @@ export default {
 
 <style scoped>
 .row{
-  margin-top: 30px; 
+  /* margin-top: 30px;    */
 }
 .feed-item{
-  box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);
+  /* box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1); */
+  margin-left:auto;
+  margin-right:auto;
 }
+
 .btn1{
   width:100%;
   font-size:15px;

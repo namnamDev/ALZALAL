@@ -1,7 +1,7 @@
 <template>
   <div class="animate__animated animate__fadeInUp my-4 main">
     <div
-      class="article-box col-lg-8 col-md-6 col-sm-9 col-10"
+      class="article-box col-lg-10 col-md-10 col-sm-10 col-10"
       @click="clickArticle"
     >
       <div class="row">
@@ -208,7 +208,8 @@ export default {
 }
 .article-box {
   background: white;
-  width: 620px;
+  /* width: 620px; */
+  width: 100%;
   /* border: 1px solid rgb(207, 207, 207); */
   border-radius: 5px;
   padding: 15px 15px;

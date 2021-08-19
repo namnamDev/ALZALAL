@@ -192,8 +192,7 @@ export default {
     },
     goProfile: function() {
       localStorage.setItem("userPk",userpk)
-      location.href=`/profilePage/${userpk}`
-      
+      location.href=`/profilePage`      
     },
     login: function() {
       this.$router.push({'name':'login'})
