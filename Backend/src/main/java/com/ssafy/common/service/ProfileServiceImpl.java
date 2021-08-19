@@ -92,10 +92,10 @@ public class ProfileServiceImpl implements ProfileService {
 			useLanguageLike.add(tmp.getUseLanguage().getUseLanguage());
 		}
 		
-		// 팔로잉 명수 가져옴
-		long following = memberFollowRepository.countByFollowNo(member);
 		// 팔로워 명수 가져옴
-		long follower = memberFollowRepository.countByMemberNo(member);
+		long follower = memberFollowRepository.countByFollowNo(member);
+		// 팔로잉 명수 가져옴
+		long following = memberFollowRepository.countByMemberNo(member);
 
 		// 작성게시글 갯수
 		long articleCount = articleRepositoryImpl.countByMember(member.getNo());

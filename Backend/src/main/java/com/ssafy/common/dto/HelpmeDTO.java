@@ -27,13 +27,16 @@ public class HelpmeDTO {
 
 	// 댓글 갯수
 	private Long commentCount;
-
+	
+	// 답변 게시글 No
+	private Long helpmeAnswerArticleNo;
+	
 	//likeState를 갯수로 받아와서 생성자에서 boolean으로 변환시켜줌
 	public HelpmeDTO(long helpmeNo, ProblemSiteDTO problemSite,
 			MemberDTO helpmeSenderNo, MemberDTO helpmeReceptorNo,
 			String helpmeContent, Helpme_Class helpmeStatus,
 			LocalDateTime helpmeDate, Long likeCount, Long likeState,
-			Long commentCount) {
+			Long commentCount, Long helpmeAnswerArticleNo) {
 		super();
 		this.helpmeNo = helpmeNo;
 		this.problemSite = problemSite;
@@ -45,7 +48,9 @@ public class HelpmeDTO {
 		this.likeCount = likeCount;
 		this.likeState = likeState>0?true:false;
 		this.commentCount = commentCount;
+		this.helpmeAnswerArticleNo = helpmeAnswerArticleNo;
 	}	
+	
 	
 	
 	
