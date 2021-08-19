@@ -15,6 +15,9 @@
                                 <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
                             </div>
                         </div>
+                        <div v-if="!myPage">
+                            <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
+                        </div>
                     </div>
                 </div>
                     <!-- 프로필 이름, 수정버튼 -->
