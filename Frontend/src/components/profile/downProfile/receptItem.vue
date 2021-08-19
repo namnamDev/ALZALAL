@@ -1,15 +1,15 @@
 <template>
   <div class="animate__animated animate__fadeInUp my-4 main">
     <div class="article-box col-12 col-ml-12 col-lg-12" id="sendQuiz">
-      <div  @click="clickHelpmeName" class="feed-card col-12 col-lg-12 col-ml-12">
+      <div class="feed-card col-12 col-lg-12 col-ml-12" @click="clickHelpmeName">
         <span class="status" id="status"> {{ getStatus }}</span>
         <div class="contentsWrap">
-          <span class="probleminfo"
-            >{{ this.problemSiteName }}
+          <span class="probleminfo">
+            {{ this.problemSiteName }}
           </span>
-          <span class="probleminfo"
-            >{{ this.problemNo }}번 문제</span
-          >
+          <span class="probleminfo">
+            {{ this.problemNo }}번 문제
+          </span>
 
           <div>
             <p class="helpmeContent">
