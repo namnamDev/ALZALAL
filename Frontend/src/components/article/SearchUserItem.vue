@@ -43,6 +43,7 @@ export default {
   },
   created() {
     this.followState = this.member.followState
+    console.log(this.member)
   },
   computed:{
     getImgSrc(){
@@ -56,8 +57,9 @@ export default {
       else{
         return false
       }
-    }
-  },
+    },
+
+  },  
   methods: {
     goProfile() {
       localStorage.setItem('userPk',this.member.no)

@@ -130,6 +130,7 @@ export default {
     // 게시글 상세 정보 페이지로 이동
     clickHelpmeName: function () {
       localStorage.setItem("helpmeNo", this.helpmeNo);
+      console.log(this.helpmeNo)
 
       this.$store.dispatch("createHelpmeDetail", this.item.helpme);
 
