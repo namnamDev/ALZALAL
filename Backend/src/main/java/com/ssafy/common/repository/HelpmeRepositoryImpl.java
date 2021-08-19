@@ -58,7 +58,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 						ExpressionUtils.as(JPAExpressions// 댓글 갯수
 								.select(hc.count()).from(hc)
 								.where(hc.helpmeNo.helpmeNo.eq(h.helpmeNo)),
-								"likeState")))
+								"likeState"),
+						h.helpmeAnswerArticleNo))
 				.from(h)
 				.where(h.helpmeReceptorNo.no.eq(memberNo))
 				.offset(page.getOffset())
@@ -99,7 +100,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 						ExpressionUtils.as(JPAExpressions// 댓글 갯수
 								.select(hc.count()).from(hc)
 								.where(hc.helpmeNo.helpmeNo.eq(h.helpmeNo)),
-								"likeState")))
+								"likeState"),
+						h.helpmeAnswerArticleNo))
 				.from(h)
 				.where(h.helpmeSenderNo.no.eq(memberNo))
 				.offset(page.getOffset())
@@ -136,7 +138,8 @@ public class HelpmeRepositoryImpl implements HelpmeRepositoryCustom {
 						ExpressionUtils.as(JPAExpressions// 댓글 갯수
 								.select(hc.count()).from(hc)
 								.where(hc.helpmeNo.helpmeNo.eq(h.helpmeNo)),
-								"likeState")))
+								"likeState"),
+						h.helpmeAnswerArticleNo))
 						.from(h)
 						.where(h.helpmeNo.eq(helpmeNo))
 						.fetchOne();
