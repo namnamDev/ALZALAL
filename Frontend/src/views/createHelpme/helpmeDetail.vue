@@ -6,6 +6,7 @@
           <span class="username">{{ this.helpmeSenderName }}</span
           >님이 <span class="username">{{ this.helpmeReceptorName }}</span
           >님에게 요청한 문제
+          <div class="nowStatus">{{getStatus}}</div>
         </div>
         <div class="row">
           <div class="col text-end text-secondary">
@@ -36,6 +37,7 @@
           <button class="create-comment-btn" @click="clickCreateComment">
             댓글쓰기
           </button>
+          <button v-if="this.nowStatus" class="create-comment-btn" @click="clickAnswer">풀이보기</button>
           <div id="create-comment">
             <CreateComment :helpmeNo="this.helpmeNo" />
           </div>
@@ -92,6 +94,7 @@ export default {
 
   data: function () {
     return {
+      helpmeStatus:'',
       helpmeContent: "",
       helpmeNo: "",
       content: "",
@@ -106,9 +109,10 @@ export default {
       helpmeReceptorName: "",
       helpmeSenderNo: "",
       helpmeSenderName: "",
-      helpmeStatus: "",
       currentPage: Number(this.Page) + 1,
       myPage: "",
+      helpmeAnswerNo:'',
+      nowStatus: '',
     };
   },
   mounted() {
@@ -152,7 +156,8 @@ export default {
     this.helpmeContent = helpme.helpmeContent;
     this.helpmeDate = helpme.helpmeDate;
     this.helpmeNo = helpme.helpmeNo;
-
+    this.helpmeAnswerNo = helpme.helpmeAnswerArticleNo
+    localStorage.setItem('articleNo',this.helpmeAnswerNo)
     this.helpmeReceptorNo = helpme.helpmeReceptorNo.no;
     this.helpmeSenderNo = helpme.helpmeSenderNo.no;
     this.helpmeReceptorName = helpme.helpmeReceptorNo.name;
@@ -164,14 +169,22 @@ export default {
     this.problemNo = helpme.problemSite.problemNo;
     this.problemSiteName = helpme.problemSite.problemSiteName;
     const userPk = localStorage.getItem("userPk");
-
+    
     if (userpk != userPk) {
       this.myPage = false;
     } else {
       this.myPage = true;
     }
+    if(this.helpmeStatus == 'H03'){
+      this.nowStatus = true;
+    }else{
+      this.nowStatus = false;
+    }
   },
   methods: {
+    clickAnswer: function(){
+      this.$router.push({name:'articleDetail', params:{Page:'0'}})
+    },
     modifyArticle: function () {
       this.$swal
         .fire({
@@ -337,6 +350,9 @@ export default {
 </script>
 
 <style scoped>
+.nowStatus{
+  font-size: 18px;
+}
 #create-comment {
   display: none;
 }
@@ -398,6 +414,7 @@ button {
   border-radius: 3px;
   color: rgb(255, 255, 255);
   font-weight: bold;
+  margin-right: 10px;
 }
 .current-page {
   width: 30px;

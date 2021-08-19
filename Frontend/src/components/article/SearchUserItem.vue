@@ -57,7 +57,7 @@ export default {
     }else{
       this.me=false
     }
-    console.log(this.me)
+    
   },
   computed:{
     getImgSrc(){
