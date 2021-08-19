@@ -39,13 +39,13 @@
           class="col-sm-2 m-size mb-2"
           
         >
-          <div>
+          <div class='ms-3'>
               {{this.problemSiteName}}
           </div>
         </div>
 
         <div class="box col-sm-2 mb-2">문제번호</div>
-        <p id="problem-input" class="m-size col-sm-2 mb-2" >{{this.problemNo}}</p>
+        <p id="problem-input" class="m-size col-sm-2 mb-2 ms-3" >{{this.problemNo}}</p>
 
         <div class="box col-sm-2 mb-2">사용언어</div>
         <select
