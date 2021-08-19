@@ -80,9 +80,6 @@ if (token) {
   userpk = decoded.sub
 }
 export default {
-    props:{
-        userPk: Number
-    },
     data(){
         return{
             imgsrc: '',
@@ -173,6 +170,7 @@ export default {
         },
         clickRequest: function(){
             const token = sessionStorage.getItem('jwt')
+            
                 if(!token){
                     this.$swal.fire({          
                         text: "로그인 후 이용해주세요.",
@@ -188,7 +186,7 @@ export default {
                         }
                     })
                 }else{
-                    this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+                    this.$router.push({name:'createHelpme'})
                 }
             
         },

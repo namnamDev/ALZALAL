@@ -25,7 +25,7 @@
 
       <div class="row">
         <div class="col title ">
-          <input
+          <textarea
             v-model="content"
             id="title"
             type="text"
@@ -48,14 +48,13 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
-  props:{
-    targetPK:Number,
-  },
+  
   data() {
     return {
       pSite: '',
       pNum: '',
       content: '',
+      targetPK: localStorage.getItem('userPk'),
     };
   },
 
@@ -102,7 +101,7 @@ export default {
       })   
       .then(() =>{
         this.$swal('요청이 완료되었습니다.')
-        this.$router.push({ name: 'profilePage' })       
+        this.$router.push({ name: 'profilePage',params:{'userPk':this.targetPK} })       
       })
       .catch(err =>{  
         console.log(err)
@@ -210,7 +209,11 @@ export default {
   }
 }
 #title{
-  line-height: 10;
+  line-height: 1;
   
+}
+textarea{
+  width:500px;
+  height: 170px;
 }
 </style>

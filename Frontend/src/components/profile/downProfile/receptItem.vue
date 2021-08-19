@@ -17,10 +17,10 @@
             </p>
           </div>
           <div v-if="myPage">
-            <button v-if="clickok" @click="clickOk" class="responseBtn">
+            <button v-if="clickok" class="responseBtn">
               수락하기
             </button>
-            <button v-if="clickno" @click="clickNo" class="refuseBtn">
+            <button v-if="clickno" class="refuseBtn">
               거절하기
             </button>
           </div>
@@ -36,8 +36,8 @@
           </div>
         </div>
         <div>
-          <div v-if="myPage && clickanswer">
-            <button @click="sendAnswer" class="answer">답변하기</button>
+          <div v-if="myPage && clickanswer" class="sendAnswer">
+            <button class="answer">답변하기</button>
           </div>
           <p class="date">{{ this.helpmeDate }}</p>
         </div>
@@ -180,8 +180,93 @@ export default {
 
       return `${Math.floor(betweenTimeDay / 365)}년전`;
     },
-    clickOk: function () {
-      this.$swal
+    // clickOk: function () {
+    //   this.$swal
+    //     .fire({
+    //       title: "요청을 수락하시겠습니까?",
+    //       text: "수락한 요청은 이후에 취소가 불가능합니다.",
+    //       icon: "warning",
+    //       showCancelButton: true,
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "네",
+    //       cancelButtonText: "아니요",
+    //     })
+    //     .then((result) => {
+    //       if (result.value) {
+    //         this.clickanswer = true;
+    //         this.clickno = false;
+    //         this.clickok = false;
+    //         axios({
+    //           method: "post",
+    //           url: `${SERVER_URL}/helpme/state/${this.helpmeNo}`,
+    //           data: {
+    //             answer: "accept",
+    //           },
+    //           headers: this.getToken,
+    //         })
+    //           .then(() => {
+    //             this.$swal("답변하기를 통해 풀이해주세요.");
+    //           })
+    //           .catch((err) => {
+    //             console.log(err);
+    //           });
+    //       }
+    //     });
+    // },
+    // clickNo: function () {
+    //   this.$swal
+    //     .fire({
+    //       title: "요청을 거절하시겠습니까?",
+    //       text: "한 번 거절한 요청은 다시 답변할 수 없습니다.",
+    //       icon: "warning",
+    //       showCancelButton: true,
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "네",
+    //       cancelButtonText: "아니요",
+    //     })
+    //     .then((result) => {
+    //       if (result.value) {
+    //         this.clickanswer = false;
+    //         this.clickok = false;
+    //         this.clickno = false;
+    //         axios({
+    //           method: "post",
+    //           url: `${SERVER_URL}/helpme/state/${this.helpmeNo}`,
+    //           data: {
+    //             answer: "reject",
+    //           },
+    //           headers: this.getToken,
+    //         })
+    //           .then(() => {})
+    //           .catch((err) => {
+    //             console.log(err);
+    //           });
+    //       }
+    //     });
+    // },
+    // 게시글 상세 정보 페이지로 이동
+    clickHelpmeName: function (clickObject) {
+      if (
+        clickObject.target.getAttribute("class") == "answer" 
+      ) {
+        this.$router.push({
+        name: "createHelpmeAnswer",
+        params: {
+          helpmeNo: this.helpmeNo,
+          problemSiteName: this.problemSiteName,
+          problemNo: this.problemNo,
+          helpmeSenderNo: this.helpmeSenderNo,
+          helpmeSenderName: this.helpmeSenderName,
+          helpmeReceptorNo: this.helpmeReceptorNo,
+          helpmeReceptorName: this.helpmeReceptorName,
+        },
+      });
+      }else if(
+        clickObject.target.getAttribute("class") == "responseBtn"
+      ){
+        this.$swal
         .fire({
           title: "요청을 수락하시겠습니까?",
           text: "수락한 요청은 이후에 취소가 불가능합니다.",
@@ -213,9 +298,10 @@ export default {
               });
           }
         });
-    },
-    clickNo: function () {
-      this.$swal
+      }else if(
+        clickObject.target.getAttribute("class") == "refuseBtn"
+      ){
+        this.$swal
         .fire({
           title: "요청을 거절하시겠습니까?",
           text: "한 번 거절한 요청은 다시 답변할 수 없습니다.",
@@ -245,9 +331,8 @@ export default {
               });
           }
         });
-    },
-    // 게시글 상세 정보 페이지로 이동
-    clickHelpmeName: function () {
+      }
+      else{
       localStorage.setItem("helpmeNo", this.helpmeNo);
 
       this.$store.dispatch("createHelpmeDetail", this.item.helpme);
@@ -271,22 +356,23 @@ export default {
         name: "helpmeDetail",
         params: { Page: "0", helpmeNo: this.helpmeNo },
       });
+      }
     },
     // 문제답변하기 버튼누르면 문제풀이 글쓰기로 이동
-    sendAnswer: function () {
-      this.$router.push({
-        name: "createHelpmeAnswer",
-        params: {
-          helpmeNo: this.helpmeNo,
-          problemSiteName: this.problemSiteName,
-          problemNo: this.problemNo,
-          helpmeSenderNo: this.helpmeSenderNo,
-          helpmeSenderName: this.helpmeSenderName,
-          helpmeReceptorNo: this.helpmeReceptorNo,
-          helpmeReceptorName: this.helpmeReceptorName,
-        },
-      });
-    },
+    // sendAnswer: function () {
+    //   this.$router.push({
+    //     name: "createHelpmeAnswer",
+    //     params: {
+    //       helpmeNo: this.helpmeNo,
+    //       problemSiteName: this.problemSiteName,
+    //       problemNo: this.problemNo,
+    //       helpmeSenderNo: this.helpmeSenderNo,
+    //       helpmeSenderName: this.helpmeSenderName,
+    //       helpmeReceptorNo: this.helpmeReceptorNo,
+    //       helpmeReceptorName: this.helpmeReceptorName,
+    //     },
+    //   });
+    // },
   },
 };
 </script>
