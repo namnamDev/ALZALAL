@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios'
-// import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -114,7 +114,6 @@ export default {
       return config
     },
     clickItem: function() {
-      console.log(this.item)
       const data = {
         notiNo : this.item.notiNo
       }
@@ -131,21 +130,27 @@ export default {
         console.log(err)
       })
 
-      if(this.item.notiSubTaskClass == 'NHC' || this.item.notiSubTaskClass == 'NHE'){
+      if(this.item.notiSubTaskClass == 'NHC' || this.item.notiSubTaskClass == 'NHE' 
+      || this.item.notiSubTaskClass == 'NHL' || this.item.notiSubTaskClass == 'NHCL'){
         this.clickHelpme()
-
+      }
+      else if (this.item.notiSubTaskClass == 'NHS'){
+        const token = sessionStorage.getItem('jwt')
+        const myPk = jwt_decode(token).sub
+        localStorage.setItem('userPk',myPk)
+        this.$router.push({'name':'profilePage'})
       }
       else if(this.item.notiTaskClass == 'HLP'){
         localStorage.setItem('userPk',this.item.notiSender)
         this.$router.push({'name':'profilePage', params:{userPk:this.item.notiSender}})
       }      
-      else if (this.item.notiSubTaskClass != 'NMF' ){
-        localStorage.setItem('articleNo', this.item.notiTargetNo)
-        this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
-      }
       else if (this.item.notiSubTaskClass == 'NMF'){
         localStorage.setItem('userPk',this.item.notiSender)
         this.$router.push({'name':'profilePage', params:{userPk:this.item.notiSender}})
+      }
+      else if (this.item.notiSubTaskClass != 'NMF' ){
+        localStorage.setItem('articleNo', this.item.notiTargetNo)
+        this.$router.push({name : 'articleDetail', params:{'Page':'0'}})
       }
     }, 
     clickHelpme: function () {

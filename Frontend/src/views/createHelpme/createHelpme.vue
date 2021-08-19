@@ -48,13 +48,12 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
-  
   data() {
     return {
       pSite: '',
       pNum: '',
       content: '',
-      targetPK: localStorage.getItem('userPk'),
+      targetPK: localStorage.getItem("userPk"),
     };
   },
 
@@ -101,7 +100,7 @@ export default {
       })   
       .then(() =>{
         this.$swal('요청이 완료되었습니다.')
-        this.$router.push({ name: 'profilePage',params:{'userPk':this.targetPK} })       
+        this.$router.push({ name: 'profilePage', params:{'userPk':this.targetPK} })       
       })
       .catch(err =>{  
         console.log(err)
