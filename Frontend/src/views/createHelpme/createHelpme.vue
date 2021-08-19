@@ -25,7 +25,7 @@
 
       <div class="row">
         <div class="col title ">
-          <input
+          <textarea
             v-model="content"
             id="title"
             type="text"
@@ -48,7 +48,6 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: "createHelpme",
-
   data() {
     return {
       pSite: '',
@@ -209,7 +208,11 @@ export default {
   }
 }
 #title{
-  line-height: 10;
+  line-height: 1;
   
+}
+textarea{
+  width:500px;
+  height: 170px;
 }
 </style>

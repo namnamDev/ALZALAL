@@ -170,6 +170,7 @@ export default {
         },
         clickRequest: function(){
             const token = sessionStorage.getItem('jwt')
+            
                 if(!token){
                     this.$swal.fire({          
                         text: "로그인 후 이용해주세요.",
