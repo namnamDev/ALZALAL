@@ -2,7 +2,7 @@
   <div class="create-form">
     <div class="container">
       <form @submit.prevent="submit">
-      <div class="row justify-content-start mb-3">
+      <div class="row justify-content-center mb-3">
         <div id="psite" class="box col-sm-2 mb-2">문제사이트</div>
         <select
           id="select"
@@ -23,17 +23,15 @@
         <input v-model="pNum" id="problem-input" type="text" class="m-size col-sm-2 mb-2" />
       </div>
 
-      <div class="row">
-        <div class="col title ">
+      <div class="row justify-content-center">
           <textarea
             v-model="content"
             id="title"
             type="text"
             placeholder="질문을 입력해주세요"
           />
-        </div>
       </div>
-      <div class="row submit">
+      <div class="row submit justify-content-center">
         <button type="submit" :disabled="!pNum || !pSite || !content" class="requestBtn">제출하기</button>
       </div>
       </form>
@@ -112,7 +110,7 @@ export default {
 
 <style scoped>
 .submit{
-  margin-top: 150px;
+  margin-top: 15px;
 }
 #search{
  display:none; 
@@ -126,16 +124,13 @@ export default {
 }
 
 .create-form {
-  margin-top: 150px;
+  margin-top: 80px;
   margin-bottom: 13vw;
-  width: 70%;
+  width: 100%;
   height: 500px;
-  left: 23%;
-  position: absolute;
 }
 
 .container {
-  position: absolute;
   background-color: white;
   width: 100%;
   height: 60vw;
@@ -163,10 +158,6 @@ export default {
   height: 30px;
   margin-top: 20px;
   padding: 0 0;
-}
-.title > input {
-  width: 70%;
-  border-radius: 3px;
 }
 .requestBtn {
   width: 110px;
@@ -214,5 +205,6 @@ export default {
 textarea{
   width:500px;
   height: 170px;
+  resize: none;
 }
 </style>
