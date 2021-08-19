@@ -190,8 +190,13 @@ export default {
     },
     onMessageReceived: function (payload) {
       let discussComment = JSON.parse(payload.body);
+
+      //댓글 하나도 없어서 페이지 0이어도 댓글 추가되어야함
       //마지막 페이지에서만 댓글 추가되게
-      if (this.Page == this.commentCount - 1) {
+      if (this.Page == this.commentCount - 1 || this.commentCount==0) {
+        if(this.comments==null)
+          this.comments=[];
+
         this.comments.push(discussComment);
       }
     },

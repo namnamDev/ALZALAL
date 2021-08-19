@@ -89,7 +89,7 @@
 
     <div class="footer mb-2">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      <button type="button" class="btn" v-on:keyup.enter="submit" id="submit" @click="submit">검색하기</button>
+      <button type="button" class="btn" v-on:keyup.enter="submit" id="submit" @click="submit" >검색하기</button>
     </div>
   </div>
 </template>
@@ -141,6 +141,7 @@ export default {
         });
         const user1 = document.querySelector('.user1')
         user1.style.marginBottom = '50px'
+
         
       }
       else{

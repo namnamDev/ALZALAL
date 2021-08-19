@@ -71,8 +71,9 @@ export default {
       else{
         return false
       }
-    }
-  },
+    },
+
+  },  
   methods: {
     goProfile() {
       localStorage.setItem('userPk',this.member.no)

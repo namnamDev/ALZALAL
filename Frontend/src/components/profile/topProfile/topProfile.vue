@@ -237,9 +237,6 @@ export default {
 </script>
 
 <style scoped>
-.feed-item{
-  /* box-shadow: 0 0 0px 5px rgba(62 ,171 ,111 , 1);     */
-}
 .fa{
     color: rgb(62, 171, 111) ;
 }
