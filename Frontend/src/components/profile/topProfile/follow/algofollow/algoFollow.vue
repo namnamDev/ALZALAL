@@ -26,8 +26,7 @@ const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
-  userpk = decoded.sub;
-  
+  userpk = decoded.sub;  
 }
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
