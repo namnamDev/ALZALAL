@@ -11,6 +11,9 @@
                             <button class="btn clickImg" @click="clickImg">
                                 Select Image
                             </button>
+                            <div v-if="!myPage" class="text-end">
+                                <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,9 +63,7 @@
                 <div class="introduceline col-lg-3 col-md-3 col-sm-3 col-3 col-xl-3">
 
                 </div>
-                <div v-if="!myPage" class="text-end">
-                    <button @click="clickRequest"  class="btn btn-request">문제풀이 요청하기</button>
-                </div>
+                
             </div>
 	    </div>
 		<!-- End of profile section -->
