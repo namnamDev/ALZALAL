@@ -163,7 +163,7 @@ export default {
   font-weight: 700;
   font-size: 17px;
   border-radius: 5%;
-  border:none
+  border: 1px solid rgb(62, 171, 111);
 }
 .btn-unfollow {
   background-color: white;

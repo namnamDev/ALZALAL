@@ -188,7 +188,9 @@ export default {
                         }
                     })
                 }
-            this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+                else{
+                    this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+                }
         },
         clickFollowBtn: function(event){
                 const token = sessionStorage.getItem('jwt')
