@@ -112,26 +112,31 @@ export default {
       }
       return config
     },
-    clickLike() {     
-      const commentNo = this.comment.articleCommentNo
-      axios({
-        method: 'post',
-        url: `${SERVER_URL}/like/helpme/comment/${commentNo}`,
-        headers: this.getToken(),
-        data :{}
-      })
-      .then(()=> {
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      if (this.likeState) {
-        this.likeState = false
-        this.likeCount -= 1
-      }
-      else{
-        this.likeState = true
-        this.likeCount += 1
+    clickLike() {   
+      const token = sessionStorage.getItem('jwt')  
+      if(token){
+        const commentNo = this.comment.articleCommentNo
+        axios({
+          method: 'post',
+          url: `${SERVER_URL}/like/helpme/comment/${commentNo}`,
+          headers: this.getToken(),
+          data :{}
+        })
+        .then(()=> {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        if (this.likeState) {
+          this.likeState = false
+          this.likeCount -= 1
+        }
+        else{
+          this.likeState = true
+          this.likeCount += 1
+        }
+      }else{
+        this.$swal('로그인이 필요합니다!')
       }
     },
     deleteComment: function() {      

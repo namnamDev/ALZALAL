@@ -319,23 +319,27 @@ export default {
       }
     },
     clickLike: function () {
-      const helpmeNo = localStorage.getItem("helpmeNo");
-      axios({
-        method: "post",
-        url: `${SERVER_URL}/like/helpme/article/${helpmeNo}`,
-        headers: this.getToken(),
-        data: {},
-      })
-        .then(() => {})
-        .catch((err) => {
-          console.log(err);
-        });
-      if (this.likeState) {
-        this.likeState = false;
-        this.likeCount -= 1;
-      } else {
-        this.likeState = true;
-        this.likeCount += 1;
+      if(token){
+        const helpmeNo = localStorage.getItem("helpmeNo");
+        axios({
+          method: "post",
+          url: `${SERVER_URL}/like/helpme/article/${helpmeNo}`,
+          headers: this.getToken(),
+          data: {},
+        })
+          .then(() => {})
+          .catch((err) => {
+            console.log(err);
+          });
+        if (this.likeState) {
+          this.likeState = false;
+          this.likeCount -= 1;
+        } else {
+          this.likeState = true;
+          this.likeCount += 1;
+        }
+      }else{
+        this.$swal('로그인이 필요합니다.')
       }
     },
     clickName: function () {

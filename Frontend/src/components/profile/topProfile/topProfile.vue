@@ -187,8 +187,10 @@ export default {
                             this.$router.push({'name':'login'})
                         }
                     })
+                }else{
+                    this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
                 }
-            this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+            
         },
         clickFollowBtn: function(event){
                 const token = sessionStorage.getItem('jwt')
