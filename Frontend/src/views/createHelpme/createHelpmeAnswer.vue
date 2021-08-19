@@ -171,7 +171,6 @@ export default {
     },
     // 글 작성하기
     submit() {
-      this.$swal('Complete', '새 글이 작성되었습니다.', 'OK');
       let algoList = [];
       
       const boxAlgo = document.querySelectorAll(".box-algo span");
@@ -188,7 +187,6 @@ export default {
         language: this.language,
         algo: algoList,
       }
-
 
       axios({
         method: 'post',

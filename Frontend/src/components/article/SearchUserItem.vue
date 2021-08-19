@@ -120,7 +120,8 @@ export default {
 
     request: function() {
       if(this.isLogin){
-        this.$router.push({name:'createHelpme', params:{ targetPK:this.member.no }})
+        localStorage.setItem('userPk', this.member.no)
+        this.$router.push({name:'createHelpme'})
       }
       else{
         this.$swal(`로그인이 필요합니다.`)
