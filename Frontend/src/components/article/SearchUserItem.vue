@@ -19,9 +19,9 @@
 
       <div class="row mt-2">
         <div class="col p-0">
-          <button class="follow-cancel-btn me-2" @click="follow" v-if="followState">팔로우취소</button>
-          <button class="follow-btn me-2" @click="follow" v-else>팔로우</button>
-          <button class="request" @click="request">문제풀이 요청</button>
+          <button class="follow-cancel-btn me-2" @click="follow" v-if="followState && !this.me">팔로우취소</button>
+          <button class="follow-btn me-2" @click="follow" v-if="!followState && !this.me">팔로우</button>
+          <button class="request" @click="request" v-if="!this.me">문제풀이 요청</button>
         </div>
       </div>
     </div>
@@ -29,20 +29,35 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
 import axios from "axios";
-
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
+const token = sessionStorage.getItem('jwt')
+let userpk = '';
+if (token) {
+  const decoded = jwt_decode(token)
+  userpk = decoded.sub
+}
 export default {
   props:{
     member: Object,
+    
   },
   data() {
     return{
       followState: false,
+      me:'',
     }
   },
   created() {
     this.followState = this.member.followState
+    
+    if(this.member.no == userpk){
+      this.me=true
+    }else{
+      this.me=false
+    }
+    console.log(this.me)
   },
   computed:{
     getImgSrc(){
