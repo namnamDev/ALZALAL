@@ -60,10 +60,9 @@ const routes = [
     component: PasswordConfirm,
   },
   {
-    path: `/profilePage/:userPk`,
+    path: `/profilePage`,
     name: "profilePage",
     component: ProfilePage,
-    props: true,
   },
   {
     path: "/profilePage/followPage/:compName",

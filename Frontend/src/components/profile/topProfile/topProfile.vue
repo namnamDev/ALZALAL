@@ -80,9 +80,6 @@ if (token) {
   userpk = decoded.sub
 }
 export default {
-    props:{
-        userPk: Number
-    },
     data(){
         return{
             imgsrc: '',
@@ -188,7 +185,7 @@ export default {
                         }
                     })
                 }else{
-                    this.$router.push({name:'createHelpme', params:{ targetPK:this.userPk }})
+                    this.$router.push({name:'createHelpme'})
                 }
             
         },

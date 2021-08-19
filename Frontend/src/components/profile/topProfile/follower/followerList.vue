@@ -62,7 +62,7 @@ export default {
         axios({
           method: 'get',
           url: `${SERVER_URL}/profile/${this.pk}/followers`+"?page=" + (this.page),
-          // headers: this.getToken,
+          headers: this.getToken,
         }).then(res => {
           setTimeout(() => {
             if(res.data.length) {

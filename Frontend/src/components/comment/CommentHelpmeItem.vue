@@ -115,7 +115,8 @@ export default {
     clickLike() {   
       const token = sessionStorage.getItem('jwt')  
       if(token){
-        const commentNo = this.comment.articleCommentNo
+        const commentNo = this.comment.helpmeCommentNo
+        console.log(this.comment)
         axios({
           method: 'post',
           url: `${SERVER_URL}/like/helpme/comment/${commentNo}`,
