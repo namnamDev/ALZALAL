@@ -117,6 +117,55 @@ export default {
   },
   mounted() {
     this.getCommentList();
+
+    const no = localStorage.getItem('helpmeNo')
+    console.log('no : ',no)
+    let helpme = ''
+    axios({
+        method: "get",
+        url: `${SERVER_URL}/helpme/${no}`,
+        headers: this.getToken(),
+      })
+        .then((res) => {
+          console.log(res)
+          helpme = res.data.helpme
+          this.helpmeContent = helpme.helpmeContent;
+          console.log(this.helpmeContent)
+          this.helpmeDate = helpme.helpmeDate;
+          this.helpmeNo = helpme.helpmeNo;
+          this.helpmeAnswerNo = helpme.helpmeAnswerArticleNo
+          localStorage.setItem('articleNo',this.helpmeAnswerNo)
+          this.helpmeReceptorNo = helpme.helpmeReceptorNo.no;
+          this.helpmeSenderNo = helpme.helpmeSenderNo.no;
+          this.helpmeReceptorName = helpme.helpmeReceptorNo.name;
+          this.helpmeSenderName = helpme.helpmeSenderNo.name;
+          this.commentCount = helpme.commentCount;
+          this.likeState = helpme.likeState;
+          this.helpmeStatus = helpme.helpmeStatus;
+
+          this.problemNo = helpme.problemSite.problemNo;
+          this.problemSiteName = helpme.problemSite.problemSiteName;
+          const userPk = localStorage.getItem("userPk");
+          
+          if (userpk != userPk) {
+            this.myPage = false;
+          } else {
+            this.myPage = true;
+          }
+          if(this.helpmeStatus == 'H03'){
+            this.nowStatus = true;
+          }else{
+            this.nowStatus = false;
+          }
+          this.$store.dispatch("createHelpmeDetail", res.data.helpme);          
+        })
+        .catch((err) => {
+          console.log(err);
+        }); 
+
+
+    // const helpme = this.$store.getters.getHelpmeDetail;
+    
   },
   computed: {
     getComments: function () {
@@ -151,36 +200,7 @@ export default {
     },
   },
 
-  created() {
-    const helpme = this.$store.getters.getHelpmeDetail;
-    this.helpmeContent = helpme.helpmeContent;
-    this.helpmeDate = helpme.helpmeDate;
-    this.helpmeNo = helpme.helpmeNo;
-    this.helpmeAnswerNo = helpme.helpmeAnswerArticleNo
-    localStorage.setItem('articleNo',this.helpmeAnswerNo)
-    this.helpmeReceptorNo = helpme.helpmeReceptorNo.no;
-    this.helpmeSenderNo = helpme.helpmeSenderNo.no;
-    this.helpmeReceptorName = helpme.helpmeReceptorNo.name;
-    this.helpmeSenderName = helpme.helpmeSenderNo.name;
-    this.commentCount = helpme.commentCount;
-    this.likeState = helpme.likeState;
-    this.helpmeStatus = helpme.helpmeStatus;
 
-    this.problemNo = helpme.problemSite.problemNo;
-    this.problemSiteName = helpme.problemSite.problemSiteName;
-    const userPk = localStorage.getItem("userPk");
-    
-    if (userpk != userPk) {
-      this.myPage = false;
-    } else {
-      this.myPage = true;
-    }
-    if(this.helpmeStatus == 'H03'){
-      this.nowStatus = true;
-    }else{
-      this.nowStatus = false;
-    }
-  },
   methods: {
     clickAnswer: function(){
       this.$router.push({name:'articleDetail', params:{Page:'0'}})

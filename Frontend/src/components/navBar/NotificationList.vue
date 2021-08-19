@@ -21,7 +21,6 @@
 
 <script>
 import axios from 'axios'
-import jwt_decode from 'jwt-decode'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
@@ -135,9 +134,7 @@ export default {
         this.clickHelpme()
       }
       else if (this.item.notiSubTaskClass == 'NHS'){
-        const token = sessionStorage.getItem('jwt')
-        const myPk = jwt_decode(token).sub
-        localStorage.setItem('userPk',myPk)
+        localStorage.setItem('userPk',this.item.notiSender)
         this.$router.push({'name':'profilePage'})
       }
       else if(this.item.notiTaskClass == 'HLP'){
@@ -155,7 +152,6 @@ export default {
     }, 
     clickHelpme: function () {
       localStorage.setItem("helpmeNo", this.item.notiTargetNo );
-
       axios({
         method: "get",
         url: `${SERVER_URL}/helpme/${this.item.notiTargetNo}`,
