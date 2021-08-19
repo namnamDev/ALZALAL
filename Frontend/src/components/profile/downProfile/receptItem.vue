@@ -12,7 +12,7 @@
           </span>
 
           <div>
-            <p @click="clickHelpmeName" class="helpmeContent">
+            <p class="helpmeContent">
               {{ this.helpmeContent }}
             </p>
           </div>

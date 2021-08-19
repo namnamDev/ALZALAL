@@ -24,16 +24,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import problemFollowBtn from '@/components/profile/topProfile/follow/problemfollow/problemFollowBtn.vue'
-import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
-const token = sessionStorage.getItem("jwt");
-let userpk = "";
-if (token) {
-  const decoded = jwt_decode(token);
-  userpk = decoded.sub;
-  
-}
+
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
@@ -48,16 +42,18 @@ export default {
   },  
   methods:{
     infiniteHandler($state) {
-        fetch(`${SERVER_URL}/profile/${userpk}/problemfollowings`+"?page=" + (this.page), {method: "get"}).then(resp => {
-          return resp.json()
-        }).then(data => {
+        const userPk = localStorage.getItem('userPk')
+        axios({
+          method:'get',
+          url:`${SERVER_URL}/profile/${userPk}/problemfollowings`+"?page=" + (this.page)
+        }).then(res => {
           setTimeout(() => {
-            if(data.length) {
-              this.problems = this.problems.concat(data)
+            if(res.data.length) {
+              this.problems = this.problems.concat(res.data)
               $state.loaded()
               this.page += 1
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(data.length / 10 < 1) {
+              if(res.data.length / 10 < 1) {
                 $state.complete()
               }
             } else {

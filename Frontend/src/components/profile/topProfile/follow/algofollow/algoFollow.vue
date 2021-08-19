@@ -19,15 +19,9 @@
 </template>
 
 <script>
+import axios from 'axios'
 import algoFollowBtn from '@/components/profile/topProfile/follow/algofollow/algoFollowBtn.vue'
-import jwt_decode from "jwt-decode";
 import InfiniteLoading from 'vue-infinite-loading';
-const token = sessionStorage.getItem("jwt");
-let userpk = "";
-if (token) {
-  const decoded = jwt_decode(token);
-  userpk = decoded.sub;  
-}
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   components:{
@@ -42,16 +36,20 @@ export default {
   }, 
   methods:{
     infiniteHandler($state) {
-        fetch(`${SERVER_URL}/profile/${userpk}/algofollowings`+"?page=" + (this.page), {method: "get"}).then(resp => {
-          return resp.json()
-        }).then(data => {
+        const userPk = localStorage.getItem('userPk')
+        axios({
+          method:'get',
+          url:`${SERVER_URL}/profile/${userPk}/algofollowings`+"?page=" + (this.page)
+        }).then(res => {
+          console.log(res.data)
           setTimeout(() => {
-            if(data.length) {
-              this.algo = this.algo.concat(data)
+            if(res.data.length) {
+              this.algo = this.algo.concat(res.data)
+              console.log(this.algo)
               $state.loaded()
               this.page += 1
               // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
-              if(data.length / 10 < 1) {
+              if(res.data.length / 10 < 1) {
                 $state.complete()
               }
             } else {
@@ -59,6 +57,7 @@ export default {
               $state.complete()
             }
           }, 1000)
+          console.log(this.algo)
         }).catch(err => {
           console.error(err);
         })
