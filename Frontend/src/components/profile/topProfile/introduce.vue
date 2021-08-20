@@ -1,20 +1,21 @@
 <template>
-
-    <div class="contents">
+  <div class="contents">
 		<div class="form-wrapper form-wrapper-sm">
 			<form @submit.prevent="submitForm" class="form">
 				<div>
 					<label align="left" for="introduce">한 줄 소개를 입력해주세요</label>
 					<input id="introduce" type="text" v-model="introduce" />
+          <p class="validation-text">
+              <span class='warning' v-if="!introLength">
+                한줄소개는 40자 이하로 입력해주세요
+              </span>
+            </p>     
 				</div>
-			    <button :disabled="!introduce" type="submit" class="btn" align="right">
+			    <button :disabled="!introLength" type="submit" class="btn" align="right">
 					                                    확인
 				  </button>
-        
 			</form>
-		
-		</div>
-       
+		</div> 
 	</div>
 </template>
 
@@ -29,31 +30,29 @@ export default {
 		};
 	},
   created: function() {
-    const token = localStorage.getItem('jwt')
+    const token = sessionStorage.getItem('jwt')
     if(!token){
       this.$router.push({name:'login'})
     }
   },
   computed: {
     getToken(){
-      const token = localStorage.getItem('jwt')
+      const token = sessionStorage.getItem('jwt')
       const config = {
         Authorization: `Bearer ${token}`
       }
       return config
-    }
+    },
+    introLength(){
+      if(this.introduce.length<41){
+        return true;
+      }
+      return false
+    },
   },
   methods: {
-    // getToken(){
-    //   const token = localStorage.getItem('jwt')
-    //   const config = {
-    //     Authroization: `JWT ${token}`
-    //   }
-    //   return config
-    // }
     
     submitForm: function() {
-      // console.log(this.getToken)
       axios({
             method: 'post',
             url: `${SERVER_URL}/profile/introduce`,
@@ -62,13 +61,11 @@ export default {
               },
             headers: this.getToken,
           })
-          .then(res => {
-            console.log(res);
+          .then(() => {
             this.$router.push({ name: 'profilePage' })
         
           })
           .catch(err => {
-            alert(err)
             console.log(err)
           })
     }
@@ -132,13 +129,15 @@ export default {
   margin-bottom: 0.5rem;
 }
 .btn {
-  padding: 0.5rem 1.5rem;
-  font-weight: 700;
-  border-radius: .25rem;
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width: 120px;
 }
 .btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  background-color: white;
+  color: black;
+  border: 1px solid rgb(62, 171, 111);
+  width: 120px;
 }
 .btn-user{
     opacity: 0.8;

@@ -5,10 +5,10 @@
       <div class="col-lg-6 col-md-10 col-sm-9 col-10 ">
         <div class="row">
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followerList')">follower</button>
+            <button class="btn1" id="follower" @click="changeComponent1('followerList')">follower</button>
           </div>
           <div class="col-6 col-lg-6">
-            <button class="btn" @click="changeComponent('followList')"> follow</button>
+            <button class="btn1" id="following" @click="changeComponent2('followList')"> following</button>
           </div>
         </div>
         <div class="tab-item">
@@ -22,44 +22,86 @@
 </template>
 
 <script>
-import followList from '@/components/profile/followList.vue'
-import followerList from '@/components/profile/followerList.vue'
+import followList from '@/components/profile/topProfile/follow/followList.vue'
+import followerList from '@/components/profile/topProfile/follower/followerList.vue'
 export default {
   components: {
     followList,
-    followerList
+    followerList,
+  },
+  props:{
+    compName: String,
   },
   data() {
-      return { comp: 'followerList' }
+      return {
+          comp: '',
+       } 
+  },
+  created:function(){
+    if(this.compName == 'followList'){
+      this.comp = 'followList'
+    }else{
+      this.comp = 'followerList'
+    }
+  },
+  mounted:function(){
+    if(this.compName == 'followList'){
+      document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('following').style.color = 'white'
+    }else{
+      document.getElementById('follower').style.backgroundColor = 'rgb(62, 171, 111)'
+      document.getElementById('follower').style.color = 'white'
+    }
   },
   methods: {
-      changeComponent: function(componentName) {
-          this.comp = componentName
-          console.log(this.comp)
+      changeComponent1: function(componentName) {
+        this.comp = componentName
+        document.getElementById('follower').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('follower').style.color = 'white'
+        document.getElementById('following').style.backgroundColor = 'white'
+        document.getElementById('following').style.color = 'black'
+      },
+      changeComponent2: function(componentName){
+        this.comp = componentName
+        document.getElementById('follower').style.backgroundColor = 'white'
+        document.getElementById('follower').style.color = 'black'
+        document.getElementById('following').style.backgroundColor = 'rgb(62, 171, 111)'
+        document.getElementById('following').style.color = 'white'
       }
-  }
+  },
 
 }
 </script>
 
 <style scoped>
 .container{
-  margin-top: 150px;
+  margin-top: 90px;
+  
 }
 @media (max-width:576px){
   .container{
-    margin-top: 140px;
+    margin-top: 90px;
   }
 }
-.btn{
-  width:200px;
+.btn1{
+  width:100%;
   font-size:25px;
   font-weight: 550;
+  border-radius: 5%;
+  border: none;
+  background-color: white;
+
 }
 .tab-item {
   margin-top: 20px;
 }
-.btn:hover{
-  background-color: antiquewhite;
+
+#follower:active{
+  background-color: rgb(62, 171, 111);
+  color: white;
+}
+#following:active{
+  background-color: rgb(62, 171, 111);
+  color: white;
 }
 </style>

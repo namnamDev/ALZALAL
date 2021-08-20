@@ -3,24 +3,30 @@
     <div class="contents">
       <div class="form-wrapper form-wrapper-sm">
         <form @submit.prevent="uploadImage">
-          <input
-            type="file"
-            @change="onFileChange"
-            ref="image"
-            name="image"
-            id="image"
-            class="btn-file"
-          />
+          <div class="filebox">
+            <label for="image">
+              <span>프로필 이미지 선택하기</span> 
+            </label>
+            <button :disabled="!url" type="submit" class="btn1 btn-submit">
+            프로필이미지로 지정하기
+            </button>
+            <input
+              type="file"
+              @change="onFileChange"
+              ref="image"
+              name="image"
+              id="image"
+              class="btn-file"
+            />
+          </div>
           <div id="preview" class="profile-image" v-if="url">
             <img class="profileImg" :src="url" />
           </div>
-          <div id="preview" class="profile-image" v-if="!url">
-            <img class="profileImg" alt="any img" />
-          </div>
+          <!-- <div id="preview" class="profile-image" v-if="!url">
+            <img class="profileImg" alt="프로필이미지를 등록해주세요" />
+          </div> -->
 
-          <button type="submit" class="btn btn-submit">
-            프로필이미지로 지정하기
-          </button>
+          
         </form>
       </div>
     </div>
@@ -31,12 +37,11 @@
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL;
-const token = localStorage.getItem("jwt");
+const token = sessionStorage.getItem("jwt");
 let userpk = "";
 if (token) {
   const decoded = jwt_decode(token);
   userpk = decoded.sub;
-  console.log(userpk);
 }
 export default {
   data() {
@@ -47,14 +52,14 @@ export default {
     };
   },
   created: function () {
-    const token = localStorage.getItem("jwt");
+    const token = sessionStorage.getItem("jwt");
     if (!token) {
       this.$router.push({ name: "login" });
     }
   },
   computed: {
     getToken() {
-      const token = localStorage.getItem("jwt");
+      const token = sessionStorage.getItem("jwt");
       const config = {
         Authorization: `Bearer ${token}`,
       };
@@ -67,8 +72,6 @@ export default {
       let profileImage = this.$refs["image"].files[0];
 
       formdata.append("profileImg", profileImage);
-      console.log("profileImg", profileImage);
-      console.log(this.getToken);
 
       axios({
         method: "post",
@@ -76,11 +79,13 @@ export default {
         data: formdata,
         headers: this.getToken,
       })
-        .then((res) => {
-          console.log("img", res);
+        .then(() => {
           this.$router.push({ name: "profilePage" });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => { 
+          console.log(err)
+          console.log(this.getToken)
+        });
     },
     onFileChange(e) {
       const file = e.target.files[0];
@@ -91,6 +96,29 @@ export default {
 </script>
 
 <style scoped>
+label{
+  height: 45px;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: rgb(62, 171, 111);
+  font-weight: 550;
+  font-size: inherit;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 3px solid rgb(62, 171, 111);
+  border-radius: 5%;
+  margin-left: 5px;
+}
+.filebox input[type="file"]{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
 /*--- LAYOUT ---*/
 .contents {
   position: absolute;
@@ -101,11 +129,11 @@ export default {
 }
 .form-wrapper {
   background: white;
-  -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 3px;
+  border: 4px solid rgb(62, 171, 111);
+  
+  border-radius: 7%;
   padding: 15px 15px;
-  height: 300px;
+  height: 360px;
 }
 .form-wrapper.form-wrapper-sm {
   max-width: 500px;
@@ -126,14 +154,8 @@ export default {
   flex-direction: row-reverse;
   justify-content: space-between;
 }
-.form label {
-  width: 100%;
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 90%;
-}
-.form input,
-.form textarea {
+
+.form input {
   font-family: inherit;
   font-size: 100%;
   width: 100%;
@@ -143,14 +165,14 @@ export default {
   margin-bottom: 1rem;
 }
 
-.form div:nth-last-child(2) {
-  margin-bottom: 0.5rem;
-}
-.btn {
+
+.btn1 {
   padding: 0.5rem 1.5rem;
   font-weight: 700;
   border-radius: 0.25rem;
+  border:none
 }
+
 .btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -164,6 +186,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-right: 3rem;
+  margin-left: 128px;
+  margin-top: 30px;
 }
 
 .profileImg {
@@ -172,6 +196,13 @@ export default {
   border-radius: 75%;
 }
 .btn-submit {
+  height: 45px;
+  margin-left: 20px;
   display: inline;
+  background-color: rgb(62, 171, 111);
+  color: white;
+  width:230px;
+
 }
+
 </style>

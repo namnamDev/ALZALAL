@@ -1,113 +1,233 @@
 <template>
-  <div class="row my-5">
-    <div class="col-lg-3 col-md-2 col-sm-3 col-1"></div>
-    <div class="box col-lg-6 col-md-10 col-sm-9 col-10">
-
-      <div class="row top mt-2">
-        <div class="col-3 box1 image mt-2">
-          <i class="fas fa-user" style="font-size:60px;"></i>
+  <div class="animate__animated animate__fadeInUp my-4 main">
+    <div
+      class="article-box col-lg-8 col-md-10 col-sm-9 col-10"
+      @click="clickArticle"
+    >
+      <div class="row">
+        <div class="col-2 image">
+          <img
+            class="profileImg"
+            :src="getImgSrc"
+            @error="imageError = true"
+            alt="프로필사진"
+          />
         </div>
-        <div class="col box1">
-          <div class="row box1 name">
-            <p>my name</p>
+        <div class="col">
+          <div class="row">
+            <div class="col fs-6 fw-bold">
+              <span class="member-name">{{ item.member.name }}</span>
+            </div>
+            <div class="col text-end">
+              <span class="text-secondary">{{ date }}</span>
+            </div>
           </div>
-          <div class="row box1 mt-2">
+          <div class="row">
             <div>
-              <div class="title mb-1">this is my title</div>
-              <div class="hashtag">
-                <span>백준</span>
-                <span>1324</span>
-                <span>Python</span>
-                <span>넓이 우선 탐색</span>
+              <div class="fs-5">{{ item.articleTitle }}</div>
+              <div class="hashtag d-flex align-items-center">
+                <span class="has-category">QnA</span>
+                <span class="has-problem"
+                  >{{ item.problemSite.problemSiteName }}
+                  {{ item.problemSite.problemNo }}</span
+                >
+                <span class="has-language">{{ item.useLanguage }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row middle">
-        <div class="col box1 content">
-          Lorem sit, r adipi consequatur eveniet rem. Velit temporibus fuga labore nisi placeat quos ad, porro quae ipsam, aperiam, ab fugiat nihil vitae doloremque sunt at enim quibusdam quisquam quis dolor veritatis blanditiis! Cupiditate quasi voluptatibus sunt eligendi rem. Quidem dolore ipsam, odit modi voluptates error. Dolorem excepturi consequatur neque maxime odit aliquid enim nobis molestiae itaque, quaerat, repellendus beatae inventore facilis quis fuga ab cupiditate et necessitatibus porro consequuntur ratione! Reprehenderit temporibus aut vel.
+      <div class="row mt-2">
+        <div class="col content">
+          <Viewer id="viewer" :viewerText="item.articleContent" />
         </div>
       </div>
 
-      <div class="row bottom mt-4">
-        <div class="col box1 like-comment">
-          <i class="fas fa-heart me-3">
-            <span class='ms-1'>123</span>
-          </i>
-          <i class="far fa-comment-dots">
-            <span class='ms-1'>456</span>
-          </i>
+      <div class="row bottom mt-0 mt-sm-4">
+        <div class="col like-comment">
+          <i class="fas fa-heart me-2" v-if="item.likeState"></i>
+          <i class="far fa-heart me-2" v-else></i>
+          <span>{{ item.likeCount }}</span>
+          <i class="far fa-comment-dots mx-2"></i>
+          <span>{{ item.commentCount }}</span>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import Viewer from "@/components/article/ThumbnailViewer.vue";
+import axios from "axios";
+const SERVER_URL = process.env.VUE_APP_SERVER_URL;
+
+export default {
+  components: {
+    Viewer,
+  },
+  props: {
+    item: Object,
+  },
+  computed: {
+    getImgSrc() {
+      return `${SERVER_URL}/profile/img/${this.item.member.no}`;
+    },
+  },
+  data: function () {
+    return {
+      memberNo: "",
+    };
+  },
+  created() {
+    this.date = this.getDate(this.item.articleDate);
+  },
+  methods: {
+    //몇분전 표기
+    getDate: function (date) {
+      const today = new Date();
+      const timeValue = new Date(date);
+
+      const betweenTime = Math.floor(
+        (today.getTime() - timeValue.getTime()) / 1000 / 60
+      );
+      if (betweenTime < 1) return "방금전";
+      if (betweenTime < 60) {
+        return `${betweenTime}분전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년전`;
+    },
+    // 상세 정보 페이지이동
+    clickArticle: function (clickObject) {
+      if (
+        clickObject.target.getAttribute("class") == "profileImg" ||
+        clickObject.target.getAttribute("class") == "member-name"
+      ) {
+        localStorage.setItem("userPk", this.item.member.no);
+        this.$router.push({
+          name: "profilePage",
+          params: { userPk: this.item.member.no },
+        });
+      } else {
+        localStorage.setItem("articleNo", this.item.articleNo);
+        axios({
+          method: "get",
+          url: `${SERVER_URL}/comment/article/${this.item.articleNo}`,
+        })
+          .then((res) => {
+            this.$store.dispatch(
+              "createArticleComment",
+              res.data.articleComments
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        this.$router.push({ name: "articleDetail", params: { Page: "0" } });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
+.fa-heart {
+  color: rgba(62, 171, 111, 1);
+}
 .feed {
   margin-top: 13vw;
 }
-.box {
+.article-content {
   background: white;
-  -webkit-box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.08);
   border-radius: 1px;
   padding: 15px 15px;
-  height: 330px;
+  cursor: pointer;
 }
-.box:hover{
-  box-shadow: 0 20px 20px rgba(161,212,226,0.6);
-  transform: scale(1.1);
+
+.article-box {
+  background: white;
+
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
+  padding: 15px 15px;
+  cursor: pointer;
 }
-.box1 {
-  /* border: 1px solid black; */
+.article-box:hover {
+  box-shadow: 0 0 0px 5px rgba(62, 171, 111, 1);
 }
-.image{
+
+.image {
   text-align: center;
+  align-self: center;
 }
-.top{
-  height:100px;
+
+.name {
+  height: 25px;
+  margin-top: 10px;
 }
-.name{
-  height:25px;
-  margin-top:10px;
-}
-.title{
-  height:30px;
+.title {
+  height: 30px;
   font-size: 25px;
   margin-bottom: 0;
 }
-.middle{
-  margin-top: 10px;  
+.middle {
+  margin-top: 10px;
   padding: 0 20px;
 }
-.content{
+.content {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 6; /* 라인수 */
   -webkit-box-orient: vertical;
-  word-wrap:break-word; 
+  word-wrap: break-word;
+  height: 100%;
+  margin: 0 1rem 0 1rem;
 }
 
-.like-comment{
+.like-comment {
   text-align: end;
 }
-.hashtag > span{
-  font-size: 16px;
+.hashtag > span {
+  font-size: 14px;
   border-radius: 3px;
-  background-color : rgba(221,223,230,1);
-  padding:1px 8px;
+  padding: 0px 8px;
   margin-right: 6px;
+  display: inline-block;
 }
-.hashtag{
-  height:20px;
+.has-category {
+  background-color: rgba(170, 224, 217);
+  font-weight: bold;
+}
+.has-problem {
+  background-color: rgb(97, 209, 209);
+}
+.has-language {
+  background-color: rgb(126, 208, 233);
+}
+.name {
+  display: inline-block;
+}
+.name:hover {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.member-name {
+  cursor: pointer;
 }
 </style>
