@@ -1,0 +1,230 @@
+package com.ssafy.common.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ssafy.common.domain.article.Article_Class;
+import com.ssafy.common.domain.problem.Problem_Site;
+import com.ssafy.common.domain.problem.Problem_Site_List;
+import com.ssafy.common.dto.ArticleDTO;
+import com.ssafy.common.dto.MemberSearchDTO;
+import com.ssafy.common.jwt.util.SecurityUtil;
+import com.ssafy.common.repository.Algorithm.Algorithm_FolloweRepositoryCustom;
+import com.ssafy.common.repository.article.ArticleRepository;
+import com.ssafy.common.repository.article.Article_AlgorithmRepository;
+import com.ssafy.common.repository.member.MemberRepositoryCustom;
+import com.ssafy.common.repository.problem.Problem_FollowRepository;
+import com.ssafy.common.repository.problem.Problem_FollowRepositoryCustom;
+
+import io.jsonwebtoken.lang.Collections;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class SearchServiceImpl implements SearchService {
+
+
+	private final ArticleRepository articleRepository;
+
+	private final Algorithm_FolloweRepositoryCustom algorithm_FolloweRepositoryCustom;
+	
+	private final Problem_FollowRepositoryCustom problem_FollowRepositoryCustom;
+	
+	private final MemberRepositoryCustom memberRepositoryCustom;
+	
+	private final Article_AlgorithmRepository article_AlgorithmRepository;
+	
+	// 해당 멤버가 작성한 게시글 리스트 ArticleDTO로 가져옴
+	@Override
+	public List<ArticleDTO> getArticleListByMemberNo(Long memberNo, int page) {
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+
+		List<ArticleDTO> ret = articleRepository.getListByMemberNO(memberNo,
+				nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
+		
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:ret) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				if(atcl.getArticleClass()==Article_Class.A00)
+					continue;
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
+
+		return ret;
+	}
+
+	// 문제검색
+	@Override
+	public Map<String, Object> getProblemSearch(String problem, String language,
+			List<String> and, List<String> not, int page, String sort) {
+		Map<String, Object> ret=new HashMap<>();
+		
+		if(problem.trim().length()==0)
+			throw new IllegalStateException("문제를 입력해 주세요");
+		
+		for(String tmp1 : and) {
+			for(String tmp2: not) {
+				if(tmp1.equals(tmp2))
+					throw new IllegalStateException("포함, 제외에 동일한 해시태그를 넣을 수없습니다");
+			}
+		}
+		
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		
+		Problem_Site problem_Site=new Problem_Site();
+		
+		//boj1234이걸 boj, 1234로 나눠줌
+		char[] tmp = problem.toCharArray();
+		int divIdx=0;
+		for(int i=0;i<tmp.length;i++) {
+			if(tmp[i]>='0' &&tmp[i]<='9') {
+				divIdx=i;
+				break;
+			}
+		}
+		String problemName= problem.substring(0, divIdx);
+		int problemNo=Integer.parseInt(problem.substring(divIdx, problem.length()));
+		
+		problem_Site.setProblemSiteName(new Problem_Site_List(problemName));
+		problem_Site.setProblemNo(problemNo);
+		
+		
+		
+		List<ArticleDTO> list = articleRepository.getProblemSearch(nowLoginMemberNo,
+				problem_Site,language,and,not, PageRequest.of(page, Common.PAGE),sort).orElse(null);
+
+		
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				//Q&A게시판이면 알고리즘 목록 없으니 패스
+				if(atcl.getArticleClass()==Article_Class.A00)
+					continue;
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}		
+		ret.put("articleList", list);
+
+		// 전체 검색된 게시글 갯수
+		Long count = articleRepository.getProblemSearchCount(problem_Site, language, and, not);
+		ret.put("articleSearchCount", count);
+
+		
+		//팔로잉 정보
+		Map<String,Object> followInfo=new HashMap<>();
+		followInfo.put("followingNumber", problem_FollowRepositoryCustom.countProblemFollowings(problemName,(long)problemNo));
+		followInfo.put("articleNumber", articleRepository.countbyProblem(problem_Site));
+		followInfo.put("followingState", problem_FollowRepositoryCustom.isProblemFollowing(nowLoginMemberNo,problem_Site));
+		
+		
+		ret.put("followInfo", followInfo);
+		
+		
+		return ret;
+	}
+
+	// 알고리즘검색
+	@Override
+	public Map<String, Object> getAlgorithmSearch(String language,
+			List<String> and, List<String> not, int page, String sort) {
+		if(and.size()==0 && not.size()==0)	
+			throw new IllegalStateException("최소 1개 이상의 태그를 검색해 주세요");
+		
+		for(String tmp1 : and) {
+			for(String tmp2: not) {
+				if(tmp1.equals(tmp2))
+					throw new IllegalStateException("포함, 제외에 동일한 해시태그를 넣을 수없습니다");
+			}
+		}
+		Map<String, Object> ret=new HashMap<>();
+		
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		
+		List<ArticleDTO> list = articleRepository.getAlgorithmSearch(nowLoginMemberNo,
+				language,and,not, PageRequest.of(page, Common.PAGE),sort).orElse(null);
+
+		//받아온 게시글에 알고리즘 목록 넣어줌
+		if(ret!=null) {
+			for(ArticleDTO atcl:list) {
+				List<String> algorithmList= article_AlgorithmRepository.sltMultiByArticleDTO(atcl).stream().map((algo)->algo.getUsedAlgorithm()).collect(Collectors.toList());
+				atcl.setAlgo(algorithmList);
+			}
+		}
+
+		ret.put("articleList", list);
+		
+		
+		// 전체 검색된 게시글 갯수
+		Long count = articleRepository.getAlgorithmSearchCount(language, and, not);
+		ret.put("articleSearchCount", count);
+		
+		//팔로잉 떠야된다고 알려줘야함
+		if(and.size()==1 && not.size()==0) {
+			Map<String,Object> followInfo=new HashMap<>();
+			followInfo.put("followingNumber", algorithm_FolloweRepositoryCustom.countAlgorithmFollowings(and.get(0)));
+			followInfo.put("articleNumber", articleRepository.countbyAlgorithm(and.get(0)));
+			followInfo.put("followingState", algorithm_FolloweRepositoryCustom.isAlgorithmFollowing(nowLoginMemberNo,and.get(0)));
+			
+			ret.put("followInfo", followInfo);
+		}
+		
+		return ret;
+	}
+	
+	//회원검색
+	@Override
+	public Map<String, Object> getMemberSearch(String name,int page) {
+		if(name.trim().length()==0)
+			throw new IllegalStateException("검색어를 입력해 주세요");
+		
+		Long nowLoginMemberNo = 0L;
+		try {
+			// 로그인 중이면 현재 로그인중인 유저 기준으로 likeState 설정
+			nowLoginMemberNo = SecurityUtil.getCurrentMemberId();
+		} catch (RuntimeException e) {
+			nowLoginMemberNo = 0L;
+		}
+		
+		List<MemberSearchDTO> list= memberRepositoryCustom.getMemberSearch(name, nowLoginMemberNo, PageRequest.of(page, Common.PAGE)).orElse(null);
+		Map<String, Object> ret = new HashMap<>();
+		ret.put("memberList", list);
+		
+		//전체 검색된 회원 갯수
+		Long count = memberRepositoryCustom.getMemberSearchCount(name);
+		ret.put("memberSearchCount", count);
+		
+		
+		return ret;
+	}
+
+	
+}
