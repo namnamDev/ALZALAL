@@ -1,6 +1,6 @@
 <template>
   <div>   
-    <div>    
+    <div style=" overflow-wrap: break-word;">    
       <Viewer  
       class="viewer"      
       height="500px" 
