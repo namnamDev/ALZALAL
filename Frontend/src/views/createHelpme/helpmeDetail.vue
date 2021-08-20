@@ -20,7 +20,7 @@
           <span @click="modifyArticle" style="cursor: pointer">수정</span> |
           <span @click="deleteArticle" style="cursor: pointer">삭제</span>
         </div>
-        <div class="viewer">
+        <div class="viewer" style=" overflow-wrap: break-word;">
           {{ this.helpmeContent }}
         </div>
       </div>
