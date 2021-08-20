@@ -9,7 +9,7 @@
           {{ discussCompHostName }}
         </div>
         <div class="row top mb-5 text-end text-secondary">
-          <div class="col clickName" @click="clickName">
+          <div class="col">
             {{ discussDate | moment("YYYY-MM-DD HH:mm:ss") }}
           </div>
         </div>
@@ -261,9 +261,6 @@ export default {
 button {
   width: 120px;
   height: 30px;
-}
-.clickName {
-  cursor: pointer;
 }
 .create-comment-btn {
   background-color: rgba(62, 171, 111, 1);
