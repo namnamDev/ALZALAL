@@ -2,7 +2,7 @@
   <div>
     <div class="row notify-item py-3" @click="clickItem">
       <div class="col-2">
-        <i class="fas fa-user" style="font-size: 50px"></i>
+        <img class="profileImg" :src="getImgSrc"  @error="imageError = true"  alt="프로필사진" />
       </div>
       <div class="col-9">
         <span class="message">{{message}}</span>
@@ -72,6 +72,9 @@ export default {
           break
       }
       return message
+    },
+    getImgSrc() {     
+      return `${SERVER_URL}/profile/img/${this.item.notiSender}`;
     }
   },
   data() {
@@ -225,5 +228,11 @@ export default {
   background-color: rgba(62,171,111, 0.2);
   border-radius: 5px;
   cursor:pointer;
+}
+.profileImg {
+  margin-top: 3px;
+  width: 45px;
+  height: 45px;
+  border-radius: 75%;
 }
 </style>
