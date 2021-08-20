@@ -108,7 +108,7 @@ export default {
       return config;
     },
     clickLike() {
-      const commentNo = this.comment.articleCommentNo;
+      const commentNo = this.comment.discussCommentNo;
       axios({
         method: "post",
         url: `${SERVER_URL}/like/discussion/comment/${commentNo}`,
@@ -143,7 +143,7 @@ export default {
           if (result.value) {
             axios({
               method: "delete",
-              url: `${SERVER_URL}/comment/article/${this.comment.articleCommentNo}`,
+              url: `${SERVER_URL}/comment/discussion/${this.comment.discussCommentNo}`,
               headers: this.getToken(),
             })
               .then(() => {
